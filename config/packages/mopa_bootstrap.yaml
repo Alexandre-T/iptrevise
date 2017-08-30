@@ -1,0 +1,6 @@
+mopa_bootstrap:
+    form: ~  # Adds twig form theme  support
+    menu: ~  # enables twig helpers for menu
+    icons:
+        icon_set: fontawesome4
+        shortcut: fa

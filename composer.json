@@ -34,6 +34,7 @@
         "symfony/flex": "^1.0",
         "symfony/framework-bundle": "^3.3",
         "symfony/security-bundle": "^3.3",
+        "symfony/templating": "^3.3",
         "symfony/translation": "^3.3",
         "symfony/twig-bundle": "^3.3",
         "symfony/validator": "^3.3",
@@ -69,8 +70,7 @@
             "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
             "security:check --end-point=http://security.sensiolabs.org/check_lock": "symfony-cmd",
             "cache:clear --no-warmup": "symfony-cmd",
-            "cache:warmup": "symfony-cmd",
-            "security-checker security:check": "script"
+            "cache:warmup": "symfony-cmd"
         },
         "post-install-cmd": [
             "@auto-scripts"

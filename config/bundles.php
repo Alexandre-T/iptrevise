@@ -12,6 +12,5 @@ return [
     'Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle' => ['all' => true],
     'Knp\Bundle\PaginatorBundle\KnpPaginatorBundle' => ['all' => true],
     'Knp\Bundle\MenuBundle\KnpMenuBundle' => ['all' => true],
-//    'Mopa\Bundle\BootstrapBundle\BootstrapBundle' => ['all' => true],
     'Mopa\Bundle\BootstrapBundle\MopaBootstrapBundle' => ['all' => true],
 ];

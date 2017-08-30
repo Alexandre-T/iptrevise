@@ -1,32 +1,47 @@
-<!DOCTYPE html>
-<html>
-<head>
+{% extends 'MopaBootstrapBundle::base.html.twig' %}
 
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+{% block title %}{{ app_title | trans }}{% endblock %}
 
-    <title>{% block title %}{{ app_title }}{% endblock %}</title>
+{% block headline %}{{ 'app.title' | trans }}{% endblock headline %}
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+{% block head_style %}
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    {# Optional theme -#}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     <!--[if IE]><link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/><![endif]-->
-</head>
-<body>
-{% block body %}
-    <div class="container">
-        {% block content %}{% block content_content %}{% endblock %}{% endblock content %}
-    </div>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-    <script type="text/javascript">
-        $.when( $.ready ).then(function() {
-            $('[data-toggle="tooltip"]').tooltip();
-            $('[data-tooltip="tooltip"]').tooltip();
-        });
-    </script>
-    {% block footer_javascript %}{% endblock %}
-{% endblock body %}
-</body>
-</html>
+{% endblock head_style %}
+
+{% block navbar %}
+    {% embed '@MopaBootstrap/Navbar/navbar.html.twig' with { fixedTop: true, inverse: true, id: 'navbar-top' } %}
+        {% block brand %}
+            <a class="navbar-brand" href="{{ path('home') }}">
+                <span class="fa fa-globe"></span>
+                {{ app_title }}
+            </a>
+        {% endblock %}
+
+        {% block menu %}
+            {{ mopa_bootstrap_menu('main', {'automenu': 'navbar'}) }}
+            {{ mopa_bootstrap_menu('user', {'automenu': 'navbar', 'pull-right': true}) }}
+        {% endblock %}
+    {% endembed %}
+{% endblock navbar %}
+
+{% block footer %}
+    {% embed '@MopaBootstrap/Navbar/navbar.html.twig' with { fixedBottom: true, inverse: true, id: 'navbar-bottom' } %}
+        {% block menu %}
+            {{ mopa_bootstrap_menu('admin', {'automenu': 'navbar'}) }}
+        {% endblock %}
+    {% endembed %}
+{% endblock footer %}
+
+{% block foot_script %}
+    {% block foot_script_assetic %}
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    {% endblock foot_script_assetic %}
+{% endblock foot_script %}

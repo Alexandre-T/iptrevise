@@ -12,3 +12,6 @@ framework:
     #fragments: ~
     php_errors:
         log: true
+    templating:
+        # To load MopaBundle views
+        engines: ['twig']
