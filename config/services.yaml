@@ -32,7 +32,7 @@ services:
     app.menu_builder:
         class: App\Menu\MenuBuilder
         public: true
-        arguments: ["@knp_menu.factory"]
+        arguments: ["@knp_menu.factory", "@security.authorization_checker", "@security.token_storage"]
         tags:
             - { name: knp_menu.menu_builder, method: createMainMenu, alias: main } # The alias is what is used to retrieve the menu
             - { name: knp_menu.menu_builder, method: createUserMenu, alias: user } # The alias is what is used to retrieve the menu
