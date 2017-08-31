@@ -1,0 +1,5 @@
+doctrine:
+    dbal:
+        default_connection:   default
+    orm:
+        default_entity_manager:  ~

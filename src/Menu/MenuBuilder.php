@@ -20,6 +20,7 @@ use Knp\Menu\ItemInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Component\Security\Core\User\User;
 
 class MenuBuilder
 {
@@ -66,7 +67,10 @@ class MenuBuilder
         $this->factory = $factory;
         $this->authorization = $authorizationChecker;
         $this->token = $tokenStorage->getToken();
-        $this->user = $this->token->getUser();
+
+        if ($this->token instanceof TokenInterface){
+            $this->user = $this->token->getUser();
+        }
     }
 
     /**
@@ -84,8 +88,7 @@ class MenuBuilder
             'icon'  => 'fw fa-home',
         ]);
 
-        if ($this->authorization->isGranted('ROLE_USER'))
-        {
+        if ($this->authorization->isGranted('ROLE_USER')) {
             $dropdownSettings = $menu->addChild('menu.main.networks', [
                 'icon' => 'fw fa-network',
                 'pull-right' => true,
@@ -130,7 +133,15 @@ class MenuBuilder
 
         if ($isFully || $isRemembered) {
             //@FIXME vérifier le type d'User.
-            $dropdownUser = $menu->addChild($this->user->getUsername(), [
+            if ($this->user instanceof User){
+                $username = $this->user->getUsername();
+            }elseif (null === $this->user){
+                $username = "unknown";
+            }else{
+                $username = $this->user->__toString();
+            }
+
+            $dropdownUser = $menu->addChild($username, [
                 'icon' =>'user',
                 'pull-right' => true,
                 'dropdown' => true,
