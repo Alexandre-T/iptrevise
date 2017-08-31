@@ -1,0 +1,5 @@
+doctrine_migrations:
+    dir_name: '%kernel.project_dir%/src/Migrations'
+    namespace: App\Migrations
+    table_name: ts_migrations
+    name: IP-Trevise Migrations

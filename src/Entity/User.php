@@ -25,7 +25,7 @@ use Serializable;
 /**
  * Entity User.
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\Table(
  *     name="ts_user",
  *     options={"comment":"Table entité des utilisateur","charset":"utf8mb4","collate":"utf8mb4_unicode_ci"}
