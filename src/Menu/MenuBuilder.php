@@ -132,16 +132,8 @@ class MenuBuilder
         $isAnonymous = $this->authorization->isGranted('IS_AUTHENTICATED_ANONYMOUSLY');
 
         if ($isFully || $isRemembered) {
-            //@FIXME vérifier le type d'User.
-            if ($this->user instanceof User){
-                $username = $this->user->getUsername();
-            }elseif (null === $this->user){
-                $username = "unknown";
-            }else{
-                $username = $this->user->__toString();
-            }
 
-            $dropdownUser = $menu->addChild($username, [
+            $dropdownUser = $menu->addChild($this->getUsername(), [
                 'icon' =>'user',
                 'pull-right' => true,
                 'dropdown' => true,
@@ -190,9 +182,51 @@ class MenuBuilder
     {
         $menu = $this->factory->createItem('root');
 
-        $menu->addChild('Home', ['route' => 'home']);
-        // ... add more children
+        if ($this->authorization->isGranted('ROLE_ADMIN')){
+            $dropdownAdmin = $menu->addChild('menu.admin.admin', [
+                'icon' =>'user',
+                'pull-right' => true,
+                'dropdown' => true,
+                'caret' => true,
+            ])->setExtra('translation_domain', false);
+
+            $isFully = $this->authorization->isGranted('IS_AUTHENTICATED_FULLY');
+            $isRemembered = $this->authorization->isGranted('IS_AUTHENTICATED_REMEMBERED');
+
+            if($isFully && $isRemembered){
+                $dropdownAdmin->addChild('menu.admin.admin', [
+                    'icon' => 'fw fa-group',
+                    'route' => 'home'
+                ]);
+            }else{
+                $dropdownAdmin->addChild('menu.admin.confirm', [
+                    'icon' => 'fw fa-check',
+                    'route' => 'home'
+                ]);
+            }
+
+            // ... add more children
+
+        }
 
         return $menu;
+    }
+
+    /**
+     * Return the username.
+     *
+     * @return string
+     */
+    private function getUsername(): string
+    {
+        if ($this->user instanceof User){
+            $username = $this->user->getUsername();
+        }elseif (null === $this->user){
+            $username = "menu.user.unknown";
+        }else{
+            $username = $this->user->__toString();
+        }
+
+        return $username;
     }
 }

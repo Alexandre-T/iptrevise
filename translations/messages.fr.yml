@@ -1,0 +1,4 @@
+menu.main.home: 'Accueil'
+menu.user.sign-in: 'Connexion'
+menu.user.sign-up: 'Inscription'
+menu.admin.admin: 'Administration'

@@ -1,8 +1,8 @@
 {% extends 'MopaBootstrapBundle::base.html.twig' %}
 
-{% block title %}{{ app_title | trans }}{% endblock %}
+{% block title %}{{ app_title }}{% endblock %}
 
-{% block headline %}{{ 'app.title' | trans }}{% endblock headline %}
+{% block headline %}{{ app_title }}{% endblock headline %}
 
 {% block head_style %}
 
@@ -26,18 +26,13 @@
 
         {% block menu %}
             {{ mopa_bootstrap_menu('main', {'automenu': 'navbar'}) }}
+            {{ mopa_bootstrap_menu('admin', {'automenu': 'navbar', 'pull-right': true}) }}
             {{ mopa_bootstrap_menu('user', {'automenu': 'navbar', 'pull-right': true}) }}
         {% endblock %}
     {% endembed %}
 {% endblock navbar %}
 
-{% block footer %}
-    {% embed '@MopaBootstrap/Navbar/navbar.html.twig' with { fixedBottom: true, inverse: true, id: 'navbar-bottom' } %}
-        {% block menu %}
-            {{ mopa_bootstrap_menu('admin', {'automenu': 'navbar'}) }}
-        {% endblock %}
-    {% endembed %}
-{% endblock footer %}
+{% block footer %}{% endblock footer %}
 
 {% block foot_script %}
     {% block foot_script_assetic %}
