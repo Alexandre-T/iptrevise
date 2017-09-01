@@ -3,10 +3,26 @@ menu.user.sign-in: 'Connexion'
 menu.user.sign-up: 'Inscription'
 menu.admin.admin: 'Administration'
 
-administration.user.show.title %name%: 'Utilisateur %name%'
-administration.user.edit.title %name%: 'Modification de l’utilisateur %name%'
-administration.index.title: 'Administration'
+
+administration.actions: 'Actions'
+administration.actions.back.list: 'Liste des utilisateurs'
+administration.actions.delete: 'Supprimer'
+administration.actions.edit: 'Éditer'
+administration.actions.show: 'Afficher'
+
+administration.created.at: 'Création'
+
+administration.delete.confirm.cancel: 'Annuler'
+administration.delete.confirm.close: 'Fermer'
+administration.delete.confirm.core: 'Vous êtes sur le point de supprimer cette donnée de l’application. Merci de confirmer votre action.'
+administration.delete.confirm.delete: 'Supprimer'
+administration.delete.confirm.title: 'Demande de confirmation'
+
+administration.edit: 'Éditer'
+
 administration.global-information: 'Informations générales'
+administration.information: 'Information'
+administration.index.title: 'Administration'
 
 administration.log: 'Journal de bord'
 administration.log.version: 'Version'
@@ -20,19 +36,19 @@ administration.log.new-value: 'Nouvelle valeur'
 
 administration.none: 'Aucun'
 
+administration.show: 'Consulter'
+
+administration.updated.at: 'Modification'
+
+administration.user.create: 'Nouvel utilisateur'
+administration.user.edit.title %name%: 'Modification de l’utilisateur %name%'
+administration.user.list.title: 'Liste des utilisateurs'
+administration.user.show.title %name%: 'Utilisateur %name%'
+
 form.user.field.username: 'Identifiant'
 form.user.field.label: 'Identifiant'
 form.user.field.mail: 'Adresse mail'
 form.user.field.password: 'Mot de passe'
 form.user.field.roles: 'Rôles'
 
-administration.actions: 'Actions'
-administration.actions.back.list: 'Liste des utilisateurs'
-administration.actions.delete: 'Supprimer'
-administration.actions.edit: 'Éditer'
-administration.actions.show: 'Afficher'
 
-administration.information: 'Information'
-
-administration.created.at: 'Création'
-administration.updated.at: 'Modification'

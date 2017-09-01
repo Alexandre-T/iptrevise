@@ -173,6 +173,7 @@ class UserController extends Controller
     {
         $form = $this->createDeleteForm($user);
         $form->handleRequest($request);
+        dump($form->isValid());
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($user);
