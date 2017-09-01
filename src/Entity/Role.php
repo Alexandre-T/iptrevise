@@ -73,6 +73,7 @@ class Role
      * @var DateTime
      *
      * @ORM\Column(type="datetime", nullable=false, name="rol_created", options={"comment":"Creation datetime"})
+     * @Gedmo\Timestampable(on="create")
      */
     private $created;
 
@@ -82,6 +83,7 @@ class Role
      * @var DateTime
      *
      * @ORM\Column(type="datetime", nullable=false, name="rol_updated", options={"comment":"Update datetime"})
+     * @Gedmo\Timestampable(on="update")
      */
     private $updated;
 

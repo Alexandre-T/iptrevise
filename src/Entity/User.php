@@ -81,6 +81,7 @@ class User implements UserInterface, Serializable
      * @var DateTime
      *
      * @ORM\Column(type="datetime", nullable=false, name="usr_created", options={"comment":"Creation datetime"})
+     * @Gedmo\Timestampable(on="create")
      */
     private $created;
 
@@ -90,6 +91,7 @@ class User implements UserInterface, Serializable
      * @var DateTime
      *
      * @ORM\Column(type="datetime", nullable=false, name="usr_updated", options={"comment":"Update datetime"})
+     * @Gedmo\Timestampable(on="update")
      */
     private $updated;
 
