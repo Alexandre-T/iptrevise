@@ -10,6 +10,7 @@ return [
     'Sensio\Bundle\DistributionBundle\SensioDistributionBundle' => ['all' => true],
     'Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle' => ['all' => true],
     'Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle' => ['all' => true],
+    'Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle' => ['all' => true],
     'Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle' => ['all' => true],
     'Doctrine\Bundle\DoctrineBundle\DoctrineBundle' => ['all' => true],
     'Knp\Bundle\PaginatorBundle\KnpPaginatorBundle' => ['all' => true],

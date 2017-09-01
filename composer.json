@@ -88,7 +88,7 @@
     "extra": {
         "symfony": {
             "id": "01BRM57HR6VDSC2C4R11Q4XDPE",
-            "allow-contrib": false
+            "allow-contrib": "true"
         }
     }
 }
