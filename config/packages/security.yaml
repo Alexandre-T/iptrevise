@@ -33,4 +33,4 @@ security:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         #ROLE ADMIN can change user application
-        - { path: ^/administration, role: ROLE_ADMIN }
+        # - { path: ^/administration, role: ROLE_ADMIN }

@@ -20,7 +20,15 @@ services:
         resource: '../src/*'
         # you can exclude directories or files
         # but if a service is unused, it's removed anyway
-        exclude: '../src/{Entity,Listener,Repository,Tests}'
+        exclude: '../src/{Entity,Listener,Manager,Repository,Tests,Twig}'
+
+    # Entity managers are imported separately to make sure they're public
+    App\Manager\:
+        resource: '../src/Manager'
+        # you can exclude directories or files
+        # but if a service is unused, it's removed anyway
+        public: true
+
 
     # controllers are imported separately to make sure they're public
     # and have a tag that allows actions to type-hint services
@@ -55,3 +63,14 @@ services:
             - { name: knp_menu.menu_builder, method: createMainMenu, alias: main } # The alias is what is used to retrieve the menu
             - { name: knp_menu.menu_builder, method: createUserMenu, alias: user } # The alias is what is used to retrieve the menu
             - { name: knp_menu.menu_builder, method: createAdminMenu, alias: admin } # The alias is what is used to retrieve the menu
+
+    #Twig extension for localized_date filter
+    twig.extension.intl:
+        class: Twig_Extensions_Extension_Intl
+        tags:
+            - { name: twig.extension }
+
+    app.twig.gravatar_extension:
+        class: App\Twig\GravatarExtension
+        tags:
+            - { name: twig.extension }

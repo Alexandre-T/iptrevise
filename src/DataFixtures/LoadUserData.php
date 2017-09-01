@@ -66,7 +66,7 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedF
 
         $this->addReference('user_alexandre', $userAlexandre);
 
-        if (in_array($this->container->get('kernel')->getEnvironment(), ['dev', 'test'])){
+        if (in_array($this->container->get('kernel')->getEnvironment(), ['dev', 'test'])) {
             //Load dev and test data
             // I add one user for each role (to test the security component)
 

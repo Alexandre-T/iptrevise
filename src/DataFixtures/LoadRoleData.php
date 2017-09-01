@@ -82,7 +82,6 @@ class LoadRoleData extends AbstractFixture implements FixtureInterface, OrderedF
         $manager->persist($roleReader);
         $manager->persist($roleUser);
         $manager->flush();
-
     }
 
     /**

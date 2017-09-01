@@ -54,5 +54,4 @@ class DefaultController extends Controller
     {
         return $this->render('@App/default/index.html.twig');
     }
-
 }

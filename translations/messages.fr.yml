@@ -2,3 +2,37 @@ menu.main.home: 'Accueil'
 menu.user.sign-in: 'Connexion'
 menu.user.sign-up: 'Inscription'
 menu.admin.admin: 'Administration'
+
+administration.user.show.title %name%: 'Utilisateur %name%'
+administration.user.edit.title %name%: 'Modification de l’utilisateur %name%'
+administration.index.title: 'Administration'
+administration.global-information: 'Informations générales'
+
+administration.log: 'Journal de bord'
+administration.log.version: 'Version'
+administration.log.action: 'Action'
+administration.log.action.create: 'Création'
+administration.log.action.update: 'Modification'
+administration.log.action.delete: 'Suppression'
+administration.log.date: 'Date'
+administration.log.user: 'Utilisateur'
+administration.log.new-value: 'Nouvelle valeur'
+
+administration.none: 'Aucun'
+
+form.user.field.username: 'Identifiant'
+form.user.field.label: 'Identifiant'
+form.user.field.mail: 'Adresse mail'
+form.user.field.password: 'Mot de passe'
+form.user.field.roles: 'Rôles'
+
+administration.actions: 'Actions'
+administration.actions.back.list: 'Liste des utilisateurs'
+administration.actions.delete: 'Supprimer'
+administration.actions.edit: 'Éditer'
+administration.actions.show: 'Afficher'
+
+administration.information: 'Information'
+
+administration.created.at: 'Création'
+administration.updated.at: 'Modification'

@@ -1,0 +1,131 @@
+{% extends '@App/base.html.twig' %}
+
+{% block title %}{{ 'administration.index.title' | trans }} · {{ parent() }}{% endblock %}
+
+{% block content_content %}
+    {% block content_breadcrumb %}
+        {% if path is defined and path is not null %}
+            <ol class="breadcrumb" id="content-breadcrumb">
+                {%  for node in path %}
+                    <li><a href="{{ path( administration_entity_show, {'slug': node.slug}) }}" title="{{ node.name }}">{{ node.name }}</a></li>
+                {% endfor %}
+            </ol>
+        {% endif %}
+    {% endblock content_breadcrumb %}
+
+    {% block content_settings %}{% endblock content_settings %}
+
+    {% block content_logs %}
+        {% if logs is defined and logs | length > 0 %}
+            <div class="panel panel-default" id="administration-logs">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ 'administration.log' | trans }}</h3>
+                </div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th class="text-center" id="logs-version">{{ 'administration.log.version' | trans }}</th>
+                        <th class="text-center" id="logs-action">{{ 'administration.log.action' | trans }}</th>
+                        <th class="text-center" id="logs-date">{{ 'administration.log.date' | trans }}</th>
+                        <th class="text-center" id="logs-user">{{ 'administration.log.user' | trans }}</th>
+                        <th class="text-center" id="logs-value">{{ 'administration.log.new-value' | trans }}</th>
+                    </tr>
+                    </thead>
+                    {% for log in logs %}
+                        <tr>
+                            <td headers="logs-version" class="text-center">{{ log.version }}</td>
+                            <td headers="logs-action" class="text-center">
+                                <span class="label label-default">{{ log.action | trans }}</span>
+                            </td>
+                            <td headers="logs-date" class="text-center">{{ log.logged | localizeddate('medium','medium')}}</td>
+                            <td headers="logs-user" class="text-center">{{ log.username }}</td>
+                            <td headers="logs-value">
+                                <dl class="dl-horizontal">
+                                    {% for row in log.data %}
+                                        <dt>{{ row.label | trans }}</dt>
+                                        {% if row.none %}
+                                            <dd>{{ 'administration.none' | trans }}</dd>
+                                        {% elseif row.noMore %}
+                                            <dd>{{ 'administration.no-more %entity% %id%' | trans({'id': row.id, 'entity':row.entity}) }}</dd>
+                                        {% elseif row.translate %}
+                                            <dd>{{ row.name | trans }}</dd>
+                                        {% else %}
+                                            <dd>{{ row.name }}</dd>
+                                        {% endif %}
+                                    {% endfor %}
+                                </dl>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% endif %}
+
+    {% endblock content_logs %}
+{% endblock content_content %}
+
+{% block content_sidebar %}
+    {% block content_action %}{% endblock content_action %}
+    <hr>
+    {% block content_information %}
+        {% if information is defined %}
+            <div class="panel panel-default" id="administration-creator-information">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ 'administration.information' | trans }}</h3>
+                </div>
+                <div class="panel-body">
+                    <dl class="dl-horizontal">
+                        {% if information.created %}
+                            <dt>{{ 'administration.created.at' | trans}}</dt>
+                            <dd>{{ information.created | localizeddate('short', 'short') }}</dd>
+                        {% endif %}
+                        {% if information.updated %}
+                            <dt>{{ 'administration.updated.at' | trans}}</dt>
+                            <dd>{{ information.updated | localizeddate('short', 'short') }}</dd>
+                        {% endif %}
+                    </dl>
+                </div>
+            </div>
+        {% endif %}
+    {% endblock content_information %}
+{% endblock content_sidebar %}
+
+{% block modal %}
+    <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ 'settings.delete.confirm.close' | trans }}"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">{{ 'settings.delete.confirm.title' | trans }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>{{ 'settings.delete.confirm.core' | trans }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        <span class="fa fa-reply"></span>&nbsp;{{ 'settings.delete.confirm.cancel' | trans }}
+                    </button>
+                    <button type="button" class="btn btn-primary btn-ok">
+                        <span class="fa fa-remove"></span>&nbsp;{{ 'settings.delete.confirm.delete' | trans }}
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+{% endblock %}
+
+{% block foot_script_assetic %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $('#confirm-delete')
+            .on('click', '.btn-ok', function() {
+                var formName = 'form[name="'+ $(this).data('form') +'"]';
+                $(formName).submit();
+            })
+            // Bind to modal opening to set necessary data properties to be used to make request
+            .on('show.bs.modal', function(e) {
+                var data = $(e.relatedTarget).data();
+                $('.btn-ok', this).data('form', data.form);
+            });
+    </script>
+{% endblock %}

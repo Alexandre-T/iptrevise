@@ -68,7 +68,7 @@ class MenuBuilder
         $this->authorization = $authorizationChecker;
         $this->token = $tokenStorage->getToken();
 
-        if ($this->token instanceof TokenInterface){
+        if ($this->token instanceof TokenInterface) {
             $this->user = $this->token->getUser();
         }
     }
@@ -132,7 +132,6 @@ class MenuBuilder
         $isAnonymous = $this->authorization->isGranted('IS_AUTHENTICATED_ANONYMOUSLY');
 
         if ($isFully || $isRemembered) {
-
             $dropdownUser = $menu->addChild($this->getUsername(), [
                 'icon' =>'user',
                 'pull-right' => true,
@@ -182,7 +181,7 @@ class MenuBuilder
     {
         $menu = $this->factory->createItem('root');
 
-        if ($this->authorization->isGranted('ROLE_ADMIN')){
+        if ($this->authorization->isGranted('ROLE_ADMIN')) {
             $dropdownAdmin = $menu->addChild('menu.admin.admin', [
                 'icon' =>'user',
                 'pull-right' => true,
@@ -193,12 +192,12 @@ class MenuBuilder
             $isFully = $this->authorization->isGranted('IS_AUTHENTICATED_FULLY');
             $isRemembered = $this->authorization->isGranted('IS_AUTHENTICATED_REMEMBERED');
 
-            if($isFully && $isRemembered){
+            if ($isFully && $isRemembered) {
                 $dropdownAdmin->addChild('menu.admin.admin', [
                     'icon' => 'fw fa-group',
                     'route' => 'home'
                 ]);
-            }else{
+            } else {
                 $dropdownAdmin->addChild('menu.admin.confirm', [
                     'icon' => 'fw fa-check',
                     'route' => 'home'
@@ -206,7 +205,6 @@ class MenuBuilder
             }
 
             // ... add more children
-
         }
 
         return $menu;
@@ -219,11 +217,11 @@ class MenuBuilder
      */
     private function getUsername(): string
     {
-        if ($this->user instanceof User){
+        if ($this->user instanceof User) {
             $username = $this->user->getUsername();
-        }elseif (null === $this->user){
+        } elseif (null === $this->user) {
             $username = "menu.user.unknown";
-        }else{
+        } else {
             $username = $this->user->__toString();
         }
 

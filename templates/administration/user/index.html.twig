@@ -1,0 +1,66 @@
+{% extends '@App/administration/base.html.twig' %}
+
+{% block title %}{{ 'administration.user.list.title'|trans }} · {{ parent() }}{% endblock title %}
+
+{% block headline %}
+    <span class="fa fa-fw fa-users"></span>
+    {{ 'administration.user.list.title'|trans }}
+{% endblock %}
+
+{% set direction = pagination.getDirection() %}
+
+{% block content_content %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th id="user-gravatar">&nbsp;&nbsp;<span class="fa fa-gravatar"></span></th>
+            <th id="user-username">
+                {% if pagination.isSorted('user.label') %}
+                    <span class="fa fa-sort-alpha-{{ direction }}"></span>
+                {% endif %}
+                {{ knp_pagination_sortable(pagination, 'form.user.field.username' | trans, 'user.label')}}
+            </th>
+            <th id="user-mail">
+                {% if pagination.isSorted('user.mail') %}
+                    <span class="fa fa-sort-alpha-{{ direction }}"></span>
+                {% endif %}
+                {{ knp_pagination_sortable(pagination, 'form.user.field.mail' | trans, 'user.mail')}}
+            </th>
+            <th id="user-actions">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in pagination %}
+            <tr>
+                <td headers="user-gravatar"><img src="{{ user.mail | gravatarFilter(24) }}" class="img-rounded"/></td>
+                <td headers="user-username">{{ user.username }}</td>
+                <td headers="user-mail">{{ user.mail }}</td>
+                <td headers="user-actions">
+                    <div class="btn-group-xs btn-group">
+                        <a class="btn btn-default" href="{{ path('administration_user_show', { 'id': user.id }) }}">
+                            <span class="fa fa-eye"></span>
+                            <span class="sr-only">{{ 'administration.show' | trans }}</span>
+                        </a>
+                        <a class="btn btn-default" href="{{ path('administration_user_edit', { 'id': user.id }) }}">
+                            <span class="fa fa-edit"></span>
+                            <span class="sr-only">{{ 'administration.edit' | trans }}</span>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="navigation text-right">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+{% endblock content_content %}
+
+{% block content_action %}
+    <div class="text-center">
+        <a class="btn btn-default" href="{{ path('administration_user_new') }}">
+            <span class="fa fa-user"></span>
+            {{ 'administration.user.create' | trans }}
+        </a>
+    </div>
+{% endblock content_action %}

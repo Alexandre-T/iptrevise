@@ -21,6 +21,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use DateTime;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Serializable;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Entity User.
@@ -32,7 +33,7 @@ use Serializable;
  * )
  * @Gedmo\Loggable
  */
-class User implements UserInterface, Serializable
+class User implements InformationInterface, UserInterface, Serializable
 {
     /**
      * Identifiant.
@@ -50,6 +51,8 @@ class User implements UserInterface, Serializable
      *
      * @var string
      *
+     * @Assert\NotBlank()
+     *
      * @ORM\Column(type="string", unique=true, length=32, nullable=false, name="usr_label", options={"unsigned":true})
      * @Gedmo\Versioned
      */
@@ -59,6 +62,9 @@ class User implements UserInterface, Serializable
      * User mail.
      *
      * @var string
+     *
+     * @Assert\NotBlank()
+     * @Assert\Email()
      *
      * @ORM\Column(type="string", unique=true, length=255, nullable=false, name="usr_mail")
      * @Gedmo\Versioned
@@ -100,6 +106,8 @@ class User implements UserInterface, Serializable
      *
      * @var Role[]
      *
+     * @Assert\NotBlank()
+     *
      * @ORM\ManyToMany(targetEntity="App\Entity\Role", inversedBy="users")
      * @ORM\JoinTable(
      *     name="tj_userrole",
@@ -111,8 +119,6 @@ class User implements UserInterface, Serializable
 
     /**
      * User constructor.
-     *
-     * @constructor
      */
     public function __construct()
     {
@@ -184,7 +190,7 @@ class User implements UserInterface, Serializable
      *
      * @return ArrayCollection[Role]
      */
-    public function getRoles(): ArrayCollection
+    public function getRoles()
     {
         return $this->roles;
     }
@@ -250,8 +256,6 @@ class User implements UserInterface, Serializable
     /**
      * Return the label of user.
      *
-     * @alias getLabel()
-     *
      * @return string
      */
     public function getUsername(): ?string
@@ -261,8 +265,6 @@ class User implements UserInterface, Serializable
 
     /**
      * Set the username of user.
-     *
-     * @alias setLabel()
      *
      * @param  string $username the new username
      * @return User
@@ -335,9 +337,10 @@ class User implements UserInterface, Serializable
      */
     public function hasRole(string $roleCode): bool
     {
-        foreach ($this->roles as $role)
-        {
-            if ($role->getCode() == $roleCode) return true;
+        foreach ($this->roles as $role) {
+            if ($role->getCode() == $roleCode) {
+                return true;
+            }
         }
 
         return false;

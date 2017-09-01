@@ -1,5 +1,6 @@
 mopa_bootstrap:
-    form: ~  # Adds twig form theme  support
+    form: # Adds twig form theme  support
+        show_legend: false
     menu: ~  # enables twig helpers for menu
     icons:
         icon_set: fontawesome4
