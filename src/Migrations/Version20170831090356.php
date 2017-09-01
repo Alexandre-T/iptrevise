@@ -29,7 +29,7 @@ class Version20170831090356 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN ts_role.rol_label IS \'Label du rôle\'');
         $this->addSql('COMMENT ON COLUMN ts_role.rol_created IS \'Creation datetime\'');
         $this->addSql('COMMENT ON COLUMN ts_role.rol_updated IS \'Update datetime\'');
-        $this->addSql('CREATE TABLE ts_user (usr_id INT NOT NULL, usr_label VARCHAR(32) NOT NULL, usr_mail VARCHAR(255) NOT NULL, password VARCHAR(32) DEFAULT NULL, usr_created TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, usr_updated TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(usr_id))');
+        $this->addSql('CREATE TABLE ts_user (usr_id INT NOT NULL, usr_label VARCHAR(32) NOT NULL, usr_mail VARCHAR(255) NOT NULL, password VARCHAR(64) DEFAULT NULL, usr_created TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, usr_updated TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(usr_id))');
         $this->addSql('CREATE UNIQUE INDEX uk_user_label ON ts_user (usr_label)');
         $this->addSql('CREATE UNIQUE INDEX uk_user_mail ON ts_user (usr_mail)');
         $this->addSql('COMMENT ON COLUMN ts_user.usr_id IS \'Identifiant de l\'\'utilisateur\'');

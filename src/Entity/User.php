@@ -70,7 +70,7 @@ class User implements UserInterface, Serializable
      *
      * @var string
      *
-     * @ORM\Column(type="string", length=32, nullable=true, options={"comment":"Mot de passe crypté"})
+     * @ORM\Column(type="string", length=64, nullable=true, options={"comment":"Mot de passe crypté"})
      * @Gedmo\Versioned
      */
     private $password;
@@ -100,7 +100,7 @@ class User implements UserInterface, Serializable
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Role", inversedBy="users")
      * @ORM\JoinTable(
-     *     name="UserRoles",
+     *     name="tj_userrole",
      *     joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="usr_id", nullable=false)},
      *     inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="rol_id", nullable=false)}
      * )
