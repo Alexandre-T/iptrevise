@@ -54,6 +54,9 @@ form.user.help.mail: 'Entrez l’adresse mail de l’utilisateur'
 form.user.help.password: 'Entrez le mot de passe de l’utilisateur'
 form.user.help.roles: 'Sélectionnez les rôles de l’utilisateur'
 
+menu.admin.admin: 'Administration'
+menu.admin.users: 'Gestion des utilisateurs'
+
 menu.main.home: 'Accueil'
 
 menu.user.edit-profile: 'Édition'
@@ -62,7 +65,5 @@ menu.user.sign-in: 'Connexion'
 menu.user.sign-up: 'Inscription'
 menu.user.show-profile: 'Consultation'
 menu.user.your-profile: 'Votre profil'
-
-menu.admin.admin: 'Administration'
 
 title.security.login: 'Connexion'
