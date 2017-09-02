@@ -197,7 +197,7 @@ class UserController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('administration_user_delete', array('id' => $user->getId())))
             ->setMethod('DELETE')
-            ->add('delete', SubmitType::class,[
+            ->add('delete', SubmitType::class, [
                 'attr' => ['class' => 'fa-js-trash-o btn-danger confirm-delete'],
                 'label' => 'administration.delete.confirm.delete',
             ])
