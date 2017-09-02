@@ -22,6 +22,7 @@ use App\Manager\UserManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -144,7 +145,7 @@ class UserController extends Controller
             //Flash message
             $session = $this->get('session');
             $trans = $this->get('translator.default');
-            $message = $trans->trans('administration.user.updated _name_', ['name' => $user->getUsername()]);
+            $message = $trans->trans('administration.user.updated %name%', ['%name%' => $user->getUsername()]);
             $session->getFlashBag()->add('success', $message);
             return $this->redirectToRoute('administration_user_show', array('id' => $user->getId()));
         }
@@ -173,7 +174,6 @@ class UserController extends Controller
     {
         $form = $this->createDeleteForm($user);
         $form->handleRequest($request);
-        dump($form->isValid());
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($user);
@@ -181,7 +181,7 @@ class UserController extends Controller
             //Flash message.
             $session = $this->get('session');
             $trans = $this->get('translator.default');
-            $message = $trans->trans('administration.user.deleted _name_', ['name' => $user->getUsername()]);
+            $message = $trans->trans('administration.user.deleted %name%', ['%name%' => $user->getUsername()]);
             $session->getFlashBag()->add('success', $message);
         }
         return $this->redirectToRoute('administration_user_index');
@@ -198,6 +198,10 @@ class UserController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('administration_user_delete', array('id' => $user->getId())))
             ->setMethod('DELETE')
+            ->add('delete', SubmitType::class,[
+                'attr' => ['class' => 'fa-js-trash-o btn-danger confirm-delete'],
+                'label' => 'administration.delete.confirm.delete',
+            ])
             ->getForm()
             ;
     }

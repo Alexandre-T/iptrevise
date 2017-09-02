@@ -91,11 +91,16 @@
 {% endblock content_sidebar %}
 
 {% block modal %}
+    {% if delete_form is defined %}
+        {{ form_start(delete_form) }}
+    {% endif %}
     <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmModal">
         <div class="modal-dialog" role="document">
             <div class="modal-content panel-danger">
                 <div class="modal-header panel-heading">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ 'administration.delete.confirm.close' | trans }}"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ 'administration.delete.confirm.close' | trans }}">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                     <h4 class="modal-title">{{ 'administration.delete.confirm.title' | trans }}</h4>
                 </div>
                 <div class="modal-body">
@@ -115,27 +120,23 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">
                         <span class="fa fa-close"></span>&nbsp;{{ 'administration.delete.confirm.cancel' | trans }}
                     </button>
-                    <button type="button" class="btn btn-danger btn-ok">
-                        <span class="fa fa-trash-o"></span>&nbsp;{{ 'administration.delete.confirm.delete' | trans }}
-                    </button>
+                    {% if delete_form is defined %}
+                        {{ form_widget(delete_form.delete) }}
+                    {% endif %}
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+    {% if delete_form is defined %}
+        {{ form_end(delete_form) }}
+    {% endif %}
 {% endblock %}
 
 {% block foot_script_assetic %}
     {{ parent() }}
     <script type="text/javascript">
-        $('#confirm-delete')
-            .on('click', '.btn-ok', function() {
-                var formName = 'form[name="'+ $(this).data('form') +'"]';
-                $(formName).submit();
-            })
-            // Bind to modal opening to set necessary data properties to be used to make request
-            .on('show.bs.modal', function(e) {
-                var data = $(e.relatedTarget).data();
-                $('.btn-ok', this).data('form', data.form);
-            });
+        $(document).ready(function () {
+            $('.fa-js-trash-o').prepend('<span class="fa fa-fw fa-trash-o"></span>');
+        });
     </script>
 {% endblock %}

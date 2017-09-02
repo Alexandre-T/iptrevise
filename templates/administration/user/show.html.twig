@@ -35,10 +35,7 @@
 
 {% block content_action %}
     <h3>{{ 'administration.actions' | trans }}</h3>
-    {% if isDeletable %}
-        {{ form_start(delete_form) }}
-        {{ form_widget(delete_form) }}
-    {% endif %}
+
     <div class="text-center" id="administration-actions">
         <div class="btn-group-vertical">
             <a class="btn-mini btn btn-default" href="{{ path('administration_user_index') }}">
@@ -58,7 +55,4 @@
             {% endif %}
         </div>
     </div>
-    {% if isDeletable %}
-        {{ form_end(delete_form) }}
-    {% endif %}
 {% endblock content_action %}
