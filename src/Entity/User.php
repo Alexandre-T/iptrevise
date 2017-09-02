@@ -47,7 +47,8 @@ class User implements InformationInterface, UserInterface, Serializable
     private $id;
 
     /**
-     * Username.
+     * User label.
+     * This is NOT the identifier nether the 'technical' username.
      *
      * @var string
      *
@@ -59,7 +60,7 @@ class User implements InformationInterface, UserInterface, Serializable
     private $label;
 
     /**
-     * User mail.
+     * User mail and identifiant.
      *
      * @var string
      *
@@ -72,7 +73,7 @@ class User implements InformationInterface, UserInterface, Serializable
     private $mail;
 
     /**
-     * User password.
+     * User encoded password.
      *
      * @var string
      *
@@ -118,6 +119,13 @@ class User implements InformationInterface, UserInterface, Serializable
     private $roles;
 
     /**
+     * A non-persisted field that's used to create the encoded password.
+     *
+     * @var string
+     */
+    private $plainPassword;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -156,15 +164,23 @@ class User implements InformationInterface, UserInterface, Serializable
     }
 
     /**
-     * Password getter.
+     * The encoded password.
      *
      * @return string
      */
     public function getPassword(): ?string
     {
-        //@FIXME
-        //return $this->password;
-        return 'iliketurtles';
+        return $this->password;
+    }
+
+    /**
+     * Return the non-persistent plain password.
+     *
+     * @return string|null
+     */
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
     }
 
     /**
@@ -197,7 +213,7 @@ class User implements InformationInterface, UserInterface, Serializable
     {
         $return = [];
 
-        foreach ($this->roles as $role){
+        foreach ($this->roles as $role) {
             $return[] = $role->getCode();
         }
 
@@ -251,6 +267,52 @@ class User implements InformationInterface, UserInterface, Serializable
     }
 
     /**
+     * Set the non-persistent plain password.
+     *
+     * @param string $plainPassword
+     * @return User
+     */
+    public function setPlainPassword(string $plainPassword): User
+    {
+        $this->plainPassword = $plainPassword;
+        // forces the object to look "dirty" to Doctrine. Avoids
+        // Doctrine *not* saving this entity, if only plainPassword changes
+        // @see https://knpuniversity.com/screencast/symfony-security/user-plain-password
+        $this->password = null;
+
+        return $this;
+    }
+
+    /**
+     * Add a role to actual user.
+     *
+     * @param Role $role
+     * @return User
+     */
+    public function addRole(Role $role): User
+    {
+        if (!$this->roles->contains($role)) {
+            $this->roles->add($role);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove a role to actual user.
+     *
+     * @param Role $role
+     * @return User
+     */
+    public function removeRole(Role $role): User
+    {
+        $this->roles->removeElement($role);
+
+        return $this;
+    }
+
+
+    /**
      * Setter of the roles.
      *
      * @param ArrayCollection $roles
@@ -290,7 +352,7 @@ class User implements InformationInterface, UserInterface, Serializable
      */
     public function eraseCredentials(): User
     {
-        $this->password = null;
+        $this->plainPassword = null;
 
         return $this;
     }

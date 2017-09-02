@@ -15,11 +15,12 @@
  */
 namespace App\Security;
 
-use App\Form\Type\LoginType;
+use App\Form\LoginForm;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -58,9 +59,16 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     private $em;
 
     /**
+     * User password encoder
+     *
+     * @var UserPasswordEncoder
+     */
+    private $passwordEncoder;
+
+    /**
      * Router Interface.
-     * If you want to know which class is your Router Interface, just type:
-     * php ./bin/console debug:container router
+     * If you want to know which class is your password encoder, just type:
+     * php ./bin/console debug:container password_encoder
      *
      * @var RouterInterface
      */
@@ -72,12 +80,14 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
      * @param FormFactoryInterface $formFactory
      * @param EntityManager $em
      * @param RouterInterface $router
+     * @param UserPasswordEncoder $passwordEncoder
      */
-    public function __construct(FormFactoryInterface $formFactory, EntityManager $em, RouterInterface $router)
+    public function __construct(FormFactoryInterface $formFactory, EntityManager $em, RouterInterface $router, UserPasswordEncoder $passwordEncoder)
     {
         $this->formFactory = $formFactory;
         $this->em = $em;
         $this->router = $router;
+        $this->passwordEncoder = $passwordEncoder;
     }
 
     /**
@@ -90,12 +100,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     public function checkCredentials($credentials, UserInterface $user)
     {
         $password = $credentials['password'];
-        //@FIXME when it will works
-        if ($password == 'iliketurtles') {
-            return true;
-        }
 
-        return false;
+        return $this->passwordEncoder->isPasswordValid($user, $password);
     }
 
     /**
@@ -111,8 +117,10 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             // skip authentication
             return null;
         }
-        // TODO Change it to LoginForm
-        $form = $this->formFactory->create(LoginType::class);
+
+        //We create the form and handle the request
+        $form = $this->formFactory->create(LoginForm::class);
+        //Magic !!!!
         $form->handleRequest($request);
 
         //Store the identifiant to push it in the login form when credential errors occured..
@@ -151,7 +159,6 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     {
         $username = $credentials['mail'];
 
-        //@FIXME : ARGGGG Je meurs !!! a provider is better
         return $this->em
             ->getRepository('App:User')
             ->findOneBy(['mail' => $username]);

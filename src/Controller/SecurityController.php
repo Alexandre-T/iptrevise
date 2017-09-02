@@ -15,7 +15,7 @@
  */
 namespace App\Controller;
 
-use App\Form\Type\LoginType;
+use App\Form\LoginForm;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,16 +39,17 @@ class SecurityController extends Controller
      */
     public function loginAction()
     {
-        // @TODO Put it in param ? AuthenticationUtils $authUtils ???
+        //Retrieve Authentication Utils Service.
         $authenticationUtils = $this->get('security.authentication_utils');
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
 
-        // last username entered by the user
+        // last username (even if it a mail) entered by the user
         $email = $authenticationUtils->getLastUsername();
 
-        $form = $this->createForm(LoginType::class, ['mail' => $email]);
+        // create the form
+        $form = $this->createForm(LoginForm::class, ['mail' => $email]);
 
         return $this->render('@App/security/login.html.twig', array(
             'form'          => $form->createView(),

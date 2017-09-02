@@ -14,7 +14,7 @@
  *
  */
 
-namespace App\Form\Type;
+namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -33,7 +33,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @link http://opensource.org/licenses/GPL-3.0
  *
  */
-class LoginType extends AbstractType
+class LoginForm extends AbstractType
 {
     /**
      * Builds the form.
@@ -48,7 +48,6 @@ class LoginType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        // @ TODO Transform to LoginForm
         // @see https://knpuniversity.com/screencast/symfony-security/rendering-login-form
         $builder
             ->add('mail', TextType::class, [

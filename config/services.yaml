@@ -70,6 +70,7 @@ services:
         tags:
             - { name: twig.extension }
 
+    # Gravatar twig extension.
     app.twig.gravatar_extension:
         class: App\Twig\GravatarExtension
         tags:
@@ -78,3 +79,10 @@ services:
     app.security.login_form_authenticator:
         class: App\Security\LoginFormAuthenticator
         autowire: true
+
+    # Listener to hash the user password when necessary.
+    app.doctrine.hash_password_listener:
+        class: App\Doctrine\HashPasswordListener
+        autowire: true
+        tags:
+            - { name: doctrine.event_subscriber }

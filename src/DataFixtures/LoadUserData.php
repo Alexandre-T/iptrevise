@@ -15,6 +15,7 @@
  */
 namespace App\DataFixtures;
 
+use App\Entity\Role;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
@@ -56,13 +57,14 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedF
      */
     public function load(ObjectManager $manager)
     {
+        /** @var Role $roleAdmin */
         $roleAdmin= $this->getReference('role_admin');
 
         $userAlexandre = new User();
         $userAlexandre->setUsername('Alexandre');
         $userAlexandre->setMail('alexandre.tranchant@cerema.fr');
         $userAlexandre->setPassword('$2y$10$eKktQf5LJLOnM7tZvjyIkeJu34wPeU9LWZ8HMXe/m8y6K8.kRLQCK');
-        $userAlexandre->getRoles()->add($roleAdmin);
+        $userAlexandre->addRole($roleAdmin);
 
         $this->addReference('user_alexandre', $userAlexandre);
 
@@ -71,33 +73,33 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedF
             // I add one user for each role (to test the security component)
 
             //Retrieve roles
+            /** @var Role $roleReader */
             $roleReader = $this->getReference('role_reader');
+            /** @var Role $roleOrganizer */
             $roleOrganizer = $this->getReference('role_organizer');
+            /** @var Role $roleUser */
             $roleUser = $this->getReference('role_user');
-
-            //Encrypt password
-            $encoder = $this->container->get('security.password_encoder');
 
             //Reader
             $userReader = new User();
             $userReader->setUsername('Reader');
             $userReader->setMail('reader@example.org');
-            $userReader->setPassword($encoder->encodePassword($userReader, 'reader'));
-            $userReader->getRoles()->add($roleReader);
+            $userReader->setPlainPassword('reader');
+            $userReader->addRole($roleReader);
 
             //Organizer
             $userOrganizer = new User();
             $userOrganizer->setUsername('Organizer');
             $userOrganizer->setMail('organizer@example.org');
-            $userOrganizer->setPassword($encoder->encodePassword($userOrganizer, 'organizer'));
-            $userOrganizer->getRoles()->add($roleOrganizer);
+            $userOrganizer->setPlainPassword('organizer');
+            $userOrganizer->addRole($roleOrganizer);
 
             //User
             $userUser = new User();
             $userUser->setUsername('User');
             $userUser->setMail('user@example.org');
-            $userUser->setPassword($encoder->encodePassword($userUser, 'user'));
-            $userUser->getRoles()->add($roleUser);
+            $userUser->setPlainPassword('user');
+            $userUser->addRole($roleUser);
 
             //These references are perhaps unuseful.
             $this->addReference('user_reader', $userReader);
