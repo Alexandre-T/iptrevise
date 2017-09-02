@@ -79,12 +79,11 @@ class UserManager implements LoggableManagerInterface, PaginatorInterface
     /**
      * Is this entity deletable?
      *
-     * @param $entity
      * @return bool true if entity is deletable
      */
-    public function isDeletable($entity):bool
+    public function isDeletable():bool
     {
-        //@TODO Change to false if this user is in log.
+        //All user are deletable for now.
         return true;
     }
 

@@ -47,10 +47,17 @@ administration.user.deleted %name% : 'L’utilisateur %name% a été supprimé a
 administration.user.edit.title %name%: 'Modification de l’utilisateur %name%'
 administration.user.list.title: 'Liste des utilisateurs'
 administration.user.show.title %name%: 'Utilisateur %name%'
+
 form.user.field.username: 'Identifiant'
 form.user.field.label: 'Identifiant'
 form.user.field.mail: 'Adresse mail'
 form.user.field.password: 'Mot de passe'
 form.user.field.roles: 'Rôles'
+
+form.user.help.username: 'Entrez le nom de l’utilisateur'
+form.user.help.label: 'Entrez le nom de l’utilisateur'
+form.user.help.mail: 'Entrez l’adresse mail de l’utilisateur'
+form.user.help.password: 'Entrez le mot de passe de l’utilisateur'
+form.user.help.roles: 'Sélectionnez les rôles de l’utilisateur'
 
 

@@ -76,10 +76,12 @@ class MenuBuilder
     /**
      * Main menu for ROLE_USER.
      *
-     * @param array $options
+     * NB: an array $options could be injected by  MopaBundle.
+     * you only have to add array $options as a parameter, it will be populated by MopaBundle and DI.
+     *
      * @return ItemInterface
      */
-    public function createMainMenu(array $options)
+    public function createMainMenu()
     {
         $menu = $this->factory->createItem('root');
 
@@ -120,10 +122,9 @@ class MenuBuilder
     /**
      * Menu to login or logout
      *
-     * @param array $options
      * @return ItemInterface
      */
-    public function createUserMenu(array $options)
+    public function createUserMenu()
     {
         $menu = $this->factory->createItem('root');
 
@@ -174,10 +175,9 @@ class MenuBuilder
     /**
      * Menu for Admin user
      *
-     * @param array $options
      * @return ItemInterface
      */
-    public function createAdminMenu(array $options)
+    public function createAdminMenu()
     {
         $menu = $this->factory->createItem('root');
 

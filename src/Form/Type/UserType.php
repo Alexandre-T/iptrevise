@@ -50,12 +50,15 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            //@TODO add an help-block for each field
             ->add('username', null, [
                 'label' => 'form.user.field.username',
+                'help_block' => 'form.user.help.username',
                 'required' => true,
             ])
-            ->add('mail', null, ['label' => 'form.user.field.mail'])
+            ->add('mail', null, [
+                'label' => 'form.user.field.mail',
+                'help_block' => 'form.user.help.mail',
+            ])
             ->add('roles', EntityType::class, [
                 'class' => Role::class,
                 'query_builder' => function (EntityRepository $er) {
@@ -63,6 +66,7 @@ class UserType extends AbstractType
                         ->orderBy('f.label', 'ASC');
                 },
                 'label' => 'form.user.field.roles',
+                'help_block' => 'form.user.help.roles',
                 'required' => true,
                 'expanded' => true,
                 'multiple' => true,
