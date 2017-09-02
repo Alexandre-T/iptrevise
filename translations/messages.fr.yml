@@ -61,3 +61,4 @@ form.user.help.password: 'Entrez le mot de passe de l’utilisateur'
 form.user.help.roles: 'Sélectionnez les rôles de l’utilisateur'
 
 
+title.security.login: 'Connexion'
