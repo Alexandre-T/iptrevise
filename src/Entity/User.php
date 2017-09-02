@@ -186,13 +186,20 @@ class User implements InformationInterface, UserInterface, Serializable
     }
 
     /**
-     * Roles getter.
+     * Return an array of all role codes to be complient with UserInterface
+     * This is NOT the Roles getter.
      *
-     * @return ArrayCollection[Role]
+     * @return array
      */
-    public function getRoles()
+    public function getRoles(): array
     {
-        return $this->roles;
+        $return = [];
+
+        foreach ($this->roles as $role){
+            $return[] = $role->getCode();
+        }
+
+        return $return;
     }
 
     /**

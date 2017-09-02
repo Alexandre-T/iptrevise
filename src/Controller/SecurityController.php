@@ -15,11 +15,10 @@
  */
 namespace App\Controller;
 
+use App\Form\Type\LoginType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
  * Security Controller.
@@ -28,31 +27,31 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license Cerema 2017
- *
- *
- *
  */
 class SecurityController extends Controller
 {
     /**
      * Login Action.
      *
-     * @param Request $request
-     * @param AuthenticationUtils $authUtils
      * @return Response
      *
-     * @Route("/login", name="login", methods={"get"})
+     * @Route("/login", name="security_login", methods={"get","post"})
      */
-    public function loginAction(Request $request, AuthenticationUtils $authUtils)
+    public function loginAction()
     {
+        // @TODO Put it in param ? AuthenticationUtils $authUtils ???
+        $authenticationUtils = $this->get('security.authentication_utils');
+
         // get the login error if there is one
-        $error = $authUtils->getLastAuthenticationError();
+        $error = $authenticationUtils->getLastAuthenticationError();
 
         // last username entered by the user
-        $lastUsername = $authUtils->getLastUsername();
+        $email = $authenticationUtils->getLastUsername();
+
+        $form = $this->createForm(LoginType::class, ['mail' => $email]);
 
         return $this->render('@App/security/login.html.twig', array(
-            'last_username' => $lastUsername,
+            'form'          => $form->createView(),
             'error'         => $error,
         ));
     }

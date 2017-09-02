@@ -16,15 +16,14 @@
 
 namespace App\Form\Type;
 
-use App\Entity\Role;
-use Doctrine\ORM\EntityRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * User form builder.
+ * Login form builder.
  *
  * @category Form
  *
@@ -34,7 +33,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @link http://opensource.org/licenses/GPL-3.0
  *
  */
-class UserType extends AbstractType
+class LoginType extends AbstractType
 {
     /**
      * Builds the form.
@@ -49,28 +48,17 @@ class UserType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        // @ TODO Transform to LoginForm
+        // @see https://knpuniversity.com/screencast/symfony-security/rendering-login-form
         $builder
-            ->add('username', null, [
-                'label' => 'form.user.field.username',
-                'help_block' => 'form.user.help.username',
+            ->add('mail', TextType::class, [
+                'label' => 'form.login.field.mail',
+                'help_block' => 'form.login.help.mail',
                 'required' => true,
             ])
-            ->add('mail', null, [
-                'label' => 'form.user.field.mail',
-                'help_block' => 'form.user.help.mail',
-            ])
-            ->add('roles', EntityType::class, [
-                'class' => Role::class,
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('f')
-                        ->orderBy('f.label', 'ASC');
-                },
-                'label' => 'form.user.field.roles',
-                'help_block' => 'form.user.help.roles',
-                'required' => true,
-                'expanded' => true,
-                'multiple' => true,
-                'choice_label' => 'label',
+            ->add('password', PasswordType::class, [
+                'label' => 'form.login.field.password',
+                'help_block' => 'form.login.help.password',
             ])
         ;
     }
@@ -82,12 +70,13 @@ class UserType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'App\Entity\User',
+        $resolver->setDefaults([
             'render_fieldset' => false,
             'show_legend' => false,
-        ));
+        ]);
+        parent::configureOptions($resolver);
     }
+
 
     /**
      * Returns the prefix of the template block name for this type.
@@ -99,6 +88,6 @@ class UserType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'app_user';
+        return 'app_login';
     }
 }

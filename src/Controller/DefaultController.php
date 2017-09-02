@@ -35,22 +35,11 @@ class DefaultController extends Controller
      * Homepage.
      *
      * @Route("/", name="home", methods={"get"})
+     * @Route("/", name="homepage", methods={"get"})
      *
      * @return Response
      */
     public function indexAction()
-    {
-        return $this->render('@App/default/index.html.twig');
-    }
-
-    /**
-     * Homepage.
-     *
-     * @Route("/protected", name="protected", methods={"get"})
-     *
-     * @return Response
-     */
-    public function protectedAction()
     {
         return $this->render('@App/default/index.html.twig');
     }

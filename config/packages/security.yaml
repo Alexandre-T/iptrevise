@@ -2,35 +2,45 @@ security:
     encoders:
         App\Entity\User:
             algorithm: bcrypt
+
     # https://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
-        user_provider:
+        our_users:
             entity:
                 class: App\Entity\User
-                property: label
+                property: mail
     firewalls:
+        # Firewall without security for images, css, js and profiler
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        #Main firewall
         main:
+            # It covers all sites except precedent pattern
             pattern:    ^/
-            provider: user_provider
+            # User are provided by user_provider defined above
+            provider: our_users
+            # Anonymous user are authorized (it is useful to see home, login and register pages
             anonymous: true
 
-            # activate different ways to authenticate
-
-            # https://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
-            # http_basic: ~
-
+            # We DO NOT authenticate via a form login
             # https://symfony.com/doc/current/cookbook/security/form_login_setup.html
+            # https://knpuniversity.com/screencast/symfony-security/all-about-firewalls#play
             # form_login: ~
+
+            # We use Guard !
+            guard:
+                authenticators:
+                    - app.security.login_form_authenticator
+
     role_hierarchy:
         ROLE_ORGANIZER:  [ROLE_USER]
         ROLE_ADMIN:      [ROLE_ORGANIZER]
 
     access_control:
-        #We must be Anonymous to register or to login
+        # We must be Anonymous to register or to login
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        #ROLE ADMIN can change user application
-        # - { path: ^/administration, role: ROLE_ADMIN }
+        # ROLE ADMIN can change users application
+        # @todo uncomment these line when authentification works.
+        #- { path: ^/administration, role: ROLE_ADMIN }

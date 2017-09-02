@@ -161,7 +161,7 @@ class MenuBuilder
         } elseif ($isAnonymous) {
             $menu->addChild('menu.user.sign-in', [
                 'icon' => 'fw fa-sign-in',
-                'route' => 'login'
+                'route' => 'security_login'
             ]);
             $menu->addChild('menu.user.sign-up', [
                 'icon' => 'fw fa-pencil-square-o',
