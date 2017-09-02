@@ -31,7 +31,12 @@ security:
             # We use Guard !
             guard:
                 authenticators:
+                    # This service is declared in services.yaml
                     - app.security.login_form_authenticator
+
+            #The logout path
+            logout:
+                path: /logout
 
 #    role_hierarchy:
 #        ROLE_ORGANIZER:  [ROLE_USER]

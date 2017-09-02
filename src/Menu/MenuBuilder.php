@@ -156,7 +156,7 @@ class MenuBuilder
             //Adding LOGOUT
             $dropdownUser->addChild('menu.user.logout', [
                 'icon' => 'fw fa-sign-out',
-                'route' => 'home'
+                'route' => 'security_logout'
             ]);
         } elseif ($isAnonymous) {
             $menu->addChild('menu.user.sign-in', [
@@ -193,9 +193,9 @@ class MenuBuilder
             $isRemembered = $this->authorization->isGranted('IS_AUTHENTICATED_REMEMBERED');
 
             if ($isFully && $isRemembered) {
-                $dropdownAdmin->addChild('menu.admin.admin', [
+                $dropdownAdmin->addChild('menu.admin.users', [
                     'icon' => 'fw fa-group',
-                    'route' => 'home'
+                    'route' => 'administration_user_index'
                 ]);
             } else {
                 $dropdownAdmin->addChild('menu.admin.confirm', [
@@ -222,7 +222,7 @@ class MenuBuilder
         } elseif (null === $this->user) {
             $username = "menu.user.unknown";
         } else {
-            $username = $this->user->__toString();
+            $username = (string)($this->user);
         }
 
         return $username;
