@@ -66,6 +66,17 @@ class UserManager implements LoggableManagerInterface, PaginatorInterface
     }
 
     /**
+     * Delete user without verification.
+     *
+     * @param User $user
+     */
+    public function delete(User $user)
+    {
+        $this->em->remove($user);
+        $this->em->flush();
+    }
+
+    /**
      * Is this entity deletable?
      *
      * @param $entity
@@ -73,7 +84,7 @@ class UserManager implements LoggableManagerInterface, PaginatorInterface
      */
     public function isDeletable($entity):bool
     {
-        //@TODO Change to true if this user is not in log.
+        //@TODO Change to false if this user is in log.
         return true;
     }
 
@@ -104,7 +115,7 @@ class UserManager implements LoggableManagerInterface, PaginatorInterface
     }
 
     /**
-     * Return the Query builder.
+     * Return the Query builder needed by the paginator.
      *
      * @return QueryBuilder
      */

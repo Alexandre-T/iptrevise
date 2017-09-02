@@ -175,9 +175,8 @@ class UserController extends Controller
         $form = $this->createDeleteForm($user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($user);
-            $em->flush();
+            $userManager = $this->get(UserManager::class);
+            $userManager->delete($user);
             //Flash message.
             $session = $this->get('session');
             $trans = $this->get('translator.default');
