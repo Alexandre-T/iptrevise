@@ -20,6 +20,7 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
@@ -114,7 +115,14 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $form = $this->formFactory->create(LoginType::class);
         $form->handleRequest($request);
 
-        return $form->getData();
+        //Store the identifiant to push it in the login form when credential errors occured..
+        $data = $form->getData();
+        $request->getSession()->set(
+            Security::LAST_USERNAME,
+            $data['mail']
+        );
+
+        return $data;
     }
 
     protected function getDefaultSuccessRedirectUrl()
