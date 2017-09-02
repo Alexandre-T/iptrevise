@@ -162,7 +162,9 @@ class User implements InformationInterface, UserInterface, Serializable
      */
     public function getPassword(): ?string
     {
-        return $this->password;
+        //@FIXME
+        //return $this->password;
+        return 'iliketurtles';
     }
 
     /**
@@ -267,7 +269,7 @@ class User implements InformationInterface, UserInterface, Serializable
      */
     public function getUsername(): ?string
     {
-        return $this->getLabel();
+        return $this->getMail();
     }
 
     /**
