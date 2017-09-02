@@ -1,14 +1,21 @@
+#http://symfony.com/doc/current/reference/configuration/security.html#full-default-configuration
 security:
+    # This is my password encoder
     encoders:
         App\Entity\User:
+            # I use bcrypt, so I do not need salt.
             algorithm: bcrypt
 
+    # I do not want to see an invalid user... It is a security issue.
+    hide_user_not_found:  true
+
     # https://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+    # https://knpuniversity.com/screencast/symfony2-ep2/user-provider
     providers:
         our_users:
             entity:
                 class: App\Entity\User
-                property: mail
+
     firewalls:
         # Firewall without security for images, css, js and profiler
         dev:
@@ -38,14 +45,17 @@ security:
             logout:
                 path: /logout
 
-#    role_hierarchy:
+    role_hierarchy:
 #        ROLE_ORGANIZER:  [ROLE_USER]
 #        ROLE_ADMIN:      [ROLE_ORGANIZER]
+        ROLE_ADMIN: [ROLE_MANAGE_USER]
 
     access_control:
         # We must be Anonymous to register or to login
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
 
-        # ROLE ADMIN can change users application
-        - { path: ^/administration, role: ROLE_ADMIN }
+        #For the great lines, we use access_control, but when I want a special access in a controller, I use annotations
+        # use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+        # ...
+        # * @Security("is_granted('ROLE_ADMIN')")

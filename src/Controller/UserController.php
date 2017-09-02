@@ -19,9 +19,10 @@ use App\Bean\Factory\InformationFactory;
 use App\Form\Type\UserType;
 use App\Entity\User;
 use App\Manager\UserManager;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -37,6 +38,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @license Cerema 2017
  *
  * @Route("administration/user")
+ * @Security("is_granted('ROLE_MANAGE_USER')")
  *
  */
 class UserController extends Controller
