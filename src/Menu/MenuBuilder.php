@@ -187,7 +187,7 @@ class MenuBuilder
                 'pull-right' => true,
                 'dropdown' => true,
                 'caret' => true,
-            ])->setExtra('translation_domain', false);
+            ]);
 
             $isFully = $this->authorization->isGranted('IS_AUTHENTICATED_FULLY');
             $isRemembered = $this->authorization->isGranted('IS_AUTHENTICATED_REMEMBERED');
