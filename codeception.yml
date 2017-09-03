@@ -8,3 +8,12 @@ actor_suffix: Tester
 extensions:
     enabled:
         - Codeception\Extension\RunFailed
+coverage:
+    enabled: true
+    include:
+        - src/*
+    exclude:
+        - src/DataFixtures/*
+        - src/Migrations/*
+    low_limit: 40
+    high_limit: 80
