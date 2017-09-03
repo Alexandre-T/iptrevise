@@ -190,16 +190,4 @@ class Role
         $this->label = $label;
         return $this;
     }
-
-    /**
-     * Setter of the users.
-     *
-     * @param User[] $users
-     * @return Role
-     */
-    public function setUsers(array $users): Role
-    {
-        $this->users = $users;
-        return $this;
-    }
 }
