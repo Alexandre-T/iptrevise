@@ -67,11 +67,7 @@ class UserTest extends TestCase
     {
         self::assertEquals($this->user, $this->user->setLabel('label'));
         self::assertEquals('label', $this->user->getLabel());
-        self::assertEquals('label', $this->user->getUsername());
 
-        self::assertEquals($this->user, $this->user->setUsername('label2'));
-        self::assertEquals('label2', $this->user->getUsername());
-        self::assertEquals('label2', $this->user->getLabel());
     }
 
     /**
@@ -81,6 +77,11 @@ class UserTest extends TestCase
     {
         self::assertEquals($this->user, $this->user->setMail('mail'));
         self::assertEquals('mail', $this->user->getMail());
+        self::assertEquals('mail', $this->user->getUsername());
+
+        self::assertEquals($this->user, $this->user->setUsername('label2'));
+        self::assertEquals('label2', $this->user->getUsername());
+        self::assertEquals('label2', $this->user->getMail());
     }
 
     /**
@@ -93,8 +94,7 @@ class UserTest extends TestCase
         self::assertEquals($this->user, $this->user->setPassword($actual));
         self::assertEquals($expected, $this->user->getPassword());
         self::assertEquals($this->user, $this->user->eraseCredentials());
-        self::assertNull($this->user->getPassword());
-        self::assertNull($this->user->getSalt());
+        self::assertNull($this->user->getPlainPassword());
     }
 
     /**
@@ -118,7 +118,8 @@ class UserTest extends TestCase
         $actual = 'a:6:{i:0;N;i:1;s:10:"user label";i:2;s:9:"user mail";i:3;s:13:"user password";i:4;N;i:5;N;}';
         $this->user->unserialize($actual);
 
-        self::assertEquals('user label', $this->user->getUsername());
+        self::assertEquals('user label', $this->user->getLabel());
+        self::assertEquals('user mail', $this->user->getUsername());
         self::assertEquals('user mail', $this->user->getMail());
         self::assertEquals('user password', $this->user->getPassword());
     }
@@ -136,13 +137,13 @@ class UserTest extends TestCase
 
         self::assertFalse($this->user->hasRole('foo'));
 
-        $this->user->getRoles()->add($role1);
+        $this->user->addRole($role1);
 
         self::assertFalse($this->user->hasRole('foo'));
         self::assertFalse($this->user->hasRole('ROLE_ADMIN'));
         self::assertTrue($this->user->hasRole('ROLE_USER'));
 
-        $this->user->getRoles()->add($role2);
+        $this->user->addRole($role2);
         self::assertFalse($this->user->hasRole('foo'));
         self::assertTrue($this->user->hasRole('ROLE_ADMIN'));
         self::assertTrue($this->user->hasRole('ROLE_USER'));

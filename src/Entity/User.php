@@ -342,7 +342,7 @@ class User implements InformationInterface, UserInterface, Serializable
      */
     public function setUsername(string $username): User
     {
-        return $this->setLabel($username);
+        return $this->setMail($username);
     }
 
     /**
