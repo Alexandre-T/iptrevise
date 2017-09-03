@@ -46,7 +46,6 @@
     "require-dev": {
         "codeception/codeception": "^2.3",
         "phpunit/php-code-coverage": "^4.0",
-        "phpunit/phpunit": "^5.7",
         "symfony/browser-kit": "^3.3",
         "symfony/debug-bundle": "^3.3",
         "symfony/dotenv": "^3.3",
