@@ -17,3 +17,6 @@ coverage:
         - src/Migrations/*
     low_limit: 40
     high_limit: 80
+settings:
+    bootstrap: bootstrap.php
+    colors: true

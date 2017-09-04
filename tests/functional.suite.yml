@@ -1,0 +1,12 @@
+actor: FunctionalTester
+modules:
+    enabled:
+        - Symfony:
+            app_path: 'src'
+            environment: 'dev'
+            var_path: 'var'
+        - Doctrine2:
+            depends: Symfony # connect to Symfony
+        - PhpBrowser:
+            url: http://localhost:8000/
+        - \Helper\Functional
