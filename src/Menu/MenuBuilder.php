@@ -163,10 +163,6 @@ class MenuBuilder
                 'icon' => 'fw fa-sign-in',
                 'route' => 'security_login'
             ]);
-            $menu->addChild('menu.user.sign-up', [
-                'icon' => 'fw fa-pencil-square-o',
-                'route' => 'home'
-            ]);
         }
 
         return $menu;
