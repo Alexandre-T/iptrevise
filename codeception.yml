@@ -9,6 +9,9 @@ extensions:
     enabled:
         - Codeception\Extension\RunFailed
 coverage:
+    remote_context_options:
+        http:
+            timeout: 60
     enabled: true
     include:
         - src/*
