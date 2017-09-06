@@ -50,10 +50,9 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username', null, [
+            ->add('label', null, [
                 'label' => 'form.user.field.username',
                 'help_block' => 'form.user.help.username',
-                'required' => true,
             ])
             ->add('mail', null, [
                 'label' => 'form.user.field.mail',
@@ -67,7 +66,6 @@ class UserType extends AbstractType
                 },
                 'label' => 'form.user.field.roles',
                 'help_block' => 'form.user.help.roles',
-                'required' => true,
                 'expanded' => true,
                 'multiple' => true,
                 'choice_label' => 'label',

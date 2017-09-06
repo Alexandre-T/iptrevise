@@ -22,6 +22,7 @@ use DateTime;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Serializable;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Entity User.
@@ -31,7 +32,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     name="ts_user",
  *     options={"comment":"Table entité des utilisateur","charset":"utf8mb4","collate":"utf8mb4_unicode_ci"}
  * )
+ *
  * @Gedmo\Loggable
+ *
+ * @UniqueEntity("mail", message="form.user.error.mail.unique")
+ * @UniqueEntity("label", message="form.user.error.label.unique")
  */
 class User implements InformationInterface, UserInterface, Serializable
 {
@@ -53,6 +58,7 @@ class User implements InformationInterface, UserInterface, Serializable
      * @var string
      *
      * @Assert\NotBlank()
+     * @Assert\Length(max="32")
      *
      * @ORM\Column(type="string", unique=true, length=32, nullable=false, name="usr_label", options={"unsigned":true})
      * @Gedmo\Versioned
@@ -63,6 +69,7 @@ class User implements InformationInterface, UserInterface, Serializable
      * User mail and identifiant.
      *
      * @var string
+     * @Assert\Length(max="255")
      *
      * @Assert\NotBlank()
      * @Assert\Email()
@@ -107,7 +114,10 @@ class User implements InformationInterface, UserInterface, Serializable
      *
      * @var Role[]
      *
-     * @Assert\NotBlank()
+     * @Assert\Count(
+     *     min = 1,
+     *     minMessage="form.user.error.roles.empty"
+     * )
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Role", inversedBy="users")
      * @ORM\JoinTable(
@@ -318,8 +328,12 @@ class User implements InformationInterface, UserInterface, Serializable
      * @param ArrayCollection $roles
      * @return User
      */
-    public function setRoles(ArrayCollection $roles): User
+    public function setRoles(ArrayCollection $roles = null): User
     {
+        if (null == $roles) {
+            $roles = new ArrayCollection();
+        }
+
         $this->roles = $roles;
         return $this;
     }

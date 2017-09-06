@@ -214,7 +214,7 @@ class MenuBuilder
     private function getUsername(): string
     {
         if ($this->user instanceof User) {
-            $username = $this->user->getUsername();
+            $username = $this->user->getLabel();
         } elseif (null === $this->user) {
             $username = "menu.user.unknown";
         } else {

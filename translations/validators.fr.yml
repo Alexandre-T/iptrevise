@@ -1,0 +1,3 @@
+form.user.error.roles.empty: 'Vous devez sélectionner au moins un rôle.'
+form.user.error.mail.unique: 'Cette adresse mail est déjà utilisée.'
+form.user.error.label.unique: 'Cet identifiant est déjà utilisé.'

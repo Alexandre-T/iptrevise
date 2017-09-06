@@ -53,6 +53,21 @@ services:
             calls:
                 - [ setAnnotationReader, [ "@annotation_reader" ] ]
 
+    App\Listener\LoggableListenerInterface: '@app.listener.loggable'
+
+    # KernelRequest listener
+    app.listener.logger:
+        class: App\Listener\LoggerListener
+        tags:
+            # translatable sets locale after router processing
+            #- { name: kernel.event_listener, event: kernel.request, method: onLateKernelRequest, priority: -10 }
+            # loggable hooks user username if one is in security context
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest}
+        arguments:
+            - '@app.listener.loggable'
+            - '@security.token_storage'
+            - '@security.authorization_checker'
+
     # Create menu as a service.
     # http://symfony.com/doc/current/bundles/KnpMenuBundle/menu_builder_service.html
     app.menu_builder:

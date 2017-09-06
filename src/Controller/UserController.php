@@ -93,7 +93,7 @@ class UserController extends Controller
             //Flash message
             $session = $this->get('session');
             $trans = $this->get('translator.default');
-            $message = $trans->trans('administration.user.created _name_', ['name' => $user->getUsername()]);
+            $message = $trans->trans('administration.user.created %name%', ['%name%' => $user->getLabel()]);
             $session->getFlashBag()->add('success', $message);
             return $this->redirectToRoute('administration_user_show', array('id' => $user->getId()));
         }
@@ -147,7 +147,7 @@ class UserController extends Controller
             //Flash message
             $session = $this->get('session');
             $trans = $this->get('translator.default');
-            $message = $trans->trans('administration.user.updated %name%', ['%name%' => $user->getUsername()]);
+            $message = $trans->trans('administration.user.updated %name%', ['%name%' => $user->getLabel()]);
             $session->getFlashBag()->add('success', $message);
             return $this->redirectToRoute('administration_user_show', array('id' => $user->getId()));
         }
@@ -182,7 +182,7 @@ class UserController extends Controller
             //Flash message.
             $session = $this->get('session');
             $trans = $this->get('translator.default');
-            $message = $trans->trans('administration.user.deleted %name%', ['%name%' => $user->getUsername()]);
+            $message = $trans->trans('administration.user.deleted %name%', ['%name%' => $user->getLabel()]);
             $session->getFlashBag()->add('success', $message);
         }
         return $this->redirectToRoute('administration_user_index');

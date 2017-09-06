@@ -61,7 +61,7 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedF
         $roleAdmin= $this->getReference('role_admin');
 
         $userAlexandre = new User();
-        $userAlexandre->setUsername('Alexandre');
+        $userAlexandre->setLabel('Alexandre');
         $userAlexandre->setMail('alexandre.tranchant@cerema.fr');
         $userAlexandre->setPassword('$2y$10$eKktQf5LJLOnM7tZvjyIkeJu34wPeU9LWZ8HMXe/m8y6K8.kRLQCK');
         $userAlexandre->addRole($roleAdmin);
@@ -82,34 +82,43 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedF
 
             //Reader
             $userReader = new User();
-            $userReader->setUsername('Reader');
+            $userReader->setLabel('Reader');
             $userReader->setMail('reader@example.org');
             $userReader->setPlainPassword('reader');
             $userReader->addRole($roleReader);
 
             //Organizer
             $userOrganizer = new User();
-            $userOrganizer->setUsername('Organizer');
+            $userOrganizer->setLabel('Organizer');
             $userOrganizer->setMail('organizer@example.org');
             $userOrganizer->setPlainPassword('organizer');
             $userOrganizer->addRole($roleOrganizer);
 
             //User
             $userUser = new User();
-            $userUser->setUsername('User');
+            $userUser->setLabel('User');
             $userUser->setMail('user@example.org');
             $userUser->setPlainPassword('user');
             $userUser->addRole($roleUser);
+            
+            //Admin
+            $userAdministrator = new User();
+            $userAdministrator->setLabel('Administrator');
+            $userAdministrator->setMail('administrator@example.org');
+            $userAdministrator->setPlainPassword('administrator');
+            $userAdministrator->addRole($roleAdmin);
 
             //These references are perhaps unuseful.
             $this->addReference('user_reader', $userReader);
             $this->addReference('user_user', $userUser);
             $this->addReference('user_organizer', $userOrganizer);
+            $this->addReference('user_admin', $userAdministrator);
 
             //Persist dev and test data
             $manager->persist($userReader);
             $manager->persist($userUser);
             $manager->persist($userOrganizer);
+            $manager->persist($userAdministrator);
         }
             
 

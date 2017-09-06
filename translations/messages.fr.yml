@@ -36,6 +36,8 @@ administration.show: 'Consulter'
 administration.updated.at: 'Modification'
 
 administration.user.create: 'Nouvel utilisateur'
+administration.user.create.title: 'Création d’un nouvel utilisateur'
+administration.user.created %name%: 'L’utilisateur %name% a été créé avec succès !'
 administration.user.updated %name%: 'Les modifications apportées à l’utilisateur %name% ont été enregistrées avec succès !'
 administration.user.deleted %name% : 'L’utilisateur %name% a été supprimé avec succès !'
 administration.user.edit.title %name%: 'Modification de l’utilisateur %name%'
@@ -53,6 +55,13 @@ form.user.help.label: 'Entrez le nom de l’utilisateur'
 form.user.help.mail: 'Entrez l’adresse mail de l’utilisateur'
 form.user.help.password: 'Entrez le mot de passe de l’utilisateur'
 form.user.help.roles: 'Sélectionnez les rôles de l’utilisateur'
+
+form.login.field.mail: 'Adresse email'
+form.login.field.password: 'Mot de passe'
+form.login.field.submit: 'Se connecter'
+
+form.login.help.mail: 'Entrez votre adresse email'
+form.login.help.password: 'Entrez votre mot de passe'
 
 menu.admin.admin: 'Administration'
 menu.admin.users: 'Gestion des utilisateurs'
