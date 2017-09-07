@@ -16,9 +16,7 @@
 
 namespace App\Tests\Entity;
 
-use App\Entity\Role;
 use App\Entity\User;
-use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -57,10 +55,9 @@ class UserTest extends TestCase
         self::assertNull($this->user->getPassword());
         self::assertNull($this->user->getPlainPassword());
         self::assertNotNull($this->user->getRoles());
-        self::assertEmpty($this->user->getRoles());
+        self::assertEquals(['ROLE_USER'], $this->user->getRoles());
         self::assertNull($this->user->getUpdated());
         self::assertNull($this->user->getUsername());
-        self::assertEmpty($this->user->getRoles());
         self::assertNull($this->user->getSalt());
     }
 
@@ -150,42 +147,25 @@ class UserTest extends TestCase
      */
     public function testHasRole()
     {
-        $roleUser = new Role();
-        $roleUser->setCode('ROLE_USER');
-
-        $roleAdmin = new Role();
-        $roleAdmin->setCode('ROLE_ADMIN');
+        $roleAdmin = ['ROLE_ADMIN'];
 
         self::assertFalse($this->user->hasRole('foo'));
-        self::assertEmpty($this->user->getRoles());
 
         //Add ROLE_USER and test.
-        self::assertEquals($this->user, $this->user->addRole($roleUser));
-        self::assertFalse($this->user->hasRole('foo'));
-        self::assertFalse($this->user->hasRole('ROLE_ADMIN'));
-        self::assertTrue($this->user->hasRole('ROLE_USER'));
         self::assertEquals(['ROLE_USER'], $this->user->getRoles());
 
         //Add ROLE_ADMIN and test.
-        self::assertEquals($this->user, $this->user->addRole($roleAdmin));
-        self::assertFalse($this->user->hasRole('foo'));
+        self::assertEquals($this->user, $this->user->setRoles($roleAdmin));
+        self::assertEquals(['ROLE_ADMIN', 'ROLE_USER'], $this->user->getRoles());
         self::assertTrue($this->user->hasRole('ROLE_ADMIN'));
         self::assertTrue($this->user->hasRole('ROLE_USER'));
-        self::assertEquals(['ROLE_USER', 'ROLE_ADMIN'], $this->user->getRoles());
 
-        //Remove ROLE_USER and test.
-        self::assertEquals($this->user, $this->user->removeRole($roleUser));
-        self::assertFalse($this->user->hasRole('foo'));
-        self::assertTrue($this->user->hasRole('ROLE_ADMIN'));
-        self::assertFALSE($this->user->hasRole('ROLE_USER'));
-        self::assertEquals(['ROLE_ADMIN'], $this->user->getRoles());
-
-        $collection = new ArrayCollection();
-        $collection->add($roleUser);
-        self::assertEquals($this->user, $this->user->setRoles($collection));
+        //Remove ALL roles and test.
+        self::assertEquals($this->user, $this->user->setRoles([]));
+        self::assertEquals(['ROLE_USER'], $this->user->getRoles());
         self::assertFalse($this->user->hasRole('foo'));
         self::assertFalse($this->user->hasRole('ROLE_ADMIN'));
         self::assertTrue($this->user->hasRole('ROLE_USER'));
-        self::assertEquals(['ROLE_USER'], $this->user->getRoles());
+
     }
 }

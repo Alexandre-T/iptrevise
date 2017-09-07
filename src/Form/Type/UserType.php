@@ -16,10 +16,8 @@
 
 namespace App\Form\Type;
 
-use App\Entity\Role;
-use Doctrine\ORM\EntityRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -58,17 +56,17 @@ class UserType extends AbstractType
                 'label' => 'form.user.field.mail',
                 'help_block' => 'form.user.help.mail',
             ])
-            ->add('roles', EntityType::class, [
-                'class' => Role::class,
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('f')
-                        ->orderBy('f.label', 'ASC');
-                },
+            ->add('roles', ChoiceType::class, [
                 'label' => 'form.user.field.roles',
                 'help_block' => 'form.user.help.roles',
                 'expanded' => true,
                 'multiple' => true,
-                'choice_label' => 'label',
+                'choices' => [
+                    'form.user.field.roles.option.admin' => 'ROLE_ADMIN',
+                    'form.user.field.roles.option.reader' => 'ROLE_READER',
+                    'form.user.field.roles.option.organizer' => 'ROLE_ORGANIZER',
+                    'form.user.field.roles.option.user' => 'ROLE_USER',
+                ]
             ])
         ;
     }

@@ -15,7 +15,6 @@
  */
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use DateTime;
@@ -112,21 +111,16 @@ class User implements InformationInterface, UserInterface, Serializable
     /**
      * Roles of this user.
      *
-     * @var Role[]
+     * @var array
      *
      * @Assert\Count(
      *     min = 1,
      *     minMessage="form.user.error.roles.empty"
      * )
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Role", inversedBy="users")
-     * @ORM\JoinTable(
-     *     name="tj_userrole",
-     *     joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="usr_id", nullable=false)},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="rol_id", nullable=false)}
-     * )
+     * @ORM\Column(type="json_array", nullable=true, options={"comment":"Roles de l'utilisateur"})
      */
-    private $roles;
+    private $roles = [];
 
     /**
      * A non-persisted field that's used to create the encoded password.
@@ -134,14 +128,6 @@ class User implements InformationInterface, UserInterface, Serializable
      * @var string
      */
     private $plainPassword;
-
-    /**
-     * User constructor.
-     */
-    public function __construct()
-    {
-        $this->roles = new ArrayCollection();
-    }
 
     /**
      * Id getter.
@@ -221,13 +207,13 @@ class User implements InformationInterface, UserInterface, Serializable
      */
     public function getRoles(): array
     {
-        $return = [];
 
-        foreach ($this->roles as $role) {
-            $return[] = $role->getCode();
+        // give everyone ROLE_USER!
+        if (!in_array('ROLE_USER', $this->roles)) {
+            $this->roles[] = 'ROLE_USER';
         }
 
-        return $return;
+        return $this->roles;
     }
 
     /**
@@ -294,47 +280,15 @@ class User implements InformationInterface, UserInterface, Serializable
     }
 
     /**
-     * Add a role to actual user.
-     *
-     * @param Role $role
-     * @return User
-     */
-    public function addRole(Role $role): User
-    {
-        if (!$this->roles->contains($role)) {
-            $this->roles->add($role);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Remove a role to actual user.
-     *
-     * @param Role $role
-     * @return User
-     */
-    public function removeRole(Role $role): User
-    {
-        $this->roles->removeElement($role);
-
-        return $this;
-    }
-
-
-    /**
      * Setter of the roles.
      *
-     * @param ArrayCollection $roles
+     * @param array $roles
      * @return User
      */
-    public function setRoles(ArrayCollection $roles = null): User
+    public function setRoles(array $roles ): User
     {
-        if (null == $roles) {
-            $roles = new ArrayCollection();
-        }
-
         $this->roles = $roles;
+
         return $this;
     }
 
@@ -417,17 +371,12 @@ class User implements InformationInterface, UserInterface, Serializable
     /**
      * Return if actual user has the mentioned role.
      *
-     * @param string $roleCode
+     * @param string $role
      * @return bool  true if the user has the mentioned role
      */
-    public function hasRole(string $roleCode): bool
+    public function hasRole(string $role): bool
     {
-        foreach ($this->roles as $role) {
-            if ($role->getCode() == $roleCode) {
-                return true;
-            }
-        }
 
-        return false;
+        return in_array($role, $this->getRoles());
     }
 }
