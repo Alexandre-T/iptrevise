@@ -11,8 +11,8 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
+
 namespace App\Controller;
 
 use App\Form\LoginForm;
@@ -52,15 +52,13 @@ class SecurityController extends Controller
         $form = $this->createForm(LoginForm::class, ['mail' => $email]);
 
         return $this->render('@App/security/login.html.twig', array(
-            'form'          => $form->createView(),
-            'error'         => $error,
+            'form' => $form->createView(),
+            'error' => $error,
         ));
     }
 
     /**
-     *
      * @Route("/logout", name="security_logout")
-     *
      */
     public function logoutAction()
     {

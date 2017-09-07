@@ -11,8 +11,8 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
+
 namespace App\Controller;
 
 use App\Bean\Factory\InformationFactory;
@@ -39,7 +39,6 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @Route("administration/user")
  * @Security("is_granted('ROLE_MANAGE_USER')")
- *
  */
 class UserController extends Controller
 {
@@ -55,19 +54,21 @@ class UserController extends Controller
      * @Method("GET")
      *
      * @param Request $request
+     *
      * @return Response
      */
     public function indexAction(Request $request)
     {
         //Retrieving all services
         $userManager = $this->get(UserManager::class);
-        $paginator  = $this->get('knp_paginator');
+        $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $userManager->getQueryBuilder(), /* queryBuilder NOT result */
             $request->query->getInt('page', 1)/*page number*/,
             self::LIMIT_PER_PAGE,
             ['defaultSortFieldName' => 'user.label', 'defaultSortDirection' => 'asc']
         );
+
         return $this->render('@App/administration/user/index.html.twig', [
             'pagination' => $pagination,
         ]);
@@ -80,6 +81,7 @@ class UserController extends Controller
      * @Method({"GET", "POST"})
      *
      * @param Request $request
+     *
      * @return RedirectResponse |Response
      */
     public function newAction(Request $request)
@@ -95,13 +97,16 @@ class UserController extends Controller
             $trans = $this->get('translator.default');
             $message = $trans->trans('administration.user.created %name%', ['%name%' => $user->getLabel()]);
             $session->getFlashBag()->add('success', $message);
+
             return $this->redirectToRoute('administration_user_show', array('id' => $user->getId()));
         }
+
         return $this->render('@App/administration/user/new.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
         ]);
     }
+
     /**
      * Finds and displays a user entity.
      *
@@ -109,6 +114,7 @@ class UserController extends Controller
      * @Method("GET")
      *
      * @param User $user
+     *
      * @return Response
      */
     public function showAction(User $user)
@@ -118,6 +124,7 @@ class UserController extends Controller
         $deleteForm = $this->createDeleteForm($user);
         $information = InformationFactory::createInformation($user);
         $logs = $userManager->retrieveLogs($user);
+
         return $this->render('@App/administration/user/show.html.twig', [
             'isDeletable' => $userManager->isDeletable($user),
             'logs' => $logs,
@@ -126,6 +133,7 @@ class UserController extends Controller
             'delete_form' => $deleteForm->createView(),
         ]);
     }
+
     /**
      * Displays a form to edit an existing user entity.
      *
@@ -133,7 +141,8 @@ class UserController extends Controller
      * @Method({"GET", "POST"})
      *
      * @param Request $request The request
-     * @param User $user The user entity
+     * @param User    $user    The user entity
+     *
      * @return RedirectResponse|Response
      */
     public function editAction(Request $request, User $user)
@@ -149,10 +158,12 @@ class UserController extends Controller
             $trans = $this->get('translator.default');
             $message = $trans->trans('administration.user.updated %name%', ['%name%' => $user->getLabel()]);
             $session->getFlashBag()->add('success', $message);
+
             return $this->redirectToRoute('administration_user_show', array('id' => $user->getId()));
         }
         $logs = $userService->retrieveLogs($user);
         $information = InformationFactory::createInformation($user);
+
         return $this->render('@App/administration/user/edit.html.twig', [
             'isDeletable' => $userService->isDeletable($user),
             'logs' => $logs,
@@ -162,6 +173,7 @@ class UserController extends Controller
             'delete_form' => $deleteForm->createView(),
         ]);
     }
+
     /**
      * Deletes a user entity.
      *
@@ -169,7 +181,8 @@ class UserController extends Controller
      * @Method("DELETE")
      *
      * @param Request $request The request
-     * @param User $user The $user entity
+     * @param User    $user    The $user entity
+     *
      * @return RedirectResponse
      */
     public function deleteAction(Request $request, User $user)
@@ -185,8 +198,10 @@ class UserController extends Controller
             $message = $trans->trans('administration.user.deleted %name%', ['%name%' => $user->getLabel()]);
             $session->getFlashBag()->add('success', $message);
         }
+
         return $this->redirectToRoute('administration_user_index');
     }
+
     /**
      * Creates a form to delete a user entity.
      *

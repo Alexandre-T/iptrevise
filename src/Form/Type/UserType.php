@@ -11,7 +11,6 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
 
 namespace App\Form\Type;
@@ -29,8 +28,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com
  * @license GNU General Public License, version 3
  *
- * @link http://opensource.org/licenses/GPL-3.0
- *
+ * @see http://opensource.org/licenses/GPL-3.0
  */
 class UserType extends AbstractType
 {
@@ -66,7 +64,7 @@ class UserType extends AbstractType
                     'form.user.field.roles.option.reader' => 'ROLE_READER',
                     'form.user.field.roles.option.organizer' => 'ROLE_ORGANIZER',
                     'form.user.field.roles.option.user' => 'ROLE_USER',
-                ]
+                ],
             ])
         ;
     }

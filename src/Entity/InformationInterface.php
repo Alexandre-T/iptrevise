@@ -11,18 +11,16 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
+
 namespace App\Entity;
 
 use DateTime;
 
 /**
- * Interface InformationInterface
+ * Interface InformationInterface.
  *
  * @category Entity
- *
- * @package AppBundle\Entity
  */
 interface InformationInterface
 {

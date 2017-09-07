@@ -11,8 +11,8 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -30,14 +30,13 @@ use DateTime;
  * @ORM\Entity
  * @ORM\Table(name="te_ip")
  * @Gedmo\Loggable
- *
  */
 class Ip
 {
     /**
      * IP Identifient.
      *
-     * @var integer
+     * @var int
      *
      * @ORM\Id
      * @ORM\Column(type="integer", name="ip_id", options={"comment":"Identifiant des adresses IP"})
@@ -68,7 +67,7 @@ class Ip
     /**
      * IPv4.
      *
-     * @var integer
+     * @var int
      *
      * @ORM\Column(type="bigint", nullable=false, name="ip_ip", options={"comment":"Adresse IPv4"})
      * @Gedmo\Versioned
@@ -107,7 +106,7 @@ class Ip
     private $network;
 
     /**
-     * Machine of this IP
+     * Machine of this IP.
      *
      * @var Machine
      *
@@ -120,7 +119,7 @@ class Ip
     /**
      * Get the internal identifient.
      *
-     * @return null|integer
+     * @return null|int
      */
     public function getId(): ?integer
     {
@@ -201,11 +200,13 @@ class Ip
      * Set the label of IP.
      *
      * @param string $label
+     *
      * @return Ip
      */
     public function setLabel(string $label): Ip
     {
         $this->label = $label;
+
         return $this;
     }
 
@@ -213,11 +214,13 @@ class Ip
      * Set the description of this IP.
      *
      * @param string $description
+     *
      * @return Ip
      */
     public function setDescription(string $description): Ip
     {
         $this->description = $description;
+
         return $this;
     }
 
@@ -225,11 +228,13 @@ class Ip
      * Set the IP of this entity.
      *
      * @param int $ip
+     *
      * @return Ip
      */
     public function setIp(int $ip): Ip
     {
         $this->ip = $ip;
+
         return $this;
     }
 
@@ -237,11 +242,13 @@ class Ip
      * Set the Network of this IP.
      *
      * @param Network $network
+     *
      * @return Ip
      */
     public function setNetwork(Network $network): Ip
     {
         $this->network = $network;
+
         return $this;
     }
 
@@ -249,11 +256,13 @@ class Ip
      * Set the Machine of this IP.
      *
      * @param Machine $machine
+     *
      * @return Ip
      */
     public function setMachine(Machine $machine): Ip
     {
         $this->machine = $machine;
+
         return $this;
     }
 }

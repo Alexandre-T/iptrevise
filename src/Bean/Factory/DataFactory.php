@@ -11,8 +11,8 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
+
 namespace App\Bean\Factory;
 
 use App\Bean\Data;
@@ -24,7 +24,6 @@ use App\Bean\Data;
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license Cerema 2017
- *
  */
 class DataFactory
 {
@@ -37,9 +36,10 @@ class DataFactory
      * Create Data from a serialized data.
      *
      * @param array $rowdata
+     *
      * @return array of Data
      */
-    public static function createUserData(array $rowdata):array
+    public static function createUserData(array $rowdata): array
     {
         //Initialization
         $resultat = [];
@@ -60,6 +60,7 @@ class DataFactory
             }
             $resultat[] = $data;
         }
+
         return $resultat;
     }
 }

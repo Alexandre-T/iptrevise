@@ -11,8 +11,8 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -168,7 +168,7 @@ class Machine
      *
      * @return int
      */
-    public function getInterface():?int
+    public function getInterface(): ?int
     {
         return $this->interface;
     }
@@ -178,16 +178,17 @@ class Machine
      *
      * @return DateTime
      */
-    public function getCreated():?DateTime
+    public function getCreated(): ?DateTime
     {
         return $this->created;
     }
 
     /**
      * Get the last datetime update (in application) of this machine.
+     *
      * @return mixed
      */
-    public function getUpdated():?DateTime
+    public function getUpdated(): ?DateTime
     {
         return $this->updated;
     }
@@ -216,6 +217,7 @@ class Machine
      * Set the label.
      *
      * @param string $label
+     *
      * @return Machine
      */
     public function setLabel(string $label): Machine
@@ -229,6 +231,7 @@ class Machine
      * Set the description.
      *
      * @param string $description
+     *
      * @return Machine
      */
     public function setDescription(string $description): Machine
@@ -242,11 +245,13 @@ class Machine
      * Set the number of network interface of this machine.
      *
      * @param int $interface
+     *
      * @return Machine
      */
     public function setInterface(int $interface): Machine
     {
         $this->interface = $interface;
+
         return $this;
     }
 
@@ -256,11 +261,13 @@ class Machine
      * @todo try to convert setIps($ips) to setIps(Collection $ips)
      *
      * @param Collection $ips
+     *
      * @return Machine
      */
     public function setIps($ips): Machine
     {
         $this->ips = $ips;
+
         return $this;
     }
 
@@ -268,11 +275,13 @@ class Machine
      * Set the collection of tags.
      *
      * @param Collection $tags
+     *
      * @return Machine
      */
     public function setTags($tags): Machine
     {
         $this->tags = $tags;
+
         return $this;
     }
 
@@ -289,7 +298,7 @@ class Machine
 
         return $this;
     }
-    
+
     /**
      * Add tag.
      *
@@ -308,12 +317,13 @@ class Machine
      * Remove ip.
      *
      * @param Ip $ip
+     *
      * @return Machine
      */
     public function removeIp(Ip $ip)
     {
         $this->ips->removeElement($ip);
-        
+
         return $this;
     }
 
@@ -321,12 +331,13 @@ class Machine
      * Remove tag.
      *
      * @param Tag $tag
+     *
      * @return Machine
      */
     public function removeTag(Tag $tag)
     {
         $this->tags->removeElement($tag);
-        
+
         return $this;
     }
 }

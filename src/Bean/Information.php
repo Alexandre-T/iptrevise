@@ -11,11 +11,11 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
+
 namespace App\Bean;
 
-use \DateTime as DateTime;
+use DateTime as DateTime;
 
 /**
  * Information bean to give some information about the last update and the creation.
@@ -25,12 +25,10 @@ use \DateTime as DateTime;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license GNU General Public License, version 3
  *
- * @link http://opensource.org/licenses/GPL-3.0
- *
+ * @see http://opensource.org/licenses/GPL-3.0
  */
 class Information
 {
-
     /**
      * @var DateTime Date and time creation of the entity
      */
@@ -55,11 +53,13 @@ class Information
      * Setter of the creation date time.
      *
      * @param DateTime $created
+     *
      * @return Information
      */
     public function setCreated(DateTime $created)
     {
         $this->created = $created;
+
         return $this;
     }
 
@@ -77,11 +77,13 @@ class Information
      * Setter of update time.
      *
      * @param DateTime $updated
+     *
      * @return Information
      */
     public function setUpdated(DateTime $updated)
     {
         $this->updated = $updated;
+
         return $this;
     }
 

@@ -11,8 +11,8 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
+
 namespace App\Doctrine;
 
 use App\Entity\User;
@@ -27,7 +27,6 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license Cerema 2017
- *
  */
 class HashPasswordListener implements EventSubscriber
 {
@@ -95,7 +94,7 @@ class HashPasswordListener implements EventSubscriber
     }
 
     /**
-     * Encode the plain password and pass it to the user entity
+     * Encode the plain password and pass it to the user entity.
      *
      * @param User $entity
      */

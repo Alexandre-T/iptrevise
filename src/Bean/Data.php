@@ -11,8 +11,8 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
+
 namespace App\Bean;
 
 /**
@@ -22,7 +22,6 @@ namespace App\Bean;
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license Cerema 2017
- *
  */
 class Data
 {
@@ -54,6 +53,7 @@ class Data
      * @var bool This data has to be translated
      */
     private $translate = false;
+
     /**
      * Getter of Id.
      *
@@ -63,17 +63,21 @@ class Data
     {
         return $this->id;
     }
+
     /**
      * Setter of Id.
      *
      * @param int $id
+     *
      * @return Data
      */
     public function setId(int $id): Data
     {
         $this->id = $id;
+
         return $this;
     }
+
     /**
      * Getter of entity.
      *
@@ -83,17 +87,21 @@ class Data
     {
         return $this->entity;
     }
+
     /**
      * Setter of entity.
      *
      * @param string $entity
+     *
      * @return Data
      */
     public function setEntity(string $entity): Data
     {
         $this->entity = $entity;
+
         return $this;
     }
+
     /**
      * Getter of label.
      *
@@ -103,17 +111,21 @@ class Data
     {
         return $this->label;
     }
+
     /**
      * Setter of label.
      *
      * @param string $label
+     *
      * @return Data
      */
     public function setLabel(string $label): Data
     {
         $this->label = $label;
+
         return $this;
     }
+
     /**
      * Getter of name.
      *
@@ -123,37 +135,45 @@ class Data
     {
         return $this->name;
     }
+
     /**
      * Setter of name.
      *
      * @param string $name
+     *
      * @return Data
      */
     public function setName(string $name): Data
     {
         $this->name = $name;
+
         return $this;
     }
+
     /**
      * Dependency exists or is no more existing?
      *
-     * @return bool True when dependency does no more exists.
+     * @return bool true when dependency does no more exists
      */
     public function isNoMore(): bool
     {
         return $this->noMore;
     }
+
     /**
      * Setter of no-more existing dependency.
      *
      * @param bool $noMore
+     *
      * @return Data
      */
     public function setNoMore(bool $noMore): Data
     {
         $this->noMore = $noMore;
+
         return $this;
     }
+
     /**
      * Getter of translate.
      *
@@ -165,17 +185,21 @@ class Data
     {
         return $this->translate;
     }
+
     /**
      * Setter of translator.
      *
      * @param bool $translate
+     *
      * @return Data
      */
     public function setTranslate(bool $translate): Data
     {
         $this->translate = $translate;
+
         return $this;
     }
+
     /**
      * No dependency.
      *
@@ -185,17 +209,21 @@ class Data
     {
         return $this->none;
     }
+
     /**
      * Setter of dependency.
      *
      * @param bool $none
+     *
      * @return Data
      */
     public function setNone(bool $none): Data
     {
         $this->none = $none;
+
         return $this;
     }
+
     /**
      * This data had an id.
      *
@@ -205,6 +233,7 @@ class Data
     {
         return !empty($this->id);
     }
+
     /**
      * This data has a name.
      *

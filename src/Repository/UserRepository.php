@@ -11,7 +11,6 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
 
 namespace App\Repository;
@@ -30,11 +29,9 @@ use Doctrine\ORM\EntityRepository;
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license Cerema 2017
- *
  */
 class UserRepository extends EntityRepository implements UserProviderInterface
 {
-
     /**
      * Find one user by his mail.
      *
@@ -56,6 +53,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
      * This is a sad hack.
      *
      * @param string $username
+     *
      * @return mixed
      */
     public function loadUserByUsername($username)

@@ -11,8 +11,8 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
+
 namespace App\Twig;
 
 /**
@@ -22,15 +22,12 @@ namespace App\Twig;
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license Cerema 2017
- *
  */
 class GravatarExtension extends \Twig_Extension
 {
     private $secure_request = false;
 
     /**
-     *
-     *
      * @return array
      */
     public function getFilters()
@@ -39,22 +36,23 @@ class GravatarExtension extends \Twig_Extension
             'gravatar' => new \Twig_SimpleFilter(
                 'gravatarFilter',
                 [$this, 'gravatarFilter'],
-                ['is_safe',['html']]
+                ['is_safe', ['html']]
             ),
             'sgravatar' => new \Twig_SimpleFilter(
                 'securedGravatarFilter',
                 [$this, 'securedGravatarFilter'],
-                ['is_safe',['html']]
+                ['is_safe', ['html']]
             ),
         );
     }
 
     /**
-     * Gravatar Filter
+     * Gravatar Filter.
      *
-     * @param string $email
+     * @param string      $email
      * @param string|null $size
      * @param string|null $default
+     *
      * @return string
      */
     public function gravatarFilter($email, $size = null, $default = null)
@@ -66,7 +64,7 @@ class GravatarExtension extends \Twig_Extension
             'monsterid',
             'wavatar',
             'retro',
-            'blank'
+            'blank',
         );
         $hash = md5($email);
         $url = $this->secure_request ? 'https://' : 'http://';
@@ -80,20 +78,23 @@ class GravatarExtension extends \Twig_Extension
             $url .= is_null($size) ? '?' : '&';
             $url .= in_array($default, $defaults) ? $default : urlencode($default);
         }
+
         return $url;
     }
 
     /**
      * The request is secured.
      *
-     * @param string $email
+     * @param string      $email
      * @param string|null $size
      * @param string|null $default
+     *
      * @return string url
      */
     public function secureGravatarFilter($email, $size = null, $default = null)
     {
         $this->secure_request = true;
+
         return $this->gravatarFilter($email, $size, $default);
     }
 

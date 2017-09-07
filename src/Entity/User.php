@@ -11,8 +11,8 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -209,7 +209,6 @@ class User implements InformationInterface, UserInterface, Serializable
      */
     public function getRoles(): array
     {
-
         // give everyone ROLE_USER!
         if (!in_array('ROLE_USER', $this->roles)) {
             $this->roles[] = 'ROLE_USER';
@@ -219,9 +218,7 @@ class User implements InformationInterface, UserInterface, Serializable
     }
 
     /**
-     * To implements UserInterface
-     *
-     * @return null
+     * To implements UserInterface.
      */
     public function getSalt()
     {
@@ -232,11 +229,13 @@ class User implements InformationInterface, UserInterface, Serializable
      * Setter of the label of user.
      *
      * @param string $label
+     *
      * @return User
      */
     public function setLabel(string $label): User
     {
         $this->label = $label;
+
         return $this;
     }
 
@@ -244,11 +243,13 @@ class User implements InformationInterface, UserInterface, Serializable
      * Setter of the mail.
      *
      * @param string $mail
+     *
      * @return User
      */
     public function setMail(string $mail): User
     {
         $this->mail = $mail;
+
         return $this;
     }
 
@@ -256,11 +257,13 @@ class User implements InformationInterface, UserInterface, Serializable
      * Setter of the password.
      *
      * @param string $password
+     *
      * @return User
      */
     public function setPassword(string $password): User
     {
         $this->password = $password;
+
         return $this;
     }
 
@@ -268,6 +271,7 @@ class User implements InformationInterface, UserInterface, Serializable
      * Set the non-persistent plain password.
      *
      * @param string $plainPassword
+     *
      * @return User
      */
     public function setPlainPassword(string $plainPassword): User
@@ -285,6 +289,7 @@ class User implements InformationInterface, UserInterface, Serializable
      * Setter of the roles.
      *
      * @param array $roles
+     *
      * @return User
      */
     public function setRoles(array $roles): User
@@ -307,7 +312,8 @@ class User implements InformationInterface, UserInterface, Serializable
     /**
      * Set the username of user.
      *
-     * @param  string $username the new username
+     * @param string $username the new username
+     *
      * @return User
      */
     public function setUsername(string $username): User
@@ -330,8 +336,7 @@ class User implements InformationInterface, UserInterface, Serializable
     /**
      * String representation of object.
      *
-     * @link http://php.net/manual/en/serializable.serialize.php
-     *
+     * @see http://php.net/manual/en/serializable.serialize.php
      * @see \Serializable::serialize()
      *
      * @return string the string representation of the object or null
@@ -349,14 +354,11 @@ class User implements InformationInterface, UserInterface, Serializable
     }
 
     /**
-     * Constructs the object
+     * Constructs the object.
      *
-     * @link http://php.net/manual/en/serializable.unserialize.php
+     * @see http://php.net/manual/en/serializable.unserialize.php
      *
      * @param string $serialized The string representation of the user instance.
-     *
-     * @return void
-     *
      */
     public function unserialize($serialized)
     {
@@ -366,15 +368,15 @@ class User implements InformationInterface, UserInterface, Serializable
             $this->mail,
             $this->password,
             $this->created,
-            $this->updated,
-            ) = unserialize($serialized);
+            $this->updated) = unserialize($serialized);
     }
 
     /**
      * Return if actual user has the mentioned role.
      *
      * @param string $role
-     * @return bool  true if the user has the mentioned role
+     *
+     * @return bool true if the user has the mentioned role
      */
     public function hasRole(string $role): bool
     {

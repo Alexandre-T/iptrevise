@@ -11,12 +11,12 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
+
 namespace App\Listener;
 
 /**
- * LoggableListener
+ * LoggableListener.
  *
  * @author Alexandre Tranchant <alexandre.tranchant@gmail.com>
  */
@@ -26,6 +26,7 @@ interface LoggableListenerInterface
      * Set the username of connected user doing an update.
      *
      * @param string
+     *
      * @return mixed
      */
     public function setUsername($username);

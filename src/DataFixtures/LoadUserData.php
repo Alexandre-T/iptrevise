@@ -11,8 +11,8 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
+
 namespace App\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
@@ -30,7 +30,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license Cerema 2017
- *
  */
 class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedFixtureInterface, ContainerAwareInterface
 {
@@ -56,7 +55,7 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedF
      */
     public function load(ObjectManager $manager)
     {
-        $roleAdmin= ['ROLE_ADMIN'];
+        $roleAdmin = ['ROLE_ADMIN'];
 
         $userAlexandre = new User();
         $userAlexandre->setLabel('Alexandre');
@@ -95,7 +94,7 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedF
             $userUser->setMail('user@example.org');
             $userUser->setPlainPassword('user');
             $userUser->setRoles($roleUser);
-            
+
             //Admin
             $userAdministrator = new User();
             $userAdministrator->setLabel('Administrator');
@@ -115,7 +114,6 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedF
             $manager->persist($userOrganizer);
             $manager->persist($userAdministrator);
         }
-            
 
         $manager->persist($userAlexandre);
         $manager->flush();
@@ -123,7 +121,7 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedF
 
     /**
      * Set the order in which fixtures will be loaded.
-     * the lower the number, the sooner that this fixture is loaded
+     * the lower the number, the sooner that this fixture is loaded.
      *
      * @return int
      */

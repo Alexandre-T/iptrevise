@@ -11,8 +11,8 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
+
 namespace App\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -48,8 +48,8 @@ class LoggerListener implements EventSubscriberInterface
     /**
      * LoggerListener constructor.
      *
-     * @param LoggableListenerInterface $loggableListener
-     * @param TokenStorageInterface|null $tokenStorage
+     * @param LoggableListenerInterface          $loggableListener
+     * @param TokenStorageInterface|null         $tokenStorage
      * @param AuthorizationCheckerInterface|null $authorizationChecker
      */
     public function __construct(LoggableListenerInterface $loggableListener, TokenStorageInterface $tokenStorage = null, AuthorizationCheckerInterface $authorizationChecker = null)
@@ -58,8 +58,9 @@ class LoggerListener implements EventSubscriberInterface
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
     }
+
     /**
-     * Set the username from the security context by listening on core.request
+     * Set the username from the security context by listening on core.request.
      *
      * @param \Symfony\Component\HttpKernel\Event\GetResponseEvent $event
      */

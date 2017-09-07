@@ -11,8 +11,8 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
+
 namespace App\Manager;
 
 use App\Bean\Factory\LogFactory;
@@ -31,12 +31,11 @@ use Gedmo\Loggable\Entity\Repository\LogEntryRepository;
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license Cerema 2017
- *
  */
 class UserManager implements LoggableManagerInterface, PaginatorInterface
 {
     /**
-     * Const for the alias query
+     * Const for the alias query.
      */
     const ALIAS = 'user';
 
@@ -81,7 +80,7 @@ class UserManager implements LoggableManagerInterface, PaginatorInterface
      *
      * @return bool true if entity is deletable
      */
-    public function isDeletable():bool
+    public function isDeletable(): bool
     {
         //All user are deletable for now.
         return true;
@@ -91,9 +90,10 @@ class UserManager implements LoggableManagerInterface, PaginatorInterface
      * Retrieve logs of the axe.
      *
      * @param User $entity
+     *
      * @return array
      */
-    public function retrieveLogs($entity):array
+    public function retrieveLogs($entity): array
     {
         /** @var LogEntryRepository $logRepository */
         $logRepository = $this->em->getRepository(LogEntry::class); // we use default log entry class
@@ -103,7 +103,7 @@ class UserManager implements LoggableManagerInterface, PaginatorInterface
     }
 
     /**
-     * Save new or modified User
+     * Save new or modified User.
      *
      * @param User $user
      */

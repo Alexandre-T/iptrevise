@@ -11,8 +11,8 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
+
 namespace App\Security;
 
 use App\Form\LoginForm;
@@ -35,14 +35,13 @@ use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticato
  * @license Cerema 2017
  *
  * @see https://knpuniversity.com/screencast/symfony-security/authenticator-get-user-check-credentials
- *
  */
 class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 {
     /**
      * Form factory interface.
      * If you want to know which class is your form factory, just type:
-     * $ php ./bin/console debug:container form.factory
+     * $ php ./bin/console debug:container form.factory.
      *
      * @var FormFactoryInterface
      */
@@ -59,7 +58,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     private $em;
 
     /**
-     * User password encoder
+     * User password encoder.
      *
      * @var UserPasswordEncoder
      */
@@ -68,7 +67,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     /**
      * Router Interface.
      * If you want to know which class is your password encoder, just type:
-     * php ./bin/console debug:container password_encoder
+     * php ./bin/console debug:container password_encoder.
      *
      * @var RouterInterface
      */
@@ -78,9 +77,9 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
      * LoginFormAuthenticator constructor.
      *
      * @param FormFactoryInterface $formFactory
-     * @param EntityManager $em
-     * @param RouterInterface $router
-     * @param UserPasswordEncoder $passwordEncoder
+     * @param EntityManager        $em
+     * @param RouterInterface      $router
+     * @param UserPasswordEncoder  $passwordEncoder
      */
     public function __construct(FormFactoryInterface $formFactory, EntityManager $em, RouterInterface $router, UserPasswordEncoder $passwordEncoder)
     {
@@ -93,8 +92,9 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     /**
      * Check credentials.
      *
-     * @param mixed $credentials
+     * @param mixed         $credentials
      * @param UserInterface $user
+     *
      * @return bool
      */
     public function checkCredentials($credentials, UserInterface $user)
@@ -108,6 +108,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
      * Provide credentials.
      *
      * @param Request $request
+     *
      * @return mixed|null
      */
     public function getCredentials(Request $request)
@@ -149,10 +150,11 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     }
 
     /**
-     * Get User
+     * Get User.
      *
-     * @param mixed $credentials
+     * @param mixed                 $credentials
      * @param UserProviderInterface $userProvider
+     *
      * @return null|object
      */
     public function getUser($credentials, UserProviderInterface $userProvider)

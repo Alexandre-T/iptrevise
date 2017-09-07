@@ -11,8 +11,8 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
+
 namespace App\Bean\Factory;
 
 use App\Bean\Information;
@@ -26,8 +26,7 @@ use App\Entity\InformationInterface;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license GNU General Public License, version 3
  *
- * @link http://opensource.org/licenses/GPL-3.0
- *
+ * @see http://opensource.org/licenses/GPL-3.0
  */
 class InformationFactory
 {
@@ -35,9 +34,10 @@ class InformationFactory
      * Create Information from a Family Entity.
      *
      * @param InformationInterface $entity
+     *
      * @return Information
      */
-    public static function createInformation(InformationInterface $entity):Information
+    public static function createInformation(InformationInterface $entity): Information
     {
         $information = new Information();
         $information->setCreated($entity->getCreated());

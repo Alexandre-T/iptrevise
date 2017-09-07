@@ -11,8 +11,8 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
+
 namespace App\Bean\Factory;
 
 use App\Bean\Log;
@@ -26,8 +26,7 @@ use Gedmo\Loggable\Entity\MappedSuperclass\AbstractLogEntry;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license GNU General Public License, version 3
  *
- * @link http://opensource.org/licenses/GPL-3.0
- *
+ * @see http://opensource.org/licenses/GPL-3.0
  */
 class LogFactory
 {
@@ -35,6 +34,7 @@ class LogFactory
      * Create Log bean from a Abstract Log Entry (Gedmo).
      *
      * @param AbstractLogEntry[] $logEntries of AbstractLogEntry $logEntry
+     *
      * @return Log[]
      */
     public static function createUserLogs(array $logEntries): array
@@ -42,13 +42,14 @@ class LogFactory
         $logs = [];
         foreach ($logEntries as $logEntry) {
             $logBean = new Log();
-            $logBean->setAction('administration.log.action.' . $logEntry->getAction());
+            $logBean->setAction('administration.log.action.'.$logEntry->getAction());
             $logBean->setLogged($logEntry->getLoggedAt());
             $logBean->setUsername($logEntry->getUsername());
             $logBean->setVersion($logEntry->getVersion());
             $logBean->setData(DataFactory::createUserData($logEntry->getData()));
             $logs[] = $logBean;
         }
+
         return $logs;
     }
 }

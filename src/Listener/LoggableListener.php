@@ -11,14 +11,14 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
+
 namespace App\Listener;
 
-use \Gedmo\Loggable\LoggableListener as GedmoLoggableListener;
+use Gedmo\Loggable\LoggableListener as GedmoLoggableListener;
 
 /**
- * LoggableListener
+ * LoggableListener.
  *
  * @author Alexandre Tranchant <alexandre.tranchant@gmail.com>
  */

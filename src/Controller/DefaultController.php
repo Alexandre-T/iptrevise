@@ -11,7 +11,6 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
 
 namespace App\Controller;
@@ -30,7 +29,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class DefaultController extends Controller
 {
-
     /**
      * Homepage.
      *

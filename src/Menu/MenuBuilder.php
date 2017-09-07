@@ -11,8 +11,8 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
+
 namespace App\Menu;
 
 use App\Entity\User;
@@ -49,7 +49,7 @@ class MenuBuilder
      * The User or similar.
      *
      * @var mixed Can be a UserInterface instance, an object implementing a __toString method,
-     *               or the username as a regular string
+     *            or the username as a regular string
      */
     private $user;
 
@@ -58,9 +58,9 @@ class MenuBuilder
      *
      * @constructor
      *
-     * @param FactoryInterface $factory
+     * @param FactoryInterface     $factory
      * @param AuthorizationChecker $authorizationChecker
-     * @param TokenStorage $tokenStorage
+     * @param TokenStorage         $tokenStorage
      */
     public function __construct(FactoryInterface $factory, AuthorizationChecker $authorizationChecker, TokenStorage $tokenStorage)
     {
@@ -87,7 +87,7 @@ class MenuBuilder
 
         $menu->addChild('menu.main.home', [
             'route' => 'home',
-            'icon'  => 'fw fa-home',
+            'icon' => 'fw fa-home',
         ]);
 
         if ($this->authorization->isGranted('ROLE_USER')) {
@@ -120,7 +120,7 @@ class MenuBuilder
     }
 
     /**
-     * Menu to login or logout
+     * Menu to login or logout.
      *
      * @return ItemInterface
      */
@@ -134,21 +134,21 @@ class MenuBuilder
 
         if ($isFully || $isRemembered) {
             $dropdownUser = $menu->addChild($this->getUsername(), [
-                'icon' =>'user',
+                'icon' => 'user',
                 'pull-right' => true,
                 'dropdown' => true,
                 'caret' => true,
             ])->setExtra('translation_domain', false);
             $dropdownUser->addChild('menu.user.your-profile', [
-                'dropdown-header' => true
+                'dropdown-header' => true,
             ]);
             $dropdownUser->addChild('menu.user.show-profile', [
                 'icon' => 'fw fa-eye',
-                'route' => 'home'
+                'route' => 'home',
             ]);
             $dropdownUser->addChild('menu.user.edit-profile', [
                 'icon' => 'fw fa-pencil',
-                'route' => 'home'
+                'route' => 'home',
             ]);
             //Adding a nice divider
             $dropdownUser->addChild('divider_1', ['divider' => true])
@@ -156,12 +156,12 @@ class MenuBuilder
             //Adding LOGOUT
             $dropdownUser->addChild('menu.user.logout', [
                 'icon' => 'fw fa-sign-out',
-                'route' => 'security_logout'
+                'route' => 'security_logout',
             ]);
         } elseif ($isAnonymous) {
             $menu->addChild('menu.user.sign-in', [
                 'icon' => 'fw fa-sign-in',
-                'route' => 'security_login'
+                'route' => 'security_login',
             ]);
         }
 
@@ -169,7 +169,7 @@ class MenuBuilder
     }
 
     /**
-     * Menu for Admin user
+     * Menu for Admin user.
      *
      * @return ItemInterface
      */
@@ -179,7 +179,7 @@ class MenuBuilder
 
         if ($this->authorization->isGranted('ROLE_ADMIN')) {
             $dropdownAdmin = $menu->addChild('menu.admin.admin', [
-                'icon' =>'user',
+                'icon' => 'user',
                 'pull-right' => true,
                 'dropdown' => true,
                 'caret' => true,
@@ -191,12 +191,12 @@ class MenuBuilder
             if ($isFully && $isRemembered) {
                 $dropdownAdmin->addChild('menu.admin.users', [
                     'icon' => 'fw fa-group',
-                    'route' => 'administration_user_index'
+                    'route' => 'administration_user_index',
                 ]);
             } else {
                 $dropdownAdmin->addChild('menu.admin.confirm', [
                     'icon' => 'fw fa-check',
-                    'route' => 'home'
+                    'route' => 'home',
                 ]);
             }
 
@@ -216,9 +216,9 @@ class MenuBuilder
         if ($this->user instanceof User) {
             $username = $this->user->getLabel();
         } elseif (null === $this->user) {
-            $username = "menu.user.unknown";
+            $username = 'menu.user.unknown';
         } else {
-            $username = (string)($this->user);
+            $username = (string) ($this->user);
         }
 
         return $username;

@@ -11,8 +11,8 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
+
 namespace App\Twig;
 
 use Symfony\Component\Translation\Translator;
@@ -27,7 +27,6 @@ use Symfony\Component\Translation\Translator;
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license Cerema 2017
- *
  */
 class RolesExtension extends \Twig_Extension
 {
@@ -65,11 +64,12 @@ class RolesExtension extends \Twig_Extension
     }
 
     /**
-     * Roles Filter
+     * Roles Filter.
      *
      * @param array|string $roles
-     * @param string $inputDelimiter input deimiter used to split a string into an array
-     * @param string $outputDelimiter delimiter used to implode the result
+     * @param string       $inputDelimiter  input deimiter used to split a string into an array
+     * @param string       $outputDelimiter delimiter used to implode the result
+     *
      * @return string
      */
     public function rolesFilter($roles, $inputDelimiter = ', ', $outputDelimiter = ', ')

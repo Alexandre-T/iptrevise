@@ -11,8 +11,8 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -157,7 +157,7 @@ class Network
      *
      * @return int
      */
-    public function getId():?int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -167,7 +167,7 @@ class Network
      *
      * @return string
      */
-    public function getLabel():?string
+    public function getLabel(): ?string
     {
         return $this->label;
     }
@@ -177,17 +177,17 @@ class Network
      *
      * @return string
      */
-    public function getDescription():?string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
     /**
-     * Get the adress of the network
+     * Get the adress of the network.
      *
      * @return int
      */
-    public function getIp():?int
+    public function getIp(): ?int
     {
         return $this->ip;
     }
@@ -197,7 +197,7 @@ class Network
      *
      * @return int
      */
-    public function getMask():?int
+    public function getMask(): ?int
     {
         return $this->mask;
     }
@@ -207,7 +207,7 @@ class Network
      *
      * @return string
      */
-    public function getColor():?string
+    public function getColor(): ?string
     {
         return $this->color;
     }
@@ -217,7 +217,7 @@ class Network
      *
      * @return DateTime
      */
-    public function getCreated():?DateTime
+    public function getCreated(): ?DateTime
     {
         return $this->created;
     }
@@ -227,7 +227,7 @@ class Network
      *
      * @return DateTime
      */
-    public function getUpdated():?DateTime
+    public function getUpdated(): ?DateTime
     {
         return $this->updated;
     }
@@ -237,7 +237,7 @@ class Network
      *
      * @return Collection
      */
-    public function getIps():?Collection
+    public function getIps(): ?Collection
     {
         return $this->ips;
     }
@@ -246,6 +246,7 @@ class Network
      * Set the label of network.
      *
      * @param string $label
+     *
      * @return Network
      */
     public function setLabel(string $label): Network
@@ -259,6 +260,7 @@ class Network
      * Set the description of the network.
      *
      * @param string $description
+     *
      * @return Network
      */
     public function setDescription(string $description): Network
@@ -272,6 +274,7 @@ class Network
      * Set IP Address of network.
      *
      * @param int $ip
+     *
      * @return Network
      */
     public function setIp(int $ip): Network
@@ -285,6 +288,7 @@ class Network
      * Set mask of this network.
      *
      * @param int $mask
+     *
      * @return Network
      */
     public function setMask(int $mask): Network
@@ -298,6 +302,7 @@ class Network
      * Set Color of this network.
      *
      * @param string $color
+     *
      * @return Network
      */
     public function setColor(string $color): Network
@@ -334,11 +339,12 @@ class Network
 
         return $this;
     }
-    
+
     /**
      * Set All Ip of this network.
      *
      * @param Collection $ips
+     *
      * @return Network
      */
     public function setIps(Collection $ips): Network

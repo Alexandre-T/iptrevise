@@ -11,16 +11,16 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
+
 namespace App\Manager;
 
 /**
- * Interface LoggableManagerInterface
+ * Interface LoggableManagerInterface.
  *
  * @category App\Manager
  */
 interface LoggableManagerInterface
 {
-    public function retrieveLogs($entity):array;
+    public function retrieveLogs($entity): array;
 }

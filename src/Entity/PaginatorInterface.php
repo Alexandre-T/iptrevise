@@ -11,14 +11,14 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
+
 namespace App\Entity;
 
 use Doctrine\ORM\QueryBuilder;
 
 /**
- * Interface PaginatorInterface
+ * Interface PaginatorInterface.
  *
  * @category App\Entity
  */

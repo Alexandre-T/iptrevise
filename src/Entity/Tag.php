@@ -11,8 +11,8 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -131,6 +131,7 @@ class Tag
     /**
      * Get the datetime of the last update.
 
+     *
      * @return DateTime
      */
     public function getUpdated(): ?DateTime
@@ -149,8 +150,8 @@ class Tag
     }
 
     /**
-     *
      * @param mixed $label
+     *
      * @return Tag
      */
     public function setLabel($label): Tag
@@ -167,12 +168,13 @@ class Tag
      *
      * @return Tag
      */
-    public function addMachine(Machine $machine) :Tag
+    public function addMachine(Machine $machine): Tag
     {
         $this->machines[] = $machine;
 
         return $this;
     }
+
     /**
      * Remove machine.
      *
@@ -180,7 +182,7 @@ class Tag
      *
      * @return Tag
      */
-    public function removeMachine(Machine $machine):Tag
+    public function removeMachine(Machine $machine): Tag
     {
         $this->machines->removeElement($machine);
 
@@ -191,6 +193,7 @@ class Tag
      * This is a simple setters.
      *
      * @param mixed $machines
+     *
      * @return Tag
      */
     public function setMachines($machines): Tag
