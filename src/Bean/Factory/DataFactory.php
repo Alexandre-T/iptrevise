@@ -52,9 +52,9 @@ class DataFactory
             } else {
                 if ($column == 'password') {
                     $data->setName('*****');
-                } elseif($column == 'roles') {
+                } elseif ($column == 'roles') {
                     $data->setName(implode(', ', $value));
-                }else{
+                } else {
                     $data->setName($value);
                 }
             }
