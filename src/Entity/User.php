@@ -287,7 +287,7 @@ class User implements InformationInterface, UserInterface, Serializable
      * @param array $roles
      * @return User
      */
-    public function setRoles(array $roles ): User
+    public function setRoles(array $roles): User
     {
         $this->roles = $roles;
 
@@ -378,7 +378,6 @@ class User implements InformationInterface, UserInterface, Serializable
      */
     public function hasRole(string $role): bool
     {
-
         return in_array($role, $this->getRoles());
     }
 }

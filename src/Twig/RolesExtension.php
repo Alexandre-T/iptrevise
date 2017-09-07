@@ -76,11 +76,11 @@ class RolesExtension extends \Twig_Extension
     {
         $result = [];
 
-        if (!is_array($roles)){
+        if (!is_array($roles)) {
             $roles = explode($inputDelimiter, $roles);
         }
 
-        foreach ($roles as $role){
+        foreach ($roles as $role) {
             $result[] = $this->translator->trans($role);
         }
 
