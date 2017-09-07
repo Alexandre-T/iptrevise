@@ -98,17 +98,17 @@ class MenuBuilder
                 'caret' => true,
             ]);
 
-            $dropdownSettings->addChild('menu.main.network', [
-                'icon' => 'fw fa-network',
+            $dropdownSettings->addChild('menu.main.networks', [
+                'icon' => 'fw fa-sitemap',
                 'route' => 'home',
             ]);
 
-            $dropdownSettings->addChild('menu.main.machine', [
-                'icon' => 'fw fa-computer',
+            $dropdownSettings->addChild('menu.main.machines', [
+                'icon' => 'fw fa-desktop',
                 'route' => 'home',
             ]);
 
-            $dropdownSettings->addChild('menu.main.ip', [
+            $dropdownSettings->addChild('menu.main.ips', [
                 'icon' => 'fw fa-globe',
                 'route' => 'home',
             ]);

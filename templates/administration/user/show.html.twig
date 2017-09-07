@@ -23,6 +23,8 @@
                         <dd class="lead">{{ user.username }}</dd>
                         <dt>{{ 'form.user.field.mail'| trans }}</dt>
                         <dd>{{ user.mail }}</dd>
+                        <dt>{{ 'form.user.field.roles'| trans }}</dt>
+                        <dd>{{ user.roles | roles }}</dd>
                     </dl>
                 </div>
                 <div class="col-sm-2 text-right">

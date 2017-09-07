@@ -92,6 +92,17 @@ class DataFactoryTest extends TestCase
         self::assertCount(1, $actuals);
         self::compareMethodsResults($expected, $actuals[0]);
         unset($rowdata, $expected, $actuals);
+
+        //Fifth case with roles
+        $rowdata['roles'] = ['ROLE_ADMIN', 'ROLE_READER'];
+        $expected = new Data();
+        $expected->setLabel('form.user.field.roles');
+        $expected->setName('ROLE_ADMIN, ROLE_READER');
+        $actuals = DataFactory::createUserData($rowdata);
+        self::assertCount(1, $actuals);
+        self::compareMethodsResults($expected, $actuals[0]);
+        unset($rowdata, $expected, $actuals);
+
     }
 
     /**

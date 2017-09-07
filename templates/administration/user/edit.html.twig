@@ -16,7 +16,10 @@
             {{ form_widget(edit_form) }}
             <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-9">
-                    <input class="btn btn-primary" type="submit" value="{{ 'administration.actions.edit' | trans }}" />
+                    <button class="btn btn-primary" type="submit">
+                        <span class="fa fa-save"></span>
+                        {{ 'administration.actions.edit' | trans }}
+                    </button>
                 </div>
             </div>
             {{ form_end(edit_form) }}

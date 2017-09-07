@@ -59,6 +59,7 @@ class UserCrudCest
         $I->click('Nouvel utilisateur');
         $I->canSeeCurrentUrlEquals('/administration/user/new');
         $I->wantToTest('The required field');
+        $I->uncheckOption('Utilisateur Cerbère');
         $I->click('Créer');
         $I->canSeeCurrentUrlEquals('/administration/user/new');
 
@@ -113,9 +114,13 @@ class UserCrudCest
         $I->see('codeception@test.org', 'dd');
 
         $I->see('Journal de bord');
-        $I->see('1', 'td[headers="logs-version"]');
-        $I->see('Création', 'td[headers="logs-action"]');
-        $I->see('administrator@example.org', 'td[headers="logs-user"]');
+        $I->see('1', 'td[headers="logs-version"].row1');
+        $I->see('Création', 'td[headers="logs-action"].row1');
+        $I->see('administrator@example.org', 'td[headers="logs-user"].row1');
+        $I->see('Codeception', 'td[headers="logs-value"].row1');
+        $I->see('codeception@test.org', 'td[headers="logs-value"].row1');
+        $I->see('Aucun', 'td[headers="logs-value"].row1');
+        $I->see('Utilisateur cerbérisé', 'td[headers="logs-value"].row1');
 
         $I->see('Information');
         //@todo vérifier la date de création
@@ -123,7 +128,7 @@ class UserCrudCest
 
         $I->wantTo('Return to the list of users and see my creation');
         $I->click(' Liste des utilisateurs');
-        $I->canSeeCurrentUrlEquals('/administrator/user');
+        $I->canSeeCurrentUrlEquals('/administration/user');
         $I->see("codeception@test.org", 'td[headers="user-mail"]');
         $I->see("Codeception", 'td[headers="user-username"]');
 
@@ -131,7 +136,33 @@ class UserCrudCest
         $I->amOnPage("/administration/user/$id/edit");
         $I->canSeeCurrentUrlEquals("/administration/user/$id/edit");
 
+        $I->wantTo('Test that the form is well initialized');
+        $I->canSeeInField('Identifiant', 'Codeception');
+        $I->canSeeInField('Adresse mail', 'codeception@test.org');
+        $I->canSeeCheckboxIsChecked('Utilisateur Cerbère');
+        $I->cantSeeCheckboxIsChecked('Administrateur');
+        $I->cantSeeCheckboxIsChecked('Lecteur');
+        $I->cantSeeCheckboxIsChecked('Organisateur');
 
+        $I->checkOption('Administrateur');
+        $I->uncheckOption('Utilisateur Cerbère');
+        $I->click('Éditer');
+
+        $I->seeCurrentUrlEquals("/administration/user/$id");
+        $I->see('Les modifications apportées à l’utilisateur Codeception ont été enregistrées avec succès', '.alert-success');
+        $I->see('Administrateur, Utilisateur cerbérisé', '#administration-global-information dd');
+
+        $I->see('Journal de bord');
+        $I->see('2', 'td[headers="logs-version"].row2');
+        $I->see('Modification', 'td[headers="logs-action"].row2');
+        $I->see('administrator@example.org', 'td[headers="logs-user"].row2');
+        $I->see('Administrateur', 'td[headers="logs-value"].row2');
+
+        $I->wantTo('Delete my user');
+        $I->click('Supprimer', '#form_delete');
+        $I->seeCurrentUrlEquals("/administration/user");
+        $I->see('L’utilisateur Codeception a été supprimé avec succès', '.alert-success');
+        $I->dontSee('Codeception', 'td[headers="user-username"]' );
 
     }
 }

@@ -119,6 +119,8 @@ class User implements InformationInterface, UserInterface, Serializable
      * )
      *
      * @ORM\Column(type="json_array", nullable=true, options={"comment":"Roles de l'utilisateur"})
+     *
+     * @Gedmo\Versioned
      */
     private $roles = [];
 

@@ -71,6 +71,10 @@ menu.admin.admin: 'Administration'
 menu.admin.users: 'Gestion des utilisateurs'
 
 menu.main.home: 'Accueil'
+menu.main.networks: 'Réseaux'
+menu.main.machines: 'Réseaux'
+menu.main.ips: 'Adresses IP'
+
 
 menu.user.edit-profile: 'Édition'
 menu.user.logout: 'Déconnexion'
@@ -78,5 +82,10 @@ menu.user.sign-in: 'Connexion'
 menu.user.sign-up: 'Inscription'
 menu.user.show-profile: 'Consultation'
 menu.user.your-profile: 'Votre profil'
+
+ROLE_ADMIN: 'Administrateur'
+ROLE_USER: 'Utilisateur cerbérisé'
+ROLE_ORGANIZER: 'Organisateur'
+ROLE_READER: 'Lecteur'
 
 title.security.login: 'Connexion'

@@ -91,6 +91,15 @@ services:
         tags:
             - { name: twig.extension }
 
+    # Roles twig filter
+    app.twig_extension:
+        class: App\Twig\RolesExtension
+        public: false
+        tags:
+            - { name: twig.extension }
+        calls:
+            - [ setTranslator, ['@translator.default']]
+
     app.security.login_form_authenticator:
         class: App\Security\LoginFormAuthenticator
         autowire: true
