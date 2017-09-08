@@ -22,7 +22,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use DateTime;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\TagRepository")
  * @ORM\Table(name="te_tag")
  * @Gedmo\Loggable
  */

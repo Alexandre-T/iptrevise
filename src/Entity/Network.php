@@ -29,7 +29,7 @@ use DateTime;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license Cerema 2017
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\NetworkRepository")
  * @ORM\Table(name="te_network", options={"comment":"Table entité des réseaux"})
  * @Gedmo\Loggable
  */

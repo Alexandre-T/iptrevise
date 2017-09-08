@@ -27,7 +27,7 @@ use DateTime;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license Cerema 2017
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\IpRepository")
  * @ORM\Table(name="te_ip")
  * @Gedmo\Loggable
  */
