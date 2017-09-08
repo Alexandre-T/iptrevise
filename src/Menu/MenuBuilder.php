@@ -90,7 +90,7 @@ class MenuBuilder
             'icon' => 'fw fa-home',
         ]);
 
-        if ($this->authorization->isGranted('ROLE_USER')) {
+        if ($this->authorization->isGranted('ROLE_READER')) {
             $dropdownSettings = $menu->addChild('menu.main.networks', [
                 'icon' => 'fw fa-network',
                 'pull-right' => true,

@@ -51,7 +51,7 @@ form.user.field.password: 'Mot de passe'
 form.user.field.roles: 'Rôles'
 form.user.field.roles.option.admin: 'Administrateur'
 form.user.field.roles.option.reader: 'Lecteur'
-form.user.field.roles.option.organizer: 'Organisateur'
+form.user.field.roles.option.ORGANISER: 'Organisateur'
 form.user.field.roles.option.user: 'Utilisateur Cerbère'
 
 form.user.help.username: 'Entrez le nom de l’utilisateur'
@@ -72,7 +72,7 @@ menu.admin.users: 'Gestion des utilisateurs'
 
 menu.main.home: 'Accueil'
 menu.main.networks: 'Réseaux'
-menu.main.machines: 'Réseaux'
+menu.main.machines: 'Machines'
 menu.main.ips: 'Adresses IP'
 
 
@@ -85,7 +85,7 @@ menu.user.your-profile: 'Votre profil'
 
 ROLE_ADMIN: 'Administrateur'
 ROLE_USER: 'Utilisateur cerbérisé'
-ROLE_ORGANIZER: 'Organisateur'
+ROLE_ORGANISER: 'Organisateur'
 ROLE_READER: 'Lecteur'
 
 title.security.login: 'Connexion'

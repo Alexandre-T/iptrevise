@@ -71,7 +71,7 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedF
 
             //Retrieve roles
             $roleReader = ['ROLE_READER'];
-            $roleOrganizer = ['ROLE_ORGANIZER'];
+            $roleOrganiser = ['ROLE_ORGANISER'];
             $roleUser = ['ROLE_USER'];
 
             //Reader
@@ -81,12 +81,12 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedF
             $userReader->setPlainPassword('reader');
             $userReader->setRoles($roleReader);
 
-            //Organizer
-            $userOrganizer = new User();
-            $userOrganizer->setLabel('Organizer');
-            $userOrganizer->setMail('organizer@example.org');
-            $userOrganizer->setPlainPassword('organizer');
-            $userOrganizer->setRoles($roleOrganizer);
+            //ORGANISER
+            $userOrganiser = new User();
+            $userOrganiser->setLabel('Organiser');
+            $userOrganiser->setMail('organiser@example.org');
+            $userOrganiser->setPlainPassword('organiser');
+            $userOrganiser->setRoles($roleOrganiser);
 
             //User
             $userUser = new User();
@@ -105,13 +105,13 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedF
             //These references are perhaps unuseful.
             $this->addReference('user_reader', $userReader);
             $this->addReference('user_user', $userUser);
-            $this->addReference('user_organizer', $userOrganizer);
+            $this->addReference('user_ORGANISER', $userOrganiser);
             $this->addReference('user_admin', $userAdministrator);
 
             //Persist dev and test data
             $manager->persist($userReader);
             $manager->persist($userUser);
-            $manager->persist($userOrganizer);
+            $manager->persist($userOrganiser);
             $manager->persist($userAdministrator);
         }
 

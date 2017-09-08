@@ -50,7 +50,7 @@ class UserCrudCest
         $I->see('Administration', '.active');
 
         $I->wantToTest('the user management page');
-        $I->see('Organizer', 'td[headers=user-username]');
+        $I->see('Organiser', 'td[headers=user-username]');
         $I->see('User', 'td[headers=user-username]');
         $I->see('Reader', 'td[headers=user-username]');
         $I->see('Administrator', 'td[headers=user-username]');

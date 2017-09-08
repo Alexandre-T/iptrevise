@@ -46,9 +46,9 @@ security:
                 path: /logout
 
     role_hierarchy:
-#        ROLE_ORGANIZER:  [ROLE_USER]
-#        ROLE_ADMIN:      [ROLE_ORGANIZER]
-        ROLE_ADMIN: [ROLE_MANAGE_USER]
+        ROLE_READER:     [ROLE_USER]
+        ROLE_ORGANISER:  [ROLE_READER]
+        ROLE_ADMIN:      [ROLE_MANAGE_USER, ROLE_ORGANISER]
 
     access_control:
         # We must be Anonymous to register or to login

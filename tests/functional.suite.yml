@@ -9,4 +9,5 @@ modules:
             depends: Symfony # connect to Symfony
         - PhpBrowser:
             url: http://localhost:8000/
-        - \Helper\Functional
+            curl:
+              CURLOPT_TIMEOUT_MS: 50000 # timeout in seconds        - \Helper\Functional

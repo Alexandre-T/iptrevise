@@ -20,7 +20,19 @@ class FunctionalTester extends \Codeception\Actor
 {
     use _generated\FunctionalTesterActions;
 
-   /**
-    * Define custom actions here
-    */
+    /**
+     * Connect as $mail $password.
+     *
+     * @param string $mail
+     * @param string $password
+     */
+    public function connect(string $mail, string $password)
+    {
+        $I = $this;
+
+        $I->amOnPage('/login');
+        $I->fillField('Adresse email', $mail);
+        $I->fillField('Mot de passe', $password);
+        $I->click(' Se connecter');
+    }
 }
