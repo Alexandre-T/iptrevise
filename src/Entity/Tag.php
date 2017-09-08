@@ -20,11 +20,22 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use DateTime;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
+ * Tag class.
+ *
+ * @category App\Entity
+ *
+ * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
+ * @license Cerema 2017
+ *
  * @ORM\Entity(repositoryClass="App\Repository\TagRepository")
  * @ORM\Table(name="te_tag")
  * @Gedmo\Loggable
+ * @UniqueEntity("label", message="form.tag.error.label.unique")
+ *
  */
 class Tag
 {
@@ -43,6 +54,9 @@ class Tag
      * Label of the tag.
      *
      * @var string
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(max="32")
      *
      * @ORM\Column(
      *     type="string",

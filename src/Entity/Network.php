@@ -20,6 +20,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use DateTime;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Network class.
@@ -32,6 +34,8 @@ use DateTime;
  * @ORM\Entity(repositoryClass="App\Repository\NetworkRepository")
  * @ORM\Table(name="te_network", options={"comment":"Table entité des réseaux"})
  * @Gedmo\Loggable
+ *
+ * @UniqueEntity("label", message="form.network.error.label.unique")
  */
 class Network
 {
@@ -50,6 +54,9 @@ class Network
      * Label of the Network.
      *
      * @var string
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(max="32")
      *
      * @ORM\Column(
      *     type="string",
@@ -78,6 +85,8 @@ class Network
      *
      * @var int
      *
+     * @Assert\NotBlank()
+     *
      * @ORM\Column(type="bigint", nullable=false, name="net_ip", options={"unsigned":true,"comment":"Adresse Réseau IPv4"})
      * @Gedmo\Versioned
      */
@@ -88,11 +97,13 @@ class Network
      *
      * @var int
      *
+     * @Assert\NotBlank()
+     *
      * @ORM\Column(
      *     type="smallint",
      *     nullable=false,
      *     name="net_masque",
-     *     options={"unsigned":true,"comment":"Masque du réseau"}
+     *     options={"default":32,"unsigned":true,"comment":"Masque du réseau"}
      * )
      * @Gedmo\Versioned
      */
@@ -103,13 +114,15 @@ class Network
      *
      * @var string
      *
+     * @Assert\NotBlank()
+     *
      * @ORM\Column(
      *     type="string",
      *     unique=true,
      *     length=6,
      *     nullable=false,
      *     name="net_couleur",
-     *     options={"comment":"Couleur ergonomique du réseau"}
+     *     options={"default":"'000000'","comment":"Couleur ergonomique du réseau"}
      * )
      * @Gedmo\Versioned
      */

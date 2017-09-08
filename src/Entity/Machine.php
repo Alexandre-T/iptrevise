@@ -20,6 +20,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use DateTime;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 /**
  * Machine class.
@@ -32,6 +35,9 @@ use DateTime;
  * @ORM\Entity(repositoryClass="App\Repository\MachineRepository")
  * @ORM\Table(name="te_machine", options={"comment":"Table entité des machines"})
  * @Gedmo\Loggable
+ *
+ * @UniqueEntity("label", message="form.machine.error.label.unique")
+ *
  */
 class Machine
 {
@@ -50,6 +56,9 @@ class Machine
      * Label of Machine.
      *
      * @var string
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(max="32")
      *
      * @ORM\Column(
      *     type="string",

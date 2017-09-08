@@ -18,6 +18,9 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use DateTime;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 /**
  * Ip class.
@@ -30,6 +33,8 @@ use DateTime;
  * @ORM\Entity(repositoryClass="App\Repository\IpRepository")
  * @ORM\Table(name="te_ip")
  * @Gedmo\Loggable
+ *
+ * @UniqueEntity("label", message="form.user.error.label.unique")
  */
 class Ip
 {
@@ -49,7 +54,10 @@ class Ip
      *
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=false, name="ip_lib", options={"comment":"Libellé de l'adresse IP"})
+     * @Assert\NotBlank()
+     * @Assert\Length(max="32")
+     *
+     * @ORM\Column(type="string", length=32, nullable=false, name="ip_lib", options={"comment":"Libellé de l'adresse IP"})
      * @Gedmo\Versioned
      */
     private $label;
