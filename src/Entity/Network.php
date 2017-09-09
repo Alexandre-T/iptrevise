@@ -118,11 +118,10 @@ class Network implements InformationInterface
      *
      * @ORM\Column(
      *     type="string",
-     *     unique=true,
      *     length=6,
      *     nullable=false,
      *     name="net_couleur",
-     *     options={"default":"'000000'","comment":"Couleur ergonomique du réseau"}
+     *     options={"default":"000000","comment":"Couleur ergonomique du réseau"}
      * )
      * @Gedmo\Versioned
      */
@@ -383,7 +382,7 @@ class Network implements InformationInterface
      *
      * @return int
      */
-    public function getCapacity(): int
+    public function getCapacity()
     {
         return pow(2, $this->mask);
     }
