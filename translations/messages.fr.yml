@@ -47,14 +47,13 @@ administration.user.show.title %name%: 'Utilisateur %name%'
 default.actions.back.list: 'Liste des réseaux'
 
 default.network.list.title: 'Liste des réseaux'
-default.network.create: 'Créer un nouveau réseau'
+default.network.create: 'Nouveau réseau'
 default.network.created %name%: 'Le réseau « %name% » a été créé avec succès !'
 default.network.create.title: 'Créer un nouveau réseau'
 default.network.deleted %name%: 'Le réseau « %name% » a été supprimé avec succès !'
 default.network.edit.title %name%: 'Modification du réseau « %name% »'
 default.network.updated %name%: 'Le réseau « %name% » a été modifié avec succès !'
 default.network.show.title %name%: 'Consultation du réseau « %name% »'
-
 
 form.network.field.address: 'Adresse/Masque'
 form.network.field.color: 'Couleur'
@@ -68,7 +67,7 @@ form.network.help.color: 'Entrer la couleur de représentation du réseau au for
 form.network.help.description: 'Entrez la description du réseau'
 form.network.help.ip: 'Entrez l’adresse réseau au format IPv4'
 form.network.help.label: 'Entrez l’intitulé du réseau'
-form.network.help.mask: 'Entrez le masque réseau (de 4 à 32)'
+form.network.help.mask: 'Entrez le masque réseau (de 0 à 32)'
 
 form.user.field.username: 'Identifiant'
 form.user.field.label: 'Identifiant'

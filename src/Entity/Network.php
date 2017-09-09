@@ -85,8 +85,6 @@ class Network implements InformationInterface
      *
      * @var int
      *
-     * @Assert\NotBlank()
-     *
      * @ORM\Column(type="bigint", nullable=false, name="net_ip", options={"unsigned":true,"comment":"Adresse Réseau IPv4"})
      * @Gedmo\Versioned
      */
@@ -97,7 +95,12 @@ class Network implements InformationInterface
      *
      * @var int
      *
-     * @Assert\NotBlank()
+     * @Assert\Range(
+     *     min = 0,
+     *     max = 32,
+     *     minMessage="form.network.error.mask.min",
+     *     maxMessage="form.network.error.mask.max"
+     * )
      *
      * @ORM\Column(
      *     type="smallint",
@@ -115,6 +118,11 @@ class Network implements InformationInterface
      * @var string
      *
      * @Assert\NotBlank()
+     * @Assert\Regex(
+     *     pattern="/^([0-9a-f]{3}|[0-9a-f]{6})$/i",
+     *     message="form.network.error.color.pattern"
+     * )
+     * @see https://stackoverflow.com/questions/9682709/regexp-matching-hex-color-syntax-and-shorten-form
      *
      * @ORM\Column(
      *     type="string",
