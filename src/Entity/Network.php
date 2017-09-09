@@ -37,7 +37,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @UniqueEntity("label", message="form.network.error.label.unique")
  */
-class Network
+class Network implements InformationInterface
 {
     /**
      * Internal identifier.
@@ -153,7 +153,9 @@ class Network
      *
      * @var Collection
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\Ip", mappedBy="network")
+     * @ORM\OneToMany(targetEntity="App\Entity\Ip", mappedBy="network", fetch="EXTRA_LAZY")
+     *
+     * @see http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/tutorials/extra-lazy-associations.html
      */
     private $ips;
 
@@ -366,4 +368,24 @@ class Network
 
         return $this;
     }
+
+    /**
+     * Count IPS.
+     *
+     * @return int
+     */
+    public function getIpCount(): int
+    {
+        return $this->ips->count();
+    }
+    /**
+     * Calculate IP capacity of a network.
+     *
+     * @return int
+     */
+    public function getCapacity(): int
+    {
+        return pow(2, $this->mask);
+    }
+
 }

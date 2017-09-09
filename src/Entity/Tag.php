@@ -37,7 +37,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @UniqueEntity("label", message="form.tag.error.label.unique")
  *
  */
-class Tag
+class Tag implements InformationInterface
 {
     /**
      * Identifier of Tag.

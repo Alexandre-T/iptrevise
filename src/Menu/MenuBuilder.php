@@ -92,7 +92,7 @@ class MenuBuilder
 
         if ($this->authorization->isGranted('ROLE_READER')) {
             $dropdownSettings = $menu->addChild('menu.main.networks', [
-                'icon' => 'fw fa-network',
+                'icon' => 'fw fa-sitemap',
                 'pull-right' => true,
                 'dropdown' => true,
                 'caret' => true,
@@ -100,7 +100,7 @@ class MenuBuilder
 
             $dropdownSettings->addChild('menu.main.networks', [
                 'icon' => 'fw fa-sitemap',
-                'route' => 'home',
+                'route' => 'default_network_index',
             ]);
 
             $dropdownSettings->addChild('menu.main.machines', [

@@ -44,6 +44,32 @@ administration.user.edit.title %name%: 'Modification de l’utilisateur %name%'
 administration.user.list.title: 'Liste des utilisateurs'
 administration.user.show.title %name%: 'Utilisateur %name%'
 
+default.actions.back.list: 'Liste des réseaux'
+
+default.network.list.title: 'Liste des réseaux'
+default.network.create: 'Créer un nouveau réseau'
+default.network.created %name%: 'Le réseau « %name% » a été créé avec succès !'
+default.network.create.title: 'Créer un nouveau réseau'
+default.network.deleted %name%: 'Le réseau « %name% » a été supprimé avec succès !'
+default.network.edit.title %name%: 'Modification du réseau « %name% »'
+default.network.updated %name%: 'Le réseau « %name% » a été modifié avec succès !'
+default.network.show.title %name%: 'Consultation du réseau « %name% »'
+
+
+form.network.field.address: 'Adresse/Masque'
+form.network.field.color: 'Couleur'
+form.network.field.description: 'Description'
+form.network.field.ip: 'Adresse réseau'
+form.network.field.label: 'Intitulé'
+form.network.field.mask: 'Masque réseau'
+
+form.network.help.address: 'Entrez l’adresse et le masque du réseau'
+form.network.help.color: 'Entrer la couleur de représentation du réseau au format HTML : #000000. Évitez le blanc et les couleurs claires.'
+form.network.help.description: 'Entrez la description du réseau'
+form.network.help.ip: 'Entrez l’adresse réseau au format IPv4'
+form.network.help.label: 'Entrez l’intitulé du réseau'
+form.network.help.mask: 'Entrez le masque réseau (de 4 à 32)'
+
 form.user.field.username: 'Identifiant'
 form.user.field.label: 'Identifiant'
 form.user.field.mail: 'Adresse mail'
@@ -83,9 +109,18 @@ menu.user.sign-up: 'Inscription'
 menu.user.show-profile: 'Consultation'
 menu.user.your-profile: 'Votre profil'
 
+network.actions.back.list: 'Liste des réseaux'
+
 ROLE_ADMIN: 'Administrateur'
 ROLE_USER: 'Utilisateur cerbérisé'
 ROLE_ORGANISER: 'Organisateur'
 ROLE_READER: 'Lecteur'
 
 title.security.login: 'Connexion'
+
+(optional): '(optionnel)'
+
+# TODO Ce sont des placeholders qui viennent de NetworkType et qu'il faudrait ne plus traduire
+000000: '000000'
+192.168.0.0: '192.168.0.0'
+24: '24'

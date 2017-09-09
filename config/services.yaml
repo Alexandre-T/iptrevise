@@ -92,8 +92,16 @@ services:
             - { name: twig.extension }
 
     # Roles twig filter
-    app.twig_extension:
+    app.twig.roles_extension:
         class: App\Twig\RolesExtension
+        public: false
+        tags:
+            - { name: twig.extension }
+        calls:
+            - [ setTranslator, ['@translator.default']]
+    # Network twig filter
+    app.twig.network_extension:
+        class: App\Twig\NetworkExtension
         public: false
         tags:
             - { name: twig.extension }

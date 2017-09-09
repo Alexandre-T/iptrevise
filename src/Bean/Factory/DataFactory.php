@@ -33,7 +33,7 @@ class DataFactory
     const VALID_USER = ['label', 'mail', 'password'];
 
     /**
-     * Create Data from a serialized data.
+     * Create Data from a serialized user data.
      *
      * @param array $rowdata
      *
@@ -42,7 +42,7 @@ class DataFactory
     public static function createUserData(array $rowdata): array
     {
         //Initialization
-        $resultat = [];
+        $result = [];
         foreach ($rowdata as $column => $value) {
             $data = new Data();
 
@@ -58,9 +58,93 @@ class DataFactory
                     $data->setName($value);
                 }
             }
-            $resultat[] = $data;
+            $result[] = $data;
         }
 
-        return $resultat;
+        return $result;
+    }
+    /**
+     * Create Data from a serialized network data.
+     *
+     * @param array $rowdata
+     *
+     * @return array of Data
+     */
+    public static function createNetworkData(array $rowdata): array
+    {
+        //Initialization
+        $result = [];
+        foreach ($rowdata as $column => $value) {
+            $data = new Data();
+
+            $data->setLabel("form.network.field.$column");
+            if (empty($value)) {
+                $data->setNone(true);
+            } else {
+                if ('ip' == $column){
+                    $data->setName(long2ip($value));
+                } else {
+                    $data->setName($value);
+                }
+            }
+            $result[] = $data;
+        }
+
+        return $result;
+    }
+    /**
+     * Create Data from a serialized machine data.
+     *
+     * @param array $rowdata
+     *
+     * @return array of Data
+     */
+    public static function createMachineData(array $rowdata): array
+    {
+        //Initialization
+        $result = [];
+        foreach ($rowdata as $column => $value) {
+            $data = new Data();
+
+            $data->setLabel("form.machine.field.$column");
+            if (empty($value)) {
+                $data->setNone(true);
+            } else {
+                $data->setName($value);
+            }
+            $result[] = $data;
+        }
+
+        return $result;
+    }
+    /**
+     * Create Data from a serialized ip data.
+     *
+     * @param array $rowdata
+     *
+     * @return array of Data
+     */
+    public static function createIpData(array $rowdata): array
+    {
+        //Initialization
+        $result = [];
+        foreach ($rowdata as $column => $value) {
+            $data = new Data();
+
+            $data->setLabel("form.ip.field.$column");
+            if (empty($value)) {
+                $data->setNone(true);
+            } else {
+                if ('ip' == $column){
+                    $data->setName(long2ip($value));
+                } else {
+                    $data->setName($value);
+                }
+
+            }
+            $result[] = $data;
+        }
+
+        return $result;
     }
 }

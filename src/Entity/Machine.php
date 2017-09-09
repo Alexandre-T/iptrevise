@@ -39,7 +39,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @UniqueEntity("label", message="form.machine.error.label.unique")
  *
  */
-class Machine
+class Machine implements InformationInterface
 {
     /**
      * Identifier of Machine.

@@ -46,8 +46,8 @@ security:
                 path: /logout
 
     role_hierarchy:
-        ROLE_READER:     [ROLE_USER]
-        ROLE_ORGANISER:  [ROLE_READER]
+        ROLE_READER:     [ROLE_USER, ROLE_READ_NETWORK, ROLE_READ_IP, ROLE_READ_MACHINE]
+        ROLE_ORGANISER:  [ROLE_READER, ROLE_MANAGE_NETWORK, ROLE_MANAGE_IP, ROLE_MANAGE_MACHINE]
         ROLE_ADMIN:      [ROLE_MANAGE_USER, ROLE_ORGANISER]
 
     access_control:

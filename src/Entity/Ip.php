@@ -36,7 +36,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @UniqueEntity("label", message="form.user.error.label.unique")
  */
-class Ip
+class Ip implements InformationInterface
 {
     /**
      * IP Identifient.
