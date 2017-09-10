@@ -26,10 +26,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  *
  * @category Form
  *
- * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com
- * @license GNU General Public License, version 3
+ * @category App\Form\Type
  *
- * @see http://opensource.org/licenses/GPL-3.0
+ * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
+ * @license Cerema 2017
  */
 class LoginForm extends AbstractType
 {

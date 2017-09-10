@@ -23,12 +23,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * User form builder.
  *
- * @category Form
+ * @category App\Form\Type
  *
- * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com
- * @license GNU General Public License, version 3
- *
- * @see http://opensource.org/licenses/GPL-3.0
+ * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
+ * @license Cerema 2017
  */
 class UserType extends AbstractType
 {
