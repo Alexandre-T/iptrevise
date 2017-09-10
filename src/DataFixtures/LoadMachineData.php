@@ -63,7 +63,7 @@ class LoadMachineData extends AbstractFixture implements FixtureInterface, Order
                 $machine[$index] = (new Machine())
                     ->setLabel("Machine $index")
                     ->setDescription("Description $index")
-                    ->setInterface(rand(1,8));
+                    ->setInterface($index % 8 + 1);
 
                 $this->addReference("machine_$index", $machine[$index]);
                 $manager->persist($machine[$index]);

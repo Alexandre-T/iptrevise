@@ -7,3 +7,6 @@ form.network.error.ip.min: 'Cette adresse IP n’est pas valide.'
 form.network.error.label.unique: 'Cet intitulé de réseau est déjà utilisé.'
 form.network.error.mask.min: 'Le masque doit être supérieur ou égal à 0.'
 form.network.error.mask.max: 'Le masque doit être inférieur ou égal à 32.'
+
+form.machine.error.label.unique: 'Cet intitulé de machine est déjà utilisé.'
+form.machine.error.interface.min: 'Le nombre d’interface réseau doit être supérieur ou égal à {{ compared_value }}.'

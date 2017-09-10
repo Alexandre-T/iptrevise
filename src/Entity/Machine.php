@@ -87,15 +87,17 @@ class Machine implements InformationInterface
      *
      * @var int
      *
+     * @Assert\GreaterThanOrEqual(value="0", message="form.machine.error.interface.min")
+     *
      * @ORM\Column(
      *     type="smallint",
      *     nullable=false,
      *     name="mac_interface",
-     *     options={"default":0,"unsigned":true,"comment":"Nombre d'interface réseau de la machine"}
+     *     options={"default":1,"unsigned":true,"comment":"Nombre d'interface réseau de la machine"}
      * )
      * @Gedmo\Versioned
      */
-    private $interface = 0;
+    private $interface = 1;
 
     /**
      * Datetime creation (in application) of Machine.

@@ -54,7 +54,7 @@ class MachineTest extends TestCase
         self::assertNull($this->machine->getDescription());
         self::assertNull($this->machine->getId());
         self::assertNull($this->machine->getLabel());
-        self::assertEquals(0, $this->machine->getInterface());
+        self::assertEquals(1, $this->machine->getInterface());
         self::assertInternalType('int', $this->machine->getInterface());
         self::assertNotNull($this->machine->getIps());
         self::assertNotNull($this->machine->getTags());

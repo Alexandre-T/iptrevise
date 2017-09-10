@@ -8,7 +8,7 @@ use Doctrine\DBAL\Schema\Schema;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-class Version20170909100259 extends AbstractMigration
+class Version20170910115230 extends AbstractMigration
 {
     /**
      * @param Schema $schema
@@ -18,10 +18,7 @@ class Version20170909100259 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('DROP INDEX uniq_7b3230d7dec3e8ce');
-        $this->addSql('ALTER TABLE te_network ALTER net_masque SET DEFAULT 32');
-        $this->addSql('ALTER TABLE te_network ALTER net_couleur SET DEFAULT \'000000\'');
-        $this->addSql('ALTER TABLE te_ip ALTER ip_lib TYPE VARCHAR(32)');
+        $this->addSql('ALTER TABLE te_machine ALTER mac_interface SET DEFAULT 1');
     }
 
     /**
@@ -32,9 +29,6 @@ class Version20170909100259 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('ALTER TABLE te_network ALTER net_masque DROP DEFAULT');
-        $this->addSql('ALTER TABLE te_network ALTER net_couleur DROP DEFAULT');
-        $this->addSql('CREATE UNIQUE INDEX uniq_7b3230d7dec3e8ce ON te_network (net_couleur)');
-        $this->addSql('ALTER TABLE te_ip ALTER ip_lib TYPE VARCHAR(255)');
+        $this->addSql('ALTER TABLE te_machine ALTER mac_interface SET DEFAULT 0');
     }
 }

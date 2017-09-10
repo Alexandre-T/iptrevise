@@ -33,7 +33,7 @@
         <tbody>
         {% for row in pagination %}
             {% set machine = row[0] %}
-            <tr>
+            <tr class="row-{{ loop.index }}">
                 <td headers="machine-color"><span class="fa fa-desktop"></span></td>
                 <td headers="machine-label">{{ machine.label }}</td>
                 <td headers="machine-interface">{{ machine.interface }}</td>
