@@ -54,6 +54,11 @@ class NetworkExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
+            'ip' => new \Twig_SimpleFilter(
+                'ip',
+                [$this, 'ipFilter'],
+                []
+            ),
             'network' => new \Twig_SimpleFilter(
                 'network',
                 [$this, 'networkFilter'],
@@ -68,16 +73,27 @@ class NetworkExtension extends \Twig_Extension
     }
 
     /**
+     * Ip Filter.
+     *
+     * @param int $address Ip address
+     *
+     * @return string       IP Adress / Mask
+     */
+    public function ipFilter($address)
+    {
+       return long2ip($address);
+    }
+    /**
      * Network Filter.
      *
-     * @param int $address Network address 
+     * @param int $address Network address
      * @param int $mask    Network mask
-     * 
+     *
      * @return string       IP Adress / Mask
      */
     public function networkFilter($address, $mask = 24)
     {
-       return long2ip($address).'/'.$mask;
+       return $this->ipFilter($address).'/'.$mask;
     }
     /**
      * Network Filter with Tooltip.
