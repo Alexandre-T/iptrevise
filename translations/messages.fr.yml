@@ -44,8 +44,12 @@ administration.user.edit.title %name%: 'Modification de l’utilisateur %name%'
 administration.user.list.title: 'Liste des utilisateurs'
 administration.user.show.title %name%: 'Utilisateur %name%'
 
+default.edit: 'Éditer'
+default.show: 'Consulter'
+
 default.actions.back.list: 'Liste des réseaux'
 
+default.network.ips: 'Adresses IP'
 default.network.list.title: 'Liste des réseaux'
 default.network.create: 'Nouveau réseau'
 default.network.created %name%: 'Le réseau « %name% » a été créé avec succès !'
