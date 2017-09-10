@@ -49,6 +49,16 @@ default.show: 'Consulter'
 
 default.actions.back.list: 'Liste des réseaux'
 
+default.machine.ips: 'Adresses IP'
+default.machine.list.title: 'Liste des machines'
+default.machine.create: 'Nouvelle machine'
+default.machine.created %name%: 'La machine « %name% » a été créée avec succès !'
+default.machine.create.title: 'Créer une nouvelle machine'
+default.machine.deleted %name%: 'La machine « %name% » a été supprimée avec succès !'
+default.machine.edit.title %name%: 'Modification de la machine « %name% »'
+default.machine.updated %name%: 'La machine « %name% » a été modifiée avec succès !'
+default.machine.show.title %name%: 'Consultation de la machine « %name% »'
+
 default.network.ips: 'Adresses IP'
 default.network.list.title: 'Liste des réseaux'
 default.network.create: 'Nouveau réseau'
@@ -62,6 +72,22 @@ default.network.show.title %name%: 'Consultation du réseau « %name% »'
 default.tab.general: 'Informations générales'
 default.tab.logs: 'Journal de bord'
 default.tab.informations: 'Informations'
+
+form.machine.field.description: 'Description'
+form.machine.field.interface: 'Interface'
+form.machine.field.ip: 'Adresse réseau'
+form.machine.field.label: 'Intitulé'
+
+form.machine.help.description: 'Entrez une description de la machine (les services et applications qu’elle fournit)'
+form.machine.help.interface: 'Entrez le nombre d’interfaces réseau physique de la machine'
+form.machine.help.label: 'Entrez l’intitulé de la machine'
+
+form.network.help.address: 'Entrez l’adresse et le masque du réseau'
+form.network.help.color: 'Entrer la couleur de représentation du réseau au format HTML : #000000. Évitez le blanc et les couleurs claires.'
+form.network.help.description: 'Entrez la description du réseau'
+form.network.help.ip: 'Entrez l’adresse réseau au format IPv4'
+form.network.help.label: 'Entrez l’intitulé du réseau'
+form.network.help.mask: 'Entrez le masque réseau (de 0 à 32)'
 
 form.network.field.address: 'Adresse/Masque'
 form.network.field.color: 'Couleur'
@@ -108,7 +134,6 @@ menu.main.networks: 'Réseaux'
 menu.main.machines: 'Machines'
 menu.main.ips: 'Adresses IP'
 
-
 menu.user.edit-profile: 'Édition'
 menu.user.logout: 'Déconnexion'
 menu.user.sign-in: 'Connexion'
@@ -116,6 +141,7 @@ menu.user.sign-up: 'Inscription'
 menu.user.show-profile: 'Consultation'
 menu.user.your-profile: 'Votre profil'
 
+machine.actions.back.list: 'Liste des machines'
 network.actions.back.list: 'Liste des réseaux'
 
 ROLE_ADMIN: 'Administrateur'

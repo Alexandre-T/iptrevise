@@ -1,0 +1,51 @@
+{% extends '@App/default/base.html.twig' %}
+
+{% set administration_entity_show = 'default_machine_show' %}
+
+{% block title %}{{ 'default.machine.edit.title %name%'|trans({'%name%': machine.label})}} · {{ parent() }}{% endblock title %}
+
+{% block headline %}{{ 'default.machine.edit.title %name%'|trans({'%name%': machine.label})}}{% endblock %}
+
+{% block content_settings %}
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h1 class="panel-title">{{ 'default.machine.edit.title %name%'|trans({'%name%': machine.label})}}</h1>
+        </div>
+        <div class="panel-body">
+            {{ form_start(edit_form) }}
+            {{ form_widget(edit_form) }}
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                    <button class="btn btn-primary" type="submit">
+                        <span class="fa fa-save"></span>
+                        {{ 'administration.actions.edit' | trans }}
+                    </button>
+                </div>
+            </div>
+            {{ form_end(edit_form) }}
+        </div>
+    </div>
+{% endblock content_settings%}
+
+{% block content_action %}
+    <h3>{{ 'administration.actions' | trans }}</h3>
+    <div class="text-center" id="administration-actions">
+        <div class="btn-group-vertical">
+            <a class="btn-mini btn btn-default" href="{{ path('default_machine_index') }}">
+                <span class="fa fa-desktop"></span>&nbsp;{{ 'machine.actions.back.list' | trans }}
+            </a>
+            <a class="btn-mini btn btn-default" href="{{ path('default_machine_show', { 'id': machine.id }) }}">
+                <span class="fa fa-eye"></span>&nbsp;{{ 'administration.actions.show' | trans }}
+            </a>
+            {% if isDeletable %}
+                <a class="btn btn-danger btn-mini confirm-delete" data-toggle="modal" data-target="#confirm-delete" data-form="form" href="#">
+                    <span class="fa fa-trash-o"></span>&nbsp;{{ 'administration.actions.delete' | trans }}
+                </a>
+            {% else %}
+                <span class="btn btn-danger disabled">
+                    <span class="fa fa-trash-o"></span>&nbsp;{{ 'administration.actions.delete' | trans }}
+                </span>
+            {% endif %}
+        </div>
+    </div>
+{% endblock content_action %}

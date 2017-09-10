@@ -105,7 +105,7 @@ class MenuBuilder
 
             $dropdownSettings->addChild('menu.main.machines', [
                 'icon' => 'fw fa-desktop',
-                'route' => 'home',
+                'route' => 'default_machine_index',
             ]);
 
             $dropdownSettings->addChild('menu.main.ips', [

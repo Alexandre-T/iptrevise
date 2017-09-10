@@ -1,0 +1,69 @@
+{% extends '@App/default/base.html.twig' %}
+
+{% block title %}{{ 'default.machine.list.title'|trans }} · {{ parent() }}{% endblock title %}
+
+{% block headline %}
+    <span class="fa fa-fw fa-desktop"></span>
+    {{ 'default.machine.list.title'|trans }}
+{% endblock %}
+
+{% set direction = pagination.getDirection() %}
+
+{% block content_content %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th id="machine-color">&nbsp;&nbsp;<span class="fa fa-machine"></span></th>
+            <th id="machine-label">
+                {% if pagination.isSorted('machine.label') %}
+                    <span class="fa fa-sort-alpha-{{ direction }}"></span>
+                {% endif %}
+                {{ knp_pagination_sortable(pagination, 'form.machine.field.label' | trans, 'machine.label')}}
+            </th>
+            <th id="machine-address">
+                {% if pagination.isSorted('machine.mail') %}
+                    <span class="fa fa-sort-alpha-{{ direction }}"></span>
+                {% endif %}
+                {{ knp_pagination_sortable(pagination, 'form.machine.field.interface' | trans, 'machine.interface')}}
+            </th>
+            <th id="machine-ips">{{ 'default.machine.ips' | trans }}</th>
+            <th id="machine-actions">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in pagination %}
+            {% set machine = row[0] %}
+            <tr>
+                <td headers="machine-color"><span class="fa fa-desktop"></span></td>
+                <td headers="machine-label">{{ machine.label }}</td>
+                <td headers="machine-interface">{{ machine.interface }}</td>
+                <td headers="machine-ips">{{ row['ipsCount'] | localizednumber }}</td>
+                <td headers="machine-actions">
+                    <div class="btn-group-xs btn-group">
+                        <a class="btn btn-default" href="{{ path('default_machine_show', { 'id': machine.id }) }}">
+                            <span class="fa fa-eye"></span>
+                            <span class="sr-only">{{ 'default.show' | trans }}</span>
+                        </a>
+                        <a class="btn btn-default" href="{{ path('default_machine_edit', { 'id': machine.id }) }}">
+                            <span class="fa fa-edit"></span>
+                            <span class="sr-only">{{ 'default.edit' | trans }}</span>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="navigation text-right">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+{% endblock content_content %}
+
+{% block content_action %}
+    <div class="text-center">
+        <a class="btn btn-default" href="{{ path('default_machine_new') }}">
+            <span class="fa fa-desktop"></span>
+            {{ 'default.machine.create' | trans }}
+        </a>
+    </div>
+{% endblock content_action %}
