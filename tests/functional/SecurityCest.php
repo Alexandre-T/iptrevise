@@ -44,7 +44,6 @@ class SecurityCest
 
         $I->see('Réseaux', '.navbar');
         $I->see('Machines', '.navbar');
-        $I->see('Adresses IP', '.navbar');
 
         $I->click('Déconnexion');
         $I->seeCurrentUrlEquals('/');
@@ -96,8 +95,7 @@ class SecurityCest
 
         $I->see('Réseaux', '.navbar');
         $I->see('Machines', '.navbar');
-        $I->see('Adresses IP', '.navbar');
-        
+
         $I->see('Gestion des utilisateurs', '.navbar');
 
         $I->click('Déconnexion');
@@ -123,7 +121,6 @@ class SecurityCest
 
         $I->see('Réseaux', '.navbar');
         $I->see('Machines', '.navbar');
-        $I->see('Adresses IP', '.navbar');
 
         $I->dontSee('Gestion des utilisateurs', '.navbar');
 

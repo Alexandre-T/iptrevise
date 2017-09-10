@@ -107,11 +107,6 @@ class MenuBuilder
                 'icon' => 'fw fa-desktop',
                 'route' => 'default_machine_index',
             ]);
-
-            $dropdownSettings->addChild('menu.main.ips', [
-                'icon' => 'fw fa-globe',
-                'route' => 'home',
-            ]);
         }
 
         // ... add more children
