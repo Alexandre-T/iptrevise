@@ -4,7 +4,7 @@
 
 {% block title %}{{ 'default.network.edit.title %name%'|trans({'%name%': network.label})}} · {{ parent() }}{% endblock title %}
 
-{% block headline %}{% endblock %}
+{% block headline %}{{ 'default.network.edit.title %name%'|trans({'%name%': network.label})}}{% endblock %}
 
 {% block content_settings %}
     <div class="panel panel-primary">

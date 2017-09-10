@@ -17,3 +17,9 @@ div.row div.col-sm-3 div.panel dl.dl-horizontal dt{
 div.col-sm-3 div.panel dl.dl-horizontal dd{
     margin-left: 100px;
 }
+
+.tab-pane .panel,.tab-pane .panel-heading{
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-top-style: none;
+}

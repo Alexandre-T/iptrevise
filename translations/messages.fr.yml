@@ -55,6 +55,10 @@ default.network.edit.title %name%: 'Modification du réseau « %name% »'
 default.network.updated %name%: 'Le réseau « %name% » a été modifié avec succès !'
 default.network.show.title %name%: 'Consultation du réseau « %name% »'
 
+default.tab.general: 'Informations générales'
+default.tab.logs: 'Journal de bord'
+default.tab.informations: 'Informations'
+
 form.network.field.address: 'Adresse/Masque'
 form.network.field.color: 'Couleur'
 form.network.field.description: 'Description'
