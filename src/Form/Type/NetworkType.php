@@ -62,7 +62,7 @@ class NetworkType extends AbstractType
                 'label' => 'form.network.field.description',
                 'help_block' => 'form.network.help.description',
             ])
-            ->add('ip', IpType::class, [
+            ->add('ip', AddressIpType::class, [
                 'label' => 'form.network.field.ip',
                 'help_block' => 'form.network.help.ip',
                 'attr' => [

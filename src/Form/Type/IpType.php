@@ -11,23 +11,22 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
+
 namespace App\Form\Type;
 
-use App\Form\DataTransformer\IpTransformer;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * IpType class.
+ * Ip form builder.
  *
  * @category App\Form\Type
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license Cerema 2017
- *
  */
 class IpType extends AbstractType
 {
@@ -44,27 +43,50 @@ class IpType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $ipTransformer = new IpTransformer();
-        $builder->addModelTransformer($ipTransformer);
+        $builder
+            ->add('label', null, [
+                'label' => 'form.ip.field.label',
+                'help_block' => 'form.ip.help.label',
+            ])
+            ->add('network', EntityType::class, [
+                'label' => 'form.ip.field.network',
+                'help_block' => 'form.ip.help.network',
+            ])
+            ->add('ip', AddressIpType::class, [
+                'label' => 'form.ip.field.ip',
+                'help_block' => 'form.ip.help.ip',
+            ])
+            ->add('description', null, [
+                'label' => 'form.ip.field.description',
+                'help_block' => 'form.ip.help.description',
+            ])
+        ;
     }
 
     /**
+     * Configures the options for this type.
      *
-     *
-     * @return string
+     * @param OptionsResolver $resolver The resolver for the options
      */
-    public function getName()
+    public function configureOptions(OptionsResolver $resolver)
     {
-        return 'ip';
+        $resolver->setDefaults(array(
+            'data_class' => 'App\Entity\Ip',
+            'render_fieldset' => false,
+            'show_legend' => false,
+        ));
     }
 
     /**
+     * Returns the prefix of the template block name for this type.
      *
+     * The block prefix defaults to the underscored short class name with
+     * the "Type" suffix removed (e.g. "IpProfileType" => "ip_profile").
      *
-     * @return string
+     * @return string The prefix of the template block name
      */
-    public function getParent()
+    public function getBlockPrefix()
     {
-        return TextType::class;
+        return 'app_ip';
     }
 }
