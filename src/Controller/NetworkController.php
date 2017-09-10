@@ -68,7 +68,6 @@ class NetworkController extends Controller
             self::LIMIT_PER_PAGE,
             ['defaultSortFieldName' => 'network.label', 'defaultSortDirection' => 'asc']
         );
-        dump($pagination);
         return $this->render('@App/default/network/index.html.twig', [
             'pagination' => $pagination,
         ]);
