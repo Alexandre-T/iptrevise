@@ -31,12 +31,13 @@
         </tr>
         </thead>
         <tbody>
-        {% for network in pagination %}
+        {% for row in pagination %}
+            {% set network = row[0] %}
             <tr>
                 <td headers="network-color" style="color: {{ '#' ~ network.color }}"><span class="fa fa-sitemap"></span></td>
                 <td headers="network-label">{{ network.label }}</td>
                 <td headers="network-address">{{ network.ip | network(network.mask) }}</td>
-                <td headers="network-ips">{{ network.ips.count | localizednumber }} / {{ network.capacity | localizednumber }}</td>
+                <td headers="network-ips">{{ row['ipsCount'] | localizednumber }} / {{ network.capacity | localizednumber }}</td>
                 <td headers="network-actions">
                     <div class="btn-group-xs btn-group">
                         <a class="btn btn-default" href="{{ path('default_network_show', { 'id': network.id }) }}">

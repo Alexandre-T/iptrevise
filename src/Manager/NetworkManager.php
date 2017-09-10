@@ -121,6 +121,12 @@ class NetworkManager implements LoggableManagerInterface, PaginatorInterface
      */
     public function getQueryBuilder()
     {
-        return $this->repository->createQueryBuilder(self::ALIAS);
+        $qb = $this->repository->createQueryBuilder(self::ALIAS);
+
+        $qb ->leftJoin(self::ALIAS.'.ips', 'ips')
+            ->addSelect('COUNT(ips.id) AS ipsCount')
+            ->groupBy(self::ALIAS.'.id');
+
+        return $qb;
     }
 }
