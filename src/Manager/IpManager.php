@@ -75,6 +75,17 @@ class IpManager implements LoggableManagerInterface, PaginatorInterface
         $this->em->flush();
     }
 
+
+    /**
+     * Return the Query builder needed by the paginator.
+     *
+     * @return QueryBuilder
+     */
+    public function getQueryBuilder()
+    {
+        return $this->repository->createQueryBuilder(self::ALIAS);
+    }
+
     /**
      * Is this entity deletable?
      *
@@ -101,7 +112,6 @@ class IpManager implements LoggableManagerInterface, PaginatorInterface
 
         return LogFactory::createIpLogs($logs);
     }
-
     /**
      * Save new or modified Ip.
      *
@@ -114,12 +124,13 @@ class IpManager implements LoggableManagerInterface, PaginatorInterface
     }
 
     /**
-     * Return the Query builder needed by the paginator.
+     * Unlink an IP from its machine.
      *
-     * @return QueryBuilder
+     * @param Ip $ip
      */
-    public function getQueryBuilder()
+    public function unlink(Ip $ip)
     {
-        return $this->repository->createQueryBuilder(self::ALIAS);
+        $ip->setMachine(null);
+        $this->save($ip);
     }
 }

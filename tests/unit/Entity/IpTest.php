@@ -51,31 +51,11 @@ class IpTest extends TestCase
     public function testConstructor()
     {
         self::assertNull($this->ip->getCreated());
-        self::assertNull($this->ip->getDescription());
         self::assertNull($this->ip->getId());
-        self::assertNull($this->ip->getLabel());
         self::assertNull($this->ip->getMachine());
         self::assertNull($this->ip->getNetwork());
         self::assertNull($this->ip->getUpdated());
         self::assertNull($this->ip->getIp());
-    }
-
-    /**
-     * Tests label getter, setter and aliases.
-     */
-    public function testLabel()
-    {
-        self::assertEquals($this->ip, $this->ip->setLabel('label'));
-        self::assertEquals('label', $this->ip->getLabel());
-    }
-
-    /**
-     * Tests description getter, setter and aliases.
-     */
-    public function testDescription()
-    {
-        self::assertEquals($this->ip, $this->ip->setDescription('description'));
-        self::assertEquals('description', $this->ip->getDescription());
     }
 
     /**

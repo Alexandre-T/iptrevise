@@ -1,9 +1,14 @@
+/** protect from toolbar overriding text **/
 body{
     margin-top:30px;
 }
+.toolbar-proof{
+    margin-top:50px;
+}
+
+/** Remove this two lines when the font-awesome icon will exist. **/
 .fa-gravatar:before {
     content: "\f1a0"; }
-
 .fa-gravatar {
     filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
     -webkit-transform: rotate(270deg);
@@ -11,13 +16,7 @@ body{
     transform: rotate(270deg);
 }
 
-div.row div.col-sm-3 div.panel dl.dl-horizontal dt{
-    width:90px;
-}
-div.col-sm-3 div.panel dl.dl-horizontal dd{
-    margin-left: 100px;
-}
-
+/** For the first panel just after a tab-pane **/
 .tab-pane .panel,.tab-pane .panel-heading{
     border-top-left-radius: 0;
     border-top-right-radius: 0;

@@ -18,7 +18,6 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use DateTime;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
@@ -34,7 +33,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table(name="te_ip")
  * @Gedmo\Loggable
  *
- * @UniqueEntity("label", message="form.user.error.label.unique")
+ * @UniqueEntity(fields={"ip", "network"}, message="form.ip.error.ip.unique")
  */
 class Ip implements InformationInterface
 {
@@ -48,29 +47,6 @@ class Ip implements InformationInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
-    /**
-     * IP label.
-     *
-     * @var string
-     *
-     * @Assert\NotBlank()
-     * @Assert\Length(max="32")
-     *
-     * @ORM\Column(type="string", length=32, nullable=false, name="ip_lib", options={"comment":"Libellé de l'adresse IP"})
-     * @Gedmo\Versioned
-     */
-    private $label;
-
-    /**
-     * IP Description.
-     *
-     * @var string
-     *
-     * @ORM\Column(type="text", nullable=true, name="ip_des", options={"comment":"Description de l'adresse IP"})
-     * @Gedmo\Versioned
-     */
-    private $description;
 
     /**
      * IPv4.
@@ -129,29 +105,9 @@ class Ip implements InformationInterface
      *
      * @return null|int
      */
-    public function getId(): ?integer
+    public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * Get the label of IP.
-     *
-     * @return string
-     */
-    public function getLabel(): ?string
-    {
-        return $this->label;
-    }
-
-    /**
-     * Get the Description of IP.
-     *
-     * @return string
-     */
-    public function getDescription(): ?string
-    {
-        return $this->description;
     }
 
     /**
@@ -205,34 +161,6 @@ class Ip implements InformationInterface
     }
 
     /**
-     * Set the label of IP.
-     *
-     * @param string $label
-     *
-     * @return Ip
-     */
-    public function setLabel(string $label): Ip
-    {
-        $this->label = $label;
-
-        return $this;
-    }
-
-    /**
-     * Set the description of this IP.
-     *
-     * @param string $description
-     *
-     * @return Ip
-     */
-    public function setDescription(string $description): Ip
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
      * Set the IP of this entity.
      *
      * @param int $ip
@@ -267,7 +195,7 @@ class Ip implements InformationInterface
      *
      * @return Ip
      */
-    public function setMachine(Machine $machine): Ip
+    public function setMachine(?Machine $machine): Ip
     {
         $this->machine = $machine;
 

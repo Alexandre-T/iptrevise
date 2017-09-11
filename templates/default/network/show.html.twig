@@ -31,7 +31,77 @@
                     <span class="fa fa-sitemap fa-4x" style="color: {{ '#' ~ network.color }}"></span>
                 </div>
             </div>
+            {% if 0 == network.ips.count %}
+                <div class="alert alert-info">
+                    <p>{{ 'default.network.no.ip' | trans }}</p>
+                </div>
+            {% endif %}
         </div>
+        {% if network.ips.count %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th id="network-ip-ip">
+                        <span class="fa fa-indent fa-fw"></span>
+                        {{ 'form.ip.field.ip' | trans }}
+                    </th>
+                    <th id="network-ip-machine-label">
+                        <span class="fa fa-desktop fa-fw"></span>
+                        {{ 'form.machine.field.label' | trans }}
+                    </th>
+                    <th id="network-ip-machine-label">
+                        <span class="fa fa-tags fa-fw"></span>
+                        {{ 'form.machine.field.tags' | trans }}
+                    </th>
+                    <th id="network-ip-actions">
+                        {{ 'default.network.actions' | trans }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ip in network.ips %}
+                <tr>
+                    <td headers="network-ip-ip">{{ ip.ip | ip }}</td>
+                    <td headers="network-ip-machine-label">
+                        {%- if ip.machine -%}
+                            {{ ip.machine.label }}
+                        {%- else -%}
+                            <em>{{ 'default.machine.none' | trans }}</em>
+                        {%- endif -%}
+                    </td>
+                    <td headers="network-ip-machine-label">@TODO</td>
+                    <td headers="network-ip-actions">
+                        <div class="btn-group btn-group-sm" role="group" aria-label="{{ 'default.ip.manage %ip%' | trans({'%ip%': ip.ip | ip}) }}">
+                            <button href="#" data-toggle="tooltip" title="{{ 'default.ip.action.edit' | trans }}" class="btn btn-info">
+                                <span class="fa fa-pencil"></span>
+                                <span class="sr-only">{{ 'default.action.edit' | trans }}</span>
+                            </button>
+                            {% if ip.machine %}
+                                <a href="{{ path ('default_network_unlink', {'id': ip.id}) }}" data-toggle="tooltip" title="{{ 'default.ip.action.dissociate' | trans }}" class="btn btn-warning ">
+                                    <span class="fa fa-unlink"></span>
+                                    <span class="sr-only">{{ 'default.ip.action.dissociate' | trans }}</span>
+                                </a>
+                            {% else %}
+                                <button href="#" data-toggle="tooltip" title="{{ 'default.ip.action.associate' | trans }}" class="btn btn-info">
+                                    <span class="fa fa-link"></span>
+                                    <span class="sr-only">{{ 'default.ip.action.associate' | trans }}</span>
+                                </button>
+                                <button href="#" data-toggle="tooltip" title="{{ 'default.ip.action.create' | trans }}" class="btn btn-info">
+                                    <span class="fa fa-plus"></span>
+                                    <span class="sr-only">{{ 'default.ip.action.create' | trans }}</span>
+                                </button>
+                            {% endif %}
+                            <button href="#" data-toggle="tooltip" title="{{ 'default.ip.action.delete' | trans }}" class="btn btn-danger">
+                                <span class="fa fa-trash-o"></span>
+                                <span class="sr-only">{{ 'default.ip.action.delete' | trans }}</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
     </div>
 {% endblock content_settings %}
 

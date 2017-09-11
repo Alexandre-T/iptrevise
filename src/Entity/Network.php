@@ -86,6 +86,8 @@ class Network implements InformationInterface
      * @var int
      *
      * @ORM\Column(type="bigint", nullable=false, name="net_ip", options={"unsigned":true,"comment":"Adresse Réseau IPv4"})
+     * @ORM\OrderBy({"ip" = "ASC"})
+     *
      * @Gedmo\Versioned
      */
     private $ip;
@@ -129,7 +131,7 @@ class Network implements InformationInterface
      *     length=6,
      *     nullable=false,
      *     name="net_couleur",
-     *     options={"default":"000000","comment":"Couleur ergonomique du réseau"}
+     *     options={"default":000000,"comment":"Couleur ergonomique du réseau"}
      * )
      * @Gedmo\Versioned
      */

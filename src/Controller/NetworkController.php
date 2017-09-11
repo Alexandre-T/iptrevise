@@ -16,10 +16,13 @@
 namespace App\Controller;
 
 use App\Bean\Factory\InformationFactory;
+use App\Entity\Ip;
 use App\Form\Type\NetworkType;
 use App\Entity\Network;
+use App\Manager\IpManager;
 use App\Manager\NetworkManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -202,6 +205,62 @@ class NetworkController extends Controller
     }
 
     /**
+     * Unlink an IP from its machine
+     *
+     * @Route("/unlink/{id}", name="default_network_unlink")
+     * @ParamConverter("ip", class="App:Ip")
+     *
+     * @param Request $request The request
+     * @param Ip $ip The IP entity
+     *
+     * @return RedirectResponse | Response
+     *
+     */
+    public function unlinkAction(Request $request, Ip $ip)
+    {
+        $trans = $this->get('translator.default');
+
+        if (null == $ip->getMachine())
+        {
+            //Flash Message
+            $session = $this->get('session');
+            $session->getFlashBag()->add('warning', $trans->trans('default.ip.unlink.error %ip%', [
+                '%ip%' => ip2long($ip->getIp())
+            ]));
+
+            //Redirecting
+            return $this->redirectToRoute('default_network_show', ['id' => $ip->getNetwork()->getId()]);
+        }
+
+        $form = $this->createUnlinkForm($ip);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            //Prepare the message before unlinking.
+            $message = $trans->trans('default.ip.unlink %ip% %name%', [
+                '%ip%' => ip2long($ip->getIp()),
+                '%name%' => $ip->getMachine()->getLabel(),
+            ]);
+
+            //Unlinking
+            $ipManager = $this->get(IpManager::class);
+            $ipManager->unlink($ip);
+
+            //Flash Message
+            $session = $this->get('session');
+            $session->getFlashBag()->add('success', $message);
+
+            //Redirecting
+            return $this->redirectToRoute('default_network_show', ['id' => $ip->getNetwork()->getId()]);
+        } else {
+            return $this->render('@App/default/network/unlink.html.twig',[
+                'confirm_form' => $form->createView(),
+                'ip' => $ip,
+            ]);
+        }
+    }
+
+    /**
      * Creates a form to delete a network entity.
      *
      * @param Network $network The network entity
@@ -216,6 +275,26 @@ class NetworkController extends Controller
             ->add('delete', SubmitType::class, [
                 'attr' => ['class' => 'fa-js-trash-o btn-danger confirm-delete'],
                 'label' => 'administration.delete.confirm.delete',
+            ])
+            ->getForm()
+            ;
+    }
+
+    /**
+     * Creates a form to dissociate/unlink an ip from a machine.
+     *
+     * @param Ip $ip the Ip entity
+     *
+     * @return Form The form
+     */
+    private function createUnlinkForm(Ip $ip)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('default_network_unlink', array('id' => $ip->getId())))
+            ->setMethod('DELETE')
+            ->add('confirm', SubmitType::class, [
+                'attr' => ['class' => 'fa-js-hand-spock-o btn-danger confirm-delete'],
+                'label' => 'form.ip.unlink.confirm',
             ])
             ->getForm()
             ;

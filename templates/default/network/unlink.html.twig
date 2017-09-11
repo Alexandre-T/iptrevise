@@ -1,0 +1,42 @@
+{% extends '@App/base.html.twig' %}
+
+{% set administration_entity_show = 'default_network_show' %}
+
+{% block title %}{{ 'default.ip.unlink.title %ip% %name%'|trans({'%ip%':ip.ip|ip, '%name%': ip.machine.label})}} · {{ parent() }}{% endblock title %}
+
+{% block page_header %}{% endblock %}
+
+{% block content_row %}
+    {{ form_start(confirm_form) }}
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+            <div class="toolbar-proof panel panel-primary">
+                <div class="panel-heading">
+                    <h1 class="panel-title">{{ 'default.action.confirm' | trans }}</h1>
+                </div>
+                <div class="panel-body">
+                    <p>{{ 'default.ip.unlink.title %ip% %name%'|trans({'%ip%':ip.ip|ip, '%name%': ip.machine.label})}}</p>
+                </div>
+                <div class="panel-footer">
+                    <div class="text-right">
+                        <a href="{{ path('default_network_show', {'id': ip.network.id}) }}" title="{{ 'form.ip.unlink.unconfirm' | trans }}" class="btn btn-default">
+                            <span class="fa fa-fw fa-hand-stop-o"></span>
+                            {{ 'form.ip.unlink.unconfirm' | trans }}
+                        </a>
+                        {{ form_widget(confirm_form.confirm) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form_end(confirm_form) }}
+{% endblock content_row %}
+
+{% block foot_script_assetic %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.fa-js-hand-spock-o').prepend('<span class="fa fa-fw fa-hand-spock-o"></span>');
+        });
+    </script>
+{% endblock %}
