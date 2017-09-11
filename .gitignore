@@ -1,5 +1,6 @@
 ###> symfony/framework-bundle ###
 .env
+c3.php
 /public/bundles/
 /var/
 /vendor/
