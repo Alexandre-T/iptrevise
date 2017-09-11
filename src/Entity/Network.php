@@ -39,6 +39,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class Network implements InformationInterface
 {
+    use ReferentTrait;
     /**
      * Internal identifier.
      *

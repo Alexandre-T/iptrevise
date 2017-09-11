@@ -11,37 +11,28 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
+ *
  */
+
 
 namespace App\Entity;
 
-use DateTime;
 
-/**
- * Interface InformationInterface.
- *
- * @category Entity
- */
-interface InformationInterface
+interface ReferentInterface
 {
-    /**
-     * Return date time creation.
-     *
-     * @return DateTime | null
-     */
-    public function getCreated(): ?DateTime;
 
     /**
-     * Return creator (user entity).
+     * Getter of the creator
      *
-     * @return User | null
+     * @return User|null
      */
     public function getCreator(): ?User;
 
     /**
-     * Return date time of the last update.
+     * Setter of the Creator
      *
-     * @return DateTime | null
+     * @param User $creator
+     * @return ReferentTrait
      */
-    public function getUpdated(): ?DateTime;
+    public function setCreator(User $creator);
 }

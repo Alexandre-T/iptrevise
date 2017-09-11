@@ -18,6 +18,7 @@ namespace App\Manager;
 use App\Bean\Factory\LogFactory;
 use App\Entity\PaginatorInterface;
 use App\Entity\Network;
+use App\Entity\User;
 use App\Repository\NetworkRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -107,9 +108,13 @@ class NetworkManager implements LoggableManagerInterface, PaginatorInterface
      * Save new or modified Network.
      *
      * @param Network $network
+     * @param User $user
      */
-    public function save(Network $network)
+    public function save(Network $network, User $user = null)
     {
+        if ($user && empty($network->getCreator())){
+            $network->setCreator($user);
+        }
         $this->em->persist($network);
         $this->em->flush();
     }

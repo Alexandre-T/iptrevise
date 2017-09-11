@@ -87,7 +87,7 @@ class UserFixtures extends Fixture
             //These references are perhaps unuseful.
             $this->addReference('user_reader', $userReader);
             $this->addReference('user_user', $userUser);
-            $this->addReference('user_ORGANISER', $userOrganiser);
+            $this->addReference('user_organiser', $userOrganiser);
             $this->addReference('user_admin', $userAdministrator);
 
             //Persist dev and test data

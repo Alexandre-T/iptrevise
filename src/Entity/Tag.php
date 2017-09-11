@@ -39,6 +39,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class Tag implements InformationInterface
 {
+    use ReferentTrait;
     /**
      * Identifier of Tag.
      *

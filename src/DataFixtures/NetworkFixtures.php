@@ -15,6 +15,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\Network;
@@ -39,6 +40,8 @@ class NetworkFixtures extends Fixture
         if (in_array($this->container->get('kernel')->getEnvironment(), ['dev', 'test'])) {
 
             $network = [];
+            /** @var User $organiser */
+            $organiser = $this->getReference('user_organiser');
 
             for($index = 0; $index <= 30; $index++){
                 $network[$index] = (new Network())
@@ -46,7 +49,8 @@ class NetworkFixtures extends Fixture
                     ->setDescription("Description $index")
                     ->setColor("000000")
                     ->setIp(ip2long("192.168.$index.0"))
-                    ->setMask(32);
+                    ->setMask(32)
+                    ->setCreator($organiser);
 
                 $this->addReference("network_$index", $network[$index]);
                 $manager->persist($network[$index]);
@@ -54,5 +58,17 @@ class NetworkFixtures extends Fixture
         }
 
         $manager->flush();
+    }
+    /**
+     * This method return an array of fixtures classes
+     * on which the implementing class depends on
+     *
+     * @return array
+     */
+    public function getDependencies()
+    {
+        return array(
+            UserFixtures::class,
+        );
     }
 }

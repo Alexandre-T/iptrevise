@@ -18,6 +18,7 @@ namespace App\Manager;
 use App\Bean\Factory\LogFactory;
 use App\Entity\PaginatorInterface;
 use App\Entity\Ip;
+use App\Entity\User;
 use App\Repository\IpRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -115,10 +116,14 @@ class IpManager implements LoggableManagerInterface, PaginatorInterface
     /**
      * Save new or modified Ip.
      *
-     * @param Ip $ip
+     * @param Ip   $ip
+     * @param User $user
      */
-    public function save(Ip $ip)
+    public function save(Ip $ip, User $user = null)
     {
+        if ($user && empty($ip->getCreator())){
+            $ip->setCreator($user);
+        }
         $this->em->persist($ip);
         $this->em->flush();
     }

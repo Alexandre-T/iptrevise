@@ -15,6 +15,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\Machine;
@@ -39,12 +40,15 @@ class MachineFixtures extends Fixture
         if (in_array($this->container->get('kernel')->getEnvironment(), ['dev', 'test'])) {
 
             $machine = [];
+            /** @var User $organiser */
+            $organiser = $this->getReference('user_organiser');
 
             for($index = 0; $index <= 90; $index++){
                 $machine[$index] = (new Machine())
                     ->setLabel("Machine $index")
                     ->setDescription("Description $index")
-                    ->setInterface($index % 8 + 1);
+                    ->setInterface($index % 8 + 1)
+                    ->setCreator($organiser);
 
                 $this->addReference("machine_$index", $machine[$index]);
                 $manager->persist($machine[$index]);
@@ -52,5 +56,18 @@ class MachineFixtures extends Fixture
         }
 
         $manager->flush();
+    }
+
+    /**
+     * This method return an array of fixtures classes
+     * on which the implementing class depends on
+     *
+     * @return array
+     */
+    public function getDependencies()
+    {
+        return array(
+            UserFixtures::class,
+        );
     }
 }

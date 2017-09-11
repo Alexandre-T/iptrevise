@@ -35,6 +35,11 @@ class Information
     private $created;
 
     /**
+     * @var string Mail of creator
+     */
+    private $creator;
+    
+    /**
      * @var DateTime Date and time creation of the entity
      */
     private $updated;
@@ -62,6 +67,29 @@ class Information
 
         return $this;
     }
+    /**
+     * Getter of the creation date time.
+     *
+     * @return string | null
+     */
+    public function getCreator(): ?string
+    {
+        return $this->creator;
+    }
+
+    /**
+     * Setter of the creation date time.
+     *
+     * @param string $creator
+     *
+     * @return Information
+     */
+    public function setCreator(string $creator)
+    {
+        $this->creator = $creator;
+
+        return $this;
+    }
 
     /**
      * Getter of update time.
@@ -86,7 +114,17 @@ class Information
 
         return $this;
     }
-
+    
+    /**
+     * Has the creator been initialized?
+     *
+     * @return bool
+     */
+    public function hasCreated(): bool
+    {
+        return !empty($this->creator);
+    }
+    
     /**
      * Has the created been initialized?
      *

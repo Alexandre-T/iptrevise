@@ -41,6 +41,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class Machine implements InformationInterface
 {
+    use ReferentTrait;
     /**
      * Identifier of Machine.
      *

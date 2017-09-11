@@ -17,6 +17,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Machine;
 use App\Entity\Network;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\Ip;
@@ -40,13 +41,16 @@ class IpFixtures extends Fixture
     {
         if (in_array($this->container->get('kernel')->getEnvironment(), ['dev', 'test'])) {
             $ip = [];
+            /** @var User $organiser */
+            $organiser = $this->getReference('user_organiser');
 
             for($index = 0; $index <= 45; $index++){
                 /** @var Network $network */
                 $network = $this->getReference("network_" .  ceil($index / 3));
                 $ip[$index] = (new Ip())
                     ->setNetwork($network)
-                    ->setIp($network->getIp() + $index);
+                    ->setIp($network->getIp() + $index)
+                    ->setCreator($organiser);
 
                 if ($index % 2){
                     /** @var Machine $machine */
@@ -63,7 +67,8 @@ class IpFixtures extends Fixture
     }
 
     /**
-     *
+     * This method return an array of fixtures classes
+     * on which the implementing class depends on
      *
      * @return array
      */
@@ -72,6 +77,7 @@ class IpFixtures extends Fixture
         return array(
             MachineFixtures::class,
             NetworkFixtures::class,
+            UserFixtures::class,
         );
     }
 }

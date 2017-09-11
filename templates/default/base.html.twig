@@ -90,6 +90,10 @@
                                         <dt>{{ 'administration.created.at' | trans}}</dt>
                                         <dd>{{ information.created | localizeddate('short', 'short') }}</dd>
                                     {% endif %}
+                                    {% if information.creator %}
+                                        <dt>{{ 'administration.created.by' | trans}}</dt>
+                                        <dd>{{ information.creator }}</dd>
+                                    {% endif %}
                                     {% if information.updated %}
                                         <dt>{{ 'administration.updated.at' | trans}}</dt>
                                         <dd>{{ information.updated | localizeddate('short', 'short') }}</dd>

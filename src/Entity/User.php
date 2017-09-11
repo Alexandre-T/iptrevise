@@ -382,4 +382,15 @@ class User implements InformationInterface, UserInterface, Serializable
     {
         return in_array($role, $this->getRoles());
     }
+
+    /**
+     *
+     *
+     * @return User|null
+     */
+    public function getCreator(): ?User
+    {
+        //FIXME
+        return $this;
+    }
 }

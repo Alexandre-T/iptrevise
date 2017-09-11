@@ -25,10 +25,14 @@
                         <dd>{{ network.ip | network(network.mask) }}</dd>
                         <dt>{{ 'form.network.field.description'| trans }}</dt>
                         <dd>{{ network.description }}</dd>
+                        <dt>{{ 'form.network.field.creator'| trans }}</dt>
+                        <dd>{{ network.creator.label }}</dd>
                     </dl>
                 </div>
                 <div class="col-sm-2 text-right">
-                    <span class="fa fa-sitemap fa-4x" style="color: {{ '#' ~ network.color }}"></span>
+                    <p>
+                        <span class="fa fa-sitemap fa-4x" style="color: {{ '#' ~ network.color }}"></span>
+                    </p>
                 </div>
             </div>
             {% if 0 == network.ips.count %}

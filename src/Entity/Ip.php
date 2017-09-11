@@ -35,8 +35,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @UniqueEntity(fields={"ip", "network"}, message="form.ip.error.ip.unique")
  */
-class Ip implements InformationInterface
+class Ip implements InformationInterface, ReferentInterface
 {
+    use ReferentTrait;
     /**
      * IP Identifient.
      *

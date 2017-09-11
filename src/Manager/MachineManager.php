@@ -18,6 +18,7 @@ namespace App\Manager;
 use App\Bean\Factory\LogFactory;
 use App\Entity\PaginatorInterface;
 use App\Entity\Machine;
+use App\Entity\User;
 use App\Repository\MachineRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -107,9 +108,13 @@ class MachineManager implements LoggableManagerInterface, PaginatorInterface
      * Save new or modified Machine.
      *
      * @param Machine $machine
+     * @param User    $user
      */
-    public function save(Machine $machine)
+    public function save(Machine $machine, User $user = null)
     {
+        if ($user && empty($machine->getCreator())){
+            $machine->setCreator($user);
+        }
         $this->em->persist($machine);
         $this->em->flush();
     }
