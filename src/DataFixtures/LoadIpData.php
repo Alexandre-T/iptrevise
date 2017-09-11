@@ -23,7 +23,7 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\Ip;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
  * Load Ip Data for tests.
@@ -35,20 +35,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class LoadIpData extends AbstractFixture implements FixtureInterface, OrderedFixtureInterface, ContainerAwareInterface
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-
-    /**
-     * Set the container to handle some services.
-     *
-     * @param ContainerInterface|null $container
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
+    use ContainerAwareTrait;
 
     /**
      * Load Data.
@@ -66,8 +53,6 @@ class LoadIpData extends AbstractFixture implements FixtureInterface, OrderedFix
                 $network = $this->getReference("network_" .  ceil($index / 3));
                 $ip[$index] = (new Ip())
                     ->setNetwork($network)
-                    ->setLabel("Ip $index")
-                    ->setDescription("Description $index")
                     ->setIp($network->getIp() + $index);
 
                 if ($index % 2){

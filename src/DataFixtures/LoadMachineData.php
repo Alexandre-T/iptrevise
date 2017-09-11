@@ -21,7 +21,7 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\Machine;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
  * Load Machine Data for tests.
@@ -33,20 +33,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class LoadMachineData extends AbstractFixture implements FixtureInterface, OrderedFixtureInterface, ContainerAwareInterface
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-
-    /**
-     * Set the container to handle some services.
-     *
-     * @param ContainerInterface|null $container
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
+    use ContainerAwareTrait;
 
     /**
      * Load Data.
