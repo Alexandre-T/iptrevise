@@ -15,13 +15,9 @@
 
 namespace App\DataFixtures;
 
-use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\FixtureInterface;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\User;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
  * LoadUserData class.
@@ -31,9 +27,8 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license Cerema 2017
  */
-class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedFixtureInterface, ContainerAwareInterface
+class UserFixtures extends Fixture
 {
-    use ContainerAwareTrait;
 
     /**
      * Load Data.
@@ -104,16 +99,5 @@ class LoadUserData extends AbstractFixture implements FixtureInterface, OrderedF
 
         $manager->persist($userAlexandre);
         $manager->flush();
-    }
-
-    /**
-     * Set the order in which fixtures will be loaded.
-     * the lower the number, the sooner that this fixture is loaded.
-     *
-     * @return int
-     */
-    public function getOrder()
-    {
-        return 20;
     }
 }

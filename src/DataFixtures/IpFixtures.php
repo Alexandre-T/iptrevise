@@ -17,13 +17,9 @@ namespace App\DataFixtures;
 
 use App\Entity\Machine;
 use App\Entity\Network;
-use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\FixtureInterface;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\Ip;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
  * Load Ip Data for tests.
@@ -33,10 +29,8 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license Cerema 2017
  */
-class LoadIpData extends AbstractFixture implements FixtureInterface, OrderedFixtureInterface, ContainerAwareInterface
+class IpFixtures extends Fixture
 {
-    use ContainerAwareTrait;
-
     /**
      * Load Data.
      *
@@ -45,7 +39,6 @@ class LoadIpData extends AbstractFixture implements FixtureInterface, OrderedFix
     public function load(ObjectManager $manager)
     {
         if (in_array($this->container->get('kernel')->getEnvironment(), ['dev', 'test'])) {
-
             $ip = [];
 
             for($index = 0; $index <= 45; $index++){
@@ -70,13 +63,15 @@ class LoadIpData extends AbstractFixture implements FixtureInterface, OrderedFix
     }
 
     /**
-     * Set the order in which fixtures will be loaded.
-     * the lower the number, the sooner that this fixture is loaded.
      *
-     * @return int
+     *
+     * @return array
      */
-    public function getOrder()
+    public function getDependencies()
     {
-        return 40;
+        return array(
+            MachineFixtures::class,
+            NetworkFixtures::class,
+        );
     }
 }
