@@ -140,7 +140,7 @@ class IpController extends Controller
             $session->getFlashBag()->add('success', $message);
         }
 
-        if (null == $machine) {
+        if (null === $machine) {
             return $this->redirectToRoute('default_network_show', ['id' => $network->getId()]);
         } else {
             return $this->render('@App/default/ip/delete.html.twig', [

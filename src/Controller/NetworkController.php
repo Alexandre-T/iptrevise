@@ -274,7 +274,7 @@ class NetworkController extends Controller
     {
         $trans = $this->get('translator.default');
 
-        if (null == $ip->getMachine())
+        if (null === $ip->getMachine())
         {
             //Flash Message
             $session = $this->get('session');
