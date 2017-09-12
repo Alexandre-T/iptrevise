@@ -92,6 +92,7 @@ default.tab.informations: 'Informations'
 form.ip.field.creator: 'Référencée par'
 form.ip.field.ip: 'Adresse IP'
 form.ip.field.machine: 'Machine'
+form.ip.field.network: 'Réseau'
 form.ip.unlink.confirm: 'Oui, dissocier les deux'
 form.ip.unlink.unconfirm: 'Non, annuler la dissociation'
 

@@ -53,7 +53,7 @@
                         <span class="fa fa-desktop fa-fw"></span>
                         {{ 'form.ip.field.machine' | trans }}
                     </th>
-                    <th id="network-ip-machine-label">
+                    <th id="network-ip-machine-tags">
                         <span class="fa fa-tags fa-fw"></span>
                         {{ 'form.machine.field.tags' | trans }}
                     </th>
@@ -73,7 +73,7 @@
                             <em>{{ 'default.machine.none' | trans }}</em>
                         {%- endif -%}
                     </td>
-                    <td headers="network-ip-machine-label">@TODO</td>
+                    <td headers="network-ip-machine-tags">@TODO</td>
                     <td headers="network-ip-actions">
                         <div class="btn-group btn-group-sm" role="group" aria-label="{{ 'default.ip.manage %ip%' | trans({'%ip%': ip.ip | ip}) }}">
                             <button href="#" data-toggle="tooltip" title="{{ 'default.ip.action.edit' | trans }}" class="btn btn-info">
