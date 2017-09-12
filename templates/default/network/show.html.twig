@@ -68,7 +68,7 @@
                     <td headers="network-ip-ip">{{ ip.ip | ip }}</td>
                     <td headers="network-ip-machine-label">
                         {%- if ip.machine -%}
-                            {{ ip.machine.label }}
+                            <a href="{{ path('default_machine_show', {'id': ip.machine.id}) }}" title="{{ ip.machine.label }}">{{ ip.machine.label }}</a>
                         {%- else -%}
                             <em>{{ 'default.machine.none' | trans }}</em>
                         {%- endif -%}
