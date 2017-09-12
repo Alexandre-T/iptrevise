@@ -220,7 +220,7 @@ class NetworkController extends Controller
      *
      * @return Response
      */
-    public function newIp(Request $request, Network $network)
+    public function newIpAction(Request $request, Network $network)
     {
         $ip = new Ip();
         $ip->setNetwork($network);
@@ -252,7 +252,7 @@ class NetworkController extends Controller
      *
      * @param Network $network
      */
-    public function newMachine(Network $network)
+    public function newMachineAction(Network $network)
     {
         //FIXME Develop this use case
         die('@TODO');
