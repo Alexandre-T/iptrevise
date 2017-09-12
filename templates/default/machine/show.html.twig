@@ -58,7 +58,11 @@
                 <tbody>
                 {% for ip in machine.ips %}
                     <tr>
-                        <td headers="machine-ip-ip">{{ ip.ip | ip }}</td>
+                        <td headers="machine-ip-ip">
+                            <a href="{{ path('default_ip_show', {'id': ip.id}) }}" title="{{ ip.ip | ip }}">
+                                {{ ip.ip | ip }}
+                            </a>
+                        </td>
                         <td headers="machine-ip-network-label">
                             <a href="{{ path('default_network_show', {'id': ip.network.id}) }}" title="{{ ip.network.label }}">
                                 {{ ip.network.label }}

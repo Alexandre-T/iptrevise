@@ -1,9 +1,6 @@
 /** protect from toolbar overriding text **/
 body{
-    margin-top:30px;
-}
-.toolbar-proof{
-    margin-top:50px;
+    margin-top:70px;
 }
 
 /** Remove this two lines when the font-awesome icon will exist. **/

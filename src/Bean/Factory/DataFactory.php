@@ -137,7 +137,12 @@ class DataFactory
             } else {
                 if ('ip' == $column){
                     $data->setName(long2ip($value));
-                } else {
+                } elseif('network' == $column){
+                    $data->setName($value['id']);
+                } elseif('machine' == $column){
+                    $data->setName($value['id']);
+                }
+                else {
                     $data->setName($value);
                 }
 
