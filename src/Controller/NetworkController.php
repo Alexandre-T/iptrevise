@@ -81,6 +81,7 @@ class NetworkController extends Controller
      *
      * @Route("/new", name="default_network_new")
      * @Method({"GET", "POST"})
+     * @Security("is_granted('ROLE_MANAGE_NETWORK')")
      *
      * @param Request $request
      *
@@ -114,6 +115,7 @@ class NetworkController extends Controller
      *
      * @Route("/{id}", name="default_network_show")
      * @Method("GET")
+     * @Security("is_granted('ROLE_READ_NETWORK')")
      *
      * @param Network $network
      *
@@ -141,6 +143,7 @@ class NetworkController extends Controller
      *
      * @Route("/{id}/edit", name="default_network_edit")
      * @Method({"GET", "POST"})
+     * @Security("is_granted('ROLE_MANAGE_NETWORK')")
      *
      * @param Request $request The request
      * @param Network    $network    The network entity
@@ -181,6 +184,7 @@ class NetworkController extends Controller
      *
      * @Route("/{id}", name="default_network_delete")
      * @Method("DELETE")
+     * @Security("is_granted('ROLE_MANAGE_NETWORK')")
      *
      * @param Request $request The request
      * @param Network    $network    The $network entity
@@ -209,6 +213,7 @@ class NetworkController extends Controller
      *
      * @Route("/unlink/{id}", name="default_network_unlink")
      * @ParamConverter("ip", class="App:Ip")
+     * @Security("is_granted('ROLE_MANAGE_IP')")
      *
      * @param Request $request The request
      * @param Ip $ip The IP entity

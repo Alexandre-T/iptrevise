@@ -78,6 +78,7 @@ class MachineController extends Controller
      *
      * @Route("/new", name="default_machine_new")
      * @Method({"GET", "POST"})
+     * @Security("is_granted('ROLE_MANAGE_MACHINE')")
      *
      * @param Request $request
      *
@@ -111,6 +112,7 @@ class MachineController extends Controller
      *
      * @Route("/{id}", name="default_machine_show")
      * @Method("GET")
+     * @Security("is_granted('ROLE_READ_MACHINE')")
      *
      * @param Machine $machine
      *
@@ -138,6 +140,7 @@ class MachineController extends Controller
      *
      * @Route("/{id}/edit", name="default_machine_edit")
      * @Method({"GET", "POST"})
+     * @Security("is_granted('ROLE_MANAGE_MACHINE')")
      *
      * @param Request $request The request
      * @param Machine    $machine    The machine entity
@@ -178,6 +181,7 @@ class MachineController extends Controller
      *
      * @Route("/{id}", name="default_machine_delete")
      * @Method("DELETE")
+     * @Security("is_granted('ROLE_MANAGE_MACHINE')")
      *
      * @param Request $request The request
      * @param Machine    $machine    The $machine entity
@@ -220,8 +224,4 @@ class MachineController extends Controller
             ->getForm()
             ;
     }
-
-    //@TODO Créer un use case permettant la translation d'IP (Passer de 192.168.0.0 à 192.168.1.0 par exemple
-    //@TODO Créer un use case permettant de changer le masque
-
 }
