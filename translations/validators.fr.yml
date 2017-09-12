@@ -1,6 +1,8 @@
-form.user.error.roles.empty: 'Vous devez sélectionner au moins un rôle.'
-form.user.error.mail.unique: 'Cette adresse mail est déjà utilisée.'
-form.user.error.label.unique: 'Cet identifiant est déjà utilisé.'
+form.ip.error.ip.network %min% %max%: 'L’adresse Ip doit être comprise entre %min% et %max%.'
+form.ip.error.ip.unique: 'Cette adresse IP est déjà attribuée sur ce réseau'
+
+form.machine.error.label.unique: 'Cet intitulé de machine est déjà utilisé.'
+form.machine.error.interface.min: 'Le nombre d’interface réseau doit être supérieur ou égal à {{ compared_value }}.'
 
 form.network.error.color.pattern: 'La couleur doit être au format hexadécimal. 000000 pour noir, FF0000 pour rouge, 00FF00 pour vert et 0000FF pour bleu.'
 form.network.error.ip.min: 'Cette adresse IP n’est pas valide.'
@@ -8,5 +10,6 @@ form.network.error.label.unique: 'Cet intitulé de réseau est déjà utilisé.'
 form.network.error.mask.min: 'Le masque doit être supérieur ou égal à 0.'
 form.network.error.mask.max: 'Le masque doit être inférieur ou égal à 32.'
 
-form.machine.error.label.unique: 'Cet intitulé de machine est déjà utilisé.'
-form.machine.error.interface.min: 'Le nombre d’interface réseau doit être supérieur ou égal à {{ compared_value }}.'
+form.user.error.roles.empty: 'Vous devez sélectionner au moins un rôle.'
+form.user.error.mail.unique: 'Cette adresse mail est déjà utilisée.'
+form.user.error.label.unique: 'Cet identifiant est déjà utilisé.'

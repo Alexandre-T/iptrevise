@@ -40,6 +40,20 @@
                     <p>{{ 'default.network.no.ip' | trans }}</p>
                 </div>
             {% endif %}
+            <div class="btn-group btn-group-justified">
+                <a class="btn btn-default" href="{{ path('default_network_new_ip', {'id': network.id}) }}"
+                   data-toggle="tooltip" title="{{ 'default.network.new-ip.title' | trans }}">
+                    <span class="fa fa-fw fa-indent"></span>
+                    {{ 'default.network.new-ip.link' | trans }}
+                </a>
+                <a class="btn btn-default" href="{{ path('default_network_new_machine', {'id': network.id}) }}"
+                   data-toggle="tooltip" title="{{ 'default.network.new-machine.title' | trans }}">
+                    <span class="fa fa-fw fa-indent"></span>
+                    <span class="fa fa-fw fa-plus"></span>
+                    <span class="fa fa-fw fa-desktop"></span>
+                    {{ 'default.network.new-machine.link' | trans }}
+                </a>
+            </div>
         </div>
         {% if network.ips.count %}
         <table class="table">

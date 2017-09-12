@@ -54,6 +54,7 @@ class IpTest extends TestCase
         self::assertNull($this->ip->getId());
         self::assertNull($this->ip->getMachine());
         self::assertNull($this->ip->getNetwork());
+        self::assertNull($this->ip->getReason());
         self::assertNull($this->ip->getUpdated());
         self::assertNull($this->ip->getIp());
     }
@@ -78,6 +79,17 @@ class IpTest extends TestCase
 
         self::assertEquals($this->ip, $this->ip->setNetwork($actual));
         self::assertEquals($expected, $this->ip->getNetwork());
+    }
+
+    /**
+     * Tests reason getter, setter and aliases.
+     */
+    public function testReason()
+    {
+        $expected = $actual = 'reason';
+
+        self::assertEquals($this->ip, $this->ip->setReason($actual));
+        self::assertEquals($expected, $this->ip->getReason());
     }
     
     /**

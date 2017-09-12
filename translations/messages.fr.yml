@@ -95,6 +95,10 @@ default.network.created %name%: 'Le réseau « %name% » a été créé avec s
 default.network.create.title: 'Créer un nouveau réseau'
 default.network.deleted %name%: 'Le réseau « %name% » a été supprimé avec succès !'
 default.network.edit.title %name%: 'Modification du réseau « %name% »'
+default.network.new-ip.link: 'Réserver une IP'
+default.network.new-ip.title: 'Réserver une IP, sans lui affecter de machine'
+default.network.new-machine.link: 'Référencer une IP et une machine'
+default.network.new-machine.title: 'Cliquez sur ce bouton pour référencer une nouvelle machine et lui associer une IP de ce réseau'
 default.network.no.ip: 'Aucune adresse IP n’est référencée pour ce réseau.'
 default.network.updated %name%: 'Le réseau « %name% » a été modifié avec succès !'
 default.network.show.title %name%: 'Consultation du réseau « %name% »'
@@ -107,6 +111,11 @@ form.ip.field.creator: 'Référencée par'
 form.ip.field.ip: 'Adresse IP'
 form.ip.field.machine: 'Machine'
 form.ip.field.network: 'Réseau'
+form.ip.field.reason: 'Réservée pour'
+
+form.ip.help.ip: 'Entrez votre adresse IP'
+form.ip.help.reason: 'Entrez ici la raison pour laquelle vous réservez cette IP'
+
 form.ip.unlink.confirm: 'Oui, dissocier les deux'
 form.ip.unlink.unconfirm: 'Non, annuler la dissociation'
 

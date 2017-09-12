@@ -50,6 +50,7 @@ class IpFixtures extends Fixture
                 $ip[$index] = (new Ip())
                     ->setNetwork($network)
                     ->setIp($network->getIp() + $index)
+                    ->setReason("Reason $index")
                     ->setCreator($organiser);
 
                 if ($index % 2){

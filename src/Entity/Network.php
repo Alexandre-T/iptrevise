@@ -395,7 +395,31 @@ class Network implements InformationInterface
      */
     public function getCapacity()
     {
-        return pow(2, $this->mask);
+        return pow(2, 32 - $this->mask);
+    }
+
+    /**
+     * Return the ip of the first machine of current network
+     *
+     * @return int
+     */
+    public function getMinIp():int
+    {
+        if (31 <= $this->mask){
+            return $this->getIp();
+        }
+
+        return min($this->getIp()+1, ip2long('255.255.255.255'));
+    }
+
+    /**
+     * Return the last ip for a machine in current network
+     *
+     * @return int
+     */
+    public function getMaxIp():int
+    {
+        return min($this->getIp() + $this->getCapacity() + 1, ip2long('255.255.255.255'));
     }
 
 }

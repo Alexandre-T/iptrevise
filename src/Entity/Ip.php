@@ -18,6 +18,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use DateTime;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
@@ -54,6 +55,8 @@ class Ip implements InformationInterface, ReferentInterface
      *
      * @var int
      *
+     * @Assert\NotBlank()
+     *
      * @ORM\Column(type="bigint", nullable=false, name="ip_ip", options={"comment":"Adresse IPv4"})
      * @Gedmo\Versioned
      */
@@ -79,6 +82,17 @@ class Ip implements InformationInterface, ReferentInterface
      */
     private $updated;
 
+    /**
+     * Reason of the reservation IP.
+     *
+     * @var string
+     *
+     * @Assert\Length(max="32")
+     *
+     * @ORM\Column(type="string", length=32, nullable=true)
+     * @Gedmo\Versioned
+     */
+    private $reason;
     /**
      * Network for this IP.
      *
@@ -129,6 +143,16 @@ class Ip implements InformationInterface, ReferentInterface
     public function getCreated(): ?DateTime
     {
         return $this->created;
+    }
+
+    /**
+     * Get the reason of the reservation.
+     *
+     * @return string
+     */
+    public function getReason()
+    {
+        return $this->reason;
     }
 
     /**
@@ -202,4 +226,17 @@ class Ip implements InformationInterface, ReferentInterface
 
         return $this;
     }
+
+    /**
+     * Set the reason of the reservation
+     *
+     * @param string $reason
+     * @return Ip
+     */
+    public function setReason(?string $reason): Ip
+    {
+        $this->reason = $reason;
+        return $this;
+    }
+
 }

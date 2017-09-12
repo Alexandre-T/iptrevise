@@ -17,6 +17,7 @@ namespace App\Controller;
 
 use App\Bean\Factory\InformationFactory;
 use App\Entity\Ip;
+use App\Form\Type\IpType;
 use App\Form\Type\NetworkType;
 use App\Entity\Network;
 use App\Manager\IpManager;
@@ -209,9 +210,57 @@ class NetworkController extends Controller
     }
 
     /**
+     * Reserve a new IP for the current network
+     *
+     * @Route("/{id}/new-ip", name="default_network_new_ip")
+     * @Security("is_granted('ROLE_MANAGE_IP')")
+     *
+     * @param Request $request
+     * @param Network $network
+     *
+     * @return Response
+     */
+    public function newIp(Request $request, Network $network)
+    {
+        $ip = new Ip();
+        $ip->setNetwork($network);
+        $form = $this->createForm(IpType::class, $ip);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $ipService = $this->get(IpManager::class);
+            $ipService->save($ip, $this->getUser());
+            //Flash message
+            $session = $this->get('session');
+            $trans = $this->get('translator.default');
+            $message = $trans->trans('default.ip.created %name%', ['%name%' => long2ip($ip->getIp())]);
+            $session->getFlashBag()->add('success', $message);
+
+            return $this->redirectToRoute('default_ip_show', array('id' => $ip->getId()));
+        }
+
+        return $this->render('@App/default/network/new-ip.html.twig', [
+            'ip' => $ip,
+            'network' => $network,
+            'form' => $form->createView(),
+        ]);
+    }
+    /**
+     * Reserve a new IP for the current network
+     *
+     * @Route("/unlink/{id}", name="default_network_new_machine")
+     * @Security("is_granted('ROLE_MANAGE_IP','ROLE_MANAGE_MACHINE')")
+     *
+     * @param Network $network
+     */
+    public function newMachine(Network $network)
+    {
+        //FIXME Develop this use case
+        die('@TODO');
+    }
+    /**
      * Unlink an IP from its machine
      *
-     * @Route("/unlink/{id}", name="default_network_unlink")
+     * @Route("/{id}/new-machine", name="default_network_unlink")
      * @ParamConverter("ip", class="App:Ip")
      * @Security("is_granted('ROLE_MANAGE_IP')")
      *

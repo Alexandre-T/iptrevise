@@ -15,10 +15,13 @@
 
 namespace App\Form\Type;
 
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\Ip;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Ip form builder.
@@ -43,22 +46,15 @@ class IpType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        dump($options);
         $builder
-            ->add('label', null, [
-                'label' => 'form.ip.field.label',
-                'help_block' => 'form.ip.help.label',
-            ])
-            ->add('network', EntityType::class, [
-                'label' => 'form.ip.field.network',
-                'help_block' => 'form.ip.help.network',
-            ])
             ->add('ip', AddressIpType::class, [
                 'label' => 'form.ip.field.ip',
                 'help_block' => 'form.ip.help.ip',
             ])
-            ->add('description', null, [
-                'label' => 'form.ip.field.description',
-                'help_block' => 'form.ip.help.description',
+            ->add('reason', TextType::class, [
+                'label' => 'form.ip.field.reason',
+                'help_block' => 'form.ip.help.reason',
             ])
         ;
     }
@@ -74,7 +70,28 @@ class IpType extends AbstractType
             'data_class' => 'App\Entity\Ip',
             'render_fieldset' => false,
             'show_legend' => false,
+            'constraints'        => [
+                new Callback([
+                    'callback' => [$this, 'checkIpInNetwork'],
+                ]),
+            ],
         ));
+    }
+
+    /**
+     * Check if the IP is in the Network
+     *
+     * @param Ip $ip
+     * @param ExecutionContextInterface $context
+     */
+    public function checkIpInNetwork(Ip $ip, ExecutionContextInterface $context)
+    {
+        dump($ip->getIp(),$ip->getNetwork()->getMinIp(),$ip->getNetwork()->getMaxIp());
+        if ($ip->getIp() > $ip->getNetwork()->getMaxIp() || $ip->getIp() < $ip->getNetwork()->getMinIp())
+            $context->buildViolation('form.ip.error.ip.network %min% %max%',[
+                '%min%' => long2ip($ip->getNetwork()->getMinIp()),
+                '%max%' => long2ip($ip->getNetwork()->getMaxIp()),
+            ])->addViolation();
     }
 
     /**
