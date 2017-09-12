@@ -41,41 +41,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class IpController extends Controller
 {
-
-    /**
-     * Creates a new ip entity.
-     *
-     * @Route("/new", name="default_ip_new")
-     * @Method({"GET", "POST"})
-     * @Security("is_granted('ROLE_MANAGE_IP')")
-     *
-     * @param Request $request
-     *
-     * @return RedirectResponse |Response
-     */
-    public function newAction(Request $request)
-    {
-        $ip = new Ip();
-        $form = $this->createForm(IpType::class, $ip);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $ipService = $this->get(IpManager::class);
-            $ipService->save($ip, $this->getUser());
-            //Flash message
-            $session = $this->get('session');
-            $trans = $this->get('translator.default');
-            $message = $trans->trans('default.ip.created %name%', ['%name%' => long2ip($ip->getIp())]);
-            $session->getFlashBag()->add('success', $message);
-
-            return $this->redirectToRoute('default_ip_show', array('id' => $ip->getId()));
-        }
-
-        return $this->render('@App/default/ip/new.html.twig', [
-            'ip' => $ip,
-            'form' => $form->createView(),
-        ]);
-    }
-
     /**
      * Finds and displays a ip entity.
      *
