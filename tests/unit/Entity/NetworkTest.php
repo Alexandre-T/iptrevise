@@ -55,7 +55,7 @@ class NetworkTest extends TestCase
         self::assertNull($this->network->getLabel());
         self::assertNull($this->network->getDescription());
         self::assertNull($this->network->getIp());
-        self::assertNull($this->network->getMask());
+        self::assertNull($this->network->getCidr());
         self::assertNotNull($this->network->getIps());
         self::assertEmpty($this->network->getIps());
         self::assertNull($this->network->getUpdated());
@@ -95,14 +95,14 @@ class NetworkTest extends TestCase
     }
 
     /**
-     * Tests mask getter, setter and aliases.
+     * Tests cidr getter, setter and aliases.
      */
-    public function testMask()
+    public function testCidr()
     {
         $expected = $actual = 24;
         
-        self::assertEquals($this->network, $this->network->setMask($actual));
-        self::assertEquals($expected, $this->network->getMask());
+        self::assertEquals($this->network, $this->network->setCidr($actual));
+        self::assertEquals($expected, $this->network->getCidr());
     }
 
     /**

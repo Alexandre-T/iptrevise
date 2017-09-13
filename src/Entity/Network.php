@@ -94,15 +94,15 @@ class Network implements InformationInterface
     private $ip;
 
     /**
-     * Network mask.
+     * Network cidr.
      *
      * @var int
      *
      * @Assert\Range(
      *     min = 0,
      *     max = 32,
-     *     minMessage="form.network.error.mask.min",
-     *     maxMessage="form.network.error.mask.max"
+     *     minMessage="form.network.error.cidr.min",
+     *     maxMessage="form.network.error.cidr.max"
      * )
      *
      * @ORM\Column(
@@ -113,7 +113,7 @@ class Network implements InformationInterface
      * )
      * @Gedmo\Versioned
      */
-    private $mask;
+    private $cidr;
 
     /**
      * Network color.
@@ -218,13 +218,13 @@ class Network implements InformationInterface
     }
 
     /**
-     * Get the mask of this network.
+     * Get the cidr of this network.
      *
      * @return int
      */
-    public function getMask(): ?int
+    public function getCidr(): ?int
     {
-        return $this->mask;
+        return $this->cidr;
     }
 
     /**
@@ -310,15 +310,15 @@ class Network implements InformationInterface
     }
 
     /**
-     * Set mask of this network.
+     * Set cidr of this network.
      *
-     * @param int $mask
+     * @param int $cidr
      *
      * @return Network
      */
-    public function setMask(int $mask): Network
+    public function setCidr(int $cidr): Network
     {
-        $this->mask = $mask;
+        $this->cidr = $cidr;
 
         return $this;
     }
@@ -395,7 +395,7 @@ class Network implements InformationInterface
      */
     public function getCapacity()
     {
-        return pow(2, 32 - $this->mask);
+        return pow(2, 32 - $this->cidr);
     }
 
     /**
@@ -405,7 +405,7 @@ class Network implements InformationInterface
      */
     public function getMinIp():int
     {
-        if (31 <= $this->mask){
+        if (31 <= $this->cidr){
             return $this->getIp();
         }
 

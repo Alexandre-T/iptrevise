@@ -22,7 +22,7 @@
                         <dt class="lead">{{ 'form.network.field.label'| trans }}</dt>
                         <dd class="lead">{{ network.label }}</dd>
                         <dt>{{ 'form.network.field.address'| trans }}</dt>
-                        <dd>{{ network.ip | network(network.mask) }}</dd>
+                        <dd>{{ network.ip | network(network.cidr) }}</dd>
                         <dt>{{ 'form.network.field.description'| trans }}</dt>
                         <dd>{{ network.description }}</dd>
                         <dt>{{ 'form.network.field.creator'| trans }}</dt>

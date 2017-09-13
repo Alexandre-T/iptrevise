@@ -36,7 +36,7 @@
             <tr>
                 <td headers="network-color" style="color: {{ '#' ~ network.color }}"><span class="fa fa-sitemap"></span></td>
                 <td headers="network-label">{{ network.label }}</td>
-                <td headers="network-address">{{ network.ip | network(network.mask) }}</td>
+                <td headers="network-address">{{ network.ip | network(network.cidr) }}</td>
                 <td headers="network-ips">{{ row['ipsCount'] | localizednumber }} / {{ network.capacity | localizednumber }}</td>
                 <td headers="network-actions">
                     <div class="btn-group-xs btn-group">

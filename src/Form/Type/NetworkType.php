@@ -69,9 +69,9 @@ class NetworkType extends AbstractType
                     'placeholder' => '192.168.0.0'
                 ],
             ])
-            ->add('mask', null, [
-                'label' => 'form.network.field.mask',
-                'help_block' => 'form.network.help.mask',
+            ->add('cidr', null, [
+                'label' => 'form.network.field.cidr',
+                'help_block' => 'form.network.help.cidr',
                 'attr' => [
                     'placeholder' => '24'
                 ],

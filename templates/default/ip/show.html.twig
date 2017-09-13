@@ -44,7 +44,7 @@
                             </a>
                         </dd>
                         <dt>{{ 'form.network.field.address'| trans }}</dt>
-                        <dd>{{ ip.network.ip | network(ip.network.mask) }}</dd>
+                        <dd>{{ ip.network.ip | network(ip.network.cidr) }}</dd>
                         <dt>{{ 'form.network.field.description'| trans }}</dt>
                         <dd>{{ ip.network.description }}</dd>
                         <dt>{{ 'form.network.field.creator'| trans }}</dt>

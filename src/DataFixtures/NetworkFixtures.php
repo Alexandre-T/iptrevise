@@ -49,7 +49,7 @@ class NetworkFixtures extends Fixture
                     ->setDescription("Description $index")
                     ->setColor("000000")
                     ->setIp(ip2long("192.168.$index.0"))
-                    ->setMask(32)
+                    ->setCidr(32)
                     ->setCreator($organiser);
 
                 $this->addReference("network_$index", $network[$index]);

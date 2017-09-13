@@ -20,7 +20,7 @@ use Symfony\Component\Translation\Translator;
 /**
  * Network Extension.
  *
- * This class declare a Twig filter which translate a long (network adress) and an integer (mask) into an IP/Mask
+ * This class declare a Twig filter which translate a long (network adress) and an integer (cidr) into an IP/Cidr
  *
  * @category Twig
  *
@@ -77,7 +77,7 @@ class NetworkExtension extends \Twig_Extension
      *
      * @param int $address Ip address
      *
-     * @return string       IP Adress / Mask
+     * @return string       IP Adress / Cidr
      */
     public function ipFilter($address)
     {
@@ -87,26 +87,26 @@ class NetworkExtension extends \Twig_Extension
      * Network Filter.
      *
      * @param int $address Network address
-     * @param int $mask    Network mask
+     * @param int $cidr    Network cidr
      *
-     * @return string       IP Adress / Mask
+     * @return string       IP Adress / Cidr
      */
-    public function networkFilter($address, $mask = 24)
+    public function networkFilter($address, $cidr = 24)
     {
-       return $this->ipFilter($address).'/'.$mask;
+       return $this->ipFilter($address).'/'.$cidr;
     }
     /**
      * Network Filter with Tooltip.
      *
      * @param int $address Network address 
-     * @param int $mask    Network mask
+     * @param int $cidr    Network cidr
      * 
-     * @return string       IP Adress / Mask
+     * @return string       IP Adress / Cidr
      */
-    public function networkTooltipFilter($address, $mask = 24)
+    public function networkTooltipFilter($address, $cidr = 24)
     {
        return '<span class="" data-toggle="tooltip" data-tooltip="TOTO">'
-              .$this->networkFilter($address, $mask)
+              .$this->networkFilter($address, $cidr)
               .'</span>';
     }
 

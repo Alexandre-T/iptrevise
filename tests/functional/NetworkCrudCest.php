@@ -69,26 +69,26 @@ class NetworkCrudCest
         $I->wantToTest('The length of each field');
         $I->fillField('Intitulé', str_repeat('a', 33));
         $I->fillField('Adresse réseau', 'foo');
-        $I->fillField('Masque réseau', 33);
+        $I->fillField('Masque réseau (CIDR)', 33);
         $I->fillField('Couleur', 'bar');
         $I->click('Créer');
         $I->seeCurrentUrlEquals('/network/new');
         $I->see('Cette chaîne est trop longue. Elle doit avoir au maximum 32 caractères.', '.help-block');
         //$I->see('Cette adresse IP n’est pas valide.', '.help-block');
-        $I->see('Le masque doit être inférieur ou égal à 32.', '.help-block');
+        $I->see('Le masque (CIDR) doit être inférieur ou égal à 32.', '.help-block');
         $I->see('La couleur doit être au format hexadécimal.', '.help-block');
 
-        $I->fillField('Masque réseau', -2);
+        $I->fillField('Masque réseau (CIDR)', -2);
         $I->click('Créer');
         $I->seeCurrentUrlEquals('/network/new');
-        $I->see('Le masque doit être supérieur ou égal à 0.', '.help-block');
+        $I->see('Le masque (CIDR) doit être supérieur ou égal à 0.', '.help-block');
 
         $I->wantToTest('A valid form');
         $I->fillField('Intitulé', 'ARéseau Codeception');
         $I->fillField('Couleur', '00FF00');
         $I->fillField('app_network[description]', 'Description de codeception');
         $I->fillField('Adresse réseau', '194.194.0.0');
-        $I->fillField('Masque réseau', '16');
+        $I->fillField('Masque réseau (CIDR)', '16');
         $I->click('Créer');
 
         $id = $I->grabFromCurrentUrl('~(\d+)~');
@@ -129,13 +129,13 @@ class NetworkCrudCest
         $I->seeInField('Couleur', '00FF00');
         $I->seeInField('app_network[description]', 'Description de codeception');
         $I->seeInField('Adresse réseau', '194.194.0.0');
-        $I->seeInField('Masque réseau', '16');
+        $I->seeInField('Masque réseau (CIDR)', '16');
 
         $I->fillField('Intitulé', 'ARéseau Codeception');
         $I->fillField('Couleur', '00F000');
         $I->fillField('app_network[description]', 'Description de codeception2');
         $I->fillField('Adresse réseau', '194.195.0.0');
-        $I->fillField('Masque réseau', '18');
+        $I->fillField('Masque réseau (CIDR)', '18');
 
         $I->click('Éditer');
 
