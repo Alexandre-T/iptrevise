@@ -81,6 +81,9 @@ class NetworkExtension extends \Twig_Extension
      */
     public function ipFilter($address)
     {
+        if (null === $address){
+            return $this->translator->trans('default.ip.none');
+        }
        return long2ip($address);
     }
     /**

@@ -21,12 +21,6 @@
                     <dl class="dl-horizontal">
                         <dt class="lead">{{ 'form.network.field.label'| trans }}</dt>
                         <dd class="lead">{{ network.label }}</dd>
-                        <dt>{{ 'form.network.field.address'| trans }}</dt>
-                        <dd>{{ network.ip | network(network.cidr) }}</dd>
-                        <dt>{{ 'form.network.field.description'| trans }}</dt>
-                        <dd>{{ network.description }}</dd>
-                        <dt>{{ 'form.network.field.creator'| trans }}</dt>
-                        <dd>{{ network.creator.label }}</dd>
                     </dl>
                 </div>
                 <div class="col-sm-2 text-right">
@@ -35,6 +29,35 @@
                     </p>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <dl class="dl-horizontal">
+                        <dt>{{ 'form.network.field.address'| trans }}</dt>
+                        <dd>{{ network.ip | network(network.cidr) }}</dd>
+                        <dt>{{ 'form.network.field.min-ip'| trans }}</dt>
+                        <dd>{{ network.minIp | ip }}</dd>
+                        <dt>{{ 'form.network.field.max-ip'| trans }}</dt>
+                        <dd>{{ network.maxIp | ip }}</dd>
+                        <dt>{{ 'form.network.field.creator'| trans }}</dt>
+                        <dd>{{ network.creator.label }}</dd>
+                    </dl>
+                </div>
+                <div class="col-sm-6">
+                    <dl class="dl-horizontal">
+                        <dt>{{ 'form.network.field.mask'| trans }}</dt>
+                        <dd>{{ network.mask | ip }}</dd>
+                        <dt>{{ 'form.network.field.wildcard'| trans }}</dt>
+                        <dd>{{ network.wildcard | ip }}</dd>
+                        <dt>{{ 'form.network.field.broadcast'| trans }}</dt>
+                        <dd>{{ network.broadcast | ip }}</dd>
+                    </dl>
+                </div>
+            </div>
+            {% if network.description %}
+            <p class="text-justify">
+                {{ network.description }}
+            </p>
+            {% endif %}
             {% if 0 == network.ips.count %}
                 <div class="alert alert-info">
                     <p>{{ 'default.network.no.ip' | trans }}</p>
