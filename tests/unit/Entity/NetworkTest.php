@@ -140,4 +140,140 @@ class NetworkTest extends TestCase
         self::assertFalse($this->network->getIps()->contains($ip1));
         self::assertFalse($this->network->getIps()->contains($ip2));
     }
+
+    /**
+     * Test all the intern calculation.
+     */
+    public function testBroadcastAndWildcard()
+    {
+        $this->network->setIp(ip2long('192.168.0.0'));
+        $this->network->setCidr(24);
+
+        self::assertEquals(254, $this->network->getCapacity());
+        self::assertEquals('192.168.0.1', long2ip($this->network->getMinIp()));
+        self::assertEquals('192.168.0.254', long2ip($this->network->getMaxIp()));
+        self::assertEquals('192.168.0.255', long2ip($this->network->getBroadcast()));
+        self::assertEquals('255.255.255.0', long2ip($this->network->getMask()));
+        self::assertEquals('0.0.0.255', long2ip($this->network->getWildcard()));
+
+        $this->network->setIp(ip2long('192.168.0.0'));
+        $this->network->setCidr(16);
+
+        self::assertEquals(65534, $this->network->getCapacity());
+        self::assertEquals('192.168.0.1', long2ip($this->network->getMinIp()));
+        self::assertEquals('192.168.255.254', long2ip($this->network->getMaxIp()));
+        self::assertEquals('192.168.255.255', long2ip($this->network->getBroadcast()));
+        self::assertEquals('255.255.0.0', long2ip($this->network->getMask()));
+        self::assertEquals('0.0.255.255', long2ip($this->network->getWildcard()));
+
+        $this->network->setIp(ip2long('192.0.0.0'));
+        $this->network->setCidr(8);
+
+        self::assertEquals(16777214, $this->network->getCapacity());
+        self::assertEquals('192.0.0.1', long2ip($this->network->getMinIp()));
+        self::assertEquals('192.255.255.254', long2ip($this->network->getMaxIp()));
+        self::assertEquals('192.255.255.255', long2ip($this->network->getBroadcast()));
+        self::assertEquals('255.0.0.0', long2ip($this->network->getMask()));
+        self::assertEquals('0.255.255.255', long2ip($this->network->getWildcard()));
+
+
+        $this->network->setIp(ip2long('10.0.0.0'));
+        $this->network->setCidr(24);
+
+        self::assertEquals(254, $this->network->getCapacity());
+        self::assertEquals('10.0.0.1', long2ip($this->network->getMinIp()));
+        self::assertEquals('10.0.0.254', long2ip($this->network->getMaxIp()));
+        self::assertEquals('10.0.0.255', long2ip($this->network->getBroadcast()));
+        self::assertEquals('255.255.255.0', long2ip($this->network->getMask()));
+        self::assertEquals('0.0.0.255', long2ip($this->network->getWildcard()));
+
+        $this->network->setIp(ip2long('10.0.0.0'));
+        $this->network->setCidr(16);
+
+        self::assertEquals(65534, $this->network->getCapacity());
+        self::assertEquals('10.0.0.1', long2ip($this->network->getMinIp()));
+        self::assertEquals('10.0.255.254', long2ip($this->network->getMaxIp()));
+        self::assertEquals('10.0.255.255', long2ip($this->network->getBroadcast()));
+        self::assertEquals('255.255.0.0', long2ip($this->network->getMask()));
+        self::assertEquals('0.0.255.255', long2ip($this->network->getWildcard()));
+
+        $this->network->setIp(ip2long('10.0.0.0'));
+        $this->network->setCidr(8);
+
+        self::assertEquals(16777214, $this->network->getCapacity());
+        self::assertEquals('10.0.0.1', long2ip($this->network->getMinIp()));
+        self::assertEquals('10.255.255.254', long2ip($this->network->getMaxIp()));
+        self::assertEquals('10.255.255.255', long2ip($this->network->getBroadcast()));
+        self::assertEquals('255.0.0.0', long2ip($this->network->getMask()));
+        self::assertEquals('0.255.255.255', long2ip($this->network->getWildcard()));
+
+        $this->network->setIp(ip2long('172.22.32.0'));
+        $this->network->setCidr(20);
+
+        self::assertEquals(4094, $this->network->getCapacity());
+        self::assertEquals('172.22.32.1', long2ip($this->network->getMinIp()));
+        self::assertEquals('172.22.47.254', long2ip($this->network->getMaxIp()));
+        self::assertEquals('172.22.47.255', long2ip($this->network->getBroadcast()));
+        self::assertEquals('255.255.240.0', long2ip($this->network->getMask()));
+        self::assertEquals('0.0.15.255', long2ip($this->network->getWildcard()));
+
+    }
+
+    /**
+     * Test all the intern calculation.
+     */
+    public function testExtremeValue()
+    {
+        $this->network->setIp(ip2long('255.255.255.0'));
+        $this->network->setCidr(24);
+
+        self::assertEquals(254, $this->network->getCapacity());
+        self::assertEquals('255.255.255.1', long2ip($this->network->getMinIp()));
+        self::assertEquals('255.255.255.254', long2ip($this->network->getMaxIp()));
+        self::assertEquals('255.255.255.255', long2ip($this->network->getBroadcast()));
+        self::assertEquals('255.255.255.0', long2ip($this->network->getMask()));
+        self::assertEquals('0.0.0.255', long2ip($this->network->getWildcard()));
+
+        $this->network->setIp(ip2long('0.0.0.0'));
+        $this->network->setCidr(16);
+
+        self::assertEquals(65534, $this->network->getCapacity());
+        self::assertEquals('0.0.0.1', long2ip($this->network->getMinIp()));
+        self::assertEquals('0.0.255.254', long2ip($this->network->getMaxIp()));
+        self::assertEquals('0.0.255.255', long2ip($this->network->getBroadcast()));
+        self::assertEquals('255.255.0.0', long2ip($this->network->getMask()));
+        self::assertEquals('0.0.255.255', long2ip($this->network->getWildcard()));
+
+        $this->network->setIp(ip2long('0.0.0.0'));
+        $this->network->setCidr(0);
+
+        self::assertEquals(4294967294, $this->network->getCapacity());
+        self::assertEquals('0.0.0.1', long2ip($this->network->getMinIp()));
+        self::assertEquals('255.255.255.254', long2ip($this->network->getMaxIp()));
+        self::assertEquals('255.255.255.255', long2ip($this->network->getBroadcast()));
+        self::assertEquals('0.0.0.0', long2ip($this->network->getMask()));
+        self::assertEquals('255.255.255.255', long2ip($this->network->getWildcard()));
+
+        $this->network->setIp(ip2long('0.0.0.0'));
+        $this->network->setCidr(31);
+
+        self::assertEquals(2, $this->network->getCapacity());
+        self::assertEquals('0.0.0.0', long2ip($this->network->getMinIp()));
+        self::assertEquals('0.0.0.1', long2ip($this->network->getMaxIp()));
+        self::assertEquals('0.0.0.0', long2ip($this->network->getBroadcast()));
+        self::assertEquals('255.255.255.254', long2ip($this->network->getMask()));
+        self::assertEquals('0.0.0.1', long2ip($this->network->getWildcard()));
+
+        $this->network->setIp(ip2long('0.0.0.0'));
+        $this->network->setCidr(32);
+
+        self::assertEquals(1, $this->network->getCapacity());
+        self::assertEquals('0.0.0.0', long2ip($this->network->getMinIp()));
+        self::assertEquals('0.0.0.0', long2ip($this->network->getMaxIp()));
+        self::assertEquals('0.0.0.0', long2ip($this->network->getBroadcast()));
+        self::assertEquals('255.255.255.255', long2ip($this->network->getMask()));
+        self::assertEquals('0.0.0.0', long2ip($this->network->getWildcard()));
+
+    }
+
 }

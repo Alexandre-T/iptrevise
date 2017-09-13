@@ -395,7 +395,16 @@ class Network implements InformationInterface
      */
     public function getCapacity()
     {
-        return pow(2, 32 - $this->cidr);
+        if ($this->cidr == 32)
+        {
+
+            return 1;
+        }elseif ($this->cidr == 31){
+
+            return 2;
+        }
+
+        return pow(2, 32 - $this->cidr) - 2;
     }
 
     /**
@@ -405,7 +414,7 @@ class Network implements InformationInterface
      */
     public function getMinIp():int
     {
-        if (31 <= $this->cidr){
+        if ($this->cidr == 32 || $this->cidr == 31){
             return $this->getIp();
         }
 
@@ -419,7 +428,49 @@ class Network implements InformationInterface
      */
     public function getMaxIp():int
     {
+        if ($this->cidr == 32){
+            return $this->getIp();
+        } elseif ($this->cidr == 31){
+            return $this->getIp() + 1;
+        }
+
+        return min($this->getIp() + $this->getCapacity(), ip2long('255.255.255.254'));
+    }
+
+    /**
+     * Return broadcast address (in long)
+     *
+     * @return int | null
+     */
+    public function getBroadcast():?int
+    {
+        if ($this->cidr == 32){
+            return $this->getIp();
+        }elseif($this->cidr == 31){
+            return null;
+        }
+
         return min($this->getIp() + $this->getCapacity() + 1, ip2long('255.255.255.255'));
+    }
+
+    /**
+     * Return broadcast address (in long)
+     *
+     * @return int
+     */
+    public function getMask():int
+    {
+        return pow(2, 32) - pow(2, 32 - $this->cidr);
+    }
+
+    /**
+     * Return wildcard address (in long)
+     *
+     * @return int
+     */
+    public function getWildcard():int
+    {
+        return pow(2, 32 - $this->cidr) - 1;
     }
 
 }
