@@ -17,10 +17,13 @@ namespace App\Controller;
 
 use App\Bean\Factory\InformationFactory;
 use App\Entity\Ip;
+use App\Entity\Machine;
+use App\Form\Type\IpMachineType;
 use App\Form\Type\IpType;
 use App\Form\Type\NetworkType;
 use App\Entity\Network;
 use App\Manager\IpManager;
+use App\Manager\MachineManager;
 use App\Manager\NetworkManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -72,6 +75,7 @@ class NetworkController extends Controller
             self::LIMIT_PER_PAGE,
             ['defaultSortFieldName' => 'network.label', 'defaultSortDirection' => 'asc']
         );
+
         return $this->render('@App/default/network/index.html.twig', [
             'pagination' => $pagination,
         ]);
@@ -147,7 +151,7 @@ class NetworkController extends Controller
      * @Security("is_granted('ROLE_MANAGE_NETWORK')")
      *
      * @param Request $request The request
-     * @param Network    $network    The network entity
+     * @param Network $network The network entity
      *
      * @return RedirectResponse|Response
      */
@@ -188,7 +192,7 @@ class NetworkController extends Controller
      * @Security("is_granted('ROLE_MANAGE_NETWORK')")
      *
      * @param Request $request The request
-     * @param Network    $network    The $network entity
+     * @param Network $network The $network entity
      *
      * @return RedirectResponse
      */
@@ -210,7 +214,7 @@ class NetworkController extends Controller
     }
 
     /**
-     * Reserve a new IP for the current network
+     * Reserve a new IP for the current network.
      *
      * @Route("/{id}/new-ip", name="default_network_new_ip")
      * @Security("is_granted('ROLE_MANAGE_IP')")
@@ -244,42 +248,71 @@ class NetworkController extends Controller
             'form' => $form->createView(),
         ]);
     }
+
     /**
-     * Reserve a new IP for the current network
+     * Reserve a new IP for the current network.
      *
-     * @Route("/unlink/{id}", name="default_network_new_machine")
+     * @Route("/{id}/new-ip-machine", name="default_network_new_machine")
      * @Security("is_granted('ROLE_MANAGE_IP','ROLE_MANAGE_MACHINE')")
      *
+     * @param Request $request
      * @param Network $network
+     *
+     * @return Response
      */
-    public function newMachineAction(Network $network)
+    public function newMachineAction(Request $request, Network $network)
     {
-        //FIXME Develop this use case
-        die('@TODO');
+        $ip = new Ip();
+        $machine = new Machine();
+        $ip->setMachine($machine);
+        $ip->setNetwork($network);
+        $form = $this->createForm(IpMachineType::class, $ip);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $ipService = $this->get(IpManager::class);
+            $machineService = $this->get(MachineManager::class);
+            $machineService->save($machine, $this->getUser());
+            $ipService->save($ip, $this->getUser());
+            //Flash message
+            $session = $this->get('session');
+            $trans = $this->get('translator.default');
+            $message = $trans->trans('default.ip-machine.created %name% %ip%', [
+                '%name%' => long2ip($ip->getIp()),
+                '%ip%' => long2ip($ip->getIp()),
+            ]);
+            $session->getFlashBag()->add('success', $message);
+
+            return $this->redirectToRoute('default_ip_show', array('id' => $ip->getId()));
+        }
+
+        return $this->render('@App/default/network/new-machine.html.twig', [
+            'ip' => $ip,
+            'network' => $network,
+            'form' => $form->createView(),
+        ]);
     }
+
     /**
-     * Unlink an IP from its machine
+     * Unlink an IP from its machine.
      *
      * @Route("/{id}/new-machine", name="default_network_unlink")
      * @ParamConverter("ip", class="App:Ip")
      * @Security("is_granted('ROLE_MANAGE_IP')")
      *
      * @param Request $request The request
-     * @param Ip $ip The IP entity
+     * @param Ip      $ip      The IP entity
      *
      * @return RedirectResponse | Response
-     *
      */
     public function unlinkAction(Request $request, Ip $ip)
     {
         $trans = $this->get('translator.default');
 
-        if (null === $ip->getMachine())
-        {
+        if (null === $ip->getMachine()) {
             //Flash Message
             $session = $this->get('session');
             $session->getFlashBag()->add('warning', $trans->trans('default.ip.unlink.error %ip%', [
-                '%ip%' => ip2long($ip->getIp())
+                '%ip%' => ip2long($ip->getIp()),
             ]));
 
             //Redirecting
@@ -307,7 +340,7 @@ class NetworkController extends Controller
             //Redirecting
             return $this->redirectToRoute('default_network_show', ['id' => $ip->getNetwork()->getId()]);
         } else {
-            return $this->render('@App/default/network/unlink.html.twig',[
+            return $this->render('@App/default/network/unlink.html.twig', [
                 'confirm_form' => $form->createView(),
                 'ip' => $ip,
             ]);
@@ -356,5 +389,4 @@ class NetworkController extends Controller
 
     //@TODO Créer un use case permettant la translation d'IP (Passer de 192.168.0.0 à 192.168.1.0 par exemple
     //@TODO Créer un use case permettant de changer le masque
-
 }

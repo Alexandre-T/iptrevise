@@ -38,18 +38,17 @@ class NetworkFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         if (in_array($this->container->get('kernel')->getEnvironment(), ['dev', 'test'])) {
-
             $network = [];
             /** @var User $organiser */
             $organiser = $this->getReference('user_organiser');
 
-            for($index = 0; $index <= 30; $index++){
+            for ($index = 0; $index <= 32; ++$index) {
                 $network[$index] = (new Network())
                     ->setLabel("Network $index")
                     ->setDescription("Description $index")
-                    ->setColor("000000")
+                    ->setColor('000000')
                     ->setIp(ip2long("192.168.$index.0"))
-                    ->setCidr(32)
+                    ->setCidr($index)
                     ->setCreator($organiser);
 
                 $this->addReference("network_$index", $network[$index]);
@@ -59,9 +58,10 @@ class NetworkFixtures extends Fixture
 
         $manager->flush();
     }
+
     /**
      * This method return an array of fixtures classes
-     * on which the implementing class depends on
+     * on which the implementing class depends on.
      *
      * @return array
      */
