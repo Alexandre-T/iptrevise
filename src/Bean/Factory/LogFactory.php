@@ -52,6 +52,7 @@ class LogFactory
 
         return $logs;
     }
+
     /**
      * Create Log bean from a Abstract Log Entry (Gedmo).
      *
@@ -74,6 +75,7 @@ class LogFactory
 
         return $logs;
     }
+
     /**
      * Create Log bean from a Abstract Log Entry (Gedmo).
      *
@@ -96,6 +98,7 @@ class LogFactory
 
         return $logs;
     }
+
     /**
      * Create Log bean from a Abstract Log Entry (Gedmo).
      *

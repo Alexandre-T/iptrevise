@@ -11,27 +11,31 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
 
-
 namespace App\Entity;
-
-
+/**
+ * Interface ReferentInterface
+ *
+ * @category App\Form\Type
+ *
+ * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
+ * @license Cerema 2017
+ */
 interface ReferentInterface
 {
-
     /**
-     * Getter of the creator
+     * Getter of the creator.
      *
      * @return User|null
      */
     public function getCreator(): ?User;
 
     /**
-     * Setter of the Creator
+     * Setter of the Creator.
      *
      * @param User $creator
+     *
      * @return ReferentTrait
      */
     public function setCreator(User $creator);

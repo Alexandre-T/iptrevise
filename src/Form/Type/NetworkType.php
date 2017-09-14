@@ -55,7 +55,7 @@ class NetworkType extends AbstractType
                 'label' => 'form.network.field.color',
                 'help_block' => 'form.network.help.color',
                 'attr' => [
-                    'placeholder' => '000000'
+                    'placeholder' => '000000',
                 ],
             ])
             ->add('description', null, [
@@ -66,14 +66,14 @@ class NetworkType extends AbstractType
                 'label' => 'form.network.field.ip',
                 'help_block' => 'form.network.help.ip',
                 'attr' => [
-                    'placeholder' => '192.168.0.0'
+                    'placeholder' => '192.168.0.0',
                 ],
             ])
             ->add('cidr', null, [
                 'label' => 'form.network.field.cidr',
                 'help_block' => 'form.network.help.cidr',
                 'attr' => [
-                    'placeholder' => '24'
+                    'placeholder' => '24',
                 ],
             ])
         ;

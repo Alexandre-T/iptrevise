@@ -11,11 +11,9 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
 
 namespace App\Form\DataTransformer;
-
 
 use Symfony\Component\Form\DataTransformerInterface;
 
@@ -30,7 +28,7 @@ use Symfony\Component\Form\DataTransformerInterface;
 class IpTransformer implements DataTransformerInterface
 {
     /**
-     * Transform Long into IP
+     * Transform Long into IP.
      *
      * @param mixed $ip
      *
@@ -38,12 +36,15 @@ class IpTransformer implements DataTransformerInterface
      */
     public function transform($ip)
     {
-        if (is_null($ip)) return null;
+        if (is_null($ip)) {
+            return null;
+        }
 
         return long2ip($ip);
     }
+
     /**
-     * Transform IP to long
+     * Transform IP to long.
      *
      * @param mixed $ip
      *
@@ -51,7 +52,9 @@ class IpTransformer implements DataTransformerInterface
      */
     public function reverseTransform($ip)
     {
-        if (empty($ip)) return null;
+        if (empty($ip)) {
+            return null;
+        }
 
         return ip2long($ip);
     }

@@ -38,12 +38,11 @@ class MachineFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         if (in_array($this->container->get('kernel')->getEnvironment(), ['dev', 'test'])) {
-
             $machine = [];
             /** @var User $organiser */
             $organiser = $this->getReference('user_organiser');
 
-            for($index = 0; $index <= 90; $index++){
+            for ($index = 0; $index <= 90; ++$index) {
                 $machine[$index] = (new Machine())
                     ->setLabel("Machine $index")
                     ->setDescription("Description $index")
@@ -60,7 +59,7 @@ class MachineFixtures extends Fixture
 
     /**
      * This method return an array of fixtures classes
-     * on which the implementing class depends on
+     * on which the implementing class depends on.
      *
      * @return array
      */

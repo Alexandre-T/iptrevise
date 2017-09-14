@@ -68,6 +68,7 @@ class MachineController extends Controller
             self::LIMIT_PER_PAGE,
             ['defaultSortFieldName' => 'machine.label', 'defaultSortDirection' => 'asc']
         );
+
         return $this->render('@App/default/machine/index.html.twig', [
             'pagination' => $pagination,
         ]);
@@ -143,7 +144,7 @@ class MachineController extends Controller
      * @Security("is_granted('ROLE_MANAGE_MACHINE')")
      *
      * @param Request $request The request
-     * @param Machine    $machine    The machine entity
+     * @param Machine $machine The machine entity
      *
      * @return RedirectResponse|Response
      */
@@ -184,7 +185,7 @@ class MachineController extends Controller
      * @Security("is_granted('ROLE_MANAGE_MACHINE')")
      *
      * @param Request $request The request
-     * @param Machine    $machine    The $machine entity
+     * @param Machine $machine The $machine entity
      *
      * @return RedirectResponse
      */

@@ -42,7 +42,7 @@ class User implements InformationInterface, UserInterface, Serializable
     /**
      * Identifiant.
      *
-     * @var integer
+     * @var int
      *
      * @ORM\Id
      * @ORM\Column(type="integer", name="usr_id", options={"unsigned":true,"comment":"Identifiant de l'utilisateur"})
@@ -358,7 +358,7 @@ class User implements InformationInterface, UserInterface, Serializable
      *
      * @see http://php.net/manual/en/serializable.unserialize.php
      *
-     * @param string $serialized The string representation of the user instance.
+     * @param string $serialized the string representation of the user instance
      */
     public function unserialize($serialized)
     {
@@ -384,7 +384,7 @@ class User implements InformationInterface, UserInterface, Serializable
     }
 
     /**
-     *
+     * Get the creator of this user.
      *
      * @return User|null
      */

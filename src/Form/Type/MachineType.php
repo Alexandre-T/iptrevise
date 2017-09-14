@@ -55,7 +55,7 @@ class MachineType extends AbstractType
                 'label' => 'form.machine.field.interface',
                 'help_block' => 'form.machine.help.interface',
                 'attr' => [
-                    'placeholder' => '1'
+                    'placeholder' => '1',
                 ],
             ])
         ;

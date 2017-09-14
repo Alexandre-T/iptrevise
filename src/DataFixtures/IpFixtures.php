@@ -44,16 +44,16 @@ class IpFixtures extends Fixture
             /** @var User $organiser */
             $organiser = $this->getReference('user_organiser');
 
-            for($index = 0; $index <= 45; $index++){
+            for ($index = 0; $index <= 45; ++$index) {
                 /** @var Network $network */
-                $network = $this->getReference("network_" .  ceil($index / 3));
+                $network = $this->getReference('network_'.ceil($index / 3));
                 $ip[$index] = (new Ip())
                     ->setNetwork($network)
                     ->setIp($network->getIp() + $index)
                     ->setReason("Reason $index")
                     ->setCreator($organiser);
 
-                if ($index % 2){
+                if ($index % 2) {
                     /** @var Machine $machine */
                     $machine = $this->getReference("machine_$index");
                     $ip[$index]->setMachine($machine);
@@ -69,7 +69,7 @@ class IpFixtures extends Fixture
 
     /**
      * This method return an array of fixtures classes
-     * on which the implementing class depends on
+     * on which the implementing class depends on.
      *
      * @return array
      */

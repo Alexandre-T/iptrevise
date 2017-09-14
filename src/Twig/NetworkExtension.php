@@ -68,7 +68,7 @@ class NetworkExtension extends \Twig_Extension
                 'networkTooltip',
                 [$this, 'networkTooltipFilter'],
                 ['is_safe' => 'html']
-            ),            
+            ),
         );
     }
 
@@ -77,38 +77,41 @@ class NetworkExtension extends \Twig_Extension
      *
      * @param int $address Ip address
      *
-     * @return string       IP Adress / Cidr
+     * @return string IP Adress / Cidr
      */
     public function ipFilter($address)
     {
-        if (null === $address){
+        if (null === $address) {
             return $this->translator->trans('default.ip.none');
         }
-       return long2ip($address);
+
+        return long2ip($address);
     }
+
     /**
      * Network Filter.
      *
      * @param int $address Network address
      * @param int $cidr    Network cidr
      *
-     * @return string       IP Adress / Cidr
+     * @return string IP Adress / Cidr
      */
     public function networkFilter($address, $cidr = 24)
     {
-       return $this->ipFilter($address).'/'.$cidr;
+        return $this->ipFilter($address).'/'.$cidr;
     }
+
     /**
      * Network Filter with Tooltip.
      *
-     * @param int $address Network address 
+     * @param int $address Network address
      * @param int $cidr    Network cidr
-     * 
-     * @return string       IP Adress / Cidr
+     *
+     * @return string IP Adress / Cidr
      */
     public function networkTooltipFilter($address, $cidr = 24)
     {
-       return '<span class="" data-toggle="tooltip" data-tooltip="TOTO">'
+        return '<span class="" data-toggle="tooltip" data-tooltip="TOTO">'
               .$this->networkFilter($address, $cidr)
               .'</span>';
     }

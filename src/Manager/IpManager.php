@@ -76,7 +76,6 @@ class IpManager implements LoggableManagerInterface, PaginatorInterface
         $this->em->flush();
     }
 
-
     /**
      * Return the Query builder needed by the paginator.
      *
@@ -113,6 +112,7 @@ class IpManager implements LoggableManagerInterface, PaginatorInterface
 
         return LogFactory::createIpLogs($logs);
     }
+
     /**
      * Save new or modified Ip.
      *
@@ -121,7 +121,7 @@ class IpManager implements LoggableManagerInterface, PaginatorInterface
      */
     public function save(Ip $ip, User $user = null)
     {
-        if ($user && empty($ip->getCreator())){
+        if ($user && empty($ip->getCreator())) {
             $ip->setCreator($user);
         }
         $this->em->persist($ip);

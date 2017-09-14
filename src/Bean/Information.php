@@ -38,7 +38,7 @@ class Information
      * @var string Mail of creator
      */
     private $creator;
-    
+
     /**
      * @var DateTime Date and time creation of the entity
      */
@@ -67,6 +67,7 @@ class Information
 
         return $this;
     }
+
     /**
      * Getter of the creation date time.
      *
@@ -114,7 +115,7 @@ class Information
 
         return $this;
     }
-    
+
     /**
      * Has the creator been initialized?
      *
@@ -124,7 +125,7 @@ class Information
     {
         return !empty($this->creator);
     }
-    
+
     /**
      * Has the created been initialized?
      *

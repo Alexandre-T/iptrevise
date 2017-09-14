@@ -11,8 +11,8 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
+
 namespace App\Form\Type;
 
 use App\Form\DataTransformer\IpTransformer;
@@ -27,7 +27,6 @@ use Symfony\Component\Form\FormBuilderInterface;
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license Cerema 2017
- *
  */
 class AddressIpType extends AbstractType
 {
@@ -49,7 +48,7 @@ class AddressIpType extends AbstractType
     }
 
     /**
-     *
+     * Get name of the form.
      *
      * @return string
      */
@@ -59,7 +58,7 @@ class AddressIpType extends AbstractType
     }
 
     /**
-     *
+     * Get tyoe of the parent.
      *
      * @return string
      */

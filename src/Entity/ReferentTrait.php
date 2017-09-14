@@ -11,16 +11,19 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema — Alexandre Tranchant
  * @license   Propriétaire Cerema
- *
  */
 
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+
 /**
- * Trait ReferentTrait
+ * Trait ReferentTrait.
  *
- * @package App\Entity
+ * @category Entity
+ *
+ * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
+ * @license Cerema 2017
  */
 trait ReferentTrait
 {
@@ -43,15 +46,16 @@ trait ReferentTrait
     }
 
     /**
+     * Setter of the creator.
+     *
      * @param User $creator
+     *
      * @return ReferentTrait
      */
     public function setCreator(User $creator)
     {
         $this->creator = $creator;
+
         return $this;
     }
-
-
-
 }

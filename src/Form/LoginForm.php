@@ -26,8 +26,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  *
  * @category Form
  *
- * @category App\Form\Type
- *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license Cerema 2017
  */

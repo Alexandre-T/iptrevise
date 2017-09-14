@@ -125,6 +125,7 @@ class Network implements InformationInterface
      *     pattern="/^([0-9a-f]{3}|[0-9a-f]{6})$/i",
      *     message="form.network.error.color.pattern"
      * )
+     *
      * @see https://stackoverflow.com/questions/9682709/regexp-matching-hex-color-syntax-and-shorten-form
      *
      * @ORM\Column(
@@ -388,6 +389,7 @@ class Network implements InformationInterface
     {
         return $this->ips->count();
     }
+
     /**
      * Calculate IP capacity of a network.
      *
@@ -395,12 +397,9 @@ class Network implements InformationInterface
      */
     public function getCapacity()
     {
-        if ($this->cidr == 32)
-        {
-
+        if ($this->cidr == 32) {
             return 1;
-        }elseif ($this->cidr == 31){
-
+        } elseif ($this->cidr == 31) {
             return 2;
         }
 
@@ -408,29 +407,29 @@ class Network implements InformationInterface
     }
 
     /**
-     * Return the ip of the first machine of current network
+     * Return the ip of the first machine of current network.
      *
      * @return int
      */
-    public function getMinIp():int
+    public function getMinIp(): int
     {
-        if ($this->cidr == 32 || $this->cidr == 31){
+        if ($this->cidr == 32 || $this->cidr == 31) {
             return $this->getIp();
         }
 
-        return min($this->getIp()+1, ip2long('255.255.255.255'));
+        return min($this->getIp() + 1, ip2long('255.255.255.255'));
     }
 
     /**
-     * Return the last ip for a machine in current network
+     * Return the last ip for a machine in current network.
      *
      * @return int
      */
-    public function getMaxIp():int
+    public function getMaxIp(): int
     {
-        if ($this->cidr == 32){
+        if ($this->cidr == 32) {
             return $this->getIp();
-        } elseif ($this->cidr == 31){
+        } elseif ($this->cidr == 31) {
             return $this->getIp() + 1;
         }
 
@@ -438,15 +437,15 @@ class Network implements InformationInterface
     }
 
     /**
-     * Return broadcast address (in long)
+     * Return broadcast address (in long).
      *
      * @return int | null
      */
-    public function getBroadcast():?int
+    public function getBroadcast(): ?int
     {
-        if ($this->cidr == 32){
+        if ($this->cidr == 32) {
             return $this->getIp();
-        }elseif($this->cidr == 31){
+        } elseif ($this->cidr == 31) {
             return null;
         }
 
@@ -454,23 +453,22 @@ class Network implements InformationInterface
     }
 
     /**
-     * Return broadcast address (in long)
+     * Return broadcast address (in long).
      *
      * @return int
      */
-    public function getMask():int
+    public function getMask(): int
     {
         return pow(2, 32) - pow(2, 32 - $this->cidr);
     }
 
     /**
-     * Return wildcard address (in long)
+     * Return wildcard address (in long).
      *
      * @return int
      */
-    public function getWildcard():int
+    public function getWildcard(): int
     {
         return pow(2, 32 - $this->cidr) - 1;
     }
-
 }

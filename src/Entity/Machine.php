@@ -23,7 +23,6 @@ use DateTime;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-
 /**
  * Machine class.
  *
@@ -37,7 +36,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @Gedmo\Loggable
  *
  * @UniqueEntity("label", message="form.machine.error.label.unique")
- *
  */
 class Machine implements InformationInterface
 {

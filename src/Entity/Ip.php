@@ -21,7 +21,6 @@ use DateTime;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-
 /**
  * Ip class.
  *
@@ -228,15 +227,16 @@ class Ip implements InformationInterface, ReferentInterface
     }
 
     /**
-     * Set the reason of the reservation
+     * Set the reason of the reservation.
      *
      * @param string $reason
+     *
      * @return Ip
      */
     public function setReason(?string $reason): Ip
     {
         $this->reason = $reason;
+
         return $this;
     }
-
 }

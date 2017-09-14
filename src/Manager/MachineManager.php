@@ -80,12 +80,13 @@ class MachineManager implements LoggableManagerInterface, PaginatorInterface
      * Is this entity deletable?
      *
      * @param Machine $machine
+     *
      * @return bool true if entity is deletable
      */
     public function isDeletable(Machine $machine): bool
     {
         //A machine is deletable if there is no IPs referenced.
-        return (0 == count($machine->getIps()));
+        return 0 == count($machine->getIps());
     }
 
     /**
@@ -112,7 +113,7 @@ class MachineManager implements LoggableManagerInterface, PaginatorInterface
      */
     public function save(Machine $machine, User $user = null)
     {
-        if ($user && empty($machine->getCreator())){
+        if ($user && empty($machine->getCreator())) {
             $machine->setCreator($user);
         }
         $this->em->persist($machine);
@@ -128,7 +129,7 @@ class MachineManager implements LoggableManagerInterface, PaginatorInterface
     {
         $qb = $this->repository->createQueryBuilder(self::ALIAS);
 
-        $qb ->leftJoin(self::ALIAS.'.ips', 'ips')
+        $qb->leftJoin(self::ALIAS.'.ips', 'ips')
             ->addSelect('COUNT(ips.id) AS ipsCount')
             ->groupBy(self::ALIAS.'.id');
 

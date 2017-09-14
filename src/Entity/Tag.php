@@ -35,7 +35,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table(name="te_tag")
  * @Gedmo\Loggable
  * @UniqueEntity("label", message="form.tag.error.label.unique")
- *
  */
 class Tag implements InformationInterface
 {

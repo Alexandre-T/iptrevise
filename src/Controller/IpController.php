@@ -77,7 +77,7 @@ class IpController extends Controller
      * @Security("is_granted('ROLE_MANAGE_IP')")
      *
      * @param Request $request The request
-     * @param Ip    $ip    The ip entity
+     * @param Ip      $ip      The ip entity
      *
      * @return RedirectResponse|Response
      */
@@ -118,13 +118,12 @@ class IpController extends Controller
      * @Security("is_granted('ROLE_MANAGE_IP')")
      *
      * @param Request $request The request
-     * @param Ip    $ip    The $ip entity
+     * @param Ip      $ip      The $ip entity
      *
      * @return RedirectResponse | Response
      */
     public function deleteAction(Request $request, Ip $ip)
     {
-
         $network = $ip->getNetwork();
         $machine = $ip->getMachine();
 
@@ -145,7 +144,7 @@ class IpController extends Controller
         } else {
             return $this->render('@App/default/ip/delete.html.twig', [
                 'network' => $network,
-                'machine' => $machine
+                'machine' => $machine,
             ]);
         }
     }

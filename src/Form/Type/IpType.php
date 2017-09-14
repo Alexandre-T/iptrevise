@@ -70,7 +70,7 @@ class IpType extends AbstractType
             'data_class' => 'App\Entity\Ip',
             'render_fieldset' => false,
             'show_legend' => false,
-            'constraints'        => [
+            'constraints' => [
                 new Callback([
                     'callback' => [$this, 'checkIpInNetwork'],
                 ]),
@@ -79,19 +79,19 @@ class IpType extends AbstractType
     }
 
     /**
-     * Check if the IP is in the Network
+     * Check if the IP is in the Network.
      *
-     * @param Ip $ip
+     * @param Ip                        $ip
      * @param ExecutionContextInterface $context
      */
     public function checkIpInNetwork(Ip $ip, ExecutionContextInterface $context)
     {
-        dump($ip->getIp(),$ip->getNetwork()->getMinIp(),$ip->getNetwork()->getMaxIp());
-        if ($ip->getIp() > $ip->getNetwork()->getMaxIp() || $ip->getIp() < $ip->getNetwork()->getMinIp())
-            $context->buildViolation('form.ip.error.ip.network %min% %max%',[
+        if ($ip->getIp() > $ip->getNetwork()->getMaxIp() || $ip->getIp() < $ip->getNetwork()->getMinIp()) {
+            $context->buildViolation('form.ip.error.ip.network %min% %max%', [
                 '%min%' => long2ip($ip->getNetwork()->getMinIp()),
                 '%max%' => long2ip($ip->getNetwork()->getMaxIp()),
             ])->addViolation();
+        }
     }
 
     /**

@@ -80,12 +80,13 @@ class NetworkManager implements LoggableManagerInterface, PaginatorInterface
      * Is this entity deletable?
      *
      * @param Network $network
+     *
      * @return bool true if entity is deletable
      */
     public function isDeletable(Network $network): bool
     {
         //A network is deletable if there is no IPs referenced.
-        return (0 == count($network->getIps()));
+        return 0 == count($network->getIps());
     }
 
     /**
@@ -108,11 +109,11 @@ class NetworkManager implements LoggableManagerInterface, PaginatorInterface
      * Save new or modified Network.
      *
      * @param Network $network
-     * @param User $user
+     * @param User    $user
      */
     public function save(Network $network, User $user = null)
     {
-        if ($user && empty($network->getCreator())){
+        if ($user && empty($network->getCreator())) {
             $network->setCreator($user);
         }
         $this->em->persist($network);
@@ -128,7 +129,7 @@ class NetworkManager implements LoggableManagerInterface, PaginatorInterface
     {
         $qb = $this->repository->createQueryBuilder(self::ALIAS);
 
-        $qb ->leftJoin(self::ALIAS.'.ips', 'ips')
+        $qb->leftJoin(self::ALIAS.'.ips', 'ips')
             ->addSelect('COUNT(ips.id) AS ipsCount')
             ->groupBy(self::ALIAS.'.id');
 

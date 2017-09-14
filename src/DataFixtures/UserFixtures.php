@@ -29,7 +29,6 @@ use App\Entity\User;
  */
 class UserFixtures extends Fixture
 {
-
     /**
      * Load Data.
      *

@@ -63,6 +63,7 @@ class DataFactory
 
         return $result;
     }
+
     /**
      * Create Data from a serialized network data.
      *
@@ -81,7 +82,7 @@ class DataFactory
             if (empty($value)) {
                 $data->setNone(true);
             } else {
-                if ('ip' == $column){
+                if ('ip' == $column) {
                     $data->setName(long2ip($value));
                 } else {
                     $data->setName($value);
@@ -92,6 +93,7 @@ class DataFactory
 
         return $result;
     }
+
     /**
      * Create Data from a serialized machine data.
      *
@@ -117,6 +119,7 @@ class DataFactory
 
         return $result;
     }
+
     /**
      * Create Data from a serialized ip data.
      *
@@ -135,17 +138,15 @@ class DataFactory
             if (empty($value)) {
                 $data->setNone(true);
             } else {
-                if ('ip' == $column){
+                if ('ip' == $column) {
                     $data->setName(long2ip($value));
-                } elseif('network' == $column){
+                } elseif ('network' == $column) {
                     $data->setName($value['id']);
-                } elseif('machine' == $column){
+                } elseif ('machine' == $column) {
                     $data->setName($value['id']);
-                }
-                else {
+                } else {
                     $data->setName($value);
                 }
-
             }
             $result[] = $data;
         }
