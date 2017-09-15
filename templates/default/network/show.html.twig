@@ -38,8 +38,8 @@
                         <dd>{{ network.minIp | ip }}</dd>
                         <dt>{{ 'form.network.field.max-ip'| trans }}</dt>
                         <dd>{{ network.maxIp | ip }}</dd>
-                        <dt>{{ 'form.network.field.creator'| trans }}</dt>
-                        <dd>{{ network.creator.label }}</dd>
+                        <dt>{{ 'form.network.field.capacity'| trans }}</dt>
+                        <dd>{{ network.capacity | localizednumber }}</dd>
                     </dl>
                 </div>
                 <div class="col-sm-6">
@@ -50,19 +50,28 @@
                         <dd>{{ network.wildcard | ip }}</dd>
                         <dt>{{ 'form.network.field.broadcast'| trans }}</dt>
                         <dd>{{ network.broadcast | ip }}</dd>
+                        <dt>{{ 'form.network.field.creator'| trans }}</dt>
+                        <dd>{{ network.creator.label }}</dd>
                     </dl>
                 </div>
             </div>
             {% if network.description %}
-            <p class="text-justify">
-                {{ network.description }}
-            </p>
+                <p class="text-justify">
+                    <em>{{ network.description }}</em>
+                </p>
             {% endif %}
             {% if 0 == network.ips.count %}
                 <div class="alert alert-info">
                     <p>{{ 'default.network.no.ip' | trans }}</p>
                 </div>
+            {% elseif network.space %}
+                {{ progressbar(network.ips.count, network.capacity) }}
+            {% else %}
+                <div class="alert alert-warning">
+                    <p>{{ 'default.network.no.space' | trans }}</p>
+                </div>
             {% endif %}
+            {% if network.space %}
             <div class="btn-group btn-group-justified">
                 <a class="btn btn-default" href="{{ path('default_network_new_ip', {'id': network.id}) }}"
                    data-toggle="tooltip" title="{{ 'default.network.new-ip.title' | trans }}">
@@ -77,6 +86,7 @@
                     {{ 'default.network.new-machine.link' | trans }}
                 </a>
             </div>
+            {% endif %}
         </div>
         {% if network.ips.count %}
         <table class="table">

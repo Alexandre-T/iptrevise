@@ -179,6 +179,28 @@ class Network implements InformationInterface
     }
 
     /**
+     * Return true when we can reserve an IP in this network.
+     *
+     * @return bool
+     */
+    public function hasSpace(): bool
+    {
+        //We can create an IP only if there is strictly more capacity than Ip counted.
+        return $this->getCapacity() > $this->ips->count();
+    }
+
+    /**
+     * Return the percent of occupied space.
+     *
+     * @return int
+     */
+    public function getPercent(): int
+    {
+        //We can create an IP only if there is strictly more capacity than Ip counted.
+        return  (int) ($this->ips->count() / $this->getCapacity()) * 100;
+    }
+
+    /**
      * Get the internal identifier.
      *
      * @return int

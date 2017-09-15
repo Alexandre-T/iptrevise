@@ -91,6 +91,12 @@ services:
         tags:
             - { name: twig.extension }
 
+    # Progress bar twig extension.
+    app.twig.progress_bar_extension:
+        class: App\Twig\ProgressBarExtension
+        tags:
+            - { name: twig.extension }
+
     # Roles twig filter
     app.twig.roles_extension:
         class: App\Twig\RolesExtension
