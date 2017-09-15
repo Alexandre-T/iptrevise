@@ -14,8 +14,9 @@
  */
 
 namespace App\Entity;
+
 /**
- * Interface ReferentInterface
+ * Interface ReferentInterface.
  *
  * @category App\Form\Type
  *
