@@ -170,8 +170,8 @@ form.network.help.ip: 'Entrez l’adresse réseau au format IPv4'
 form.network.help.label: 'Entrez l’intitulé du réseau'
 form.network.help.cidr: 'Entrez le masque réseau (CIDR de 0 à 32)'
 
-form.network.delete-ip.confirm: 'Oui, supprimez cette adresse IP'
-form.network.delete-ip.unconfirm: 'Non, conservez cette adresse IP'
+form.ip.delete-ip.confirm: 'Oui, supprimez cette adresse IP'
+form.ip.delete-ip.unconfirm: 'Non, conservez cette adresse IP'
 
 form.user.field.username: 'Identifiant'
 form.user.field.label: 'Identifiant'

@@ -215,7 +215,7 @@ class NetworkController extends Controller
     }
 
     /**
-     * Deletes a network entity.
+     * Deletes an ip from network.
      *
      * @Route("/{id}/delete-ip", name="default_network_delete_ip")
      * @ParamConverter("ip", class="App:Ip")
@@ -548,7 +548,7 @@ class NetworkController extends Controller
             ->add('confirm', SubmitType::class, [
                 'attr' => ['class' => 'btn-danger confirm-delete'],
                 'icon' => 'trash-o',
-                'label' => 'form.network.delete-ip.confirm',
+                'label' => 'form.ip.delete-ip.confirm',
             ])
             ->getForm()
             ;

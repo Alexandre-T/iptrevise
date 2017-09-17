@@ -16,10 +16,13 @@
 namespace App\Controller;
 
 use App\Bean\Factory\InformationFactory;
+use App\Entity\Ip;
 use App\Form\Type\MachineType;
 use App\Entity\Machine;
+use App\Manager\IpManager;
 use App\Manager\MachineManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -207,6 +210,49 @@ class MachineController extends Controller
     }
 
     /**
+     * Deletes an ip from network.
+     *
+     * @Route("/{id}/delete-ip", name="default_machine_delete_ip")
+     * @ParamConverter("ip", class="App:Ip")
+     * @Security("is_granted('ROLE_MANAGE_IP')")
+     *
+     * @param Request $request The request
+     * @param Ip      $ip      the ip to delete
+     *
+     * @return RedirectResponse|Response
+     */
+    public function deleteIpAction(Request $request, Ip $ip)
+    {
+        $trans = $this->get('translator.default');
+
+        $form = $this->createDeleteIpForm($ip);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            //Prepare the message before deleteing.
+            $message = $trans->trans('default.ip.deleted %name%', [
+                '%name%' => long2ip($ip->getIp()),
+            ]);
+
+            //Deleting
+            $ipManager = $this->get(IpManager::class);
+            $ipManager->delete($ip);
+
+            //Flash Message
+            $session = $this->get('session');
+            $session->getFlashBag()->add('success', $message);
+
+            //Redirecting
+            return $this->redirectToRoute('default_machine_show', ['id' => $ip->getMachine()->getId()]);
+        } else {
+            return $this->render('@App/default/machine/delete-ip.html.twig', [
+                'confirm_form' => $form->createView(),
+                'ip' => $ip,
+            ]);
+        }
+    }
+
+    /**
      * Creates a form to delete a machine entity.
      *
      * @param Machine $machine The machine entity
@@ -221,6 +267,27 @@ class MachineController extends Controller
             ->add('delete', SubmitType::class, [
                 'attr' => ['class' => 'fa-js-trash-o btn-danger confirm-delete'],
                 'label' => 'administration.delete.confirm.delete',
+            ])
+            ->getForm()
+            ;
+    }
+
+    /**
+     * Creates a form to ask confirmation before deleting an ip.
+     *
+     * @param Ip $ip the Ip entity
+     *
+     * @return Form The form
+     */
+    private function createDeleteIpForm(Ip $ip): Form
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('default_machine_delete_ip', array('id' => $ip->getId())))
+            ->setMethod('DELETE')
+            ->add('confirm', SubmitType::class, [
+                'attr' => ['class' => 'btn-danger confirm-delete'],
+                'icon' => 'trash-o',
+                'label' => 'form.ip.delete-ip.confirm',
             ])
             ->getForm()
             ;

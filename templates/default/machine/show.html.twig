@@ -92,10 +92,10 @@
                                         <span class="sr-only">{{ 'default.ip.action.create' | trans }}</span>
                                     </button>
                                 {% endif %}
-                                <button href="#" data-toggle="tooltip" title="{{ 'default.ip.action.delete' | trans }}" class="btn btn-danger">
+                                <a href="{{ path ('default_machine_delete_ip', {'id': ip.id}) }}" data-toggle="tooltip" title="{{ 'default.ip.action.delete' | trans }}" class="btn btn-danger">
                                     <span class="fa fa-trash-o"></span>
                                     <span class="sr-only">{{ 'default.ip.action.delete' | trans }}</span>
-                                </button>
+                                </a>
                             </div>
                         </td>
                     </tr>
