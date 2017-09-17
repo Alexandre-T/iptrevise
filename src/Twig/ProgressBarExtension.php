@@ -68,7 +68,6 @@ class ProgressBarExtension extends \Twig_Extension
      */
     public function ProgressBarFunction(int $value = 0, int $total = 100): string
     {
-        dump($total);
         $class = 'progress-bar progress-bar-striped ';
         $percent = (int) ($value / $total * 100);
         $text = "$value / $total";
