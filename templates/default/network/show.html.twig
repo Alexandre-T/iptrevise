@@ -78,12 +78,12 @@
                     <span class="fa fa-fw fa-indent"></span>
                     {{ 'default.network.new-ip.link' | trans }}
                 </a>
-                <a class="btn btn-default" href="{{ path('default_network_new_machine', {'id': network.id}) }}"
-                   data-toggle="tooltip" title="{{ 'default.network.new-machine.title' | trans }}">
+                <a class="btn btn-default" href="{{ path('default_network_new_ip_machine', {'id': network.id}) }}"
+                   data-toggle="tooltip" title="{{ 'default.network.new-ip-machine.title' | trans }}">
                     <span class="fa fa-fw fa-indent"></span>
                     <span class="fa fa-fw fa-plus"></span>
                     <span class="fa fa-fw fa-desktop"></span>
-                    {{ 'default.network.new-machine.link' | trans }}
+                    {{ 'default.network.new-ip-machine.link' | trans }}
                 </a>
             </div>
             {% endif %}
@@ -141,10 +141,10 @@
                                     <span class="fa fa-link"></span>
                                     <span class="sr-only">{{ 'default.ip.action.associate' | trans }}</span>
                                 </a>
-                                <button href="#" data-toggle="tooltip" title="{{ 'default.ip.action.create' | trans }}" class="btn btn-info">
+                                <a href="{{ path ('default_network_new_machine', {'id':ip.id}) }}" data-toggle="tooltip" title="{{ 'default.ip.action.create' | trans }}" class="btn btn-info">
                                     <span class="fa fa-plus"></span>
                                     <span class="sr-only">{{ 'default.ip.action.create' | trans }}</span>
-                                </button>
+                                </a>
                             {% endif %}
                             <button href="#" data-toggle="tooltip" title="{{ 'default.ip.action.delete' | trans }}" class="btn btn-danger">
                                 <span class="fa fa-trash-o"></span>

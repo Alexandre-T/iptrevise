@@ -1,27 +1,29 @@
 {% extends '@App/default/base.html.twig' %}
 
-{% block title %}{{ 'default.ip.create.title'|trans }} · {{ parent() }}{% endblock title %}
+{% block title %}{{ 'default.network.new-machine.title %ip%'|trans({'%ip%': ip.ip | ip}) }} · {{ parent() }}{% endblock title %}
 
-{% block headline %}{% endblock %}
+{% block page_header %}{% endblock %}
 
 {% block content_content %}
 
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <h1 class="panel-title">{{ 'default.ip.create.title %name%'|trans({'%name%': network.label}) }}</h1>
+            <h1 class="panel-title">{{ 'default.network.new-machine.title %ip%'|trans({'%ip%': ip.ip | ip}) }}</h1>
         </div>
         <div class="panel-body">
             {{ form_start(form) }}
-            {{ form_errors(form) }}
-            {{ form_row(form.ip) }}
-            {{ form_row(form.reason) }}
-            {{ form_row(form.machine.label) }}
-            {{ form_row(form.machine.description) }}
-            {{ form_row(form.machine.interface) }}
+            <div  class="form-group">
+                <label for="app_machine_ip" class="control-label col-sm-3 required">
+                    {{ 'form.ip.field.ip' | trans }}
+                </label>
+                <div class="col-sm-9">
+                    <p class="form-control-static"><strong>{{ ip.ip | ip }}</strong></p>
+                </div>
+            </div>
             {{ form_widget(form) }}
             <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-9">
-                    <input class="btn btn-primary" type="submit" value="{{ 'administration.actions.create' | trans }}" />
+                    <input class="btn btn-primary" type="submit" value="{{ 'machine.actions.create-and-associate' | trans }}" />
                 </div>
             </div>
             {{ form_end(form) }}
@@ -34,11 +36,8 @@
     <h3>{{ 'administration.actions' | trans }}</h3>
     <div class="text-center" id="default-actions">
         <div class="btn-group-vertical">
-            <a class="btn-mini btn btn-default" href="{{ path('default_network_index') }}">
-                <span class="fa fa-sitemap"></span>&nbsp;{{ 'default.actions.back.list' | trans }}
-            </a>
-            <a class="btn-mini btn btn-default" href="{{ path('default_network_show', {'id': network.id}) }}">
-                <span class="fa fa-sitemap"></span>&nbsp;{{ 'default.actions.network.show' | trans }}
+            <a class="btn-mini btn btn-default" href="{{ path('default_machine_index') }}">
+                <span class="fa fa-desktop"></span>&nbsp;{{ 'machine.actions.back.list' | trans }}
             </a>
         </div>
     </div>

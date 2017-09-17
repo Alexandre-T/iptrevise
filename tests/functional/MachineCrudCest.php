@@ -61,13 +61,13 @@ class MachineCrudCest
         $I->see('Cette valeur ne doit pas être vide.', '.help-block');
 
         $I->wantToTest('that I cannot create Doublon');
-        $I->fillField('Intitulé', 'Machine 0');
+        $I->fillField('Machine', 'Machine 0');
         $I->click('Créer');
         $I->seeCurrentUrlEquals('/machine/new');
         $I->see('Cet intitulé de machine est déjà utilisé.', '.help-block');
 
         $I->wantToTest('The length of each field');
-        $I->fillField('Intitulé', str_repeat('a', 33));
+        $I->fillField('Machine', str_repeat('a', 33));
         $I->fillField('Interface', -2);
         $I->click('Créer');
         $I->seeCurrentUrlEquals('/machine/new');
@@ -75,7 +75,7 @@ class MachineCrudCest
         $I->see('Le nombre d’interface réseau doit être supérieur ou égal à "0".', '.help-block');
 
         $I->wantToTest('A valid form');
-        $I->fillField('Intitulé', 'AMachine Codeception');
+        $I->fillField('Machine', 'AMachine Codeception');
         $I->fillField('app_machine[description]', 'Description de codeception');
         $I->fillField('Interface', '9');
         $I->click('Créer');
@@ -114,11 +114,11 @@ class MachineCrudCest
         $I->seeCurrentUrlEquals("/machine/$id/edit");
 
         $I->wantTo('Test that the form is well initialized');
-        $I->seeInField('Intitulé', 'AMachine Codeception');
+        $I->seeInField('Machine', 'AMachine Codeception');
         $I->seeInField('app_machine[description]', 'Description de codeception');
         $I->seeInField('Interface', '9');
 
-        $I->fillField('Intitulé', 'AMachine Codeception');
+        $I->fillField('Machine', 'AMachine Codeception');
         $I->fillField('app_machine[description]', 'Description de codeception2');
         $I->fillField('Interface', '11');
 

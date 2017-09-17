@@ -20,6 +20,7 @@ use App\Entity\Ip;
 use App\Entity\Machine;
 use App\Form\Type\IpMachineType;
 use App\Form\Type\IpType;
+use App\Form\Type\MachineType;
 use App\Form\Type\NetworkType;
 use App\Entity\Network;
 use App\Manager\IpManager;
@@ -250,50 +251,7 @@ class NetworkController extends Controller
     }
 
     /**
-     * Reserve a new IP for the current network.
-     *
-     * @Route("/{id}/new-ip-machine", name="default_network_new_machine")
-     * @Security("is_granted('ROLE_MANAGE_IP','ROLE_MANAGE_MACHINE')")
-     *
-     * @param Request $request
-     * @param Network $network
-     *
-     * @return Response
-     */
-    public function newMachineAction(Request $request, Network $network)
-    {
-        $ip = new Ip();
-        $machine = new Machine();
-        $ip->setMachine($machine);
-        $ip->setNetwork($network);
-        $form = $this->createForm(IpMachineType::class, $ip);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $ipService = $this->get(IpManager::class);
-            $machineService = $this->get(MachineManager::class);
-            $machineService->save($machine, $this->getUser());
-            $ipService->save($ip, $this->getUser());
-            //Flash message
-            $session = $this->get('session');
-            $trans = $this->get('translator.default');
-            $message = $trans->trans('default.ip-machine.created %name% %ip%', [
-                '%name%' => long2ip($ip->getIp()),
-                '%ip%' => long2ip($ip->getIp()),
-            ]);
-            $session->getFlashBag()->add('success', $message);
-
-            return $this->redirectToRoute('default_ip_show', array('id' => $ip->getId()));
-        }
-
-        return $this->render('@App/default/network/new-machine.html.twig', [
-            'ip' => $ip,
-            'network' => $network,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * Unlink an IP from its machine.
+     * Link an IP to an existing machine.
      *
      * @Route("/{id}/link", name="default_network_link")
      * @ParamConverter("ip", class="App:Ip")
@@ -361,7 +319,104 @@ class NetworkController extends Controller
     }
 
     /**
-     * Link an IP to an existing machine.
+     * Reserve a new IP associated to a new machine for the current network.
+     *
+     * @Route("/{id}/new-ip-machine", name="default_network_new_ip_machine")
+     * @Security("is_granted('ROLE_MANAGE_IP','ROLE_MANAGE_MACHINE')")
+     *
+     * @param Request $request
+     * @param Network $network
+     *
+     * @return Response
+     */
+    public function newIpMachineAction(Request $request, Network $network)
+    {
+        $ip = new Ip();
+        $machine = new Machine();
+        $ip->setMachine($machine);
+        $ip->setNetwork($network);
+        $form = $this->createForm(IpMachineType::class, $ip);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $ipService = $this->get(IpManager::class);
+            $machineService = $this->get(MachineManager::class);
+            $machineService->save($machine, $this->getUser());
+            $ipService->save($ip, $this->getUser());
+            //Flash message
+            $session = $this->get('session');
+            $trans = $this->get('translator.default');
+            $message = $trans->trans('default.ip-machine.created %name% %ip%', [
+                '%name%' => long2ip($ip->getIp()),
+                '%ip%' => long2ip($ip->getIp()),
+            ]);
+            $session->getFlashBag()->add('success', $message);
+
+            return $this->redirectToRoute('default_ip_show', array('id' => $ip->getId()));
+        }
+
+        return $this->render('@App/default/network/new-ip-machine.html.twig', [
+            'ip' => $ip,
+            'network' => $network,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * Link an IP to a new machine.
+     *
+     * @Route("/{id}/new-machine", name="default_network_new_machine")
+     * @ParamConverter("ip", class="App:Ip")
+     * @Security("is_granted('ROLE_MANAGE_IP')")
+     *
+     * @param Request $request The request
+     * @param Ip      $ip      The IP entity
+     *
+     * @return RedirectResponse | Response
+     */
+    public function newMachineAction(Request $request, Ip $ip)
+    {
+        $trans = $this->get('translator.default');
+
+        if (null !== $ip->getMachine()) {
+            //Flash Message
+            $session = $this->get('session');
+            $session->getFlashBag()->add('warning', $trans->trans('default.ip.link.error %ip%', [
+                '%ip%' => ip2long($ip->getIp()),
+                '%name%' => $ip->getMachine()->getLabel(),
+            ]));
+
+            //Redirecting
+            return $this->redirectToRoute('default_network_show', ['id' => $ip->getNetwork()->getId()]);
+        }
+
+        $machine = new Machine();
+        $ip->setMachine($machine);
+        $form = $this->createForm(MachineType::class, $machine);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $machineService = $this->get(MachineManager::class);
+            $machineService->save($machine, $this->getUser());
+            $ipService = $this->get(IpManager::class);
+            $ipService->save($ip, $this->getUser());
+
+            //Flash message
+            $session = $this->get('session');
+            $trans = $this->get('translator.default');
+            $message = $trans->trans('default.machine.created %name%', ['%name%' => $machine->getLabel()]);
+            $session->getFlashBag()->add('success', $message);
+
+            return $this->redirectToRoute('default_machine_show', array('id' => $machine->getId()));
+        }
+
+        return $this->render('@App/default/network/new-machine.html.twig', [
+            'ip' => $ip,
+            'machine' => $machine,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * Unlink an IP from its machine.
      *
      * @Route("/{id}/unlink", name="default_network_unlink")
      * @ParamConverter("ip", class="App:Ip")
