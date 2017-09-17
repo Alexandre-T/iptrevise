@@ -78,7 +78,7 @@
                                     <span class="sr-only">{{ 'default.action.edit' | trans }}</span>
                                 </a>
                                 {% if ip.machine %}
-                                    <a href="{{ path ('default_network_unlink', {'id': ip.id}) }}" data-toggle="tooltip" title="{{ 'default.ip.action.dissociate' | trans }}" class="btn btn-warning ">
+                                    <a href="{{ path ('default_machine_unlink', {'id': ip.id}) }}" data-toggle="tooltip" title="{{ 'default.ip.action.dissociate' | trans }}" class="btn btn-warning ">
                                         <span class="fa fa-unlink"></span>
                                         <span class="sr-only">{{ 'default.ip.action.dissociate' | trans }}</span>
                                     </a>
