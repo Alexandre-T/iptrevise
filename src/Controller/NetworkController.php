@@ -295,7 +295,75 @@ class NetworkController extends Controller
     /**
      * Unlink an IP from its machine.
      *
-     * @Route("/{id}/new-machine", name="default_network_unlink")
+     * @Route("/{id}/link", name="default_network_link")
+     * @ParamConverter("ip", class="App:Ip")
+     * @Security("is_granted('ROLE_MANAGE_IP')")
+     *
+     * @param Request $request The request
+     * @param Ip      $ip      The IP entity
+     *
+     * @return RedirectResponse | Response
+     */
+    public function linkAction(Request $request, Ip $ip)
+    {
+        $trans = $this->get('translator.default');
+
+        if (null !== $ip->getMachine()) {
+            //Flash Message
+            $session = $this->get('session');
+            $session->getFlashBag()->add('warning', $trans->trans('default.ip.link.error %ip%', [
+                '%ip%' => ip2long($ip->getIp()),
+                '%name%' => $ip->getMachine()->getLabel(),
+            ]));
+
+            //Redirecting
+            return $this->redirectToRoute('default_network_show', ['id' => $ip->getNetwork()->getId()]);
+        }
+
+        $machineManager = $this->get(MachineManager::class);
+        $machines = $machineManager->getAll();
+
+        $form = $this->createLinkForm($ip);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $machineId = (int) array_keys($form->getExtraData())[0];
+            $machine = $machineManager->getMachineById($machineId);
+            $session = $this->get('session');
+
+            //Unfortunately form::isValid is returning FALSE and I do not know why
+            if ($machine instanceof Machine) {
+                //Link
+                $ip->setMachine($machine);
+
+                //Save
+                $ipManager = $this->get(IpManager::class);
+                $ipManager->save($ip);
+
+                //Flash Message
+                $session->getFlashBag()->add('success', $trans->trans('default.ip.link %ip% %name%', [
+                    '%ip%' => long2ip($ip->getIp()),
+                    '%name%' => $ip->getMachine()->getLabel(),
+                ]));
+
+                //Redirecting
+                return $this->redirectToRoute('default_ip_show', ['id' => $ip->getId()]);
+            } else {
+                $session->getFlashBag()->add('warning', 'default.ip.no-more-machine');
+            }
+        }
+
+        return $this->render('@App/default/network/link.html.twig', [
+            'link_form' => $form->createView(),
+            'machines' => $machines,
+            'ip' => $ip,
+        ]);
+    }
+
+    /**
+     * Link an IP to an existing machine.
+     *
+     * @Route("/{id}/unlink", name="default_network_unlink")
      * @ParamConverter("ip", class="App:Ip")
      * @Security("is_granted('ROLE_MANAGE_IP')")
      *
@@ -368,13 +436,31 @@ class NetworkController extends Controller
     }
 
     /**
+     * Creates a form to ssociate/link an ip to an existing machine.
+     *
+     * @param Ip $ip the Ip entity
+     *
+     * @return Form The form
+     */
+    private function createLinkForm(Ip $ip): Form
+    {
+        $form = $this->createFormBuilder()
+            ->setAction($this->generateUrl('default_network_link', array('id' => $ip->getId())))
+            ->setMethod('POST')
+            ->getForm()
+        ;
+
+        return $form;
+    }
+
+    /**
      * Creates a form to dissociate/unlink an ip from a machine.
      *
      * @param Ip $ip the Ip entity
      *
      * @return Form The form
      */
-    private function createUnlinkForm(Ip $ip)
+    private function createUnlinkForm(Ip $ip): Form
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('default_network_unlink', array('id' => $ip->getId())))

@@ -137,10 +137,10 @@
                                     <span class="sr-only">{{ 'default.ip.action.dissociate' | trans }}</span>
                                 </a>
                             {% else %}
-                                <button href="#" data-toggle="tooltip" title="{{ 'default.ip.action.associate' | trans }}" class="btn btn-info">
+                                <a href="{{ path ('default_network_link', {'id':ip.id}) }}" data-toggle="tooltip" title="{{ 'default.ip.action.associate' | trans }}" class="btn btn-info">
                                     <span class="fa fa-link"></span>
                                     <span class="sr-only">{{ 'default.ip.action.associate' | trans }}</span>
-                                </button>
+                                </a>
                                 <button href="#" data-toggle="tooltip" title="{{ 'default.ip.action.create' | trans }}" class="btn btn-info">
                                     <span class="fa fa-plus"></span>
                                     <span class="sr-only">{{ 'default.ip.action.create' | trans }}</span>

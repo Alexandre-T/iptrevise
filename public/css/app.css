@@ -19,3 +19,8 @@ body{
     border-top-right-radius: 0;
     border-top-style: none;
 }
+
+/** If the headers of this cell has an icon **/
+.table > tbody > tr > td.th-icon{
+    padding-left: 2em;
+}

@@ -12,3 +12,10 @@ TODO List
 * Renommer référencé par réservée
 * Trier le tableau dans show network
 * network modifier IP et network supprimer IP
+* Retirer les hacks pour ajouter des icones par javascript et utiliser la clef icon comme dans le fichier NetworkController::createLinkForm
+* Ajouter les droits sur les boutons icones : {% if is_granted("ROLE") %} Hi {{ app.user.username }} {% endif %}
+* Ajouter la classe aux tables le nécessitant  
+    *  striped : <table class="table table-striped">
+    *  table-bordered
+    *  .table-hover
+    *  .table-condensed

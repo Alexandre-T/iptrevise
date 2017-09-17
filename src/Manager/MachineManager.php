@@ -90,6 +90,31 @@ class MachineManager implements LoggableManagerInterface, PaginatorInterface
     }
 
     /**
+     * Return all machines.
+     *
+     * @return Machine[]
+     */
+    public function getAll()
+    {
+        return $this->repository->findAll();
+    }
+
+    /**
+     * Get Machine with given id.
+     *
+     * @param $machineId int
+     *
+     * @return Machine | null
+     */
+    public function getMachineById(int $machineId): ?Machine
+    {
+        /** @var Machine $machine */
+        $machine = $this->repository->findOneBy(['id' => $machineId]);
+
+        return $machine;
+    }
+
+    /**
      * Retrieve logs of the axe.
      *
      * @param Machine $entity
