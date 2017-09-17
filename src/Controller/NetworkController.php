@@ -215,39 +215,46 @@ class NetworkController extends Controller
     }
 
     /**
-     * Reserve a new IP for the current network.
+     * Deletes a network entity.
      *
-     * @Route("/{id}/new-ip", name="default_network_new_ip")
+     * @Route("/{id}/delete-ip", name="default_network_delete_ip")
+     * @ParamConverter("ip", class="App:Ip")
      * @Security("is_granted('ROLE_MANAGE_IP')")
      *
-     * @param Request $request
-     * @param Network $network
+     * @param Request $request The request
+     * @param Ip      $ip      the ip to delete
      *
-     * @return Response
+     * @return RedirectResponse|Response
      */
-    public function newIpAction(Request $request, Network $network)
+    public function deleteIpAction(Request $request, Ip $ip)
     {
-        $ip = new Ip();
-        $ip->setNetwork($network);
-        $form = $this->createForm(IpType::class, $ip);
+        $trans = $this->get('translator.default');
+
+        $form = $this->createDeleteIpForm($ip);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
-            $ipService = $this->get(IpManager::class);
-            $ipService->save($ip, $this->getUser());
-            //Flash message
+            //Prepare the message before deleteing.
+            $message = $trans->trans('default.ip.deleted %name%', [
+                '%name%' => long2ip($ip->getIp()),
+            ]);
+
+            //Deleting
+            $ipManager = $this->get(IpManager::class);
+            $ipManager->delete($ip);
+
+            //Flash Message
             $session = $this->get('session');
-            $trans = $this->get('translator.default');
-            $message = $trans->trans('default.ip.created %name%', ['%name%' => long2ip($ip->getIp())]);
             $session->getFlashBag()->add('success', $message);
 
-            return $this->redirectToRoute('default_ip_show', array('id' => $ip->getId()));
+            //Redirecting
+            return $this->redirectToRoute('default_network_show', ['id' => $ip->getNetwork()->getId()]);
+        } else {
+            return $this->render('@App/default/network/delete-ip.html.twig', [
+                'confirm_form' => $form->createView(),
+                'ip' => $ip,
+            ]);
         }
-
-        return $this->render('@App/default/network/new-ip.html.twig', [
-            'ip' => $ip,
-            'network' => $network,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
@@ -269,8 +276,8 @@ class NetworkController extends Controller
         if (null !== $ip->getMachine()) {
             //Flash Message
             $session = $this->get('session');
-            $session->getFlashBag()->add('warning', $trans->trans('default.ip.link.error %ip%', [
-                '%ip%' => ip2long($ip->getIp()),
+            $session->getFlashBag()->add('warning', $trans->trans('default.ip.link.error %ip% %name%', [
+                '%ip%' => long2ip($ip->getIp()),
                 '%name%' => $ip->getMachine()->getLabel(),
             ]));
 
@@ -315,6 +322,42 @@ class NetworkController extends Controller
             'link_form' => $form->createView(),
             'machines' => $machines,
             'ip' => $ip,
+        ]);
+    }
+
+    /**
+     * Reserve a new IP for the current network.
+     *
+     * @Route("/{id}/new-ip", name="default_network_new_ip")
+     * @Security("is_granted('ROLE_MANAGE_IP')")
+     *
+     * @param Request $request
+     * @param Network $network
+     *
+     * @return Response
+     */
+    public function newIpAction(Request $request, Network $network)
+    {
+        $ip = new Ip();
+        $ip->setNetwork($network);
+        $form = $this->createForm(IpType::class, $ip);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $ipService = $this->get(IpManager::class);
+            $ipService->save($ip, $this->getUser());
+            //Flash message
+            $session = $this->get('session');
+            $trans = $this->get('translator.default');
+            $message = $trans->trans('default.ip.created %name%', ['%name%' => long2ip($ip->getIp())]);
+            $session->getFlashBag()->add('success', $message);
+
+            return $this->redirectToRoute('default_ip_show', array('id' => $ip->getId()));
+        }
+
+        return $this->render('@App/default/network/new-ip.html.twig', [
+            'ip' => $ip,
+            'network' => $network,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -485,6 +528,27 @@ class NetworkController extends Controller
             ->add('delete', SubmitType::class, [
                 'attr' => ['class' => 'fa-js-trash-o btn-danger confirm-delete'],
                 'label' => 'administration.delete.confirm.delete',
+            ])
+            ->getForm()
+            ;
+    }
+
+    /**
+     * Creates a form to ask confirmation before deleting an ip.
+     *
+     * @param Ip $ip the Ip entity
+     *
+     * @return Form The form
+     */
+    private function createDeleteIpForm(Ip $ip): Form
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('default_network_delete_ip', array('id' => $ip->getId())))
+            ->setMethod('DELETE')
+            ->add('confirm', SubmitType::class, [
+                'attr' => ['class' => 'btn-danger confirm-delete'],
+                'icon' => 'trash-o',
+                'label' => 'form.network.delete-ip.confirm',
             ])
             ->getForm()
             ;

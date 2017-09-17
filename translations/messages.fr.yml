@@ -67,7 +67,7 @@ default.ip.create.title %name%: 'Réservation d’une nouvelle adresse IP sur le
 default.ip.create.title: 'Réserve une nouvelle adresse IP'
 default.ip.deleted %name%: 'L’adresse IP « %name% » a été supprimée avec succès !'
 default.ip.link %ip% %name%: 'L’adresse IP %ip a été associée à la machine « %name% » avec succès !'
-default.ip.link.error %ip%: 'L’adresse IP %ip% est déjà rattachée à une machine : la machine %name%.'
+default.ip.link.error %ip% %name%: 'L’adresse IP %ip% est déjà rattachée à une machine : la machine %name%.'
 default.ip.link.title %ip%: 'Association d’une machine existante à l’adresse IP %ip%'
 default.ip.manage %ip%: 'Intervenir sur l’adresse IP %ip%'
 default.ip.no.machine: 'Aucune machine n’est actuellement associée à cette IP.'
@@ -96,6 +96,7 @@ default.machine.updated %name%: 'La machine « %name% » a été modifiée ave
 default.machine.show.title %name%: 'Consultation de la machine « %name% »'
 
 default.network.actions: 'Actions'
+default.network.delete-ip.title %ip%: 'Vous êtes sur le point de supprimer l’adresse IP %ip%. Merci de confirmer cette suppression.'
 default.network.ips: 'Adresses IP'
 default.network.list.title: 'Liste des réseaux'
 default.network.create: 'Nouveau réseau'
@@ -168,6 +169,9 @@ form.network.help.description: 'Entrez la description du réseau'
 form.network.help.ip: 'Entrez l’adresse réseau au format IPv4'
 form.network.help.label: 'Entrez l’intitulé du réseau'
 form.network.help.cidr: 'Entrez le masque réseau (CIDR de 0 à 32)'
+
+form.network.delete-ip.confirm: 'Oui, supprimez cette adresse IP'
+form.network.delete-ip.unconfirm: 'Non, conservez cette adresse IP'
 
 form.user.field.username: 'Identifiant'
 form.user.field.label: 'Identifiant'
