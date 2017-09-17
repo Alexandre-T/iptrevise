@@ -58,17 +58,17 @@
                 <tbody>
                 {% for ip in machine.ips %}
                     <tr>
-                        <td headers="machine-ip-ip">
+                        <td headers="machine-ip-ip" class="th-icon">
                             <a href="{{ path('default_ip_show', {'id': ip.id}) }}" title="{{ ip.ip | ip }}">
                                 {{ ip.ip | ip }}
                             </a>
                         </td>
-                        <td headers="machine-ip-network-label">
+                        <td headers="machine-ip-network-label" class="th-icon">
                             <a href="{{ path('default_network_show', {'id': ip.network.id}) }}" title="{{ ip.network.label }}">
                                 {{ ip.network.label }}
                             </a>
                         </td>
-                        <td headers="machine-ip-machine-creator">
+                        <td headers="machine-ip-machine-creator" class="th-icon">
                             {{ ip.creator.label }}
                         </td>
                         <td headers="machine-ip-actions">
