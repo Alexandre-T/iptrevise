@@ -424,7 +424,7 @@ class NetworkController extends Controller
             //Flash Message
             $session = $this->get('session');
             $session->getFlashBag()->add('warning', $trans->trans('default.ip.link.error %ip%', [
-                '%ip%' => ip2long($ip->getIp()),
+                '%ip%' => long2ip($ip->getIp()),
                 '%name%' => $ip->getMachine()->getLabel(),
             ]));
 
@@ -478,7 +478,7 @@ class NetworkController extends Controller
             //Flash Message
             $session = $this->get('session');
             $session->getFlashBag()->add('warning', $trans->trans('default.ip.unlink.error %ip%', [
-                '%ip%' => ip2long($ip->getIp()),
+                '%ip%' => long2ip($ip->getIp()),
             ]));
 
             //Redirecting
@@ -491,7 +491,7 @@ class NetworkController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             //Prepare the message before unlinking.
             $message = $trans->trans('default.ip.unlink %ip% %name%', [
-                '%ip%' => ip2long($ip->getIp()),
+                '%ip%' => long2ip($ip->getIp()),
                 '%name%' => $ip->getMachine()->getLabel(),
             ]);
 
