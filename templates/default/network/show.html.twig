@@ -127,10 +127,10 @@
                     <td headers="network-ip-machine-tags">@TODO</td>
                     <td headers="network-ip-actions">
                         <div class="btn-group btn-group-sm" role="group" aria-label="{{ 'default.ip.manage %ip%' | trans({'%ip%': ip.ip | ip}) }}">
-                            <button href="#" data-toggle="tooltip" title="{{ 'default.ip.action.edit' | trans }}" class="btn btn-info">
+                            <a href="{{ path('default_ip_edit', {'id': ip.id}) }}" data-toggle="tooltip" title="{{ 'default.ip.action.edit' | trans }}" class="btn btn-info">
                                 <span class="fa fa-pencil"></span>
                                 <span class="sr-only">{{ 'default.action.edit' | trans }}</span>
-                            </button>
+                            </a>
                             {% if ip.machine %}
                                 <a href="{{ path ('default_network_unlink', {'id': ip.id}) }}" data-toggle="tooltip" title="{{ 'default.ip.action.dissociate' | trans }}" class="btn btn-warning ">
                                     <span class="fa fa-unlink"></span>

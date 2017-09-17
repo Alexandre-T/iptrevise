@@ -46,7 +46,6 @@ class IpType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        dump($options);
         $builder
             ->add('ip', AddressIpType::class, [
                 'label' => 'form.ip.field.ip',

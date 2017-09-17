@@ -112,6 +112,7 @@ default.tab.logs: 'Journal de bord'
 default.tab.informations: 'Informations'
 
 form.ip.field.creator: 'Référencée par'
+form.ip.field.reserved-by %name%: 'Adresse IP réservée par %name%'
 form.ip.field.ip: 'Adresse IP'
 form.ip.field.machine: 'Machine'
 form.ip.field.network: 'Réseau'
