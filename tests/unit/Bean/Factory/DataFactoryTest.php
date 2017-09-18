@@ -35,19 +35,6 @@ use PHPUnit\Framework\TestCase;
 class DataFactoryTest extends TestCase
 {
     /**
-     * @var Data
-     */
-    private $data;
-
-    /**
-     * Setup before each unit test.
-     */
-    protected function setUp()
-    {
-        $this->data = new Data();
-    }
-
-    /**
      * Testing Create User Data.
      */
     public function testCreateUserDataWithOneKey()
