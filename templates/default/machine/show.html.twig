@@ -56,7 +56,7 @@
                     </button>
                     <ul class="dropdown-menu">
                         {% for network in networks %}
-                            <li><a href="#">{{ 'default.machine.link-ip.for-network %network%' | trans({'%network%': network.label }) }}</a></li>
+                            <li><a href="{{ path ('default_machine_link', {'network_id': network.id, 'machine_id': machine.id}) }}">{{ 'default.machine.link-ip.for-network %network%' | trans({'%network%': network.label }) }}</a></li>
                         {% endfor %}
                     </ul>
                 </div>

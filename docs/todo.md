@@ -21,3 +21,7 @@ TODO List
     *  .table-condensed
 * Use case : ajouter une IP à une machine
 * Remplacer les {% block headline %}{% endblock %} par des {% block page_header %}{% endblock %}
+* Remplacer les $this->get(IpManager::class) par un $this->get('ip_manager')
+* Remplacer les $this->get(MachineManager::class) par un $this->get('machine_manager')
+* Remplacer les $this->get(NetworkManager::class) par un $this->get('network_manager')
+* Remplacer les $this->get(UserManager::class) par un $this->get('user_manager')

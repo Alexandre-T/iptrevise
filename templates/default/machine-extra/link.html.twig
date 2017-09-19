@@ -1,0 +1,58 @@
+{% extends '@App/base.html.twig' %}
+
+{% set administration_entity_show = 'default_machine_show' %}
+
+{% block title %}{{ 'default.machine.link.title %machine%'|trans({'%machine%': machine.label})}} · {{ parent() }}{% endblock title %}
+
+{% block page_header %}{% endblock %}
+
+{% block content_row %}
+    {{ form_start(link_form) }}
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-2">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h1 class="panel-title">{{ 'default.action.link' | trans }}</h1>
+                </div>
+                <div class="panel-body">
+                    <p>{{ 'default.machine.link.title %machine%'|trans({'%machine%': machine.label})}}</p>
+                </div>
+                {% if ips | length %}
+                <table class="table table-condensed">
+                    <tr>
+                        <th id="label">
+                            <span class="fa fa-fw fa-desktop"></span>
+                            {{ 'form.ip.field.ip' | trans }}
+                        </th>
+                        <th id="referent">
+                            <span class="fa fa-fw fa-user"></span>
+                            {{ 'form.ip.field.creator' | trans }}
+                        </th>
+                        <th id="submit">
+                            <span class="fa fa-fw fa-link"></span>
+                            {{ 'default.action.link' | trans }}
+                        </th>
+                    </tr>
+                    {% for ip in ips %}
+                        <tr class="{% if ip.creator.label == app.user.label %}success{% else %}alert{% endif %}">
+                            <td headers="label" class="th-icon">{{ ip.ip | ip }}</td>
+                            <td headers="referent" class="th-icon">{{ ip.creator.label }}</td>
+                            <td headers="submit" class="th-icon">
+                                <button type="submit" id="form_{{ ip.id }}" name="form[{{ ip.id }}]" class="btn btn-default btn-xs">
+                                    <span class="fa fa-link"></span>
+                                    <span class="sr-only">{{ 'default.action.link' | trans }}</span>
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                {% else %}
+                    <div class="panel-body">
+                        <p class="alert alert-warning">{{ 'default.machine.no-free-ip' | trans }}</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {{ form_end(link_form) }}
+{% endblock content_row %}

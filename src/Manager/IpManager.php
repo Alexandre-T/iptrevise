@@ -18,6 +18,7 @@ namespace App\Manager;
 use App\Bean\Factory\LogFactory;
 use App\Entity\PaginatorInterface;
 use App\Entity\Ip;
+use App\Entity\Network;
 use App\Entity\User;
 use App\Repository\IpRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -74,6 +75,39 @@ class IpManager implements LoggableManagerInterface, PaginatorInterface
     {
         $this->em->remove($ip);
         $this->em->flush();
+    }
+
+    /**
+     * Return all free IP.
+     * A free IP is an IP¨without linked machine.
+     *
+     * @param Network $network
+     *
+     * @return Ip[]
+     */
+    public function getFree(Network $network)
+    {
+        return $this->repository->findBy([
+            'network' => $network,
+            'machine' => null,
+        ]);
+    }
+
+    /**
+     * Return IP from its id.
+     *
+     * @param int $id
+     *
+     * @return Ip|null
+     */
+    public function getById(int $id):?Ip
+    {
+        /** @var Ip $ip */
+        $ip = $this->repository->findOneBy([
+            'id' => $id,
+        ]);
+
+        return $ip;
     }
 
     /**
