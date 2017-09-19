@@ -24,3 +24,9 @@ body{
 .table > tbody > tr > td.th-icon{
     padding-left: 2em;
 }
+
+/** Required **/
+label.required::after {
+    content: "*";
+    color: #FF0000;
+}
