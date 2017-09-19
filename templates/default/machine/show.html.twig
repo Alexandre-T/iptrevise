@@ -33,6 +33,34 @@
                     <span class="fa fa-desktop fa-4x"></span>
                 </div>
             </div>
+            <div class="btn-group-justified">
+                <!-- Single button -->
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="fa fa-fw fa-plus"></span>
+                        {{ 'default.machine.new-ip' | trans }}
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        {% for network in networks %}
+                            <li><a href="{{ path ('default_machine_new_ip', {'network_id': network.id, 'machine_id': machine.id}) }}">{{ 'default.machine.new-ip.for-network %network%' | trans({'%network%': network.label }) }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <!-- Second button -->
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="fa fa-fw fa-link"></span>
+                        {{ 'default.machine.link-ip' | trans }}
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        {% for network in networks %}
+                            <li><a href="#">{{ 'default.machine.link-ip.for-network %network%' | trans({'%network%': network.label }) }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
         </div>
         {% if machine.ips.count %}
             <table class="table">

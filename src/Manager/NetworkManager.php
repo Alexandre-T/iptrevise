@@ -90,6 +90,38 @@ class NetworkManager implements LoggableManagerInterface, PaginatorInterface
     }
 
     /**
+     * Return all networks.
+     *
+     * @return Network[]|null Array of network or null
+     */
+    public function getAll()
+    {
+        return $this->repository->findAll();
+    }
+
+    /**
+     * Return all networks which have a reserved free IP.
+     *
+     * @return Network[]|null Array of network or null
+     */
+    public function getNetworkWithFreeIp()
+    {
+        //@FIXME
+        return $this->repository->findAll();
+    }
+
+    /**
+     * Return all networks which are not saturated.
+     *
+     * @return Network[]|null Array of network or null
+     */
+    public function getNonSaturatedNetwork()
+    {
+        //@FIXME
+        return $this->repository->findAll();
+    }
+
+    /**
      * Retrieve logs of the axe.
      *
      * @param Network $entity

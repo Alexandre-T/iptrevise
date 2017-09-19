@@ -19,3 +19,4 @@ TODO List
     *  table-bordered
     *  .table-hover
     *  .table-condensed
+* Use case : ajouter une IP à une machine
