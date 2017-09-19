@@ -20,3 +20,4 @@ TODO List
     *  .table-hover
     *  .table-condensed
 * Use case : ajouter une IP à une machine
+* Remplacer les {% block headline %}{% endblock %} par des {% block page_header %}{% endblock %}
