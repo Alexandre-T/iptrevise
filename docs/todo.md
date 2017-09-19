@@ -11,7 +11,7 @@ TODO List
 * Nombres d'IP déclarées
 * Renommer référencé par réservée
 * Trier le tableau dans show network
-* network modifier IP et network supprimer IP
+* Créer un Réseau : vérifier la validité de l'adresse réseau avec un validator de type callback. 
 * Retirer les hacks pour ajouter des icones par javascript et utiliser la clef icon comme dans le fichier NetworkController::createLinkForm
 * Ajouter les droits sur les boutons icones : {% if is_granted("ROLE") %} Hi {{ app.user.username }} {% endif %}
 * Ajouter la classe aux tables le nécessitant  

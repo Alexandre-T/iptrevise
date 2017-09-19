@@ -48,7 +48,7 @@ class NetworkCrudCest
 
         $I->wantToTest('the network management page');
         $I->see('Network 0', 'td[headers=network-label]');
-        $I->see('192.168.0.0/32', 'td[headers="network-address"]');
+        $I->see('192.168.0.0/0', 'td[headers="network-address"]');
 
         $I->wantTo('See the new network form');
         $I->click('Nouveau réseau');
