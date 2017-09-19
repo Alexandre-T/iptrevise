@@ -105,6 +105,7 @@ services:
             - { name: twig.extension }
         calls:
             - [ setTranslator, ['@translator.default']]
+
     # Network twig filter
     app.twig.network_extension:
         class: App\Twig\NetworkExtension

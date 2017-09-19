@@ -52,7 +52,7 @@ class ProgressBarExtension extends \Twig_Extension
         return array(
             'progressbar' => new \Twig_SimpleFunction(
                 'progressbar',
-                [$this, 'progressbarFunction'],
+                [$this, 'progressBarFunction'],
                 ['is_safe' => ['html']]
             ),
         );
@@ -66,11 +66,11 @@ class ProgressBarExtension extends \Twig_Extension
      *
      * @return string An html progressbar
      */
-    public function ProgressBarFunction(int $value = 0, int $total = 100): string
+    public function progressBarFunction(int $value = 0, int $total = 100): string
     {
         $class = 'progress-bar progress-bar-striped ';
         $percent = (int) ($value / $total * 100);
-        $text = "$value / $total";
+        $text = twig_localized_number_filter($value).' / '.twig_localized_number_filter($total);
 
         //color of the progress-bar
         if ($percent > self::DANGER) {
