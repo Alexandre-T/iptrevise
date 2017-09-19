@@ -42,8 +42,7 @@ class NetworkType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        dump($options);
-        //@FIXME Si on a déjà des IP qui sont enregistrées alors il faut empêcher l'édition de l'IP est du masque
+        // FIXME Si on a déjà des IP qui sont enregistrées alors il faut empêcher l'édition de l'IP est du masque
         $builder
             ->add('label', null, [
                 'label' => 'form.network.field.label',

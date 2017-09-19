@@ -2,7 +2,6 @@ TODO List
 =========
 * Dans la vue des IPs, préciser qu'on ne supprime que l'adresse IP.
 * Vérifié les assertions dans le formulaire sur ip+machine
-* Rechercher tous les dump
 * Consulter sensiolabs
 * SHOW.HTML.TWIG Le coeur des vues machines et network doit être exporté dans une vue externe pour ne pas réécrire le même code dans la vue IP
 * Text de la home page
@@ -25,3 +24,4 @@ TODO List
 * Remplacer les $this->get(MachineManager::class) par un $this->get('machine_manager')
 * Remplacer les $this->get(NetworkManager::class) par un $this->get('network_manager')
 * Remplacer les $this->get(UserManager::class) par un $this->get('user_manager')
+* Ajouter dans les formulaires des champs non remplaçables (réservé par...)
