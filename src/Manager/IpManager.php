@@ -67,6 +67,19 @@ class IpManager implements LoggableManagerInterface, PaginatorInterface
     }
 
     /**
+     * Return the number of networks registered in database.
+     *
+     * @return int
+     */
+    public function count()
+    {
+        return $this->repository->createQueryBuilder(self::ALIAS)
+            ->select('COUNT(1)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
      * Delete ip without verification.
      *
      * @param Ip $ip

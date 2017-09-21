@@ -4,4 +4,6 @@ twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     globals:
-      app_title: 'IP-Trevise'
+      app_title: 'IP-Manager'
+      app_subtitle: 'by Trevise'
+      app_owner: 'Cerema Sud Ouest — DTISPV — Trevise'

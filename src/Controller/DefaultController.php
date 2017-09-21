@@ -15,6 +15,9 @@
 
 namespace App\Controller;
 
+use App\Manager\IpManager;
+use App\Manager\MachineManager;
+use App\Manager\NetworkManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,6 +42,26 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('@App/default/index.html.twig');
+        $output = [];
+
+        if ($this->isGranted('ROLE_READ_NETWORK')){
+            $networkManager = $this->get(NetworkManager::class);
+            $nNetworks = $networkManager->count();
+            $output['nNetworks'] = $nNetworks;
+        }
+
+        if ($this->isGranted('ROLE_READ_MACHINE')){
+            $machineManager = $this->get(MachineManager::class);
+            $nMachines = $machineManager->count();
+            $output['nMachines'] = $nMachines;
+        }
+
+        if ($this->isGranted('ROLE_READ_IP')){
+            $ipManager = $this->get(IpManager::class);
+            $nIps = $ipManager->count();
+            $output['nIps'] = $nIps;
+        }
+
+        return $this->render('@App/default/index.html.twig', $output);
     }
 }

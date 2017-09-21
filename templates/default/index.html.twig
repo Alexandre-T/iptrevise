@@ -1,4 +1,114 @@
 {% extends '@App/base.html.twig' %}
 
-{% block content_content %}{% endblock content_content %}
-{% block content_sidebar %}{% endblock content_sidebar %}
+{% block page_header %}{% endblock %}
+
+{% block content_content %}
+    <div class="jumbotron">
+        <h1>
+            <span class="fa fa-sitemap"></span>&nbsp;<span class="text-primary">{{ app_title }}</span>
+            <small>{{ app_subtitle }}</small>
+        </h1>
+        <p>{{ 'txt.app.description' | trans }}</p>
+        <div class="row">
+            <div class="col-md-offset-2 col-md-10 col-xs-12">
+                <ul class="list-unstyled">
+                    <li>
+                        <i class="fa fa-fw fa-sitemap"></i>
+                        {{ 'default.network.managment' | trans }}
+                    </li>
+                    <li>
+                        <i class="fa fa-fw fa-desktop"></i>
+                        {{ 'default.machine.managment' | trans }}
+                    </li>
+                    <li>
+                        <i class="fa fa-fw fa-indent"></i>
+                        {{ 'default.ip.managment' | trans }}
+                    </li>
+                    <li>
+                        <i class="fa fa-fw fa-users"></i>
+                        {{ 'default.user.managment' | trans }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="site-footer">
+        {{ 'txt.copyright %year% %owner%' | trans({
+            '%owner%' : app_owner,
+            '%year%': date('now')|date('Y')
+        }) }}
+        <em>{{ 'txt.all-rights-reserved' | trans }}</em>
+    </div>
+{% endblock content_content %}
+
+{% block content_sidebar %}
+    {% if is_granted("ROLE_READ_NETWORK") %}
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-sitemap fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ nNetworks | localizednumber }}</div>
+                        <div>{{ 'default.networks' | trans }}</div>
+                    </div>
+                </div>
+            </div>
+            <a href="{{ path('default_network_index') }}">
+                <div class="panel-footer">
+                    <span class="pull-left">{{ 'txt.details' | trans }}</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    {% endif %}
+
+    {% if is_granted("ROLE_READ_MACHINE") %}
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-desktop fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ nMachines | localizednumber }}</div>
+                        <div>{{ 'default.machines' | trans }}</div>
+                    </div>
+                </div>
+            </div>
+            <a href="{{ path('default_machine_index') }}">
+                <div class="panel-footer">
+                    <span class="pull-left">{{ 'txt.details' | trans }}</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    {% endif %}
+
+    {% if is_granted("ROLE_READ_IP") %}
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-indent fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ nIps | localizednumber }}</div>
+                        <div>{{ 'default.ips' | trans }}</div>
+                    </div>
+                </div>
+            </div>
+            <a href="{{ path('default_network_index') }}">
+                <div class="panel-footer">
+                    <span class="pull-left">{{ 'txt.details' | trans }}</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    {% endif %}
+
+{% endblock content_sidebar %}

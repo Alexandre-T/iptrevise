@@ -74,6 +74,7 @@ default.ip.link %ip% %name%: 'L’adresse IP %ip% a été associée à la machin
 default.ip.link.error %ip% %name%: 'L’adresse IP %ip% est déjà rattachée à une machine : la machine %name%.'
 default.ip.link.title %ip%: 'Association d’une machine existante à l’adresse IP %ip%'
 default.ip.manage %ip%: 'Intervenir sur l’adresse IP %ip%'
+default.ip.managment: 'Gestion des adresses IP libres, réservées ou attribuées,'
 default.ip.no.machine: 'Aucune machine n’est actuellement associée à cette IP.'
 default.ip.no-more-machine: 'La machine que vous avez sélectionnée n’existe pas ou n’existe plus. Veuillez en sélectionner une autre.'
 default.ip.none: 'Aucune adresse'
@@ -88,6 +89,8 @@ default.ip.unlink %ip% %name%: 'L’adresse IP %ip% n’est plus rattachée à l
 default.ip.unlink.error %ip% : 'L’adresse IP %ip% n’était rattachée à aucune machine.'
 default.ip.unlink.title %ip% %name%: 'Voulez-vous dissocier la machine %name% de l’adresse IP %ip% ?'
 
+default.ips: 'Adresses IP'
+
 default.machine.create: 'Nouvelle machine'
 default.machine.created %name%: 'La machine « %name% » a été créée avec succès !'
 default.machine.create.title: 'Créer une nouvelle machine'
@@ -100,9 +103,12 @@ default.machine.new-ip.for-network %network%: '… dans le réseau « %network%
 default.machine.link.title %machine%: 'Lier une adresse IP libre à la machine « %machine% »'
 default.machine.link-ip: 'Lier cette machine à une IP existante et libre…'
 default.machine.link-ip.for-network %network%: '… dans le réseau « %network% »'
+default.machine.managment: 'Gestion des machines (serveurs, postes bureautiques),'
 default.machine.none: 'Aucune'
 default.machine.updated %name%: 'La machine « %name% » a été modifiée avec succès !'
 default.machine.show.title %name%: 'Consultation de la machine « %name% »'
+
+default.machines: 'Machines'
 
 default.network.actions: 'Actions'
 default.network.delete-ip.title %ip%: 'Vous êtes sur le point de supprimer l’adresse IP %ip%. Merci de confirmer cette suppression.'
@@ -113,6 +119,7 @@ default.network.created %name%: 'Le réseau « %name% » a été créé avec s
 default.network.create.title: 'Créer un nouveau réseau'
 default.network.deleted %name%: 'Le réseau « %name% » a été supprimé avec succès !'
 default.network.edit.title %name%: 'Modification du réseau « %name% »'
+default.network.managment: 'Gestion des sous-réseaux,'
 default.network.new-ip.link: 'Réserver une IP'
 default.network.new-ip.title: 'Réserver une IP, sans lui affecter de machine'
 default.network.new-ip-machine.link: 'Référencer une IP et une machine'
@@ -123,9 +130,13 @@ default.network.no.space: 'Toutes les adresses IP sont réservées pour ce rése
 default.network.updated %name%: 'Le réseau « %name% » a été modifié avec succès !'
 default.network.show.title %name%: 'Consultation du réseau « %name% »'
 
+default.networks: 'Réseaux'
+
 default.tab.general: 'Informations générales'
 default.tab.logs: 'Journal de bord'
 default.tab.informations: 'Informations'
+
+default.user.managment: 'Gestion des utilisateurs, de leurs privilèges,'
 
 form.ip.field.creator: 'Référencée par'
 form.ip.field.reserved-by %name%: 'Adresse IP réservée par %name%'
@@ -224,6 +235,12 @@ machine.actions.back.list: 'Liste des machines'
 machine.actions.create-and-associate: 'Créer et associer'
 network.actions.back.list: 'Liste des réseaux'
 
+txt.all-rights-reserved: 'Tous droits réservés.'
+txt.copyright %year% %owner%: '© 2005 - %year% par %owner%.'
+txt.app.description: 'Cette application a pour objectif de répondre aux besoins des administrateurs réseaux pour le suivi des adresses IP attribuées :'
+txt.details: 'Détails…'
+
+# Traduction des rôles
 ROLE_ADMIN: 'Administrateur'
 ROLE_USER: 'Utilisateur cerbérisé'
 ROLE_ORGANISER: 'Organisateur'
@@ -233,8 +250,10 @@ title.security.login: 'Connexion'
 
 (optional): '(optionnel)'
 
+
 # TODO Ce sont des placeholders qui viennent de NetworkType et qu'il faudrait ne plus traduire
 000000: '000000'
 1: '1'
 192.168.0.0: '192.168.0.0'
 24: '24'
+
