@@ -16,7 +16,6 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use DateTime;
@@ -56,7 +55,7 @@ class Tag implements InformationInterface
      * @var string
      *
      * @Assert\NotBlank()
-     * @Assert\Length(max="32")
+     * @Assert\Length(max="16")
      *
      * @ORM\Column(
      *     type="string",
@@ -89,20 +88,6 @@ class Tag implements InformationInterface
      * @Gedmo\Timestampable(on="update")
      */
     private $updated;
-
-    /**
-     * Machines attached to this Tag.
-     *
-     * @var Machine[]
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Machine", inversedBy="tags")
-     * @ORM\JoinTable(
-     *     name="tj_machinetag",
-     *     joinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="tag_id", nullable=false)},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="machine_id", referencedColumnName="mac_id", nullable=false)}
-     * )
-     */
-    private $machines;
 
     /**
      * Tag constructor.
@@ -154,16 +139,6 @@ class Tag implements InformationInterface
     }
 
     /**
-     * Get all machines.
-     *
-     * @return Collection
-     */
-    public function getMachines()
-    {
-        return $this->machines;
-    }
-
-    /**
      * @param mixed $label
      *
      * @return Tag
@@ -176,44 +151,16 @@ class Tag implements InformationInterface
     }
 
     /**
-     * Add machine.
+     * The magic function the tag label.
      *
-     * @param Machine $machine
-     *
-     * @return Tag
+     * @return string
      */
-    public function addMachine(Machine $machine): Tag
+    public function __toString():string
     {
-        $this->machines[] = $machine;
+        if (is_null($this->label)){
+            return '';
+        }
 
-        return $this;
-    }
-
-    /**
-     * Remove machine.
-     *
-     * @param Machine $machine
-     *
-     * @return Tag
-     */
-    public function removeMachine(Machine $machine): Tag
-    {
-        $this->machines->removeElement($machine);
-
-        return $this;
-    }
-
-    /**
-     * This is a simple setters.
-     *
-     * @param mixed $machines
-     *
-     * @return Tag
-     */
-    public function setMachines($machines): Tag
-    {
-        $this->machines = $machines;
-
-        return $this;
+        return $this->label;
     }
 }

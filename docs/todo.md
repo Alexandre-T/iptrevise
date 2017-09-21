@@ -25,3 +25,6 @@ TODO List
 * Remplacer les $this->get(NetworkManager::class) par un $this->get('network_manager')
 * Remplacer les $this->get(UserManager::class) par un $this->get('user_manager')
 * Ajouter dans les formulaires des champs non remplaçables (réservé par...)
+* Ajouter les tags selon le lien Symfony donné
+* Ajouter le graphisme des tgs selon ce lien https://github.com/aehlke/tag-it
+* Utiliser des tata-tables de sb-admin-2 à la place du paginator

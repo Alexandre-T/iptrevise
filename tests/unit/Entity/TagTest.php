@@ -17,7 +17,6 @@
 namespace App\Tests\Entity;
 
 use App\Entity\Tag;
-use App\Entity\Machine;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -52,8 +51,8 @@ class TagTest extends TestCase
         self::assertNull($this->tag->getCreated());
         self::assertNull($this->tag->getId());
         self::assertNull($this->tag->getLabel());
-        self::assertNotNull($this->tag->getMachines());
-        self::assertEmpty($this->tag->getMachines());
+        self::assertNotNull((string)($this->tag));
+        self::assertEmpty((string)($this->tag));
         self::assertNull($this->tag->getUpdated());
     }
 
@@ -64,30 +63,6 @@ class TagTest extends TestCase
     {
         self::assertEquals($this->tag, $this->tag->setLabel('label'));
         self::assertEquals('label', $this->tag->getLabel());
-    }
-
-    /**
-     * Tests Tag get add removeMachine ().
-     */
-    public function testMachines()
-    {
-        $machine1 = new Machine();
-        $machine2 = new Machine();
-        $this->tag->addMachine($machine1);
-        self::assertCount(1, $this->tag->getMachines());
-        self::assertTrue($this->tag->getMachines()->contains($machine1));
-        self::assertFalse($this->tag->getMachines()->contains($machine2));
-        $this->tag->addMachine($machine2);
-        self::assertCount(2, $this->tag->getMachines());
-        self::assertTrue($this->tag->getMachines()->contains($machine1));
-        self::assertTrue($this->tag->getMachines()->contains($machine2));
-        $this->tag->removeMachine($machine1);
-        self::assertCount(1, $this->tag->getMachines());
-        self::assertFalse($this->tag->getMachines()->contains($machine1));
-        self::assertTrue($this->tag->getMachines()->contains($machine2));
-        $this->tag->removeMachine($machine2);
-        self::assertCount(0, $this->tag->getMachines());
-        self::assertFalse($this->tag->getMachines()->contains($machine1));
-        self::assertFalse($this->tag->getMachines()->contains($machine2));
+        self::assertEquals('label', (string)($this->tag));
     }
 }

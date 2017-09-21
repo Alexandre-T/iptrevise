@@ -130,7 +130,7 @@ class Machine implements InformationInterface
     /**
      * Tags of this Machine.
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Tag", mappedBy="machines")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Tag", cascade={"persist"})
      */
     private $tags;
 
