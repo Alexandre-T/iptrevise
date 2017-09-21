@@ -113,7 +113,7 @@ class IpManager implements LoggableManagerInterface, PaginatorInterface
      *
      * @return Ip|null
      */
-    public function getById(int $id):?Ip
+    public function getById(int $id): ?Ip
     {
         /** @var Ip $ip */
         $ip = $this->repository->findOneBy([

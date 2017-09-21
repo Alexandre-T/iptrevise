@@ -44,19 +44,19 @@ class DefaultController extends Controller
     {
         $output = [];
 
-        if ($this->isGranted('ROLE_READ_NETWORK')){
+        if ($this->isGranted('ROLE_READ_NETWORK')) {
             $networkManager = $this->get(NetworkManager::class);
             $nNetworks = $networkManager->count();
             $output['nNetworks'] = $nNetworks;
         }
 
-        if ($this->isGranted('ROLE_READ_MACHINE')){
+        if ($this->isGranted('ROLE_READ_MACHINE')) {
             $machineManager = $this->get(MachineManager::class);
             $nMachines = $machineManager->count();
             $output['nMachines'] = $nMachines;
         }
 
-        if ($this->isGranted('ROLE_READ_IP')){
+        if ($this->isGranted('ROLE_READ_IP')) {
             $ipManager = $this->get(IpManager::class);
             $nIps = $ipManager->count();
             $output['nIps'] = $nIps;
