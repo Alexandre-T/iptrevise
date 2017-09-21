@@ -15,7 +15,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use DateTime;
@@ -90,14 +89,6 @@ class Tag implements InformationInterface
     private $updated;
 
     /**
-     * Tag constructor.
-     */
-    public function __construct()
-    {
-        $this->machines = new ArrayCollection();
-    }
-
-    /**
      * Get the internal identifier of this Tag.
      *
      * @return int
@@ -155,9 +146,9 @@ class Tag implements InformationInterface
      *
      * @return string
      */
-    public function __toString():string
+    public function __toString(): string
     {
-        if (is_null($this->label)){
+        if (is_null($this->label)) {
             return '';
         }
 

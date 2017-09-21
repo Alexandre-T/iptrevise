@@ -37,9 +37,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @UniqueEntity("label", message="form.machine.error.label.unique")
  */
-class Machine implements InformationInterface
+class Machine implements InformationInterface, TaggableInterface
 {
     use ReferentTrait;
+    use TaggableTrait;
+
     /**
      * Identifier of Machine.
      *
@@ -128,9 +130,12 @@ class Machine implements InformationInterface
     private $ips;
 
     /**
-     * Tags of this Machine.
-     *
      * @ORM\ManyToMany(targetEntity="App\Entity\Tag", cascade={"persist"})
+     * @ORM\JoinTable(
+     *     name="tj_machinetag",
+     *     joinColumns={@ORM\JoinColumn(name="machine_id", referencedColumnName="mac_id", nullable=false)},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="tag_id", nullable=false)}
+     * )
      */
     private $tags;
 
@@ -214,16 +219,6 @@ class Machine implements InformationInterface
     }
 
     /**
-     * Return a collection of all tags.
-     *
-     * @return Collection
-     */
-    public function getTags(): Collection
-    {
-        return $this->tags;
-    }
-
-    /**
      * Set the label.
      *
      * @param string $label
@@ -282,20 +277,6 @@ class Machine implements InformationInterface
     }
 
     /**
-     * Set the collection of tags.
-     *
-     * @param Collection $tags
-     *
-     * @return Machine
-     */
-    public function setTags($tags): Machine
-    {
-        $this->tags = $tags;
-
-        return $this;
-    }
-
-    /**
      * Add ip.
      *
      * @param Ip $ip
@@ -310,20 +291,6 @@ class Machine implements InformationInterface
     }
 
     /**
-     * Add tag.
-     *
-     * @param Tag $tag
-     *
-     * @return Machine
-     */
-    public function addTag(Tag $tag)
-    {
-        $this->tags[] = $tag;
-
-        return $this;
-    }
-
-    /**
      * Remove ip.
      *
      * @param Ip $ip
@@ -333,20 +300,6 @@ class Machine implements InformationInterface
     public function removeIp(Ip $ip)
     {
         $this->ips->removeElement($ip);
-
-        return $this;
-    }
-
-    /**
-     * Remove tag.
-     *
-     * @param Tag $tag
-     *
-     * @return Machine
-     */
-    public function removeTag(Tag $tag)
-    {
-        $this->tags->removeElement($tag);
 
         return $this;
     }

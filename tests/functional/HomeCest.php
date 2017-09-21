@@ -34,7 +34,7 @@ class HomeCest
     {
         $I->wantToTest('The Homepage is well displayed');
         $I->amOnPage('/');
-        $I->see('IP-Trevise', '.navbar-brand');
+        $I->see('IP-Manager', '.navbar-brand');
 
         $I->wantToTest('Menu is well displayed');
         $I->see('Accueil', '.active');

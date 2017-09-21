@@ -27,6 +27,15 @@
                         <dd>{{ machine.description }}</dd>
                         <dt>{{ 'form.machine.field.creator'| trans }}</dt>
                         <dd>{{ machine.creator.label }}</dd>
+                        <dt>{{ 'form.machine.field.tags'| trans }}</dt>
+                        <dd>
+                            {% for tag in machine.tags %}
+                                <span class="label label-default">
+                                    <span class="fa fa-tag"></span>
+                                    {{ tag }}
+                                </span>&nbsp;
+                            {% endfor %}
+                        </dd>
                     </dl>
                 </div>
                 <div class="col-sm-2 text-right">

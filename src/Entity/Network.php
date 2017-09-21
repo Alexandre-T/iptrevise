@@ -87,7 +87,7 @@ class Network implements InformationInterface
      * @var int
      *
      * @ORM\Column(type="bigint", nullable=false, name="net_ip", options={"unsigned":true,"comment":"Adresse Réseau IPv4"})
-     * @ORM\OrderBy({"ip" = "ASC"})
+     *
      *
      * @Gedmo\Versioned
      */
