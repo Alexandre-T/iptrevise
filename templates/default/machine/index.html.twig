@@ -66,6 +66,8 @@
 {% endblock content_content %}
 
 {% block content_action %}
+    {{ app_macro.panel_admin('desktop', 'default_machine_index', pagination.totalItemCount, 'default.machines') }}
+
     <div class="text-center">
         <a class="btn btn-default" href="{{ path('default_machine_new') }}">
             <span class="fa fa-desktop"></span>
