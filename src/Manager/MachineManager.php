@@ -168,8 +168,10 @@ class MachineManager implements LoggableManagerInterface, PaginatorInterface
         $qb = $this->repository->createQueryBuilder(self::ALIAS);
 
         $qb->leftJoin(self::ALIAS.'.ips', 'ips')
-            ->addSelect('COUNT(ips.id) AS ipsCount')
-            ->groupBy(self::ALIAS.'.id');
+           ->leftJoin(self::ALIAS.'.tags', 'tags')
+           ->addSelect('COUNT(ips.id) AS ipsCount')
+           ->addSelect("string_agg(tags.label, ',') AS tagsConcat")
+           ->groupBy(self::ALIAS.'.id');
 
         return $qb;
     }

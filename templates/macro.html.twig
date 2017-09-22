@@ -90,10 +90,12 @@
 
 {% macro tags(tags) %}
     {% for tag in tags %}
-        <span class="label label-default">
-            <span class="fa fa-tag"></span>
-            {{ tag }}
-        </span>&nbsp;
+        {% if tag | length %}
+            <span class="label label-default">
+                <span class="fa fa-tag"></span>
+                {{ tag }}
+            </span>&nbsp;
+        {% endif %}
     {% endfor %}
 {% endmacro %}
 
