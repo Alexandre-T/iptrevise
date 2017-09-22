@@ -261,22 +261,6 @@ class Machine implements InformationInterface, TaggableInterface
     }
 
     /**
-     * Set the collection of machines.
-     *
-     * @todo try to convert setIps($ips) to setIps(Collection $ips)
-     *
-     * @param Collection $ips
-     *
-     * @return Machine
-     */
-    public function setIps($ips): Machine
-    {
-        $this->ips = $ips;
-
-        return $this;
-    }
-
-    /**
      * Add ip.
      *
      * @param Ip $ip
