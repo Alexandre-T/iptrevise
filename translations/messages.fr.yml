@@ -91,6 +91,7 @@ default.ip.unlink.title %ip% %name%: 'Voulez-vous dissocier la machine %name% de
 
 default.ips: 'Adresses IP'
 
+default.machine.actions: 'Actions'
 default.machine.create: 'Nouvelle machine'
 default.machine.created %name%: 'La machine « %name% » a été créée avec succès !'
 default.machine.create.title: 'Créer une nouvelle machine'
@@ -240,6 +241,7 @@ machine.actions.back.list: 'Liste des machines'
 machine.actions.create-and-associate: 'Créer et associer'
 network.actions.back.list: 'Liste des réseaux'
 
+txt.actions: 'Actions'
 txt.all-rights-reserved: 'Tous droits réservés.'
 txt.copyright %year% %owner%: '© 2005 - %year% par %owner%.'
 txt.app.description: 'Cette application a pour objectif de répondre aux besoins des administrateurs réseaux pour le suivi des adresses IP attribuées :'

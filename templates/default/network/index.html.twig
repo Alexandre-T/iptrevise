@@ -17,17 +17,19 @@
             <th id="network-label">
                 {% if pagination.isSorted('network.label') %}
                     <span class="fa fa-sort-alpha-{{ direction }}"></span>
+                {% else %}
+                    <span class="fa fa-sitemap"></span>
                 {% endif %}
                 {{ knp_pagination_sortable(pagination, 'form.network.field.label' | trans, 'network.label')}}
             </th>
             <th id="network-address">
-                {% if pagination.isSorted('network.mail') %}
-                    <span class="fa fa-sort-alpha-{{ direction }}"></span>
+                {% if pagination.isSorted('network.ip') %}
+                    <span class="fa fa-sort-numeric-{{ direction }}"></span>
                 {% endif %}
                 {{ knp_pagination_sortable(pagination, 'form.network.field.address' | trans, 'network.ip')}}
             </th>
-            <th id="network-ips">{{ 'default.network.ips' | trans }}</th>
-            <th id="network-actions">Actions</th>
+            <th id="network-ips"><span class="fa fa-indent"></span> {{ 'default.network.ips' | trans }}</th>
+            <th id="network-actions">{{ 'default.network.actions' | trans }}</th>
         </tr>
         </thead>
         <tbody>
@@ -35,9 +37,9 @@
             {% set network = row[0] %}
             <tr>
                 <td headers="network-color" style="color: {{ '#' ~ network.color }}"><span class="fa fa-sitemap"></span></td>
-                <td headers="network-label">{{ network.label }}</td>
-                <td headers="network-address">{{ network.ip | network(network.cidr) }}</td>
-                <td headers="network-ips">{{ row['ipsCount'] | localizednumber }} / {{ network.capacity | localizednumber }}</td>
+                <td headers="network-label" class="th-icon">{{ network.label }}</td>
+                <td headers="network-address" class="th-icon">{{ network.ip | network(network.cidr) }}</td>
+                <td headers="network-ips" class="th-icon">{{ row['ipsCount'] | localizednumber }} / {{ network.capacity | localizednumber }}</td>
                 <td headers="network-actions">
                     <div class="btn-group-xs btn-group">
                         <a class="btn btn-default" href="{{ path('default_network_show', { 'id': network.id }) }}">

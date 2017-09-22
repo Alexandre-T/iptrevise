@@ -1,5 +1,7 @@
 {% extends '@App/default/base.html.twig' %}
 
+{% import "@App/macro.html.twig" as app_macro %}
+
 {% block title %}{{ 'default.machine.list.title'|trans }} · {{ parent() }}{% endblock title %}
 
 {% block headline %}
@@ -17,17 +19,20 @@
             <th id="machine-label">
                 {% if pagination.isSorted('machine.label') %}
                     <span class="fa fa-sort-alpha-{{ direction }}"></span>
+                {% else %}
+                    <span class="fa fa-desktop"></span> 
                 {% endif %}
                 {{ knp_pagination_sortable(pagination, 'form.machine.field.label' | trans, 'machine.label')}}
             </th>
             <th id="machine-address">
-                {% if pagination.isSorted('machine.mail') %}
-                    <span class="fa fa-sort-alpha-{{ direction }}"></span>
+                {% if pagination.isSorted('machine.interface') %}
+                    <span class="fa fa-sort-numeric-{{ direction }}"></span>
                 {% endif %}
                 {{ knp_pagination_sortable(pagination, 'form.machine.field.interface' | trans, 'machine.interface')}}
             </th>
-            <th id="machine-ips">{{ 'default.machine.ips' | trans }}</th>
-            <th id="machine-actions">Actions</th>
+            <th id="machine-ips"><span class="fa fa-indent"></span> {{ 'default.machine.ips' | trans }}</th>
+            <th id="machine-tags"><span class="fa fa-tags"></span> {{ 'form.machine.field.tags' | trans }}</th>
+            <th id="machine-actions">{{ 'default.machine.actions' | trans }}</th>
         </tr>
         </thead>
         <tbody>
@@ -35,9 +40,10 @@
             {% set machine = row[0] %}
             <tr class="row-{{ loop.index }}">
                 <td headers="machine-color"><span class="fa fa-desktop"></span></td>
-                <td headers="machine-label">{{ machine.label }}</td>
-                <td headers="machine-interface">{{ machine.interface }}</td>
-                <td headers="machine-ips">{{ row['ipsCount'] | localizednumber }}</td>
+                <td headers="machine-label" class="th-icon">{{ machine.label }}</td>
+                <td headers="machine-interface" class="th-icon">{{ machine.interface }}</td>
+                <td headers="machine-ips" class="th-icon">{{ row['ipsCount'] | localizednumber }}</td>
+                <td headers="machine-tags" class="th-icon">{{ app_macro.tags(machine.tags) }}</td>
                 <td headers="machine-actions">
                     <div class="btn-group-xs btn-group">
                         <a class="btn btn-default" href="{{ path('default_machine_show', { 'id': machine.id }) }}">
