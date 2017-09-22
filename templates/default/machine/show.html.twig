@@ -1,5 +1,7 @@
 {% extends '@App/default/base.html.twig' %}
 
+{% import "@App/macro.html.twig" as app_macro %}
+
 {% set default_entity_show = 'default_machine_show' %}
 
 {% block title %}
@@ -18,25 +20,7 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-sm-10">
-                    <dl class="dl-horizontal">
-                        <dt class="lead">{{ 'form.machine.field.label'| trans }}</dt>
-                        <dd class="lead">{{ machine.label }}</dd>
-                        <dt>{{ 'form.machine.field.interface'| trans }}</dt>
-                        <dd>{{ machine.interface }}</dd>
-                        <dt>{{ 'form.machine.field.description'| trans }}</dt>
-                        <dd>{{ machine.description }}</dd>
-                        <dt>{{ 'form.machine.field.creator'| trans }}</dt>
-                        <dd>{{ machine.creator.label }}</dd>
-                        <dt>{{ 'form.machine.field.tags'| trans }}</dt>
-                        <dd>
-                            {% for tag in machine.tags %}
-                                <span class="label label-default">
-                                    <span class="fa fa-tag"></span>
-                                    {{ tag }}
-                                </span>&nbsp;
-                            {% endfor %}
-                        </dd>
-                    </dl>
+                    {{ app_macro.dl_machine(machine, false) }}
                 </div>
                 <div class="col-sm-2 text-right">
                     <span class="fa fa-desktop fa-4x"></span>

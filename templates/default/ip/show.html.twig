@@ -1,5 +1,7 @@
 {% extends '@App/default/base.html.twig' %}
 
+{% import "@App/macro.html.twig" as app_macro %}
+
 {% set default_entity_show = 'default_ip_show' %}
 
 {% block title %}
@@ -18,14 +20,7 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-sm-10">
-                    <dl class="dl-horizontal">
-                        <dt class="lead">{{ 'form.ip.field.ip'| trans }}</dt>
-                        <dd class="lead">{{ ip.ip | ip }}</dd>
-                        <dt>{{ 'form.ip.field.reason'| trans }}</dt>
-                        <dd>{{ ip.reason }}</dd>
-                        <dt>{{ 'form.ip.field.creator'| trans }}</dt>
-                        <dd>{{ ip.creator.label }}</dd>
-                    </dl>
+                    {{ app_macro.dl_ip(ip, false) }}
                 </div>
                 <div class="col-sm-2 text-right">
                     <p>
@@ -36,20 +31,7 @@
             <hr>
             <div class="row">
                 <div class="col-sm-10">
-                    <dl class="dl-horizontal">
-                        <dt class="lead">{{ 'form.ip.field.network'| trans }}</dt>
-                        <dd class="lead">
-                            <a href="{{ path('default_network_show', {'id': ip.network.id}) }}" title="{{ ip.network.label }}">
-                                {{ ip.network.label }}
-                            </a>
-                        </dd>
-                        <dt>{{ 'form.network.field.address'| trans }}</dt>
-                        <dd>{{ ip.network.ip | network(ip.network.cidr) }}</dd>
-                        <dt>{{ 'form.network.field.description'| trans }}</dt>
-                        <dd>{{ ip.network.description }}</dd>
-                        <dt>{{ 'form.network.field.creator'| trans }}</dt>
-                        <dd>{{ ip.network.creator.label }}</dd>
-                    </dl>
+                    {{ app_macro.dl_network(ip.network) }}
                 </div>
                 <div class="col-sm-2 text-right">
                     <p>
@@ -61,20 +43,7 @@
             {% if ip.machine %}
                 <div class="row">
                     <div class="col-sm-10">
-                        <dl class="dl-horizontal">
-                            <dt class="lead">{{ 'form.ip.field.machine'| trans }}</dt>
-                            <dd class="lead">
-                                <a href="{{ path('default_machine_show', {'id': ip.machine.id}) }}" title="{{ ip.machine.label }}">
-                                    {{ ip.machine.label }}    
-                                </a>
-                            </dd>
-                            <dt>{{ 'form.machine.field.interface'| trans }}</dt>
-                            <dd>{{ ip.machine.interface }}</dd>
-                            <dt>{{ 'form.machine.field.description'| trans }}</dt>
-                            <dd>{{ ip.machine.description }}</dd>
-                            <dt>{{ 'form.machine.field.creator'| trans }}</dt>
-                            <dd>{{ ip.machine.creator.label }}</dd>
-                        </dl>
+                        {{ app_macro.dl_machine(ip.machine) }}
                     </div>
                     <div class="col-sm-2 text-right">
                         <p>

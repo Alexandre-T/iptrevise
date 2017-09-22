@@ -1,0 +1,93 @@
+{% macro dl_machine(machine, link = true) %}
+    {# Macro to write a definition list #}
+    <dl class="dl-horizontal">
+        <dt class="lead">{{ 'form.machine.field.label'| trans }}</dt>
+        {% if link %}
+            <dd class="lead">
+                <a  href="{{ path('default_machine_show',{'id': machine.id}) }}" data-toggle="tooltip"
+                    title="{{ 'link.machine.show' | trans }}" data-placement="right">
+                    {{ machine.label }}
+                </a>
+            </dd>
+        {% else %}
+            <dd class="lead">{{ machine.label }}</dd>
+        {% endif %}
+        <dt>{{ 'form.machine.field.interface'| trans }}</dt>
+        <dd>{{ machine.interface }}</dd>
+        <dt>{{ 'form.machine.field.description'| trans }}</dt>
+        <dd>{{ machine.description }}</dd>
+        <dt>{{ 'form.machine.field.creator'| trans }}</dt>
+        <dd>{{ machine.creator.label }}</dd>
+        <dt>{{ 'form.machine.field.tags'| trans }}</dt>
+        <dd>
+            {% for tag in machine.tags %}
+                <span class="label label-default">
+                    <span class="fa fa-tag"></span>
+                    {{ tag }}
+                </span>&nbsp;
+            {% endfor %}
+        </dd>
+    </dl>
+{% endmacro %}
+
+{% macro dl_network(network, link = true) %}
+    <dl class="dl-horizontal">
+        <dt class="lead">{{ 'form.network.field.network'| trans }}</dt>
+        {% if link %}
+            <dd class="lead">
+                <a  href="{{ path('default_network_show',{'id': network.id}) }}" data-toggle="tooltip"
+                   title="{{ 'link.network.show' | trans }}" data-placement="right">
+                    {{ network.label }}
+                </a>
+            </dd>
+        {% else %}
+            <dd class="lead">{{ network.label }}</dd>
+        {% endif %}
+    </dl>
+    <div class="row">
+        <div class="col-sm-6">
+            <dl class="dl-horizontal">
+                <dt>{{ 'form.network.field.address'| trans }}</dt>
+                <dd>{{ network.ip | network(network.cidr) }}</dd>
+                <dt>{{ 'form.network.field.min-ip'| trans }}</dt>
+                <dd>{{ network.minIp | ip }}</dd>
+                <dt>{{ 'form.network.field.max-ip'| trans }}</dt>
+                <dd>{{ network.maxIp | ip }}</dd>
+                <dt>{{ 'form.network.field.capacity'| trans }}</dt>
+                <dd>{{ network.capacity | localizednumber }}</dd>
+            </dl>
+        </div>
+        <div class="col-sm-6">
+            <dl class="dl-horizontal">
+                <dt>{{ 'form.network.field.mask'| trans }}</dt>
+                <dd>{{ network.mask | ip }}</dd>
+                <dt>{{ 'form.network.field.wildcard'| trans }}</dt>
+                <dd>{{ network.wildcard | ip }}</dd>
+                <dt>{{ 'form.network.field.broadcast'| trans }}</dt>
+                <dd>{{ network.broadcast | ip }}</dd>
+                <dt>{{ 'form.network.field.creator'| trans }}</dt>
+                <dd>{{ network.creator.label }}</dd>
+            </dl>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro dl_ip(ip, link = true) %}
+    <dl class="dl-horizontal">
+        <dt class="lead">{{ 'form.ip.field.ip'| trans }}</dt>
+        {% if link %}
+            <dd class="lead">
+                <a  href="{{ path('default_ip_show',{'id': ip.id}) }}" data-toggle="tooltip"
+                    title="{{ 'link.ip.show' | trans }}" data-placement="right">
+                    {{ ip.ip | ip }}
+                </a>
+            </dd>
+        {% else %}
+            <dd class="lead">{{ ip.ip | ip }}</dd>
+        {% endif %}
+        <dt>{{ 'form.ip.field.reason'| trans }}</dt>
+        <dd>{{ ip.reason }}</dd>
+        <dt>{{ 'form.ip.field.creator'| trans }}</dt>
+        <dd>{{ ip.creator.label }}</dd>
+    </dl>
+{% endmacro %}

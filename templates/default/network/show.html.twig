@@ -1,5 +1,7 @@
 {% extends '@App/default/base.html.twig' %}
 
+{% import "@App/macro.html.twig" as app_macro %}
+
 {% set default_entity_show = 'default_network_show' %}
 
 {% block title %}
@@ -18,41 +20,14 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-sm-10">
-                    <dl class="dl-horizontal">
-                        <dt class="lead">{{ 'form.network.field.label'| trans }}</dt>
-                        <dd class="lead">{{ network.label }}</dd>
-                    </dl>
+                    <div class="col-xs-12">
+                        {{ app_macro.dl_network(network, false) }}
+                    </div>
                 </div>
                 <div class="col-sm-2 text-right">
                     <p>
                         <span class="fa fa-sitemap fa-4x" style="color: {{ '#' ~ network.color }}"></span>
                     </p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <dl class="dl-horizontal">
-                        <dt>{{ 'form.network.field.address'| trans }}</dt>
-                        <dd>{{ network.ip | network(network.cidr) }}</dd>
-                        <dt>{{ 'form.network.field.min-ip'| trans }}</dt>
-                        <dd>{{ network.minIp | ip }}</dd>
-                        <dt>{{ 'form.network.field.max-ip'| trans }}</dt>
-                        <dd>{{ network.maxIp | ip }}</dd>
-                        <dt>{{ 'form.network.field.capacity'| trans }}</dt>
-                        <dd>{{ network.capacity | localizednumber }}</dd>
-                    </dl>
-                </div>
-                <div class="col-sm-6">
-                    <dl class="dl-horizontal">
-                        <dt>{{ 'form.network.field.mask'| trans }}</dt>
-                        <dd>{{ network.mask | ip }}</dd>
-                        <dt>{{ 'form.network.field.wildcard'| trans }}</dt>
-                        <dd>{{ network.wildcard | ip }}</dd>
-                        <dt>{{ 'form.network.field.broadcast'| trans }}</dt>
-                        <dd>{{ network.broadcast | ip }}</dd>
-                        <dt>{{ 'form.network.field.creator'| trans }}</dt>
-                        <dd>{{ network.creator.label }}</dd>
-                    </dl>
                 </div>
             </div>
             {% if network.description %}
@@ -124,7 +99,16 @@
                             <em>{{ 'default.machine.none' | trans }}</em>
                         {%- endif -%}
                     </td>
-                    <td headers="network-ip-machine-tags">@TODO</td>
+                    <td headers="network-ip-machine-tags">
+                        {% if ip.machine %}
+                            {% for tag in ip.machine.tags %}
+                                <span class="label label-default">
+                                    <span class="fa fa-tag"></span>
+                                    {{ tag }}
+                                </span>&nbsp;
+                            {% endfor %}
+                        {% endif %}
+                    </td>
                     <td headers="network-ip-actions">
                         <div class="btn-group btn-group-sm" role="group" aria-label="{{ 'default.ip.manage %ip%' | trans({'%ip%': ip.ip | ip}) }}">
                             <a href="{{ path('default_ip_edit', {'id': ip.id}) }}" data-toggle="tooltip" title="{{ 'default.ip.action.edit' | trans }}" class="btn btn-info">

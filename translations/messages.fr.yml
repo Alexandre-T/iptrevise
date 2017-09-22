@@ -181,6 +181,7 @@ form.network.field.label: 'Intitulé'
 form.network.field.min-ip: 'Première machine'
 form.network.field.mask: 'Masque sous-réseau'
 form.network.field.max-ip: 'Dernière machine'
+form.network.field.network: 'Réseau'
 form.network.field.wildcard: 'Wildcard'
 
 form.network.help.address: 'Entrez l’adresse et le masque du réseau'
@@ -215,6 +216,10 @@ form.login.field.submit: 'Se connecter'
 
 form.login.help.mail: 'Entrez votre adresse email'
 form.login.help.password: 'Entrez votre mot de passe'
+
+link.ip.show: 'Accéder à la fiche de cette adresse IP'
+link.machine.show: 'Accéder à la fiche de cette machine'
+link.network.show: 'Accéder à la fiche de ce réseau'
 
 menu.admin.admin: 'Administration'
 menu.admin.users: 'Gestion des utilisateurs'
