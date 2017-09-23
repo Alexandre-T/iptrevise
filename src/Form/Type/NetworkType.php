@@ -17,12 +17,15 @@
 
 namespace App\Form\Type;
 
+use App\Entity\Network;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Network form builder.
+ *
+ * @TODO Add a network adress validator
  *
  * @category App\Form\Type
  *
@@ -44,11 +47,38 @@ class NetworkType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        // FIXME Si on a déjà des IP qui sont enregistrées alors il faut empêcher l'édition de l'IP est du masque
+        $current = $options['data'];
+
+        if ($current instanceof Network && count($current->getIps())){
+            $disabled = true;
+            $helpIp = 'form.network.help.ip.readonly';
+            $helpCidr = 'form.network.help.cidr.readonly';
+        } else {
+            $disabled = false;
+            $helpIp = '';
+            $helpCidr = '';
+        }
+
         $builder
             ->add('label', null, [
                 'label' => 'form.network.field.label',
                 'help_block' => 'form.network.help.label',
+            ])
+            ->add('ip', AddressIpType::class, [
+                'label' => 'form.network.field.ip',
+                'help_block' => $helpIp,
+                'disabled' => $disabled,
+                'attr' => [
+                    'placeholder' => '192.168.0.0',
+                ],
+            ])
+            ->add('cidr', null, [
+                'label' => 'form.network.field.cidr',
+                'help_block' => $helpCidr,
+                'disabled' => $disabled,
+                'attr' => [
+                    'placeholder' => '24',
+                ],
             ])
             //TODO Use a HTML5 ColorType
             //@see https://stackoverflow.com/questions/19845930/symfony2-custom-form-field-type-html5-color
@@ -62,22 +92,8 @@ class NetworkType extends AbstractType
             ->add('description', null, [
                 'label' => 'form.network.field.description',
                 'help_block' => 'form.network.help.description',
-            ])
-            ->add('ip', AddressIpType::class, [
-                'label' => 'form.network.field.ip',
-                'help_block' => 'form.network.help.ip',
-                'attr' => [
-                    'placeholder' => '192.168.0.0',
-                ],
-            ])
-            ->add('cidr', null, [
-                'label' => 'form.network.field.cidr',
-                'help_block' => 'form.network.help.cidr',
-                'attr' => [
-                    'placeholder' => '24',
-                ],
-            ])
-        ;
+            ]);
+
     }
 
     /**
@@ -87,11 +103,11 @@ class NetworkType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'App\Entity\Network',
             'render_fieldset' => false,
             'show_legend' => false,
-        ));
+        ]);
     }
 
     /**
