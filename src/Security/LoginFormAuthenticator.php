@@ -9,8 +9,10 @@
  * @category Entity
  *
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
- * @copyright 2017 Cerema — Alexandre Tranchant
- * @license   Propriétaire Cerema
+ * @copyright 2017 Cerema
+ * @license   CeCILL-B V1
+ *
+ * @see       http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt
  */
 
 namespace App\Security;
@@ -32,7 +34,7 @@ use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticato
  * @category Security
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
- * @license Cerema 2017
+ * @license CeCILL-B V1
  *
  * @see https://knpuniversity.com/screencast/symfony-security/authenticator-get-user-check-credentials
  */

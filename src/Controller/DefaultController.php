@@ -9,8 +9,8 @@
  * @category Entity
  *
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
- * @copyright 2017 Cerema — Alexandre Tranchant
- * @license   Propriétaire Cerema
+ * @copyright 2017 Cerema
+ * @license   CeCILL-B V1
  */
 
 namespace App\Controller;
@@ -28,7 +28,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @category App\Controller
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
- * @license Cerema 2017
+ * @license CeCILL-B V1
  */
 class DefaultController extends Controller
 {
