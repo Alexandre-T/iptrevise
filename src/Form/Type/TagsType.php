@@ -22,26 +22,67 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
+/**
+ * TagsType class.
+ *
+ * @category App\Form\Type
+ *
+ * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
+ * @license Cerema 2017
+ *
+ * FIXME Add a validator for tags > 16 character
+ */
 class TagsType extends AbstractType
 {
     /**
-     * FIXME remove object manager in contructor.
+     * Object manager.
      *
      * @var ObjectManager
      */
     private $manager;
 
-    public function __construct(ObjectManager $manager)
+    /**
+     * User user.
+     *
+     * @var mixed
+     */
+    private $user;
+
+    /**
+     * Tags Type constructor.
+     *
+     * @param ObjectManager                 $manager
+     * @param TokenStorageInterface         $tokenStorage
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     */
+    public function __construct(ObjectManager $manager, TokenStorageInterface $tokenStorage, AuthorizationCheckerInterface $authorizationChecker)
     {
         $this->manager = $manager;
+        $token = $tokenStorage->getToken();
+        if (null !== $token && $authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            $this->user = $token->getUser();
+        }
     }
 
+    /**
+     * Builds the form.
+     *
+     * This method is called for each type in the hierarchy starting from the
+     * top most type. Type extensions can further modify the form.
+     *
+     * @see FormTypeExtensionInterface::buildForm()
+     *
+     * @param FormBuilderInterface $builder The form builder
+     * @param array                $options The options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->addModelTransformer(new CollectionToArrayTransformer(), true)
-            ->addModelTransformer(new TagsTransformer($this->manager), true);
+            ->addModelTransformer(new TagsTransformer($this->manager, $this->user), true);
     }
 
     /**

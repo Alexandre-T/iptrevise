@@ -16,6 +16,7 @@
 namespace App\Form\DataTransformer;
 
 use App\Entity\Tag;
+use App\Entity\User;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\DataTransformerInterface;
 
@@ -30,20 +31,30 @@ use Symfony\Component\Form\DataTransformerInterface;
 class TagsTransformer implements DataTransformerInterface
 {
     /**
-     * FIXME Remplacer l'object manager.
+     * Object manager.
      *
      * @var ObjectManager
      */
     private $manager;
 
     /**
+     * Creator of the tag.
+     *
+     * @var User
+     */
+    private $user;
+
+    /**
      * TagsTransformer constructor.
+     * Object manager is provided by constructor.
      *
      * @param ObjectManager $manager
+     * @param User          $user
      */
-    public function __construct(ObjectManager $manager)
+    public function __construct(ObjectManager $manager, User $user)
     {
         $this->manager = $manager;
+        $this->user = $user;
     }
 
     /**
@@ -68,7 +79,6 @@ class TagsTransformer implements DataTransformerInterface
     public function reverseTransform($string): array
     {
         $names = array_unique(array_filter(array_map('trim', explode(',', $string))));
-        //FIXME Remplacer le manager par le bon appel via le conteneur.
         $tags = $this->manager->getRepository('App:Tag')->findBy([
             'label' => $names,
         ]);
@@ -76,7 +86,7 @@ class TagsTransformer implements DataTransformerInterface
         foreach ($newNames as $name) {
             $tag = new Tag();
             $tag->setLabel($name);
-            //FIXME add creator
+            $tag->setCreator($this->user);
             $tags[] = $tag;
         }
 
