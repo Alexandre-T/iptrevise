@@ -92,7 +92,7 @@ class NetworkCrudCest
 
         $I->wantToTest('A valid form');
         $I->fillField('Intitulé', 'ARéseau Codeception');
-        $I->fillField('Couleur', '00FF00');
+        $I->fillField('Couleur', '#00FF00');
         $I->fillField('app_network[description]', 'Description de codeception');
         $I->fillField('Adresse réseau', '194.194.0.0');
         $I->fillField('Masque réseau (CIDR)', '16');
@@ -133,13 +133,13 @@ class NetworkCrudCest
 
         $I->wantTo('Test that the form is well initialized');
         $I->seeInField('Intitulé', 'ARéseau Codeception');
-        $I->seeInField('Couleur', '00FF00');
+        $I->seeInField('Couleur', '#00FF00');
         $I->seeInField('app_network[description]', 'Description de codeception');
         $I->seeInField('Adresse réseau', '194.194.0.0');
         $I->seeInField('Masque réseau (CIDR)', '16');
 
         $I->fillField('Intitulé', 'ARéseau Codeception');
-        $I->fillField('Couleur', '00F000');
+        $I->fillField('Couleur', '#00F000');
         $I->fillField('app_network[description]', 'Description de codeception2');
         $I->fillField('Adresse réseau', '194.195.0.0');
         $I->fillField('Masque réseau (CIDR)', '18');

@@ -1,9 +1,12 @@
 twig:
     paths:
-       '%kernel.project_dir%/templates': 'App'
+       '%kernel.project_dir%/templates': App
+       '%kernel.project_dir%/templates/Form': App/Form
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     globals:
       app_title: 'IP-Manager'
       app_subtitle: 'by Trevise'
       app_owner: 'Cerema Sud Ouest — DTISPV — Trevise'
+    form_themes:
+        - '@App/Form/color.html.twig'

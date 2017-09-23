@@ -165,7 +165,7 @@ form.machine.help.label: 'Entrez l’intitulé de la machine'
 form.machine.help.tags: 'Entrez les tags que vous souhaitez associer à cette machine. Séparez chaque tag avec une virgule.'
 
 form.network.help.address: 'Entrez l’adresse et le masque du réseau.'
-form.network.help.color: 'Entrer la couleur de représentation du réseau au format HTML : #000000. Évitez le blanc et les couleurs claires.'
+form.network.help.color: 'Cliquez sur le rectangle coloré et sélectionnez la couleur de votre choix.'
 form.network.help.description: 'Entrez la description du réseau.'
 form.network.help.ip: 'Entrez l’adresse réseau au format IPv4.'
 form.network.help.ip.readonly: 'Ce réseau dispose déjà d’adresse IP, vous ne pouvez pas changer son adresse réseau.'
@@ -266,4 +266,3 @@ title.security.login: 'Connexion'
 1: '1'
 192.168.0.0: '192.168.0.0'
 24: '24'
-

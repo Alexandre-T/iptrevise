@@ -80,14 +80,9 @@ class NetworkType extends AbstractType
                     'placeholder' => '24',
                 ],
             ])
-            //TODO Use a HTML5 ColorType
-            //@see https://stackoverflow.com/questions/19845930/symfony2-custom-form-field-type-html5-color
-            ->add('color', null, [
+            ->add('color', ColorType::class, [
                 'label' => 'form.network.field.color',
                 'help_block' => 'form.network.help.color',
-                'attr' => [
-                    'placeholder' => '000000',
-                ],
             ])
             ->add('description', null, [
                 'label' => 'form.network.field.description',
