@@ -11,6 +11,8 @@ form.network.error.label.unique: 'Cet intitulé de réseau est déjà utilisé.'
 form.network.error.cidr.min: 'Le masque (CIDR) doit être supérieur ou égal à 0.'
 form.network.error.cidr.max: 'Le masque (CIDR) doit être inférieur ou égal à 32.'
 
+form.tag.error.too-long %tag%: 'Le tag « %tag% » doit contenir moins de 16 caractères.'
+
 form.user.error.roles.empty: 'Vous devez sélectionner au moins un rôle.'
 form.user.error.mail.unique: 'Cette adresse mail est déjà utilisée.'
 form.user.error.label.unique: 'Cet identifiant est déjà utilisé.'

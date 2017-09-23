@@ -26,6 +26,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * TagsType class.
@@ -94,10 +96,34 @@ class TagsType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefault('attr', [
-            'class' => 'tag-input',
+        $resolver->setDefaults([
+            'attr' => [
+                'class' => 'tag-input',
+            ],
+            'required' => false,
+            'constraints' => [
+                new Callback([
+                    'callback' => [$this, 'checkEachTag'],
+                ]),
+            ],
         ]);
-        $resolver->setDefault('required', false);
+    }
+
+    /**
+     * Check if the Adresse and cidr are valid.
+     *
+     * @param array                     $data
+     * @param ExecutionContextInterface $context
+     */
+    public function checkEachTag($data, ExecutionContextInterface $context)
+    {
+        foreach ($data as $tag) {
+            if (strlen($tag) > 16) {
+                $context->buildViolation('form.tag.error.too-long %tag%', [
+                    '%tag%' => $tag,
+                ])->addViolation();
+            }
+        }
     }
 
     /**

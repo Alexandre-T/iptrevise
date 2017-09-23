@@ -69,15 +69,18 @@ class MachineCrudCest
         $I->wantToTest('The length of each field');
         $I->fillField('Machine', str_repeat('a', 33));
         $I->fillField('Interface', -2);
+        $I->fillField('app_machine[tags]', 'toto,titi,12345678901234567');
         $I->click('Créer');
         $I->seeCurrentUrlEquals('/machine/new');
         $I->see('Cette chaîne est trop longue. Elle doit avoir au maximum 32 caractères.', '.help-block');
         $I->see('Le nombre d’interface réseau doit être supérieur ou égal à "0".', '.help-block');
+        $I->see('Le tag « 12345678901234567 » doit contenir moins de 16 caractères.', '.help-block');
 
         $I->wantToTest('A valid form');
         $I->fillField('Machine', 'AMachine Codeception');
         $I->fillField('app_machine[description]', 'Description de codeception');
         $I->fillField('Interface', '9');
+        $I->fillField('app_machine[tags]', 'toto,titi');
         $I->click('Créer');
 
         $id = $I->grabFromCurrentUrl('~(\d+)~');
@@ -90,6 +93,8 @@ class MachineCrudCest
         $I->see('AMachine Codeception', 'dd.lead');
         $I->see('Description de codeception', 'dd');
         $I->see('9', 'dd');
+        $I->see('titi', 'span.label');
+        $I->see('toto', 'span.label');
 
         $I->see('Journal de bord');
         $I->see('1', 'td[headers="logs-version"].row1');

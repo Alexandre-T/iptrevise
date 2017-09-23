@@ -162,6 +162,7 @@ form.machine.field.tags: 'Tags'
 form.machine.help.description: 'Entrez une description de la machine (les services et applications qu’elle fournit)'
 form.machine.help.interface: 'Entrez le nombre d’interfaces réseau physique de la machine'
 form.machine.help.label: 'Entrez l’intitulé de la machine'
+form.machine.help.tags: 'Entrez les tags que vous souhaitez associer à cette machine. Séparez chaque tag avec une virgule.'
 
 form.network.help.address: 'Entrez l’adresse et le masque du réseau.'
 form.network.help.color: 'Entrer la couleur de représentation du réseau au format HTML : #000000. Évitez le blanc et les couleurs claires.'
