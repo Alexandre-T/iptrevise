@@ -5,6 +5,7 @@ form.machine.error.label.unique: 'Cet intitulé de machine est déjà utilisé.'
 form.machine.error.interface.min: 'Le nombre d’interface réseau doit être supérieur ou égal à {{ compared_value }}.'
 
 form.network.error.color.pattern: 'La couleur doit être au format hexadécimal. 000000 pour noir, FF0000 pour rouge, 00FF00 pour vert et 0000FF pour bleu.'
+form.network.error.ip.address %address% %mean%: '« %address% » n’est pas une adresse réseau valide. Est-ce que vous pensiez à « %mean% » ?'
 form.network.error.ip.min: 'Cette adresse IP n’est pas valide.'
 form.network.error.label.unique: 'Cet intitulé de réseau est déjà utilisé.'
 form.network.error.cidr.min: 'Le masque (CIDR) doit être supérieur ou égal à 0.'

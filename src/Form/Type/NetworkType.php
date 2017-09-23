@@ -21,6 +21,8 @@ use App\Entity\Network;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Network form builder.
@@ -55,8 +57,8 @@ class NetworkType extends AbstractType
             $helpCidr = 'form.network.help.cidr.readonly';
         } else {
             $disabled = false;
-            $helpIp = '';
-            $helpCidr = '';
+            $helpIp = 'form.network.help.ip';
+            $helpCidr = 'form.network.help.cidr';
         }
 
         $builder
@@ -107,7 +109,30 @@ class NetworkType extends AbstractType
             'data_class' => 'App\Entity\Network',
             'render_fieldset' => false,
             'show_legend' => false,
+            'constraints' => [
+                new Callback([
+                    'callback' => [$this, 'checkNetwork'],
+                ]),
+            ],
         ]);
+    }
+
+    /**
+     * Check if the Adresse and cidr are valid.
+     *
+     * @param Network                   $network
+     * @param ExecutionContextInterface $context
+     */
+    public function checkNetwork(Network $network, ExecutionContextInterface $context)
+    {
+        $result = $network->getIp() & ($network->getMask());
+
+        if ($result != $network->getIp()) {
+            $context->buildViolation('form.network.error.ip.address %address% %mean%', [
+                '%address%'  => long2ip($network->getIp()).'/'.$network->getCidr(),
+                '%mean%'     => long2ip($result).'/'.$network->getCidr(),
+            ])->addViolation();
+        }
     }
 
     /**

@@ -84,6 +84,12 @@ class NetworkCrudCest
         $I->seeCurrentUrlEquals('/network/new');
         $I->see('Le masque (CIDR) doit être supérieur ou égal à 0.', '.help-block');
 
+        $I->fillField('Adresse réseau', '192.168.1.1');
+        $I->fillField('Masque réseau (CIDR)', 24);
+        $I->click('Créer');
+        $I->seeCurrentUrlEquals('/network/new');
+        $I->see('« 192.168.1.1/24 » n’est pas une adresse réseau valide. Est-ce que vous pensiez à « 192.168.1.0/24 » ?', '.alert-danger');
+
         $I->wantToTest('A valid form');
         $I->fillField('Intitulé', 'ARéseau Codeception');
         $I->fillField('Couleur', '00FF00');
