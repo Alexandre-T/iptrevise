@@ -51,7 +51,7 @@ class NetworkType extends AbstractType
     {
         $current = $options['data'];
 
-        if ($current instanceof Network && count($current->getIps())){
+        if ($current instanceof Network && count($current->getIps())) {
             $disabled = true;
             $helpIp = 'form.network.help.ip.readonly';
             $helpCidr = 'form.network.help.cidr.readonly';
@@ -95,7 +95,6 @@ class NetworkType extends AbstractType
                 'label' => 'form.network.field.description',
                 'help_block' => 'form.network.help.description',
             ]);
-
     }
 
     /**
@@ -129,8 +128,8 @@ class NetworkType extends AbstractType
 
         if ($result != $network->getIp()) {
             $context->buildViolation('form.network.error.ip.address %address% %mean%', [
-                '%address%'  => long2ip($network->getIp()).'/'.$network->getCidr(),
-                '%mean%'     => long2ip($result).'/'.$network->getCidr(),
+                '%address%' => long2ip($network->getIp()).'/'.$network->getCidr(),
+                '%mean%' => long2ip($result).'/'.$network->getCidr(),
             ])->addViolation();
         }
     }
