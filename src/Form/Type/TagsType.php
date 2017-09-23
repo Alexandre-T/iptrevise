@@ -36,8 +36,6 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license CeCILL-B V1
- *
- * FIXME Add a validator for tags > 16 character
  */
 class TagsType extends AbstractType
 {

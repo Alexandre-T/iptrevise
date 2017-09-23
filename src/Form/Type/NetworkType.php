@@ -27,8 +27,6 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 /**
  * Network form builder.
  *
- * @TODO Add a network adress validator
- *
  * @category App\Form\Type
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
