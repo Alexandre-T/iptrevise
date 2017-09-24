@@ -195,14 +195,21 @@ class NetworkController extends Controller
     {
         $form = $this->createDeleteForm($network);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $networkManager = $this->get(NetworkManager::class);
+        $session = $this->get('session');
+        $trans = $this->get('translator.default');
+        $networkManager = $this->get(NetworkManager::class);
+        $isDeletable = $networkManager->isDeletable($network);
+
+        if ($isDeletable && $form->isSubmitted() && $form->isValid()) {
             $networkManager->delete($network);
-            //Flash message.
-            $session = $this->get('session');
-            $trans = $this->get('translator.default');
+
             $message = $trans->trans('default.network.deleted %name%', ['%name%' => $network->getLabel()]);
             $session->getFlashBag()->add('success', $message);
+        }elseif (!$isDeletable){
+
+            $message = $trans->trans('default.network.not-deletable %name%', ['%name%' => $network->getLabel()]);
+            $session->getFlashBag()->add('warning', $message);
+            return $this->redirectToRoute('default_network_show', ['id' => $network->getId()]);
         }
 
         return $this->redirectToRoute('default_network_index');

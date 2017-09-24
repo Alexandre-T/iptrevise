@@ -93,11 +93,13 @@ class UserManager implements LoggableManagerInterface, PaginatorInterface
     /**
      * Is this entity deletable?
      *
+     * @param  User $user
      * @return bool true if entity is deletable
      */
-    public function isDeletable(): bool
+    public function isDeletable(User $user): bool
     {
         //FIXME We cannot delete a user which have create an object.
+        $id = $user->getId();
         return true;
     }
 

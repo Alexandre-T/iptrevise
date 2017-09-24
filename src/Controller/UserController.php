@@ -191,14 +191,20 @@ class UserController extends Controller
     {
         $form = $this->createDeleteForm($user);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $userManager = $this->get(UserManager::class);
+        $session = $this->get('session');
+        $trans = $this->get('translator.default');
+        $userManager = $this->get(UserManager::class);
+        $isDeletable = $userManager->isDeletable($user);
+
+        if ($isDeletable && $form->isSubmitted() && $form->isValid()) {
             $userManager->delete($user);
-            //Flash message.
-            $session = $this->get('session');
-            $trans = $this->get('translator.default');
             $message = $trans->trans('administration.user.deleted %name%', ['%name%' => $user->getLabel()]);
             $session->getFlashBag()->add('success', $message);
+        }elseif (!$isDeletable){
+
+            $message = $trans->trans('administration.user.not-deletable %name%', ['%name%' => $user->getLabel()]);
+            $session->getFlashBag()->add('warning', $message);
+            return $this->redirectToRoute('administration_user_show', ['id' => $user->getId()]);
         }
 
         return $this->redirectToRoute('administration_user_index');

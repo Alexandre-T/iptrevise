@@ -199,14 +199,21 @@ class MachineController extends Controller
     {
         $form = $this->createDeleteForm($machine);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $machineManager = $this->get(MachineManager::class);
+        $session = $this->get('session');
+        $trans = $this->get('translator.default');
+        $machineManager = $this->get(MachineManager::class);
+        $isDeletable = $machineManager->isDeletable($machine);
+
+        if ($isDeletable && $form->isSubmitted() && $form->isValid()) {
             $machineManager->delete($machine);
-            //Flash message.
-            $session = $this->get('session');
-            $trans = $this->get('translator.default');
+
             $message = $trans->trans('default.machine.deleted %name%', ['%name%' => $machine->getLabel()]);
             $session->getFlashBag()->add('success', $message);
+        }elseif (!$isDeletable){
+
+            $message = $trans->trans('default.machine.not-deletable %name%', ['%name%' => $machine->getLabel()]);
+            $session->getFlashBag()->add('warning', $message);
+            return $this->redirectToRoute('default_machine_show', ['id' => $machine->getId()]);
         }
 
         return $this->redirectToRoute('default_machine_index');

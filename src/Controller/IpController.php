@@ -131,22 +131,27 @@ class IpController extends Controller
 
         $form = $this->createDeleteForm($ip);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $ipManager = $this->get(IpManager::class);
+        $session = $this->get('session');
+        $trans = $this->get('translator.default');
+        $ipManager = $this->get(IpManager::class);
+        $isDeletable = $ipManager->isDeletable($ip);
+
+        if ($isDeletable && $form->isSubmitted() && $form->isValid()) {
             $ipManager->delete($ip);
-            //Flash message.
-            $session = $this->get('session');
-            $trans = $this->get('translator.default');
             $message = $trans->trans('default.ip.deleted %name%', ['%name%' => long2ip($ip->getIp())]);
             $session->getFlashBag()->add('success', $message);
+        }elseif (!$isDeletable){
+            $message = $trans->trans('default.ip.not-deletable %name%', ['%name%' => long2ip($ip->getIp())]);
+            $session->getFlashBag()->add('warning', $message);
+            return $this->redirectToRoute('default_ip_show', ['id' => $ip->getId()]);
         }
 
         if (null === $machine) {
             return $this->redirectToRoute('default_network_show', ['id' => $network->getId()]);
         } else {
             return $this->render('@App/default/ip/delete.html.twig', [
-                'network' => $network,
                 'machine' => $machine,
+                'network' => $network,
             ]);
         }
     }

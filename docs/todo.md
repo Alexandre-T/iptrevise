@@ -1,10 +1,10 @@
 TODO List
 =========
 * Si l'entité n'est pas effaçable, ne pas créer le formulaire de suppression !
-* Avant la suppression vérifier que l'entité est effaçable, sinon lever une exception.
+* Ajouter les droits sur les boutons icones : {% if is_granted("ROLE") %} .... {% endif %}
+* Créer des tests avec le rôle reader.
 * Dans les panel de statistiques, changer le lien détails par un lien vers le futur module de statistiques.
 * Etat du taux d'occupation des réseaux si on est connecté
-* Ajouter les droits sur les boutons icones : {% if is_granted("ROLE") %} Hi {{ app.user.username }} {% endif %}
 * Utiliser des tata-tables de sb-admin-2 à la place du paginator
 * Ajouter la classe aux tables le nécessitant  
     *  striped : <table class="table table-striped">
