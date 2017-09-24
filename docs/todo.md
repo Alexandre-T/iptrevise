@@ -1,6 +1,5 @@
 TODO List
 =========
-* Ajouter des onglets dans l'administration des utilisateurs
 * Si l'entité n'est pas effaçable, ne pas créer le formulaire de suppression !
 * Avant la suppression vérifier que l'entité est effaçable, sinon lever une exception.
 * Dans les panel de statistiques, changer le lien détails par un lien vers le futur module de statistiques.
