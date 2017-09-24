@@ -171,7 +171,7 @@ class MachineManager implements LoggableManagerInterface, PaginatorInterface
 
         $qb->leftJoin(self::ALIAS.'.ips', 'ips')
            ->leftJoin(self::ALIAS.'.tags', 'tags')
-           ->addSelect('COUNT(ips.id) AS ipsCount')
+           ->addSelect('COUNT(DISTINCT ips.id) AS ipsCount')
            ->addSelect("string_agg(tags.label, ',') AS tagsConcat")
            ->groupBy(self::ALIAS.'.id');
 

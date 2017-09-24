@@ -1,7 +1,5 @@
 TODO List
 =========
-* Consulter sensiolabs
-* Trier le tableau dans show network
 * Ajouter des onglets dans l'administration des utilisateurs
 * Dans les panel de statistiques, changer le lien détails par un lien vers le futur module de statistiques.
 * Etat du taux d'occupation des réseaux si on est connecté
@@ -21,3 +19,4 @@ TODO List
 * Ajouter dans les formulaires des champs non remplaçables (réservé par...)
 * Ajouter le graphisme des tgs selon ce lien https://github.com/aehlke/tag-it
 * Vérifier les assertions dans le formulaire sur ip+machine
+* Consulter sensiolabs

@@ -128,6 +128,7 @@ class Machine implements InformationInterface, TaggableInterface
      * @var Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Ip", mappedBy="machine")
+     * @ORM\OrderBy({"ip" = "ASC"})
      */
     private $ips;
 

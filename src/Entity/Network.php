@@ -167,6 +167,7 @@ class Network implements InformationInterface
      * @var Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Ip", mappedBy="network", fetch="EXTRA_LAZY")
+     * @ORM\OrderBy({"ip" = "ASC"})
      *
      * @see http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/tutorials/extra-lazy-associations.html
      */
