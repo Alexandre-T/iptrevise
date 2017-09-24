@@ -2,7 +2,7 @@
 
 {% block title %}{{ 'default.ip.create.title'|trans }} · {{ parent() }}{% endblock title %}
 
-{% block headline %}{% endblock %}
+{% block page_header %}{% endblock %}
 
 {% block content_content %}
 
@@ -29,10 +29,10 @@
     <div class="text-center" id="default-actions">
         <div class="btn-group-vertical">
             <a class="btn-mini btn btn-default" href="{{ path('default_network_index') }}">
-                <span class="fa fa-group"></span>&nbsp;{{ 'default.actions.back.list' | trans }}
+                <span class="fa fa-sitemap"></span>&nbsp;{{ 'default.actions.back.list' | trans }}
             </a>
             <a class="btn-mini btn btn-default" href="{{ path('default_network_show', {'id': network.id}) }}">
-                <span class="fa fa-group"></span>&nbsp;{{ 'default.actions.network.show' | trans }}
+                <span class="fa fa-sitemap"></span>&nbsp;{{ 'default.actions.network.show' | trans }}
             </a>
         </div>
     </div>
