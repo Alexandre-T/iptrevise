@@ -67,7 +67,8 @@
     {{ app_macro.panel_admin('sitemap', 'default_network_index', pagination.totalItemCount, 'default.networks') }}
 
     <div class="text-center">
-        <a class="btn btn-default" href="{{ path('default_network_new') }}">
+        <a class="btn btn-default" href="{{ path('default_network_new') }}" data-toggle="tooltip" data-placement="left"
+           title="{{ 'default.network.action.list.title' | trans }}">
             <span class="fa fa-sitemap"></span>
             {{ 'default.network.create' | trans }}
         </a>

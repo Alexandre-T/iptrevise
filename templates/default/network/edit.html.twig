@@ -31,16 +31,19 @@
     <h3>{{ 'administration.actions' | trans }}</h3>
     <div class="text-center" id="administration-actions">
         <div class="btn-group-vertical">
-            <a class="btn-mini btn btn-default" href="{{ path('default_network_index') }}">
+            <a class="btn-mini btn btn-default" href="{{ path('default_network_index') }}"
+               data-placement="left" data-toggle="tooltip" title="{{ 'default.network.action.list.title' | trans }}">
                 <span class="fa fa-sitemap"></span>&nbsp;{{ 'network.actions.back.list' | trans }}
             </a>
-            <a class="btn-mini btn btn-default" href="{{ path('default_network_show', { 'id': network.id }) }}">
+            <a class="btn-mini btn btn-default" href="{{ path('default_network_show', { 'id': network.id }) }}"
+               data-placement="left" data-toggle="tooltip" title="{{ 'default.network.action.show.title' | trans }}">
                 <span class="fa fa-eye"></span>&nbsp;{{ 'administration.actions.show' | trans }}
             </a>
             {% if isDeletable %}
-                <a class="btn btn-danger btn-mini confirm-delete" data-toggle="modal" data-target="#confirm-delete" data-form="form" href="#">
+                <button class="btn btn-danger btn-mini confirm-delete" data-toggle="modal" data-target="#confirm-delete"
+                        data-form="form" data-placement="left" title="{{ 'default.network.action.delete.title' | trans }}">
                     <span class="fa fa-trash-o"></span>&nbsp;{{ 'administration.actions.delete' | trans }}
-                </a>
+                </button>
             {% else %}
                 <span class="btn btn-danger disabled">
                     <span class="fa fa-trash-o"></span>&nbsp;{{ 'administration.actions.delete' | trans }}

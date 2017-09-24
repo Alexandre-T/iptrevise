@@ -28,7 +28,8 @@
     <h3>{{ 'administration.actions' | trans }}</h3>
     <div class="text-center" id="administration-actions">
         <div class="btn-group-vertical">
-            <a class="btn-mini btn btn-default" href="{{ path('administration_user_index') }}">
+            <a class="btn-mini btn btn-default" href="{{ path('administration_user_index') }}"
+               data-toggle="tooltip" data-placement="left" title="{{ 'administration.user.action.list.title' | trans }}">
                 <span class="fa fa-group"></span>&nbsp;{{ 'administration.actions.back.list' | trans }}
             </a>
         </div>

@@ -1,14 +1,9 @@
 TODO List
 =========
-* Dans la vue des IPs, préciser qu'on ne supprime que l'adresse IP.
-* Vérifié les assertions dans le formulaire sur ip+machine
 * Consulter sensiolabs
-* SHOW.HTML.TWIG Le coeur des vues machines et network doit être exporté dans une vue externe pour ne pas réécrire le même code dans la vue IP
-* Text de la home page
+* Ajouter des onglets dans l'administration des utilisateurs
+* Dans les panel de statistiques, changer le lien détails par un lien vers le futur module de statistiques.
 * Etat du taux d'occupation des réseaux si on est connecté
-* Nombre de machines déclarées
-* Nombres d'IP déclarées
-* Renommer référencé par réservée
 * Trier le tableau dans show network
 * Créer un Réseau : vérifier la validité de l'adresse réseau avec un validator de type callback. 
 * Retirer les hacks pour ajouter des icones par javascript et utiliser la clef icon comme dans le fichier NetworkController::createLinkForm
@@ -27,3 +22,4 @@ TODO List
 * Ajouter les tags selon le lien Symfony donné
 * Ajouter le graphisme des tgs selon ce lien https://github.com/aehlke/tag-it
 * Utiliser des tata-tables de sb-admin-2 à la place du paginator
+* Vérifier les assertions dans le formulaire sur ip+machine

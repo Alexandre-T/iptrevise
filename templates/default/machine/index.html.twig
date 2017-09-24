@@ -2,11 +2,11 @@
 
 {% import "@App/macro.html.twig" as app_macro %}
 
-{% block title %}{{ 'default.machine.list.title'|trans }} · {{ parent() }}{% endblock title %}
+{% block title %}{{ 'default.machine.action.list'|trans }} · {{ parent() }}{% endblock title %}
 
 {% block headline %}
     <span class="fa fa-fw fa-desktop"></span>
-    {{ 'default.machine.list.title'|trans }}
+    {{ 'default.machine.action.list'|trans }}
 {% endblock %}
 
 {% set direction = pagination.getDirection() %}
@@ -69,7 +69,8 @@
     {{ app_macro.panel_admin('desktop', 'default_machine_index', pagination.totalItemCount, 'default.machines') }}
 
     <div class="text-center">
-        <a class="btn btn-default" href="{{ path('default_machine_new') }}">
+        <a class="btn btn-default" href="{{ path('default_machine_new') }}" data-toggle="tooltip" data-placement="left"
+           title="{{ 'default.machine.action.create.title' | trans }}">
             <span class="fa fa-desktop"></span>
             {{ 'default.machine.create' | trans }}
         </a>

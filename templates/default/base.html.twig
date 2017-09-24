@@ -72,9 +72,11 @@
                                     </tr>
                                 {% endfor %}
                             </table>
+                            <div class="panel-footer text-right">
+                                <em>{{ 'default.tab.logs.explanation' | trans }}</em>
+                            </div>
                         </div>
                     {% endif %}
-
                 {% endblock content_logs %}
             </div>
             <div role="tabpanel" class="tab-pane" id="informations">
@@ -99,6 +101,9 @@
                                         <dd>{{ information.updated | localizeddate('short', 'short') }}</dd>
                                     {% endif %}
                                 </dl>
+                            </div>
+                            <div class="panel-footer text-right">
+                                <em>{{ 'default.tab.informations.explanation' | trans }}</em>
                             </div>
                         </div>
                     {% endif %}

@@ -58,7 +58,8 @@
 
 {% block content_action %}
     <div class="text-center">
-        <a class="btn btn-default" href="{{ path('administration_user_new') }}">
+        <a class="btn btn-default" href="{{ path('administration_user_new') }}"
+           data-toggle="tooltip" data-placement="left" title="{{ 'administration.user.action.create.title' | trans }}">
             <span class="fa fa-user"></span>
             {{ 'administration.user.create' | trans }}
         </a>
