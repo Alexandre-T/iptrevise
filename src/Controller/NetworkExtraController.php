@@ -398,7 +398,8 @@ class NetworkExtraController extends Controller
             ->setAction($this->generateUrl('default_network_unlink', array('id' => $ip->getId())))
             ->setMethod('DELETE')
             ->add('confirm', SubmitType::class, [
-                'attr' => ['class' => 'fa-js-hand-spock-o btn-danger confirm-delete'],
+                'attr' => ['class' => 'btn-danger confirm-delete'],
+                'icon' => 'hand-spock-o',
                 'label' => 'form.ip.unlink.confirm',
             ])
             ->getForm()

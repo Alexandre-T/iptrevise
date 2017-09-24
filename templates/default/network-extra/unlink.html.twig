@@ -31,12 +31,3 @@
     </div>
     {{ form_end(confirm_form) }}
 {% endblock content_row %}
-
-{% block foot_script_assetic %}
-    {{ parent() }}
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('.fa-js-hand-spock-o').prepend('<span class="fa fa-fw fa-hand-spock-o"></span>');
-        });
-    </script>
-{% endblock %}

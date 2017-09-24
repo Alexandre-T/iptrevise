@@ -164,7 +164,8 @@ class IpController extends Controller
             ->setAction($this->generateUrl('default_ip_delete', array('id' => $ip->getId())))
             ->setMethod('DELETE')
             ->add('delete', SubmitType::class, [
-                'attr' => ['class' => 'fa-js-trash-o btn-danger confirm-delete'],
+                'attr' => ['class' => 'btn-danger confirm-delete'],
+                'icon' => 'trash-o',
                 'label' => 'administration.delete.confirm.delete',
             ])
             ->getForm()
