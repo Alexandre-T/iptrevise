@@ -50,10 +50,12 @@
                             <span class="fa fa-eye"></span>
                             <span class="sr-only">{{ 'default.action.show' | trans }}</span>
                         </a>
+                        {% if is_granted("ROLE_MANAGE_MACHINE") %}
                         <a class="btn btn-default" href="{{ path('default_machine_edit', { 'id': machine.id }) }}">
                             <span class="fa fa-edit"></span>
                             <span class="sr-only">{{ 'default.action.edit' | trans }}</span>
                         </a>
+                        {% endif %}
                     </div>
                 </td>
             </tr>
@@ -67,12 +69,13 @@
 
 {% block content_action %}
     {{ app_macro.panel_admin('desktop', 'default_machine_index', pagination.totalItemCount, 'default.machines') }}
-
-    <div class="text-center">
-        <a class="btn btn-default" href="{{ path('default_machine_new') }}" data-toggle="tooltip" data-placement="left"
-           title="{{ 'default.machine.action.create.title' | trans }}">
-            <span class="fa fa-desktop"></span>
-            {{ 'default.machine.create' | trans }}
-        </a>
-    </div>
+    {% if is_granted("ROLE_MANAGE_MACHINE") %}
+        <div class="text-center">
+            <a class="btn btn-default" href="{{ path('default_machine_new') }}" data-toggle="tooltip" data-placement="left"
+               title="{{ 'default.machine.action.create.title' | trans }}">
+                <span class="fa fa-desktop"></span>
+                {{ 'default.machine.create' | trans }}
+            </a>
+        </div>
+    {% endif %}
 {% endblock content_action %}

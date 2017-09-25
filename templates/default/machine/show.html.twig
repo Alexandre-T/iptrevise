@@ -26,7 +26,9 @@
                     <span class="fa fa-desktop fa-4x"></span>
                 </div>
             </div>
+            {% if is_granted("ROLE_MANAGE_IP") or is_granted("ROLE_MANAGE_MACHINE") %}
             <div class="btn-group-justified">
+                {% if is_granted("ROLE_MANAGE_IP") %}
                 <!-- Single button -->
                 <div class="btn-group">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -40,6 +42,8 @@
                         {% endfor %}
                     </ul>
                 </div>
+                {% endif %}
+                {% if is_granted("ROLE_MANAGE_IP") and is_granted("ROLE_MANAGE_MACHINE") %}
                 <!-- Second button -->
                 <div class="btn-group">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -53,7 +57,9 @@
                         {% endfor %}
                     </ul>
                 </div>
+                {% endif %}
             </div>
+            {% endif %}
         </div>
         {% if machine.ips.count %}
             <table class="table">
@@ -71,9 +77,11 @@
                         <span class="fa fa-user fa-fw"></span>
                         {{ 'form.ip.field.creator' | trans }}
                     </th>
-                    <th id="machine-ip-actions">
-                        {{ 'default.network.actions' | trans }}
-                    </th>
+                    {% if is_granted("ROLE_MANAGE_IP") or is_granted("ROLE_MANAGE_MACHINE") %}
+                        <th id="machine-ip-actions">
+                            {{ 'default.network.actions' | trans }}
+                        </th>
+                    {% endif %}
                 </tr>
                 </thead>
                 <tbody>
@@ -92,33 +100,45 @@
                         <td headers="machine-ip-machine-creator" class="th-icon">
                             {{ ip.creator.label }}
                         </td>
-                        <td headers="machine-ip-actions">
-                            <div class="btn-group btn-group-sm" role="group" aria-label="{{ 'default.ip.manage %ip%' | trans({'%ip%': ip.ip | ip}) }}">
-                                <a href="{{ path ('default_ip_edit', {'id': ip.id}) }}" data-toggle="tooltip" title="{{ 'default.ip.action.edit' | trans }}" class="btn btn-info">
-                                    <span class="fa fa-pencil"></span>
-                                    <span class="sr-only">{{ 'default.action.edit' | trans }}</span>
-                                </a>
-                                {% if ip.machine %}
-                                    <a href="{{ path ('default_machine_unlink', {'id': ip.id}) }}" data-toggle="tooltip" title="{{ 'default.ip.action.dissociate' | trans }}" class="btn btn-warning ">
-                                        <span class="fa fa-unlink"></span>
-                                        <span class="sr-only">{{ 'default.ip.action.dissociate' | trans }}</span>
+                        {% if is_granted("ROLE_MANAGE_IP") or is_granted("ROLE_MANAGE_MACHINE") %}
+                            <td headers="machine-ip-actions">
+                                <div class="btn-group btn-group-sm" role="group" aria-label="{{ 'default.ip.manage %ip%' | trans({'%ip%': ip.ip | ip}) }}">
+                                    {% if is_granted("ROLE_MANAGE_IP") %}
+                                    <a href="{{ path ('default_ip_edit', {'id': ip.id}) }}" data-toggle="tooltip" title="{{ 'default.ip.action.edit.title' | trans }}" class="btn btn-info">
+                                        <span class="fa fa-pencil"></span>
+                                        <span class="sr-only">{{ 'default.ip.action.edit' | trans }}</span>
                                     </a>
-                                {% else %}
-                                    <button href="#" data-toggle="tooltip" title="{{ 'default.ip.action.associate' | trans }}" class="btn btn-info">
-                                        <span class="fa fa-link"></span>
-                                        <span class="sr-only">{{ 'default.ip.action.associate' | trans }}</span>
-                                    </button>
-                                    <button href="#" data-toggle="tooltip" title="{{ 'default.ip.action.create' | trans }}" class="btn btn-info">
-                                        <span class="fa fa-plus"></span>
-                                        <span class="sr-only">{{ 'default.ip.action.create' | trans }}</span>
-                                    </button>
-                                {% endif %}
-                                <a href="{{ path ('default_machine_delete_ip', {'id': ip.id}) }}" data-toggle="tooltip" title="{{ 'default.ip.action.delete' | trans }}" class="btn btn-danger">
-                                    <span class="fa fa-trash-o"></span>
-                                    <span class="sr-only">{{ 'default.ip.action.delete' | trans }}</span>
-                                </a>
-                            </div>
-                        </td>
+                                    {% endif %}
+                                    {% if ip.machine %}
+                                        {% if is_granted("ROLE_MANAGE_IP") and is_granted("ROLE_MANAGE_MACHINE") %}
+                                            <a href="{{ path ('default_machine_unlink', {'id': ip.id}) }}" data-toggle="tooltip" title="{{ 'default.ip.action.dissociate.title' | trans }}" class="btn btn-warning ">
+                                                <span class="fa fa-unlink"></span>
+                                                <span class="sr-only">{{ 'default.ip.action.dissociate' | trans }}</span>
+                                            </a>
+                                        {% endif %}
+                                    {% else %}
+                                        {% if is_granted("ROLE_MANAGE_IP") and is_granted("ROLE_MANAGE_MACHINE") %}
+                                            <button href="#" data-toggle="tooltip" title="{{ 'default.ip.action.associate.title' | trans }}" class="btn btn-info">
+                                                <span class="fa fa-link"></span>
+                                                <span class="sr-only">{{ 'default.ip.action.associate' | trans }}</span>
+                                            </button>
+                                        {% endif %}
+                                        {% if is_granted("ROLE_MANAGE_IP") %}
+                                            <button href="#" data-toggle="tooltip" title="{{ 'default.ip.action.create.title' | trans }}" class="btn btn-info">
+                                                <span class="fa fa-plus"></span>
+                                                <span class="sr-only">{{ 'default.ip.action.create' | trans }}</span>
+                                            </button>
+                                        {% endif %}
+                                    {% endif %}
+                                    {% if is_granted("ROLE_MANAGE_IP") %}
+                                        <a href="{{ path ('default_machine_delete_ip', {'id': ip.id}) }}" data-toggle="tooltip" title="{{ 'default.ip.action.delete.title' | trans }}" class="btn btn-danger">
+                                            <span class="fa fa-trash-o"></span>
+                                            <span class="sr-only">{{ 'default.ip.action.delete' | trans }}</span>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -136,19 +156,21 @@
                data-toggle="tooltip" title="{{ 'default.machine.action.list.title' | trans }}">
                 <span class="fa fa-desktop"></span>&nbsp;{{ 'default.machine.action.list' | trans }}
             </a>
-            <a class="btn-mini btn btn-default" href="{{ path('default_machine_edit', { 'id': machine.id }) }}"
-               data-toggle="tooltip" title="{{ 'default.machine.action.edit.title' | trans }}" data-placement="left">
-                <span class="fa fa-pencil"></span>&nbsp;{{ 'administration.actions.edit' | trans }}
-            </a>
-            {% if isDeletable %}
-                <button class="btn btn-danger btn-mini confirm-delete" data-toggle="modal" data-target="#confirm-delete"
-                   data-form="form" data-placement="left" title="{{ 'default.machine.action.delete.title' | trans }}">
-                    <span class="fa fa-trash-o"></span>&nbsp;{{ 'administration.actions.delete' | trans }}
-                </button>
-            {% else %}
-                <span class="btn btn-danger disabled">
-            <span class="fa fa-trash-o"></span>&nbsp;{{ 'administration.actions.delete' | trans }}
-        </span>
+            {% if is_granted('ROLE_MANAGE_MACHINE') %}
+                <a class="btn-mini btn btn-default" href="{{ path('default_machine_edit', { 'id': machine.id }) }}"
+                   data-toggle="tooltip" title="{{ 'default.machine.action.edit.title' | trans }}" data-placement="left">
+                    <span class="fa fa-pencil"></span>&nbsp;{{ 'administration.actions.edit' | trans }}
+                </a>
+                {% if isDeletable %}
+                    <button class="btn btn-danger btn-mini confirm-delete" data-toggle="modal" data-target="#confirm-delete"
+                       data-form="form" data-placement="left" title="{{ 'default.machine.action.delete.title' | trans }}">
+                        <span class="fa fa-trash-o"></span>&nbsp;{{ 'administration.actions.delete' | trans }}
+                    </button>
+                {% else %}
+                    <span class="btn btn-danger disabled">
+                        <span class="fa fa-trash-o"></span>&nbsp;{{ 'administration.actions.delete' | trans }}
+                    </span>
+                {% endif %}
             {% endif %}
         </div>
     </div>

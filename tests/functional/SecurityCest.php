@@ -45,6 +45,39 @@ class SecurityCest
         $I->see('Réseaux', '.navbar');
         $I->see('Machines', '.navbar');
 
+        $I->wantToTest('Reader privileges');
+        $I->amOnPage('/machine/');
+        $I->dontSeeLink('Nouvelle machine');
+        $I->dontSeeLink('Éditer');
+
+        $I->click('Consulter','tr.row-2');
+        $I->dontSeeLink('Dissocier');
+        $I->dontSeeLink(' Éditer');
+        $I->dontSeeLink('Modifier');
+        $I->dontSeeLink('Supprimer');
+        $I->dontSeeLink('Supprimer cette adresse IP');
+
+        $I->amOnPage('/network/');
+        $I->dontSeeLink('Nouveau réseau');
+        $I->dontSeeLink('Éditer');
+
+        $I->click('Consulter','tr.row-3');
+        $id = $I->grabFromCurrentUrl('~(\d+)~');
+        $I->seeCurrentUrlEquals("/network/$id");
+
+        $I->dontSeeLink('Associer');
+        $I->dontSeeLink('Associer à une nouvelle machine');
+        $I->dontSeeLink('Dissocier');
+        $I->dontSeeLink(' Éditer');
+        $I->dontSeeLink('Modifier');
+        $I->dontSeeLink('Supprimer');
+        $I->dontSeeLink('Supprimer cette adresse IP');
+
+        $I->click('192.168.10.29');
+        $I->dontSeeLink(' Éditer');
+        $I->dontSeeLink(' Supprimer');
+
+
         $I->click('Déconnexion');
         $I->seeCurrentUrlEquals('/');
         $I->see('Connexion', '.navbar');
@@ -123,6 +156,38 @@ class SecurityCest
         $I->see('Machines', '.navbar');
 
         $I->dontSee('Gestion des utilisateurs', '.navbar');
+
+        $I->wantToTest('Organiser privileges');
+        $I->amOnPage('/machine');
+        $I->seeLink('Nouvelle machine');
+        $I->seeLink('Éditer');
+
+        $I->click('Consulter','tr.row-2');
+        $I->seeLink('Dissocier');
+        $I->seeLink(' Éditer');
+        $I->seeLink('Modifier');
+        $I->seeLink('Supprimer');
+        $I->seeLink('Supprimer cette adresse IP');
+
+        $I->amOnPage('/network');
+        $I->seeLink('Nouveau réseau');
+        $I->seeLink('Éditer');
+
+        $I->click('Consulter','tr.row-3');
+        $id = $I->grabFromCurrentUrl('~(\d+)~');
+        $I->seeCurrentUrlEquals("/network/$id");
+
+        $I->seeLink('Associer');
+        $I->seeLink('Associer une nouvelle machine');
+        $I->seeLink('Dissocier');
+        $I->seeLink(' Éditer');
+        $I->seeLink('Modifier');
+        $I->seeLink('Supprimer');
+        $I->seeLink('Supprimer cette adresse IP');
+
+        $I->click('192.168.10.29');
+        $I->seeLink(' Éditer');
+        $I->see(' Supprimer','button');
 
         $I->click('Déconnexion');
         $I->seeCurrentUrlEquals('/');
