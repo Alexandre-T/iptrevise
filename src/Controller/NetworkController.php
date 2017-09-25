@@ -125,17 +125,18 @@ class NetworkController extends Controller
     {
         /** @var NetworkManager $networkManager */
         $networkManager = $this->get(NetworkManager::class);
-        $deleteForm = $this->createDeleteForm($network);
-        $information = InformationFactory::createInformation($network);
-        $logs = $networkManager->retrieveLogs($network);
 
-        return $this->render('@App/default/network/show.html.twig', [
-            'isDeletable' => $networkManager->isDeletable($network),
-            'logs' => $logs,
-            'information' => $information,
-            'network' => $network,
-            'delete_form' => $deleteForm->createView(),
-        ]);
+        $view = [];
+        $view['information'] = InformationFactory::createInformation($network);
+        $view['logs'] = $networkManager->retrieveLogs($network);
+        $view['network'] = $network;
+        $view['isDeletable'] = $this->isGranted('ROLE_MANAGE_NETWORK') && $networkManager->isDeletable($network);
+
+        if ($view['isDeletable']){
+            $view['delete_form'] = $this->createDeleteForm($network)->createView();
+        }
+
+        return $this->render('@App/default/network/show.html.twig', $view);
     }
 
     /**
@@ -153,7 +154,13 @@ class NetworkController extends Controller
     public function editAction(Request $request, Network $network)
     {
         $networkService = $this->get(NetworkManager::class);
-        $deleteForm = $this->createDeleteForm($network);
+        $view = [];
+        $isDeletable = $networkService->isDeletable($network);
+
+        if ($isDeletable){
+            $view['delete_form'] = $this->createDeleteForm($network)->createView();
+        }
+
         $editForm = $this->createForm(NetworkType::class, $network);
         $editForm->handleRequest($request);
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -169,14 +176,13 @@ class NetworkController extends Controller
         $logs = $networkService->retrieveLogs($network);
         $information = InformationFactory::createInformation($network);
 
-        return $this->render('@App/default/network/edit.html.twig', [
-            'isDeletable' => $networkService->isDeletable($network),
+        return $this->render('@App/default/network/edit.html.twig', array_merge($view, [
+            'isDeletable' => $isDeletable,
             'logs' => $logs,
             'information' => $information,
             'network' => $network,
             'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ]);
+        ]));
     }
 
     /**

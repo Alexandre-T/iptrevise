@@ -58,17 +58,20 @@ class IpController extends Controller
     {
         /** @var IpManager $ipManager */
         $ipManager = $this->get(IpManager::class);
-        $deleteForm = $this->createDeleteForm($ip);
+        $view = [];
+        $isDeletable = $this->isGranted('ROLE_MANAGE_IP') && $ipManager->isDeletable($ip);
+        if ($isDeletable){
+            $view['delete_form'] = $this->createDeleteForm($ip)->createView();
+        }
         $information = InformationFactory::createInformation($ip);
         $logs = $ipManager->retrieveLogs($ip);
 
-        return $this->render('@App/default/ip/show.html.twig', [
-            'isDeletable' => $ipManager->isDeletable($ip),
+        return $this->render('@App/default/ip/show.html.twig', array_merge($view, [
+            'isDeletable' => $isDeletable,
             'logs' => $logs,
             'information' => $information,
             'ip' => $ip,
-            'delete_form' => $deleteForm->createView(),
-        ]);
+        ]));
     }
 
     /**
@@ -85,8 +88,13 @@ class IpController extends Controller
      */
     public function editAction(Request $request, Ip $ip)
     {
+        $view = [];
         $ipService = $this->get(IpManager::class);
-        $deleteForm = $this->createDeleteForm($ip);
+        $isDeletable = $ipService->isDeletable($ip);
+        if ($isDeletable){
+            $view['delete_form'] = $this->createDeleteForm($ip)->createView();
+        }
+
         $editForm = $this->createForm(IpType::class, $ip);
         $editForm->handleRequest($request);
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -102,14 +110,13 @@ class IpController extends Controller
         $logs = $ipService->retrieveLogs($ip);
         $information = InformationFactory::createInformation($ip);
 
-        return $this->render('@App/default/ip/edit.html.twig', [
-            'isDeletable' => $ipService->isDeletable($ip),
+        return $this->render('@App/default/ip/edit.html.twig', array_merge($view, [
+            'isDeletable' => $isDeletable,
             'logs' => $logs,
             'information' => $information,
             'ip' => $ip,
             'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ]);
+        ]));
     }
 
     /**

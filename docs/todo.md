@@ -1,8 +1,5 @@
 TODO List
 =========
-* Si l'utilisateur n'a pas les droits de suppression, ne pas créer le formulaire de suppression !
-* Si l'entité n'est pas effaçable, ne pas créer le formulaire de suppression !
-* Ajouter un lien sur la première colonne des tableaux et simplifier les tests de sécurité.
 * Dans les panel de statistiques, changer le lien détails par un lien vers le futur module de statistiques.
 * Etat du taux d'occupation des réseaux si on est connecté
 * Utiliser des tata-tables de sb-admin-2 à la place du paginator
@@ -18,4 +15,6 @@ TODO List
 * Ajouter dans les formulaires des champs non remplaçables (réservé par...)
 * Ajouter l'ergonomie des tags selon ce lien https://github.com/aehlke/tag-it
 * Vérifier les assertions dans le formulaire sur ip+machine
+* Ajouter un lien sur la première colonne des tableaux et simplifier les tests de sécurité.
+* Régler le problème de mot de passe et celui de cerbère
 * Consulter sensiolabs

@@ -127,19 +127,23 @@ class MachineController extends Controller
         /** @var MachineManager $machineManager */
         $machineManager = $this->get(MachineManager::class);
         $networkManager = $this->get(NetworkManager::class);
-        $deleteForm = $this->createDeleteForm($machine);
+        $view['isDeletable'] = false;
+
+        if ($this->isGranted('ROLE_MANAGE_MACHINE') && $machineManager->isDeletable($machine)){
+            $view['isDeletable'] = true;
+            $view['delete_form'] = $this->createDeleteForm($machine)->createView();
+        }
+
         $information = InformationFactory::createInformation($machine);
         $logs = $machineManager->retrieveLogs($machine);
         $networks = $networkManager->getAll();
 
-        return $this->render('@App/default/machine/show.html.twig', [
-            'isDeletable' => $machineManager->isDeletable($machine),
+        return $this->render('@App/default/machine/show.html.twig', array_merge($view, [
             'logs' => $logs,
             'information' => $information,
             'machine' => $machine,
             'networks' => $networks,
-            'delete_form' => $deleteForm->createView(),
-        ]);
+        ]));
     }
 
     /**
@@ -156,8 +160,14 @@ class MachineController extends Controller
      */
     public function editAction(Request $request, Machine $machine)
     {
+        $view = [];
         $machineService = $this->get(MachineManager::class);
-        $deleteForm = $this->createDeleteForm($machine);
+        $isDeletable = $machineService->isDeletable($machine);
+
+        if ($isDeletable){
+            $view['delete_form'] = $this->createDeleteForm($machine)->createView();
+        }
+
         $editForm = $this->createForm(MachineType::class, $machine);
         $editForm->handleRequest($request);
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -173,14 +183,13 @@ class MachineController extends Controller
         $logs = $machineService->retrieveLogs($machine);
         $information = InformationFactory::createInformation($machine);
 
-        return $this->render('@App/default/machine/edit.html.twig', [
-            'isDeletable' => $machineService->isDeletable($machine),
+        return $this->render('@App/default/machine/edit.html.twig', array_merge($view, [
+            'isDeletable' => $isDeletable,
             'logs' => $logs,
             'information' => $information,
             'machine' => $machine,
             'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ]);
+        ]));
     }
 
     /**

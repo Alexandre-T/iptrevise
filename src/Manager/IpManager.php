@@ -138,9 +138,10 @@ class IpManager implements LoggableManagerInterface, PaginatorInterface
     /**
      * Is this entity deletable?
      *
+     * @param  Ip $ip
      * @return bool true if entity is deletable
      */
-    public function isDeletable(): bool
+    public function isDeletable(Ip $ip = null): bool
     {
         //An IP is always deletable.
         return true;
