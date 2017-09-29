@@ -85,6 +85,7 @@ services:
         tags:
             - { name: twig.extension }
 
+    # TODO autowire twig extension
     # Gravatar twig extension.
     app.twig.gravatar_extension:
         class: App\Twig\GravatarExtension
@@ -100,6 +101,24 @@ services:
     # Roles twig filter
     app.twig.roles_extension:
         class: App\Twig\RolesExtension
+        public: false
+        tags:
+            - { name: twig.extension }
+        calls:
+            - [ setTranslator, ['@translator.default']]
+
+    # Label twig filter
+    app.twig.label_extension:
+        class: App\Twig\LabelExtension
+        public: false
+        tags:
+            - { name: twig.extension }
+        calls:
+            - [ setTranslator, ['@translator.default']]
+
+    # Label twig filter
+    app.twig.label_extension:
+        class: App\Twig\LabelExtension
         public: false
         tags:
             - { name: twig.extension }

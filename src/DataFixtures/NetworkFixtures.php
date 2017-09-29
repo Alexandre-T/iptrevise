@@ -50,8 +50,12 @@ class NetworkFixtures extends Fixture
                     ->setDescription("Description $index")
                     ->setColor('000000')
                     ->setIp(ip2long("192.168.$index.0"))
-                    ->setCidr($index)
-                    ->setCreator($organiser);
+                    ->setCidr($index);
+
+                if ($index % 5) {
+                    $network[$index]->setCreator($organiser);
+                }
+
 
                 $this->addReference("network_$index", $network[$index]);
                 $manager->persist($network[$index]);

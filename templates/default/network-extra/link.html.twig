@@ -33,9 +33,9 @@
                         </th>
                     </tr>
                     {% for machine in machines %}
-                        <tr class="{% if machine.creator.label == app.user.label %}success{% else %}alert{% endif %}">
+                        <tr class="{% if machine.creator and machine.creator.label == app.user.label %}success{% else %}alert{% endif %}">
                             <td headers="label" class="th-icon">{{ machine.label }}</td>
-                            <td headers="referent" class="th-icon">{{ machine.creator.label }}</td>
+                            <td headers="referent" class="th-icon">{{ machine.creator | label }}</td>
                             <td headers="submit" class="th-icon">
                                 <button type="submit" id="form_{{ machine.id }}" name="form[{{ machine.id }}]" class="btn btn-default btn-xs">
                                     <span class="fa fa-link"></span>

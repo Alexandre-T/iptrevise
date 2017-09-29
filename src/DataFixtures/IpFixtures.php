@@ -52,13 +52,16 @@ class IpFixtures extends Fixture
                 $ip[$index] = (new Ip())
                     ->setNetwork($network)
                     ->setIp($network->getIp() + $index)
-                    ->setReason("Reason $index")
-                    ->setCreator($organiser);
+                    ->setReason("Reason $index");
 
                 if ($index % 2) {
                     /** @var Machine $machine */
                     $machine = $this->getReference("machine_$index");
                     $ip[$index]->setMachine($machine);
+                }
+
+                if ($index % 5) {
+                    $ip[$index]->setCreator($organiser);
                 }
 
                 $this->addReference("ip_$index", $ip[$index]);

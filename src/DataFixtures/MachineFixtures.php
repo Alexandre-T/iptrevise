@@ -48,8 +48,11 @@ class MachineFixtures extends Fixture
                 $machine[$index] = (new Machine())
                     ->setLabel("Machine $index")
                     ->setDescription("Description $index")
-                    ->setInterface($index % 8 + 1)
-                    ->setCreator($organiser);
+                    ->setInterface($index % 8 + 1);
+
+                if ($index % 5) {
+                    $machine[$index]->setCreator($organiser);
+                }
 
                 $this->addReference("machine_$index", $machine[$index]);
                 $manager->persist($machine[$index]);

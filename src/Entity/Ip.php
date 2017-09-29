@@ -37,7 +37,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @UniqueEntity(fields={"ip", "network"}, message="form.ip.error.ip.unique")
  */
-class Ip implements InformationInterface, ReferentInterface
+class Ip implements InformationInterface, LabelInterface, ReferentInterface
 {
     use ReferentTrait;
     /**
@@ -134,6 +134,18 @@ class Ip implements InformationInterface, ReferentInterface
     public function getIp(): ?int
     {
         return $this->ip;
+    }
+
+    /**
+     * Get the IPv4 in string.
+     *
+     * @return string|null
+     */
+    public function getLabel(): ?string
+    {
+        if (is_null($this->ip)) return null;
+        
+        return long2ip($this->ip);
     }
 
     /**

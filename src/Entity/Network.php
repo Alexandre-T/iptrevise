@@ -39,7 +39,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @UniqueEntity("label", message="form.network.error.label.unique")
  */
-class Network implements InformationInterface
+class Network implements InformationInterface, LabelInterface
 {
     use ReferentTrait;
     /**

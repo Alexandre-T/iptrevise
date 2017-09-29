@@ -18,7 +18,7 @@
         <dt>{{ 'form.machine.field.description'| trans }}</dt>
         <dd>{{ machine.description }}</dd>
         <dt>{{ 'form.machine.field.creator'| trans }}</dt>
-        <dd>{{ machine.creator.label }}</dd>
+        <dd>{{ machine.creator | label }}</dd>
         <dt>{{ 'form.machine.field.tags'| trans }}</dt>
         <dd>
             {{ self_macro.tags(machine.tags) }}
@@ -62,7 +62,7 @@
                 <dt>{{ 'form.network.field.broadcast'| trans }}</dt>
                 <dd>{{ network.broadcast | ip }}</dd>
                 <dt>{{ 'form.network.field.creator'| trans }}</dt>
-                <dd>{{ network.creator.label }}</dd>
+                <dd>{{ network.creator | label }}</dd>
             </dl>
         </div>
     </div>
@@ -84,7 +84,7 @@
         <dt>{{ 'form.ip.field.reason'| trans }}</dt>
         <dd>{{ ip.reason }}</dd>
         <dt>{{ 'form.ip.field.creator'| trans }}</dt>
-        <dd>{{ ip.creator.label }}</dd>
+        <dd>{{ ip.creator | label }}</dd>
     </dl>
 {% endmacro %}
 

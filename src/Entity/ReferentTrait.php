@@ -35,7 +35,7 @@ trait ReferentTrait
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\User", fetch="EAGER")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="usr_id")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="usr_id", onDelete="SET NULL")
      */
     protected $creator;
 

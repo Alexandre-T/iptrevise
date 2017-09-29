@@ -25,7 +25,11 @@
             {{ form_end(edit_form) }}
         </div>
         <div class="panel-footer text-right">
-            <em>{{ 'form.ip.field.reserved-by %name%' | trans({'%name%':ip.creator.label}) }}</em>
+            {% if ip.creator %}
+                <em>{{ 'form.ip.field.reserved-by %name%' | trans({'%name%':ip.creator.label}) }}</em>
+            {% else %}
+                <em>{{ 'form.ip.field.reserved-by-deleted-user' | trans }}</em>
+            {% endif %}
         </div>
     </div>
 {% endblock content_settings%}

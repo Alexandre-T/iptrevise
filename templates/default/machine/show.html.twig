@@ -98,7 +98,7 @@
                             </a>
                         </td>
                         <td headers="machine-ip-machine-creator" class="th-icon">
-                            {{ ip.creator.label }}
+                            {{ ip.creator | label }}
                         </td>
                         {% if is_granted("ROLE_MANAGE_IP") or is_granted("ROLE_MANAGE_MACHINE") %}
                             <td headers="machine-ip-actions">

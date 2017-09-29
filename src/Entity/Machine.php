@@ -39,7 +39,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @UniqueEntity("label", message="form.machine.error.label.unique")
  */
-class Machine implements InformationInterface, TaggableInterface
+class Machine implements InformationInterface, LabelInterface, TaggableInterface
 {
     use ReferentTrait;
     use TaggableTrait;

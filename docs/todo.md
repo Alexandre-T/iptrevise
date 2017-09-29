@@ -16,5 +16,8 @@ TODO List
 * Ajouter l'ergonomie des tags selon ce lien https://github.com/aehlke/tag-it
 * Vérifier les assertions dans le formulaire sur ip+machine
 * Ajouter un lien sur la première colonne des tableaux et simplifier les tests de sécurité.
-* Régler le problème de mot de passe et celui de cerbère
+* Régler le problème de mot de passe dans la branche master
+* Régler le problème de connexion de cerbère dans la branche cerbère
+* Régler le problème de connexion de cerbère via le module externe d'Alexandre (alexandret/casguard)
 * Consulter sensiolabs
+* Dans la vue IP, ajouter les boutons pour lier, délier une machine.

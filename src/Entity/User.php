@@ -39,7 +39,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @UniqueEntity("mail", message="form.user.error.mail.unique")
  * @UniqueEntity("label", message="form.user.error.label.unique")
  */
-class User implements InformationInterface, UserInterface, Serializable
+class User implements InformationInterface, LabelInterface, UserInterface, Serializable
 {
     /**
      * Identifiant.

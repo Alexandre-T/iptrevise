@@ -102,6 +102,8 @@ default.ip.unlink.title %ip% %name%: 'Voulez-vous dissocier la machine %name% de
 
 default.ips: 'Adresses IP'
 
+default.label.none: 'Utilisateur supprimé'
+
 default.machine.action.create.title: 'Enregistrer une nouvelle machine.'
 default.machine.action.delete.title: 'Supprimer cette machine.'
 default.machine.action.edit.title: 'Éditer les informations sur cette machine.'

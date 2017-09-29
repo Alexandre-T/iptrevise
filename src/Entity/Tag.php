@@ -36,7 +36,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @Gedmo\Loggable
  * @UniqueEntity("label", message="form.tag.error.label.unique")
  */
-class Tag implements InformationInterface
+class Tag implements InformationInterface, LabelInterface
 {
     use ReferentTrait;
     /**
