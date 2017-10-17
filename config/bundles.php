@@ -16,4 +16,5 @@ return [
     'Knp\Bundle\PaginatorBundle\KnpPaginatorBundle' => ['all' => true],
     'Knp\Bundle\MenuBundle\KnpMenuBundle' => ['all' => true],
     'Mopa\Bundle\BootstrapBundle\MopaBootstrapBundle' => ['all' => true],
+    'AlexandreT\Bundle\CasGuardBundle\CasGuardBundle' => ['all' => true],
 ];

@@ -1,0 +1,4 @@
+cas_guard:
+    hostname: '%env(CAS_HOSTNAME)%'
+    url: '%env(CAS_URL)%'
+
