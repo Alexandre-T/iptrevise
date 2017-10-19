@@ -36,19 +36,8 @@ security:
             # form_login: ~
 
             # We use Guard !
-            guard:
-                authenticators:
-                    # This service is declared in services.yaml
-                    # - app.security.login_form_authenticator
-                    # CAS Server Cerbere
-                    - phpcasguard.cas_authenticator
+            # Guard is configured into prod subdirectory
 
-
-            #The logout path
-            logout:
-                path: /logout
-                # ADD the same cas authenticator declared in this bundle to activate logout function
-                success_handler: phpcasguard.cas_authenticator
 
     role_hierarchy:
         ROLE_READER:     [ROLE_USER, ROLE_READ_NETWORK, ROLE_READ_IP, ROLE_READ_MACHINE]

@@ -1,0 +1,17 @@
+#http://symfony.com/doc/current/reference/configuration/security.html#full-default-configuration
+security:
+    firewalls:
+        #Main firewall
+        main:
+            # We use Guard !
+            guard:
+                authenticators:
+                    # This service is declared in services.yaml
+                    # - app.security.login_form_authenticator
+                    # CAS Server Cerbere
+                    - phpcasguard.cas_authenticator
+            #The logout path
+            logout:
+                path: /logout
+                # ADD the same cas authenticator declared in this bundle to activate logout function
+                success_handler: phpcasguard.cas_authenticator

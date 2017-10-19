@@ -18,10 +18,10 @@
 require_once __DIR__.'/../vendor/autoload.php';
 
 $dotEnv = new \Symfony\Component\Dotenv\Dotenv();
+$dotEnv->load(__DIR__.'/../.env');
 $dotEnv->populate([
     'APP_ENV' => 'test',
-    'DATABASE_URL' => 'postgres://postgres@127.0.0.1:5432/symfony?charset=utf8&application_name=iptrevise2'
+    'DATABASE_URL' => 'postgres://postgres@127.0.0.1:5432/bd_iptrevise2?charset=utf8&application_name=codeception_ip_management'
 ]);
-$dotEnv->load(__DIR__.'/../.env');
 
 class_alias('App\Kernel', 'Kernel');

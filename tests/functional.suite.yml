@@ -3,7 +3,7 @@ modules:
     enabled:
         - Symfony:
             app_path: 'src'
-            environment: 'dev'
+            environment: 'test'
             var_path: 'var'
         - Doctrine2:
             depends: Symfony # connect to Symfony
