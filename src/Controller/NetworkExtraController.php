@@ -171,8 +171,11 @@ class NetworkExtraController extends Controller
      */
     public function newIpAction(Request $request, Network $network)
     {
+        //Ip initialization
         $ip = new Ip();
         $ip->setNetwork($network);
+
+        //Form initialization
         $form = $this->createForm(IpType::class, $ip);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -185,6 +188,26 @@ class NetworkExtraController extends Controller
             $session->getFlashBag()->add('success', $message);
 
             return $this->redirectToRoute('default_ip_show', array('id' => $ip->getId()));
+        }
+
+        // The form was not submitted, the IP was not calculated
+        // We purpose the first non-reserved IP in the Network
+        if (null === $ip->getIp()) {
+            $ipManager = $this->get(IpManager::class);
+            $firstIp = $ipManager->getFirstNonReferencedIp($network);
+            if (null === $firstIp) {
+                //Flash message
+                $session = $this->get('session');
+                $trans = $this->get('translator.default');
+                $message = $trans->trans('default.network.no.space');
+                $session->getFlashBag()->add('error', $message);
+
+                return $this->redirectToRoute('default_network_show', array('id' => $network->getId()));
+            } else {
+                $ip->setIp($firstIp);
+                // We must set it.
+                $form->setData($ip);
+            }
         }
 
         return $this->render('@App/default/network-extra/new-ip.html.twig', [

@@ -109,6 +109,43 @@ class IpManager implements LoggableManagerInterface, PaginatorInterface
     }
 
     /**
+     * Return the first non-referenced ip.
+     *
+     * @param Network $network
+     *
+     * @return null|int
+     */
+    public function getFirstNonReferencedIp(Network $network)
+    {
+        /** @var Ip[] $ips */
+        $ips = $this->repository->findBy(['network' => $network], ['ip' => 'ASC']);
+
+        //We do this test before the loop for optimization
+        if (count($ips) == $network->getCapacity() || null === $network->getIp()) {
+            // All IP is referenced.
+            return null;
+        }
+
+        $index = $network->getMinIp();
+        $cursor = 0;
+        while ($index <= $network->getMaxIp()) {
+            if ($cursor > count($ips) - 1) {
+                return $index;
+            }
+
+            if ($index < $ips[$cursor]->getIp()) {
+                return $index;
+            } elseif ($index == $ips[$cursor]->getIp()) {
+                ++$index;
+            } else {
+                ++$cursor;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Return IP from its id.
      *
      * @param int $id
@@ -138,7 +175,8 @@ class IpManager implements LoggableManagerInterface, PaginatorInterface
     /**
      * Is this entity deletable?
      *
-     * @param  Ip $ip
+     * @param Ip $ip
+     *
      * @return bool true if entity is deletable
      */
     public function isDeletable(Ip $ip = null): bool
