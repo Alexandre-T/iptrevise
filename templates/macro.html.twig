@@ -89,12 +89,14 @@
 {% endmacro %}
 
 {% macro tags(tags) %}
+    {% set alreadyTagged = [] %}
     {% for tag in tags %}
-        {% if tag | length %}
+        {% if tag | length and tag not in alreadyTagged %}
             <span class="label label-default">
                 <span class="fa fa-tag"></span>
                 {{ tag }}
             </span>&nbsp;
+            {% set alreadyTagged = alreadyTagged|merge([tag]) %}
         {% endif %}
     {% endfor %}
 {% endmacro %}
