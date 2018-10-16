@@ -40,14 +40,6 @@ class UserFixtures extends Fixture
     {
         $roleAdmin = ['ROLE_ADMIN'];
 
-        $userAlexandre = new User();
-        $userAlexandre->setLabel('Alexandre');
-        $userAlexandre->setMail('alexandre.tranchant@cerema.fr');
-        $userAlexandre->setPassword('$2y$10$eKktQf5LJLOnM7tZvjyIkeJu34wPeU9LWZ8HMXe/m8y6K8.kRLQCK');
-        $userAlexandre->setRoles($roleAdmin);
-
-        $this->addReference('user_alexandre', $userAlexandre);
-
         if (in_array($this->container->get('kernel')->getEnvironment(), ['dev', 'test'])) {
             //Load dev and test data
             // I add one user for each role (to test the security component)
@@ -98,7 +90,6 @@ class UserFixtures extends Fixture
             $manager->persist($userAdministrator);
         }
 
-        $manager->persist($userAlexandre);
         $manager->flush();
     }
 }
