@@ -1,6 +1,7 @@
 ###> symfony/framework-bundle ###
 .env
 c3.php
+/bin/.phpunit
 /public/bundles/
 /var/
 /vendor/
@@ -11,3 +12,7 @@ c3.php
 ###> symfony/web-server-bundle ###
 .web-server-pid
 ###< symfony/web-server-bundle ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+###< phpunit/phpunit ###
