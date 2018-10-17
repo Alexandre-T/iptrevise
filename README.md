@@ -51,7 +51,7 @@ Launch unit test:
 php bin/codecept run unit
 ```
 
-Launch functional test: (not implemented)
+Launch functional test:
 ```
 php bin/codecept run functional
 ```
