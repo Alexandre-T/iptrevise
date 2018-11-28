@@ -50,7 +50,7 @@
     {% endif %}
 
     {% if is_granted("ROLE_READ_MACHINE") %}
-        {{ app_macro.panel_admin('desktop', 'default_machine_index', nNetworks, 'default.machines') }}
+        {{ app_macro.panel_admin('desktop', 'default_machine_index', nMachines, 'default.machines') }}
     {% endif %}
 
     {% if is_granted("ROLE_READ_IP") %}
