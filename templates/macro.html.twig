@@ -114,12 +114,14 @@
                 </div>
             </div>
         </div>
-        <a href="{{ path(path) }}">
-            <div class="panel-footer">
-                <span class="pull-left">{{ 'txt.details' | trans }}</span>
-                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                <div class="clearfix"></div>
-            </div>
-        </a>
+        {% if path != '' %}
+          <a href="{{ path(path) }}">
+              <div class="panel-footer">
+                  <span class="pull-left">{{ 'txt.details' | trans }}</span>
+                  <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                  <div class="clearfix"></div>
+              </div>
+          </a>
+          {% endif %}
     </div>
 {% endmacro %}
