@@ -52,6 +52,26 @@ class Ip implements InformationInterface, LabelInterface, ReferentInterface
     private $id;
 
     /**
+     * Label of the Ip.
+     *
+     * @var string
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(max="32")
+     *
+     * @ORM\Column(
+     *     type="string",
+     *     unique=true,
+     *     length=32,
+     *     nullable=false,
+     *     name="ip_lib",
+     *     options={"comment":"Libellé de l'ip"}
+     * )
+     * @Gedmo\Versioned
+     */
+    private $label;
+
+    /**
      * IPv4.
      *
      * @var int
@@ -137,6 +157,20 @@ class Ip implements InformationInterface, LabelInterface, ReferentInterface
     }
 
     /**
+     * Set the label of ip.
+     *
+     * @param string $label
+     *
+     * @return Network
+     */
+    public function setLabel(string $label): Network
+    {
+        $this->label = $label;
+
+        return $this;
+    }
+
+    /**
      * Get the IPv4 in string.
      *
      * @return string|null
@@ -144,7 +178,7 @@ class Ip implements InformationInterface, LabelInterface, ReferentInterface
     public function getLabel(): ?string
     {
         if (is_null($this->ip)) return null;
-        
+
         return long2ip($this->ip);
     }
 

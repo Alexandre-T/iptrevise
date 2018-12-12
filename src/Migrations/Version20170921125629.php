@@ -50,6 +50,23 @@ class Version20170921125629 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_2CEFBCF8BAD26311 ON tj_machinetag (tag_id)');
         $this->addSql('COMMENT ON COLUMN tj_machinetag.machine_id IS \'Identifiant des machines\'');
         $this->addSql('COMMENT ON COLUMN tj_machinetag.tag_id IS \'Identifiant du tag\'');
+        /**Test*/
+        $this->addSql('CREATE TABLE te_ip (ip_id INT NOT NULL, user_id INT DEFAULT NULL, ip_lib VARCHAR(32) NOT NULL, ip_des TEXT DEFAULT NULL, ip_interface SMALLINT DEFAULT 1 NOT NULL, ip_created TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, ip_updated TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(ip_id))');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_EB368EFAF17DE13 ON te_ip (ip_lib)');
+        $this->addSql('CREATE INDEX IDX_EB368EFA76ED395 ON te_ip (user_id)');
+        $this->addSql('COMMENT ON COLUMN te_ip.ip_id IS \'Identifiant des ips\'');
+        $this->addSql('COMMENT ON COLUMN te_ip.user_id IS \'Identifiant de l\'\'utilisateur\'');
+        $this->addSql('COMMENT ON COLUMN te_ip.ip_lib IS \'Libellé de la ip\'');
+        $this->addSql('COMMENT ON COLUMN te_ip.ip_des IS \'Description de la ip\'');
+        $this->addSql('COMMENT ON COLUMN te_ip.ip_interface IS \'Nombre d\'\'interface réseau de la ip\'');
+        $this->addSql('COMMENT ON COLUMN te_ip.ip_created IS \'Creation datetime\'');
+        $this->addSql('COMMENT ON COLUMN te_ip.ip_updated IS \'Update datetime\'');
+        $this->addSql('CREATE TABLE tj_iptag (ip_id INT NOT NULL, tag_id INT NOT NULL, PRIMARY KEY(ip_id, tag_id))');
+        $this->addSql('CREATE INDEX IDX_2CEFBCF8F6B75B26 ON tj_iptag (ip_id)');
+        $this->addSql('CREATE INDEX IDX_2CEFBCF8BAD26311 ON tj_iptag (tag_id)');
+        $this->addSql('COMMENT ON COLUMN tj_iptag.ip_id IS \'Identifiant des ips\'');
+        $this->addSql('COMMENT ON COLUMN tj_iptag.tag_id IS \'Identifiant du tag\'');
+        /**Test*/
         $this->addSql('CREATE TABLE te_network (net_id INT NOT NULL, user_id INT DEFAULT NULL, net_lib VARCHAR(32) NOT NULL, net_des TEXT DEFAULT NULL, net_ip BIGINT NOT NULL, net_masque SMALLINT DEFAULT 32 NOT NULL, net_couleur VARCHAR(6) DEFAULT \'0\' NOT NULL, net_created TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, net_updated TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(net_id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_7B3230D7D7AECD0A ON te_network (net_lib)');
         $this->addSql('CREATE INDEX IDX_7B3230D7A76ED395 ON te_network (user_id)');

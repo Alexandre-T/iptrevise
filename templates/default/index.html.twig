@@ -54,7 +54,7 @@
     {% endif %}
 
     {% if is_granted("ROLE_READ_IP") %}
-        {{ app_macro.panel_admin('indent', 'default_network_index', nIps, 'default.ips') }}
+        {{ app_macro.panel_admin('indent', 'default_ip_index', nIps, 'default.ips') }}
     {% endif %}
 
 {% endblock content_sidebar %}

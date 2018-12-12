@@ -168,10 +168,7 @@
 
     <div class="text-center" id="default-actions">
         <div class="btn-group-vertical">
-            <a class="btn-mini btn btn-default" href="{{ path('default_network_index') }}"
-               data-placement="left" data-toggle="tooltip" title="{{ 'default.network.action.list.title' | trans }}">
-                <span class="fa fa-sitemap"></span>&nbsp;{{ 'network.actions.back.list' | trans }}
-            </a>
+
             {% if is_granted('ROLE_MANAGE_NETWORK') %}
                 <a class="btn-mini btn btn-default" href="{{ path('default_network_edit', { 'id': network.id }) }}"
                    data-placement="left" data-toggle="tooltip" title="{{ 'default.network.action.edit.title' | trans }}">

@@ -1,0 +1,80 @@
+{% extends '@App/default/base.html.twig' %}
+
+{% import "@App/macro.html.twig" as app_macro %}
+
+{% block title %}{{ 'default.ip.list.title'|trans }} · {{ parent() }}{% endblock title %}
+
+{% block headline %}
+    <span class="fa fa-fw fa-sitemap"></span>
+    {{ 'default.ip.list.title'|trans }}
+{% endblock %}
+
+{% set direction = pagination.getDirection() %}
+
+{% block content_content %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th id="ip-color">&nbsp;&nbsp;<span class="fa fa-ip"></span></th>
+            <th id="ip-label">
+                {% if pagination.isSorted('ip.label') %}
+                    <span class="fa fa-sort-alpha-{{ direction }}"></span>
+                {% else %}
+                    <span class="fa fa-sitemap"></span>
+                {% endif %}
+                {{ knp_pagination_sortable(pagination, 'form.ip.field.label' | trans, 'ip.label')}}
+            </th>
+            <th id="ip-address">
+                {% if pagination.isSorted('ip.ip') %}
+                    <span class="fa fa-sort-numeric-{{ direction }}"></span>
+                {% endif %}
+                {{ knp_pagination_sortable(pagination, 'form.ip.field.address' | trans, 'ip.ip')}}
+            </th>
+            <th id="ip-ips"><span class="fa fa-indent"></span> {{ 'default.ip.ips' | trans }}</th>
+            <th id="ip-actions">{{ 'default.ip.actions' | trans }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in pagination %}
+            {% set ip = row[0] %}
+            <tr class="row-{{ loop.index }}">
+                <td headers="ip-color" style="color: {{ '#' ~ ip.color }}"><span class="fa fa-sitemap"></span></td>
+                <td headers="ip-label" class="th-icon">{{ ip.label }}</td>
+                <td headers="ip-address" class="th-icon">{{ ip.ip | ip(ip.cidr) }}</td>
+                <td headers="ip-ips" class="th-icon">{{ row['ipsCount'] | localizednumber }} / {{ ip.capacity | localizednumber }}</td>
+                <td headers="ip-actions">
+                    <div class="btn-group-xs btn-group">
+                        <a class="btn btn-default" href="{{ path('default_ip_show', { 'id': ip.id }) }}">
+                            <span class="fa fa-eye"></span>
+                            <span class="sr-only">{{ 'default.action.show' | trans }}</span>
+                        </a>
+                        {% if is_granted('ROLE_MANAGE_ip') %}
+                            <a class="btn btn-default" href="{{ path('default_ip_edit', { 'id': ip.id }) }}">
+                                <span class="fa fa-edit"></span>
+                                <span class="sr-only">{{ 'default.action.edit' | trans }}</span>
+                            </a>
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="navigation text-right">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+{% endblock content_content %}
+
+{% block content_action %}
+    {{ app_macro.panel_admin('sitemap', 'default_ip_index', pagination.totalItemCount, 'default.ips') }}
+
+    {% if is_granted('ROLE_MANAGE_ip') %}
+        <div class="text-center">
+            <a class="btn btn-default" href="{{ path('default_ip_new') }}" data-toggle="tooltip" data-placement="left"
+               title="{{ 'default.ip.action.list.title' | trans }}">
+                <span class="fa fa-sitemap"></span>
+                {{ 'default.ip.create' | trans }}
+            </a>
+        </div>
+    {% endif %}
+{% endblock content_action %}
