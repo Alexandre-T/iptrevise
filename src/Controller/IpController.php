@@ -43,39 +43,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class IpController extends Controller
 {
-
-  /**
-   * Limit of ip per page for listing.
-   */
-  const LIMIT_PER_PAGE = 25;
-
-/**
-* Lists all ip entities.
-*
-* @Route("/", name="default_ip_index")
-* @Method("GET")
-* @Security("is_granted('ROLE_READ_IP')")
-*
-* @param Request $request
-*
-* @return Response
-*/
-  public function indexAction(Request $request)
-  {
-      //Retrieving all services
-      $ipManager = $this->get(IpManager::class);
-      $paginator = $this->get('knp_paginator');
-      $pagination = $paginator->paginate(
-          $ipManager->getQueryBuilder(), /* queryBuilder NOT result */
-          $request->query->getInt('page', 1)/*page number*/,
-          self::LIMIT_PER_PAGE,
-          ['defaultSortFieldName' => 'ip.label', 'defaultSortDirection' => 'asc']
-      );
-
-      return $this->render('@App/default/ip/index.html.twig', [
-          'pagination' => $pagination,
-      ]);
-  }
     /**
      * Finds and displays a ip entity.
      *

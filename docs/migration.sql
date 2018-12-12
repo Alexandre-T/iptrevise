@@ -31,8 +31,8 @@ insert into ext_log_entries (id, action, logged_at, object_id, object_class, ver
       'Importateur automatique'
     from te_machine;
 
-insert into te_ip (ip_id, ip_lib, network_id, machine_id, user_id, ip_ip, ip_created, ip_updated, reason)
-select oi.ip_id, nr.net_id, oi.ip_lib, oi.mac_id, nu.usr_id, ip_adresse, now(), now(), substring(oi.ip_des for 32) FROM te_ip_ip as oi
+insert into te_ip (ip_id, network_id, machine_id, user_id, ip_ip, ip_created, ip_updated, reason)
+select oi.ip_id, nr.net_id, oi.mac_id, nu.usr_id, ip_adresse, now(), now(), substring(oi.ip_des for 32) FROM te_ip_ip as oi
 inner join te_reseau_res as "or" on oi.res_id = "or".res_id
 left outer join te_network as nr on "or".res_lib = nr.net_lib
 
