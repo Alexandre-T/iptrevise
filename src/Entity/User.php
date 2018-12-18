@@ -127,6 +127,24 @@ class User implements InformationInterface, LabelInterface, UserInterface, Seria
     private $roles = [];
 
     /**
+     * New Roles of this user.
+     *
+     * @var Role[]
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Role", mappedBy="user")
+     */
+    private $newRoles = [];
+
+    /**
+     * Is this user an admin?
+     *
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", nullable=false, name="usr_admin", options={"default":false,"comment":"is user an admin"})
+     */
+    private $admin = false;
+
+    /**
      * A non-persisted field that's used to create the encoded password.
      *
      * @var string

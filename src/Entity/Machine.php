@@ -123,12 +123,32 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
     private $updated;
 
     /**
+     * Machine location.
+     *
+     * @var string
+     *
+     * @ORM\Column(type="text", nullable=true, name="mac_location", options={"comment":"Description de la machine"})
+     * 
+     */
+    private $location;
+
+    /**
+     * Adresses Mac des interfaces la machine.
+     *
+     * @var array
+     *
+     * @ORM\Column(type="array", nullable=true, name="mac_macs", options={"comment":"Adresses mac de la machine"})
+     * //TODO add (at)Gedmo/Versioned
+     */
+    private $macs = [];
+
+    /**
      * Ip of this Machine.
      *
      * @var Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Ip", mappedBy="machine")
-     * @ORM\OrderBy({"ip" = "ASC"})
+     * @ORM\OrderBy({"ip":"ASC"})
      */
     private $ips;
 
