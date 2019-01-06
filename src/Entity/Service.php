@@ -73,4 +73,85 @@ class Service
      * )
      */
     private $services;
+    /**
+       * Service constructor.
+       */
+      public function __construct()
+      {
+      }
+
+      /**
+       * Get Identifier.
+       *
+       * @return int
+       */
+      public function getId(): ?int
+      {
+          return $this->id;
+      }
+
+      /**
+       * Get the label.
+       *
+       * @return string
+       */
+      public function getLabel(): ?string
+      {
+          return $this->label;
+      }
+
+      /**
+       * Get the number of interfaces.
+       *
+       * @return int
+       */
+      public function getInterface(): ?int
+      {
+          return $this->interface;
+      }
+
+      /**
+       * Get the datetime creation (in application) of the service.
+       *
+       * @return DateTime
+       */
+      public function getCreated(): ?DateTime
+      {
+          return $this->created;
+      }
+
+      /**
+       * Get the last datetime update (in application) of the service.
+       *
+       * @return mixed
+       */
+      public function getUpdated(): ?DateTime
+      {
+          return $this->updated;
+      }
+
+      /**
+       * Get the last datetime update (in application) of the network.
+       *
+       * @return mixed
+       */
+      public function getServices(): ?DateTime
+      {
+          return $this->services;
+      }
+
+
+      /**
+       * Set the label.
+       *
+       * @param string $label
+       *
+       * @return Service
+       */
+      public function setLabel(string $label): Service
+      {
+          $this->label = $label;
+
+          return $this;
+      }
 }

@@ -128,7 +128,7 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      * @var string
      *
      * @ORM\Column(type="text", nullable=true, name="mac_location", options={"comment":"Description de la machine"})
-     * 
+     *
      */
     private $location;
 
@@ -200,7 +200,15 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
     {
         return $this->description;
     }
-
+    /**
+     * Get the location.
+     *
+     * @return string
+     */
+    public function getLocation(): ?string
+    {
+        return $this->location;
+    }
     /**
      * Get the number of interfaces.
      *
@@ -265,6 +273,19 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
     public function setDescription(string $description): Machine
     {
         $this->description = $description;
+
+        return $this;
+    }
+    /**
+     * Set the location.
+     *
+     * @param string $location
+     *
+     * @return Machine
+     */
+    public function setLocation(string $location): Machine
+    {
+        $this->location = $location;
 
         return $this;
     }

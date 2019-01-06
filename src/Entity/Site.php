@@ -83,5 +83,128 @@ class Site
      * @ORM\OneToMany(targetEntity="App\Entity\Network", mappedBy="site", fetch="EXTRA_LAZY")
      */
     private $networks;
+    /**
+       * Site constructor.
+       */
+      public function __construct()
+      {
+          $this->networks = new ArrayCollection();
+      }
 
-}
+      /**
+       * Get Identifier.
+       *
+       * @return int
+       */
+      public function getId(): ?int
+      {
+          return $this->id;
+      }
+
+      /**
+       * Get the label.
+       *
+       * @return string
+       */
+      public function getLabel(): ?string
+      {
+          return $this->label;
+      }
+
+      /**
+       * Get the description.
+       *
+       * @return string
+       */
+      public function getColor(): ?string
+      {
+          return $this->color;
+      }
+
+
+      /**
+       * Get the datetime creation (in application) of this site.
+       *
+       * @return DateTime
+       */
+      public function getCreated(): ?DateTime
+      {
+          return $this->created;
+      }
+
+      /**
+       * Get the last datetime update (in application) of this site.
+       *
+       * @return mixed
+       */
+      public function getUpdated(): ?DateTime
+      {
+          return $this->updated;
+      }
+
+      /**
+       * Return a collection of all Networks.
+       *
+       * @return Collection
+       */
+      public function getNetworks(): Collection
+      {
+          return $this->networks;
+      }
+
+      /**
+       * Set the label.
+       *
+       * @param string $label
+       *
+       * @return Site
+       */
+      public function setLabel(string $label): Site
+      {
+          $this->label = $label;
+
+          return $this;
+      }
+
+      /**
+       * Set the color.
+       *
+       * @param string $color
+       *
+       * @return Site
+       */
+      public function setColor(string $color): Site
+      {
+          $this->color = $color;
+
+          return $this;
+      }
+
+      /**
+       * Add network.
+       *
+       * @param Network $network
+       *
+       * @return Site
+       */
+      public function addNetwork(Network $network): Site
+      {
+          $this->networks[] = $network;
+
+          return $this;
+      }
+
+      /**
+       * Remove network.
+       *
+       * @param Network $network
+       *
+       * @return Site
+       */
+      public function removeNetwork(Network $network): Site
+      {
+          $this->networks->removeElement($network);
+
+          return $this;
+      }
+  }
