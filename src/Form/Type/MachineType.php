@@ -60,6 +60,10 @@ class MachineType extends AbstractType
                     'placeholder' => '1',
                 ],
             ])
+            ->add('location', null, [
+              'label' => 'form.machine.field.location',
+              'help_block' => 'form.machine.help.location',
+            ])
             ->add('tags', TagsType::class, [
                 'label' => 'form.machine.field.tags',
                 'help_block' => 'form.machine.help.tags',

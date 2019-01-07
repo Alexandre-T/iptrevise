@@ -16,7 +16,7 @@ class Role
      * Kind of role.
      *
      * True : User can update data on this site.
-     * False : USer can only read data on this site.
+     * False : User can only read data on this site.
      *
      * @ORM\Column(
      *     type="boolean",
@@ -67,5 +67,49 @@ class Role
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="newRoles")
      * @ORM\JoinColumn(name="usr_id", referencedColumnName="usr_id", nullable=false, onDelete="CASCADE") User
      */
-    private $user;
-}
+     private $user;
+
+     public function __construct()
+     {
+     }
+     /**
+     * returns true if the user can only read
+     * @return boolean
+     */
+     public function isReadOnly() : boolean
+     {
+       return $this->readOnly;
+     }
+     /**
+     * Get the datetime creation (in application) of this role.
+     *
+     * @return DateTime
+     */
+     public function getCreated(): ?DateTime
+     {
+       return $this->created;
+     }
+
+     /**
+     * Get the last datetime update (in application) of this role.
+     *
+     * @return mixed
+     */
+     public function getUpdated(): ?DateTime
+     {
+       return $this->updated;
+     }
+     /**
+     * Get the site authorized to this role.
+     *
+     * @return Site
+     */
+     public function getSite(): ?Site
+     {
+       return $this->site;
+     }
+     /**
+     * TODO getter for attribut $user?
+     * Role constructor.
+     */
+   }
