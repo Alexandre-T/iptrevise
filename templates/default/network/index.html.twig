@@ -66,7 +66,7 @@
 {% endblock content_content %}
 
 {% block content_action %}
-    {{ app_macro.panel_admin('sitemap', 'default_network_index', pagination.totalItemCount, 'default.networks') }}
+    {{ app_macro.panel_admin('sitemap', '', pagination.totalItemCount, 'default.networks') }}
 
     {% if is_granted('ROLE_MANAGE_NETWORK') %}
         <div class="text-center">

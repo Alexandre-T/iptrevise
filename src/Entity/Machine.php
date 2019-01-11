@@ -14,9 +14,7 @@
  *
  * @see       http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt
  */
-
 namespace App\Entity;
-
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,7 +22,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use DateTime;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-
 /**
  * Machine class.
  *
@@ -43,7 +40,6 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
 {
     use ReferentTrait;
     use TaggableTrait;
-
     /**
      * Identifier of Machine.
      *
@@ -54,7 +50,6 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
     /**
      * Label of Machine.
      *
@@ -74,7 +69,6 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      * @Gedmo\Versioned
      */
     private $label;
-
     /**
      * Description of machine.
      *
@@ -84,7 +78,6 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      * @Gedmo\Versioned
      */
     private $description;
-
     /**
      * Number of network interface of Machine.
      *
@@ -101,7 +94,6 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      * @Gedmo\Versioned
      */
     private $interface = 1;
-
     /**
      * Datetime creation (in application) of Machine.
      *
@@ -111,7 +103,6 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      * @Gedmo\Timestampable(on="create")
      */
     private $created;
-
     /**
      * Last datetime update of machine.
      *
@@ -121,17 +112,32 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      * @Gedmo\Timestampable(on="update")
      */
     private $updated;
-
+    /**
+     * Machine location.
+     *
+     * @var string
+     *
+     * @ORM\Column(type="text", nullable=true, name="mac_location", options={"comment":"Localisation  de la machine"})
+     *
+     */
+    private $location;
+    /**
+     * Adresses Mac of the Machine.
+     *
+     * @var string
+     *
+     * @ORM\Column(type="text", nullable=true, name="mac_macs", options={"comment":"Adresses mac de la machine"})
+     */
+    private $macs;
     /**
      * Ip of this Machine.
      *
      * @var Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Ip", mappedBy="machine")
-     * @ORM\OrderBy({"ip" = "ASC"})
+     * @ORM\OrderBy({"ip":"ASC"})
      */
     private $ips;
-
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Tag", cascade={"persist"})
      * @ORM\JoinTable(
@@ -141,7 +147,6 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      * )
      */
     private $tags;
-
     /**
      * Machine constructor.
      */
@@ -150,7 +155,6 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
         $this->ips = new ArrayCollection();
         $this->tags = new ArrayCollection();
     }
-
     /**
      * Get Identifier.
      *
@@ -160,7 +164,6 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
     {
         return $this->id;
     }
-
     /**
      * Get the label.
      *
@@ -170,7 +173,6 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
     {
         return $this->label;
     }
-
     /**
      * Get the description.
      *
@@ -180,7 +182,6 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
     {
         return $this->description;
     }
-
     /**
      * Get the number of interfaces.
      *
@@ -189,6 +190,27 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
     public function getInterface(): ?int
     {
         return $this->interface;
+    }
+
+
+    /**
+     * Get the location of the machine.
+     *
+     * @return string
+     */
+    public function getLocation(): ?string
+    {
+        return $this->location;
+    }
+
+    /**
+     * Get the macs adresses of the machine.
+     *
+     * @return string
+     */
+    public function getMacs(): ?string
+    {
+        return $this->macs;
     }
 
     /**
@@ -200,7 +222,6 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
     {
         return $this->created;
     }
-
     /**
      * Get the last datetime update (in application) of this machine.
      *
@@ -210,7 +231,6 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
     {
         return $this->updated;
     }
-
     /**
      * Return a collection of all Ips.
      *
@@ -220,7 +240,6 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
     {
         return $this->ips;
     }
-
     /**
      * Set the label.
      *
@@ -231,10 +250,8 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
     public function setLabel(string $label): Machine
     {
         $this->label = $label;
-
         return $this;
     }
-
     /**
      * Set the description.
      *
@@ -245,10 +262,8 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
     public function setDescription(string $description): Machine
     {
         $this->description = $description;
-
         return $this;
     }
-
     /**
      * Set the number of network interface of this machine.
      *
@@ -259,8 +274,33 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
     public function setInterface(int $interface): Machine
     {
         $this->interface = $interface;
-
         return $this;
+    }
+
+    /**
+     * Set the location.
+     *
+     * @param string $location
+     *
+     * @return Machine
+     */
+    public function setLocation(string $location): Machine
+    {
+        $this->location = $location;
+        return $this;
+    }
+
+    /**
+     * Set the macs.
+     *
+     * @param string $macs
+     *
+     * @return Machine
+     */
+    public function setMacs(string $macs): Machine
+    {
+      $this->macs = $macs;
+      return $this;
     }
 
     /**
@@ -273,10 +313,8 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
     public function addIp(Ip $ip)
     {
         $this->ips[] = $ip;
-
         return $this;
     }
-
     /**
      * Remove ip.
      *
@@ -287,7 +325,6 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
     public function removeIp(Ip $ip)
     {
         $this->ips->removeElement($ip);
-
         return $this;
     }
 }

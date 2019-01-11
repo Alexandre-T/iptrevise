@@ -64,6 +64,14 @@ class MachineType extends AbstractType
                 'label' => 'form.machine.field.tags',
                 'help_block' => 'form.machine.help.tags',
             ])
+            ->add('location', null, [
+              'label' => 'form.machine.field.location',
+              'help_block' => 'form.machine.help.location',
+            ])
+            ->add('macs', null, [
+              'label' => 'form.machine.field.macs',
+              'help_block' => 'form.machine.help.macs',
+            ])
         ;
     }
 

@@ -167,11 +167,21 @@ class Network implements InformationInterface, LabelInterface
      * @var Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Ip", mappedBy="network", fetch="EXTRA_LAZY")
-     * @ORM\OrderBy({"ip" = "ASC"})
+     * @ORM\OrderBy({"ip":"ASC"})
      *
      * @see http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/tutorials/extra-lazy-associations.html
      */
     private $ips;
+
+    /**
+     * Network's site.
+     *
+     * @var Site
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Site", inversedBy="networks", fetch="EAGER")
+     * @ORM\JoinColumn(name="site_id", referencedColumnName="sit_id", nullable=false, onDelete="RESTRICT")
+     */
+    private $site;
 
     /**
      * Network constructor.
