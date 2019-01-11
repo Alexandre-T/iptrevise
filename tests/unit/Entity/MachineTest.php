@@ -18,6 +18,7 @@ namespace App\Tests\Entity;
 
 use App\Entity\Machine;
 use App\Entity\Ip;
+use App\Entity\Service;
 use App\Entity\Tag;
 use PHPUnit\Framework\TestCase;
 
@@ -54,12 +55,17 @@ class MachineTest extends TestCase
         self::assertNull($this->machine->getDescription());
         self::assertNull($this->machine->getId());
         self::assertNull($this->machine->getLabel());
+        self::assertNull($this->machine->getLocation());
         self::assertEquals(1, $this->machine->getInterface());
         self::assertInternalType('int', $this->machine->getInterface());
         self::assertNotNull($this->machine->getIps());
+        self::assertNotNull($this->machine->getMacs());
+        self::assertNotNull($this->machine->getServices());
         self::assertNotNull($this->machine->getTags());
         self::assertEmpty($this->machine->getIps());
+        self::assertEmpty($this->machine->getMacs());
         self::assertEmpty($this->machine->getTags());
+        self::assertEmpty($this->machine->getServices());
         self::assertNull($this->machine->getUpdated());
     }
 
@@ -73,12 +79,32 @@ class MachineTest extends TestCase
     }
 
     /**
+     * Tests location getter, setter and aliases.
+     */
+    public function testLocation()
+    {
+        self::assertEquals($this->machine, $this->machine->setLocation('location'));
+        self::assertEquals('location', $this->machine->getLocation());
+    }
+
+    /**
      * Tests description getter, setter and aliases.
      */
     public function testDescription()
     {
         self::assertEquals($this->machine, $this->machine->setDescription('description'));
         self::assertEquals('description', $this->machine->getDescription());
+    }
+
+    /**
+     * Tests macs getter, setter and aliases.
+     */
+    public function testMacs()
+    {
+        $expected = $actual = ['mac1','mac2'];
+
+        self::assertEquals($this->machine, $this->machine->setMacs($actual));
+        self::assertEquals($expected, $this->machine->getMacs());
     }
 
     /**
@@ -115,6 +141,31 @@ class MachineTest extends TestCase
         self::assertCount(0, $this->machine->getTags());
         self::assertFalse($this->machine->getTags()->contains($tag1));
         self::assertFalse($this->machine->getTags()->contains($tag2));
+    }
+
+    /**
+     * Tests network getter, setter and aliases.
+     */
+    public function testServices()
+    {
+        $service1 = new Service();
+        $service2 = new Service();
+        $this->machine->addService($service1);
+        self::assertCount(1, $this->machine->getServices());
+        self::assertTrue($this->machine->getServices()->contains($service1));
+        self::assertFalse($this->machine->getServices()->contains($service2));
+        $this->machine->addService($service2);
+        self::assertCount(2, $this->machine->getServices());
+        self::assertTrue($this->machine->getServices()->contains($service1));
+        self::assertTrue($this->machine->getServices()->contains($service2));
+        $this->machine->removeService($service1);
+        self::assertCount(1, $this->machine->getServices());
+        self::assertFalse($this->machine->getServices()->contains($service1));
+        self::assertTrue($this->machine->getServices()->contains($service2));
+        $this->machine->removeService($service2);
+        self::assertCount(0, $this->machine->getServices());
+        self::assertFalse($this->machine->getServices()->contains($service1));
+        self::assertFalse($this->machine->getServices()->contains($service2));
     }
     
     /**

@@ -153,6 +153,10 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
     private $ips;
 
     /**
+     * Machine's tags.
+     * 
+     * @var Tag[]|Collection
+     * 
      * @ORM\ManyToMany(targetEntity="App\Entity\Tag", cascade={"persist"})
      * @ORM\JoinTable(
      *     name="tj_machinetag",
@@ -163,12 +167,22 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
     private $tags;
 
     /**
+     * Services done by machine.
+     * 
+     * @var Service[]|Collection
+     * 
+     * @ORM\ManyToMany(targetEntity="App\Entity\Service", mappedBy="machines")
+     */
+    private $services;
+
+    /**
      * Machine constructor.
      */
     public function __construct()
     {
         $this->ips = new ArrayCollection();
         $this->tags = new ArrayCollection();
+        $this->services = new ArrayCollection();
     }
 
     /**
@@ -199,6 +213,26 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
     public function getDescription(): ?string
     {
         return $this->description;
+    }
+
+    /**
+     * Get the location.
+     *
+     * @return string
+     */
+    public function getLocation(): ?string
+    {
+        return $this->location;
+    }
+
+    /**
+     * Get the mac address of the machine.
+     *
+     * @return string[]
+     */
+    public function getMacs(): ?array
+    {
+        return $this->macs;
     }
 
     /**
@@ -242,6 +276,16 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
     }
 
     /**
+     * Return a collection of all Services.
+     *
+     * @return Collection
+     */
+    public function getServices(): Collection
+    {
+        return $this->services;
+    }
+    
+    /**
      * Set the label.
      *
      * @param string $label
@@ -268,6 +312,35 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
 
         return $this;
     }
+    
+    /**
+     * Set the location.
+     *
+     * @param string $location
+     *
+     * @return Machine
+     */
+    public function setLocation(string $location): Machine
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    
+    /**
+     * Set the macs addresses of machine.
+     *
+     * @param array $macs
+     *
+     * @return Machine
+     */
+    public function setMacs(array $macs): Machine
+    {
+        $this->macs = $macs;
+
+        return $this;
+    }
 
     /**
      * Set the number of network interface of this machine.
@@ -290,7 +363,7 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      *
      * @return Machine
      */
-    public function addIp(Ip $ip)
+    public function addIp(Ip $ip): Machine
     {
         $this->ips[] = $ip;
 
@@ -304,9 +377,37 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      *
      * @return Machine
      */
-    public function removeIp(Ip $ip)
+    public function removeIp(Ip $ip): Machine
     {
         $this->ips->removeElement($ip);
+
+        return $this;
+    }
+
+    /**
+     * Add service.
+     *
+     * @param Service $service
+     *
+     * @return Machine
+     */
+    public function addService(Service $service): Machine
+    {
+        $this->services[] = $service;
+
+        return $this;
+    }
+
+    /**
+     * Remove service.
+     *
+     * @param Service $service
+     *
+     * @return Machine
+     */
+    public function removeService(Service $service): Machine
+    {
+        $this->services->removeElement($service);
 
         return $this;
     }

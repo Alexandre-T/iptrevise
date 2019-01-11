@@ -17,6 +17,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use DateTime;
@@ -150,6 +152,14 @@ class User implements InformationInterface, LabelInterface, UserInterface, Seria
      * @var string
      */
     private $plainPassword;
+
+    /**
+     * User constructor.
+     */
+    public function __construct()
+    {
+        $this->newRoles = new ArrayCollection();
+    }
 
     /**
      * Id getter.
@@ -411,6 +421,68 @@ class User implements InformationInterface, LabelInterface, UserInterface, Seria
     public function getCreator(): ?User
     {
         //FIXME
+        return $this;
+    }
+
+    /**
+     * Is this user an admin.
+     *
+     * @return bool
+     */
+    public function isAdmin(): bool
+    {
+        return $this->admin;
+    }
+
+    /**
+     * Get the roles of user.
+     *
+     * @return Role[]|Collection
+     */
+    public function getNewRoles(): Collection
+    {
+        return $this->newRoles;
+    }
+
+    /**
+     * Set this user as an admin.
+     * 
+     * @param bool $admin
+     *
+     * @return User
+     */
+    public function setAdmin(bool $admin): User
+    {
+        $this->admin = $admin;
+        
+        return $this;
+    }
+    
+    /**
+     * Add role.
+     *
+     * @param Role $role
+     *
+     * @return User
+     */
+    public function addRole(Role $role): User
+    {
+        $this->newRoles[] = $role;
+
+        return $this;
+    }
+
+    /**
+     * Remove role.
+     *
+     * @param Role $role
+     *
+     * @return User
+     */
+    public function removeRole(Role $role): User
+    {
+        $this->newRoles->removeElement($role);
+
         return $this;
     }
 }

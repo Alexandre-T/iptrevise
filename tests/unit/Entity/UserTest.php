@@ -16,6 +16,7 @@
 
 namespace App\Tests\Entity;
 
+use App\Entity\Role;
 use App\Entity\User;
 use PHPUnit\Framework\TestCase;
 
@@ -48,6 +49,7 @@ class UserTest extends TestCase
      */
     public function testConstructor()
     {
+        self::assertFalse($this->user->isAdmin());
         self::assertNull($this->user->getId());
         self::assertNull($this->user->getCreated());
         self::assertNull($this->user->getLabel());
@@ -59,6 +61,8 @@ class UserTest extends TestCase
         self::assertNull($this->user->getUpdated());
         self::assertNull($this->user->getUsername());
         self::assertNull($this->user->getSalt());
+        self::assertNotNull($this->user->getNewRoles());
+        self::assertEmpty($this->user->getNewRoles());
     }
 
     /**
@@ -68,6 +72,18 @@ class UserTest extends TestCase
     {
         self::assertEquals($this->user, $this->user->setLabel('label'));
         self::assertEquals('label', $this->user->getLabel());
+
+    }
+
+    /**
+     * Tests isAdmin getter, setter and aliases.
+     */
+    public function testAdmin()
+    {
+        self::assertEquals($this->user, $this->user->setAdmin(true));
+        self::assertTrue($this->user->isAdmin());
+        self::assertEquals($this->user, $this->user->setAdmin(false));
+        self::assertFalse($this->user->isAdmin());
 
     }
 
@@ -167,5 +183,30 @@ class UserTest extends TestCase
         self::assertFalse($this->user->hasRole('ROLE_ADMIN'));
         self::assertTrue($this->user->hasRole('ROLE_USER'));
 
+    }
+
+    /**
+     * Tests User get add removeRole ().
+     */
+    public function testRoles()
+    {
+        $role1 = new Role();
+        $role2 = new Role();
+        $this->user->addRole($role1);
+        self::assertCount(1, $this->user->getNewRoles());
+        self::assertTrue($this->user->getNewRoles()->contains($role1));
+        self::assertFalse($this->user->getNewRoles()->contains($role2));
+        $this->user->addRole($role2);
+        self::assertCount(2, $this->user->getNewRoles());
+        self::assertTrue($this->user->getNewRoles()->contains($role1));
+        self::assertTrue($this->user->getNewRoles()->contains($role2));
+        $this->user->removeRole($role1);
+        self::assertCount(1, $this->user->getNewRoles());
+        self::assertFalse($this->user->getNewRoles()->contains($role1));
+        self::assertTrue($this->user->getNewRoles()->contains($role2));
+        $this->user->removeRole($role2);
+        self::assertCount(0, $this->user->getNewRoles());
+        self::assertFalse($this->user->getNewRoles()->contains($role1));
+        self::assertFalse($this->user->getNewRoles()->contains($role2));
     }
 }

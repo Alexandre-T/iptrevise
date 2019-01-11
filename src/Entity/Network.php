@@ -174,6 +174,16 @@ class Network implements InformationInterface, LabelInterface
     private $ips;
 
     /**
+     * Reserved ranges of IP for this network.
+     *
+     * @var Collection|Plage[]
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Plage", mappedBy="network", fetch="EAGER")
+     * @ORM\OrderBy({"ip":"ASC"})
+     */
+    private $plages;
+
+    /**
      * Network's site.
      *
      * @var Site
@@ -189,6 +199,7 @@ class Network implements InformationInterface, LabelInterface
     public function __construct()
     {
         $this->ips = new ArrayCollection();
+        $this->plages = new ArrayCollection();
     }
 
     /**
@@ -271,6 +282,26 @@ class Network implements InformationInterface, LabelInterface
     public function getColor(): ?string
     {
         return $this->color;
+    }
+
+    /**
+     * Get reserved plage/range of the Network
+     * 
+     * @return Collection|Plage[]
+     */
+    public function getPlages(): Collection
+    {
+        return $this->plages;
+    }
+
+    /**
+     * Return the site of this network.
+     * 
+     * @return Site
+     */
+    public function getSite(): ?Site
+    {
+        return $this->site;
     }
 
     /**
@@ -374,6 +405,20 @@ class Network implements InformationInterface, LabelInterface
     }
 
     /**
+     * Setter of the  site.
+     *
+     * @param Site $site
+     *
+     * @return Network
+     */
+    public function setSite(Site $site): ?Network
+    {
+        $this->site = $site;
+        
+        return $this;
+    }
+
+    /**
      * Add ip.
      *
      * @param Ip $ip
@@ -397,6 +442,34 @@ class Network implements InformationInterface, LabelInterface
     public function removeIp(Ip $ip)
     {
         $this->ips->removeElement($ip);
+
+        return $this;
+    }
+
+    /**
+     * Add reserved plage/range.
+     *
+     * @param Plage $plage
+     *
+     * @return Network
+     */
+    public function addPlage(Plage $plage)
+    {
+        $this->plages[] = $plage;
+
+        return $this;
+    }
+
+    /**
+     * Remove plage.
+     *
+     * @param Plage $plage
+     *
+     * @return Network
+     */
+    public function removePlage(Plage $plage)
+    {
+        $this->plages->removeElement($plage);
 
         return $this;
     }
