@@ -128,7 +128,7 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      * @var string
      *
      * @ORM\Column(type="text", nullable=true, name="mac_location", options={"comment":"Description de la machine"})
-     * 
+     *
      */
     private $location;
 
@@ -154,9 +154,9 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
 
     /**
      * Machine's tags.
-     * 
+     *
      * @var Tag[]|Collection
-     * 
+     *
      * @ORM\ManyToMany(targetEntity="App\Entity\Tag", cascade={"persist"})
      * @ORM\JoinTable(
      *     name="tj_machinetag",
@@ -168,9 +168,9 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
 
     /**
      * Services done by machine.
-     * 
+     *
      * @var Service[]|Collection
-     * 
+     *
      * @ORM\ManyToMany(targetEntity="App\Entity\Service", mappedBy="machines")
      */
     private $services;
@@ -284,7 +284,7 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
     {
         return $this->services;
     }
-    
+
     /**
      * Set the label.
      *
@@ -312,7 +312,7 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
 
         return $this;
     }
-    
+
     /**
      * Set the location.
      *
@@ -327,7 +327,7 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
         return $this;
     }
 
-    
+
     /**
      * Set the macs addresses of machine.
      *

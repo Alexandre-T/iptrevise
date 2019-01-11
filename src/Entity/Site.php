@@ -229,5 +229,4 @@ class Site
 
         return $this;
     }
-
 }
