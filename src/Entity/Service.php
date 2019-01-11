@@ -73,13 +73,7 @@ class Service
      * )
      */
     private $services;
-    /**
-       * Service constructor.
-       */
-      public function __construct()
-      {
-      }
-
+  
       /**
        * Get Identifier.
        *

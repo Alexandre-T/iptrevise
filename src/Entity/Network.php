@@ -416,6 +416,20 @@ class Network implements InformationInterface, LabelInterface
     }
 
     /**
+     * Set Site of network.
+     *
+     * @param Site $ip
+     *
+     * @return Network
+     */
+    public function setSite(Site $site): Network
+    {
+        $this->site = $site;
+
+        return $this;
+    }
+
+    /**
      * Count IPS.
      *
      * @return int

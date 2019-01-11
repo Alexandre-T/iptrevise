@@ -3,7 +3,8 @@ namespace App\Entity;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SiteRepository")
  * @ORM\Table(name="te_site", options={"comment":"Table entité des réseaux"})
@@ -83,128 +84,138 @@ class Site
      * @ORM\OneToMany(targetEntity="App\Entity\Network", mappedBy="site", fetch="EXTRA_LAZY")
      */
     private $networks;
+
     /**
-       * Site constructor.
-       */
-      public function __construct()
-      {
-          $this->networks = new ArrayCollection();
-      }
+    * Network constructor.
+    */
+    public function __construct()
+    {
+        $this->networks = new ArrayCollection();
+    }
 
-      /**
-       * Get Identifier.
-       *
-       * @return int
-       */
-      public function getId(): ?int
-      {
-          return $this->id;
-      }
+    /**
+     * Get Identifier.
+     *
+     * @return int
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+    /**
+     * Get the label.
+     *
+     * @return string
+     */
+    public function getLabel(): ?string
+    {
+        return $this->label;
+    }
 
-      /**
-       * Get the label.
-       *
-       * @return string
-       */
-      public function getLabel(): ?string
-      {
-          return $this->label;
-      }
+    /**
+     * Get the datetime creation (in application) of the site.
+     *
+     * @return DateTime
+     */
+    public function getCreated(): ?DateTime
+    {
+        return $this->created;
+    }
 
-      /**
-       * Get the description.
-       *
-       * @return string
-       */
-      public function getColor(): ?string
-      {
-          return $this->color;
-      }
+    /**
+     * Get the last datetime update (in application) of the site.
+     *
+     * @return mixed
+     */
+    public function getUpdated(): ?DateTime
+    {
+        return $this->updated;
+    }
+    /**
+    * Get the color of this network.
+    *
+    * @return string
+    */
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
 
+    /**
+    * Get all referenced networks for this site.
+    *
+    * @return Network[] |Collection
+    */
+    public function getNetworks()
+    {
+        return $this->networks;
+    }
+    /**
+    * Set the label.
+    *
+    * @param string $label
+    *
+    * @return Site
+    */
+    public function setLabel(string $label): Site
+    {
+        $this->label = $label;
 
-      /**
-       * Get the datetime creation (in application) of this site.
-       *
-       * @return DateTime
-       */
-      public function getCreated(): ?DateTime
-      {
-          return $this->created;
-      }
+        return $this;
+    }
+    /**
+    * Set Color of this site.
+    *
+    * @param string $color
+    *
+    * @return Site
+    */
+    public function setColor(string $color): Site
+    {
+        $this->color = $color;
 
-      /**
-       * Get the last datetime update (in application) of this site.
-       *
-       * @return mixed
-       */
-      public function getUpdated(): ?DateTime
-      {
-          return $this->updated;
-      }
+        return $this;
+    }
 
-      /**
-       * Return a collection of all Networks.
-       *
-       * @return Collection
-       */
-      public function getNetworks(): Collection
-      {
-          return $this->networks;
-      }
+    /**
+    * Add network.
+    *
+    * @param Network $network
+    *
+    * @return Site
+    */
+    public function addNetwork(Network $network)
+    {
+        $this->networks[] = $network;
 
-      /**
-       * Set the label.
-       *
-       * @param string $label
-       *
-       * @return Site
-       */
-      public function setLabel(string $label): Site
-      {
-          $this->label = $label;
+        return $this;
+    }
 
-          return $this;
-      }
+    /**
+    * Remove network.
+    *
+    * @param Network $network
+    *
+    * @return Site
+    */
+    public function removeNetwork(Network $network)
+    {
+        $this->networks->removeElement($network);
 
-      /**
-       * Set the color.
-       *
-       * @param string $color
-       *
-       * @return Site
-       */
-      public function setColor(string $color): Site
-      {
-          $this->color = $color;
+        return $this;
+    }
 
-          return $this;
-      }
+    /**
+    * Set All networks of this site.
+    *
+    * @param Collection $ips
+    *
+    * @return Site
+    */
+    public function setNetworks(Collection $networks): Site
+    {
+        $this->networks = $networks;
 
-      /**
-       * Add network.
-       *
-       * @param Network $network
-       *
-       * @return Site
-       */
-      public function addNetwork(Network $network): Site
-      {
-          $this->networks[] = $network;
-
-          return $this;
-      }
-
-      /**
-       * Remove network.
-       *
-       * @param Network $network
-       *
-       * @return Site
-       */
-      public function removeNetwork(Network $network): Site
-      {
-          $this->networks->removeElement($network);
-
-          return $this;
-      }
+        return $this;
+    }
   }
