@@ -1,10 +1,28 @@
 <?php
+/**
+ * This file is part of the IP-Trevise Application.
+ *
+ * PHP version 7.1
+ *
+ * (c) Alexandre Tranchant <alexandre.tranchant@gmail.com>
+ *
+ * @category Entity
+ *
+ * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
+ * @copyright 2017 Cerema
+ * @license   CeCILL-B V1
+ *
+ * @see       http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt
+ */
+
 namespace App\Entity;
 use DateTime;
-use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SiteRepository")
  * @ORM\Table(name="te_site", options={"comment":"Table entité des réseaux"})
@@ -28,6 +46,9 @@ class Site
      *
      * @var string
      *
+     * @Assert\NotBlank()
+     * @Assert\Length(max="32")
+     *
      * @ORM\Column(
      *     type="string",
      *     unique=true,
@@ -44,6 +65,12 @@ class Site
      * Site color
      *
      * @var string
+     *
+     * @Assert\NotBlank()
+     * @Assert\Regex(
+     *     pattern="/^([0-9a-f]{3}|[0-9a-f]{6})$/i",
+     *     message="form.site.error.color.pattern"
+     * )
      *
      * @ORM\Column(
      *     type="string",
@@ -79,22 +106,22 @@ class Site
     /**
      * NEtworks of this site.
      *
-     * @var Network[]
+     * @var Network[]|Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Network", mappedBy="site", fetch="EXTRA_LAZY")
      */
     private $networks;
 
     /**
-    * Network constructor.
-    */
+     * Site constructor.
+     */
     public function __construct()
     {
         $this->networks = new ArrayCollection();
     }
 
     /**
-     * Get Identifier.
+     * Get identifier.
      *
      * @return int
      */
@@ -102,8 +129,9 @@ class Site
     {
         return $this->id;
     }
+
     /**
-     * Get the label.
+     * Get Label.
      *
      * @return string
      */
@@ -113,8 +141,14 @@ class Site
     }
 
     /**
-     * Get the datetime creation (in application) of the site.
-     *
+     * @return string
+     */
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    /**
      * @return DateTime
      */
     public function getCreated(): ?DateTime
@@ -123,53 +157,44 @@ class Site
     }
 
     /**
-     * Get the last datetime update (in application) of the site.
-     *
-     * @return mixed
+     * @return DateTime
      */
     public function getUpdated(): ?DateTime
     {
         return $this->updated;
     }
-    /**
-    * Get the color of this network.
-    *
-    * @return string
-    */
-    public function getColor(): ?string
-    {
-        return $this->color;
-    }
 
     /**
-    * Get all referenced networks for this site.
-    *
-    * @return Network[] |Collection
-    */
-    public function getNetworks()
+     * Get networks of the site.
+     *
+     * @return Network[]|Collection
+     */
+    public function getNetworks(): Collection
     {
         return $this->networks;
     }
+
     /**
-    * Set the label.
-    *
-    * @param string $label
-    *
-    * @return Site
-    */
+     * Setter of label.
+     *
+     * @param string $label
+     *
+     * @return Site
+     */
     public function setLabel(string $label): Site
     {
         $this->label = $label;
 
         return $this;
     }
+
     /**
-    * Set Color of this site.
-    *
-    * @param string $color
-    *
-    * @return Site
-    */
+     * Setter of color.
+     *
+     * @param string $color
+     *
+     * @return Site
+     */
     public function setColor(string $color): Site
     {
         $this->color = $color;
@@ -178,13 +203,13 @@ class Site
     }
 
     /**
-    * Add network.
-    *
-    * @param Network $network
-    *
-    * @return Site
-    */
-    public function addNetwork(Network $network)
+     * Add network.
+     *
+     * @param Network $network
+     *
+     * @return Site
+     */
+    public function addNetwork(Network $network): Site
     {
         $this->networks[] = $network;
 
@@ -192,30 +217,16 @@ class Site
     }
 
     /**
-    * Remove network.
-    *
-    * @param Network $network
-    *
-    * @return Site
-    */
-    public function removeNetwork(Network $network)
+     * Remove network.
+     *
+     * @param Network $network
+     *
+     * @return Site
+     */
+    public function removeNetwork(Network $network): Site
     {
         $this->networks->removeElement($network);
 
         return $this;
     }
-
-    /**
-    * Set All networks of this site.
-    *
-    * @param Collection $ips
-    *
-    * @return Site
-    */
-    public function setNetworks(Collection $networks): Site
-    {
-        $this->networks = $networks;
-
-        return $this;
-    }
-  }
+}
