@@ -17,9 +17,14 @@
 
 namespace App\Form\Type;
 
+use App\Entity\Service;
+use App\Repository\ServiceRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Machine form builder.
@@ -31,6 +36,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class MachineType extends AbstractType
 {
+
     /**
      * Builds the form.
      *
@@ -44,6 +50,11 @@ class MachineType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $group = new ArrayCollection;
+        $dns = new Service();
+        $dns->setLabel('DNS');
+        $router = new Service();
+        $router->setLabel('ROUTER');
         $builder
             ->add('label', null, [
                 'label' => 'form.machine.field.label',
@@ -64,12 +75,23 @@ class MachineType extends AbstractType
               'label' => 'form.machine.field.location',
               'help_block' => 'form.machine.help.location',
             ])
+            ->add('services', EntityType::class, [
+                'class' => Service::class,
+                'query_builder' => function (ServiceRepository $er) {
+                    return $er->createQueryBuilder('u');
+                },
+                'choice_label' => 'label',//'form.machine.field.services',
+                'required' => false,
+                'multiple' => true,
+                'expanded' => true,
+                'help_block' => 'form.machine.help.services',
+            ])
             ->add('tags', TagsType::class, [
                 'label' => 'form.machine.field.tags',
                 'help_block' => 'form.machine.help.tags',
             ])
-        ;
-    }
+            ;
+        }
 
     /**
      * Configures the options for this type.

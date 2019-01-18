@@ -286,7 +286,7 @@ class Network implements InformationInterface, LabelInterface
 
     /**
      * Get reserved plage/range of the Network
-     * 
+     *
      * @return Collection|Plage[]
      */
     public function getPlages(): Collection
@@ -296,7 +296,7 @@ class Network implements InformationInterface, LabelInterface
 
     /**
      * Return the site of this network.
-     * 
+     *
      * @return Site
      */
     public function getSite(): ?Site
@@ -414,7 +414,7 @@ class Network implements InformationInterface, LabelInterface
     public function setSite(Site $site): ?Network
     {
         $this->site = $site;
-        
+
         return $this;
     }
 
@@ -488,19 +488,6 @@ class Network implements InformationInterface, LabelInterface
         return $this;
     }
 
-    /**
-     * Set Site of network.
-     *
-     * @param Site $ip
-     *
-     * @return Network
-     */
-    public function setSite(Site $site): Network
-    {
-        $this->site = $site;
-
-        return $this;
-    }
 
     /**
      * Count IPS.
