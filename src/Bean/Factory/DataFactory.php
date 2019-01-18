@@ -155,4 +155,23 @@ class DataFactory
 
         return $result;
     }
+
+    public static function createSiteData(array $rowdata): array
+    {
+        //Initialization
+        $result = [];
+        foreach ($rowdata as $column => $value) {
+            $data = new Data();
+
+            $data->setLabel("form.site.field.$column");
+            if (empty($value)) {
+                $data->setNone(true);
+            } else {
+                $data->setName($value);
+            }
+            $result[] = $data;
+        }
+
+        return $result;
+    }
 }

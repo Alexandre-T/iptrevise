@@ -121,4 +121,20 @@ class LogFactory
 
         return $logs;
     }
+
+    public static function createSiteLogs(array $logEntries): array
+    {
+        $logs = [];
+        foreach ($logEntries as $logEntry) {
+            $logBean = new Log();
+            $logBean->setAction('administration.log.action.'.$logEntry->getAction());
+            $logBean->setLogged($logEntry->getLoggedAt());
+            $logBean->setUsername($logEntry->getUsername());
+            $logBean->setVersion($logEntry->getVersion());
+            $logBean->setData(DataFactory::createSiteData($logEntry->getData()));
+            $logs[] = $logBean;
+        }
+
+        return $logs;
+    }
 }

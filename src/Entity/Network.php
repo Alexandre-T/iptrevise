@@ -167,11 +167,21 @@ class Network implements InformationInterface, LabelInterface
      * @var Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Ip", mappedBy="network", fetch="EXTRA_LAZY")
-     * @ORM\OrderBy({"ip" = "ASC"})
+     * @ORM\OrderBy({"ip":"ASC"})
      *
      * @see http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/tutorials/extra-lazy-associations.html
      */
     private $ips;
+
+    /**
+     * Network's site.
+     *
+     * @var Site
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Site", inversedBy="networks", fetch="EAGER")
+     * @ORM\JoinColumn(name="site_id", referencedColumnName="sit_id", nullable=false, onDelete="RESTRICT")
+     */
+    private $site;
 
     /**
      * Network constructor.
@@ -294,6 +304,17 @@ class Network implements InformationInterface, LabelInterface
     }
 
     /**
+    *Get the site of this network.
+    *
+    *@return string
+    */
+
+    public function getSite(): ?Site
+    {
+      return $this->site;
+    }
+
+    /**
      * Set the label of network.
      *
      * @param string $label
@@ -360,6 +381,18 @@ class Network implements InformationInterface, LabelInterface
     {
         $this->color = $color;
 
+        return $this;
+    }
+    /**
+     * Set Site of this network.
+     *
+     * @param Site $site
+     *
+     * @return Network
+     */
+    public function setSite(Site $site): Network
+    {
+        $this->site = $site;
         return $this;
     }
 
