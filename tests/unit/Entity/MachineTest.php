@@ -56,10 +56,10 @@ class MachineTest extends TestCase
         self::assertNull($this->machine->getId());
         self::assertNull($this->machine->getLabel());
         self::assertNull($this->machine->getLocation());
+        self::assertNull($this->machine->getMacs());
         self::assertEquals(1, $this->machine->getInterface());
         self::assertInternalType('int', $this->machine->getInterface());
         self::assertNotNull($this->machine->getIps());
-        self::assertNotNull($this->machine->getMacs());
         self::assertNotNull($this->machine->getServices());
         self::assertNotNull($this->machine->getTags());
         self::assertEmpty($this->machine->getIps());
@@ -101,7 +101,7 @@ class MachineTest extends TestCase
      */
     public function testMacs()
     {
-        $expected = $actual = ['mac1','mac2'];
+        $expected = $actual = "mac1\nmac2";
 
         self::assertEquals($this->machine, $this->machine->setMacs($actual));
         self::assertEquals($expected, $this->machine->getMacs());
