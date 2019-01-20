@@ -179,7 +179,7 @@ class Network implements InformationInterface, LabelInterface
      * @var Collection|Plage[]
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Plage", mappedBy="network", fetch="EAGER")
-     * @ORM\OrderBy({"ip":"ASC"})
+     * @ORM\OrderBy({"start":"ASC"})
      */
     private $plages;
 
