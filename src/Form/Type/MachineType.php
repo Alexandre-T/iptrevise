@@ -23,8 +23,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Machine form builder.
@@ -50,7 +48,6 @@ class MachineType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $group = new ArrayCollection;
         $dns = new Service();
         $dns->setLabel('DNS');
         $router = new Service();
@@ -90,7 +87,14 @@ class MachineType extends AbstractType
                 'label' => 'form.machine.field.tags',
                 'help_block' => 'form.machine.help.tags',
             ])
-            ;
+            ->add('location', null, [
+              'label' => 'form.machine.field.location',
+              'help_block' => 'form.machine.help.location',
+            ])
+            ->add('macs', null, [
+              'label' => 'form.machine.field.macs',
+              'help_block' => 'form.machine.help.macs',
+            ]);
         }
 
     /**
