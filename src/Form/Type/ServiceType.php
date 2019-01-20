@@ -22,10 +22,9 @@ use App\Repository\ServiceRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Doctrine\Common\Collections\ArrayCollection;
 
+//TODO adapter à l'entité service
 /**
  * Machine form builder.
  *
@@ -34,7 +33,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license CeCILL-B V1
  */
-class MachineType extends AbstractType
+class ServiceType extends AbstractType
 {
 
     /**
@@ -50,45 +49,10 @@ class MachineType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $group = new ArrayCollection;
-        $dns = new Service();
-        $dns->setLabel('DNS');
-        $router = new Service();
-        $router->setLabel('ROUTER');
         $builder
             ->add('label', null, [
-                'label' => 'form.machine.field.label',
-                'help_block' => 'form.machine.help.label',
-            ])
-            ->add('description', null, [
-                'label' => 'form.machine.field.description',
-                'help_block' => 'form.machine.help.description',
-            ])
-            ->add('interface', null, [
-                'label' => 'form.machine.field.interface',
-                'help_block' => 'form.machine.help.interface',
-                'attr' => [
-                    'placeholder' => '1',
-                ],
-            ])
-            ->add('location', null, [
-              'label' => 'form.machine.field.location',
-              'help_block' => 'form.machine.help.location',
-            ])
-            ->add('services', EntityType::class, [
-                'class' => Service::class,
-                'query_builder' => function (ServiceRepository $er) {
-                    return $er->createQueryBuilder('u');
-                },
-                'choice_label' => 'label',//'form.machine.field.services',
-                'required' => false,
-                'multiple' => true,
-                'expanded' => true,
-                'help_block' => 'form.machine.help.services',
-            ])
-            ->add('tags', TagsType::class, [
-                'label' => 'form.machine.field.tags',
-                'help_block' => 'form.machine.help.tags',
+                'label' => 'form.service.field.label',
+                'help_block' => 'form.service.help.label',
             ])
             ;
         }
@@ -101,7 +65,7 @@ class MachineType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'App\Entity\Machine',
+            'data_class' => 'App\Entity\Service',
             'render_fieldset' => false,
             'show_legend' => false,
         ));
@@ -117,6 +81,6 @@ class MachineType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'app_machine';
+        return 'app_service';
     }
 }

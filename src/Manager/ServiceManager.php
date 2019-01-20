@@ -14,33 +14,33 @@
  *
  * @see       http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt
  */
-
+//TODO adapter au service
 namespace App\Manager;
 
 use App\Bean\Factory\LogFactory;
 use App\Entity\PaginatorInterface;
-use App\Entity\Machine;
+use App\Entity\Service;
 use App\Entity\User;
-use App\Repository\MachineRepository;
+use App\Repository\ServiceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Gedmo\Loggable\Entity\LogEntry;
 use Gedmo\Loggable\Entity\Repository\LogEntryRepository;
 
 /**
- * Machine Manager.
+ * Service Manager.
  *
  * @category Manager
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license CeCILL-B V1
  */
-class MachineManager implements LoggableManagerInterface, PaginatorInterface
+class ServiceManager implements LoggableManagerInterface, PaginatorInterface
 {
     /**
      * Const for the alias query.
      */
-    const ALIAS = 'machine';
+    const ALIAS = 'service';
 
     /**
      * Entity manager.
@@ -52,19 +52,19 @@ class MachineManager implements LoggableManagerInterface, PaginatorInterface
     /**
      * Repository.
      *
-     * @var MachineRepository
+     * @var ServiceRepository
      */
     private $repository;
 
     /**
-     * MachineManager constructor.
+     * ServiceManager constructor.
      *
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->em = $entityManager;
-        $this->repository = $this->em->getRepository(Machine::class);
+        $this->repository = $this->em->getRepository(Service::class);
     }
 
     /**
@@ -81,33 +81,33 @@ class MachineManager implements LoggableManagerInterface, PaginatorInterface
     }
 
     /**
-     * Delete machine without verification.
+     * Delete service without verification.
      *
-     * @param Machine $machine
+     * @param Service $service
      */
-    public function delete(Machine $machine)
+    public function delete(Service $service)
     {
-        $this->em->remove($machine);
+        $this->em->remove($service);
         $this->em->flush();
     }
 
     /**
      * Is this entity deletable?
      *
-     * @param Machine $machine
+     * @param Service $service
      *
      * @return bool true if entity is deletable
      */
-    public function isDeletable(Machine $machine): bool
+    public function isDeletable(Service $service): bool
     {
-        //A machine is deletable if there is no IPs referenced.
-        return 0 == count($machine->getIps());
+        //A service is deletable if there is no IPs referenced.
+        return 0 == count($service->getMachines());
     }
 
     /**
-     * Return all machines.
+     * Return all services.
      *
-     * @return Machine[]
+     * @return Service[]
      */
     public function getAll()
     {
@@ -115,24 +115,24 @@ class MachineManager implements LoggableManagerInterface, PaginatorInterface
     }
 
     /**
-     * Get Machine with given id.
+     * Get service with given id.
      *
-     * @param $machineId int
+     * @param $serviceId int
      *
-     * @return Machine | null
+     * @return Service | null
      */
-    public function getMachineById(int $machineId): ?Machine
+    public function getServiceById(int $serviceId): ?Service
     {
-        /** @var Machine $machine */
-        $machine = $this->repository->findOneBy(['id' => $machineId]);
+        /** @var Service $service */
+        $service = $this->repository->findOneBy(['id' => $serviceId]);
 
-        return $machine;
+        return $service;
     }
 
     /**
      * Retrieve logs of the axe.
      *
-     * @param Machine $entity
+     * @param Service $entity
      *
      * @return array
      */
@@ -142,30 +142,21 @@ class MachineManager implements LoggableManagerInterface, PaginatorInterface
         $logRepository = $this->em->getRepository(LogEntry::class); // we use default log entry class
         $logs = $logRepository->getLogEntries($entity);
 
-        return LogFactory::createMachineLogs($logs);
+        return LogFactory::createServiceLogs($logs);
     }
 
     /**
-     * Save new or modified Machine.
-     *
-     * @param Machine $machine
-     * @param Service    $service
-     * @param User    $user
-     */
-    public function save(Machine $machine, Service $service, User $user = null)
+    * Save new or modified Service.
+    *
+    * @param Service $service
+    */
+    public function save(Service $service)
     {
-        if ($user && empty($machine->getCreator())) {
-            $machine->setCreator($user);
-        }
-        if ($user && empty($machine->getCreator())) {
-            $machine->addService($service);
-        }
-        $this->em->persist($machine);
+        $this->em->persist($service);
         $this->em->flush();
     }
 
-    /**
-     * Return the Query builder needed by the paginator.
+     /** Return the Query builder needed by the paginator.
      *
      * @return QueryBuilder
      */
@@ -173,10 +164,8 @@ class MachineManager implements LoggableManagerInterface, PaginatorInterface
     {
         $qb = $this->repository->createQueryBuilder(self::ALIAS);
 
-        $qb->leftJoin(self::ALIAS.'.ips', 'ips')
-           ->leftJoin(self::ALIAS.'.tags', 'tags')
-           ->addSelect('COUNT(DISTINCT ips.id) AS ipsCount')
-           ->addSelect("string_agg(tags.label, ',') AS tagsConcat")
+        $qb->leftJoin(self::ALIAS.'.machines', 'machines')
+           ->addSelect('COUNT(DISTINCT machines.id) AS machinesCount')
            ->groupBy(self::ALIAS.'.id');
 
         return $qb;

@@ -1,0 +1,25 @@
+{% extends '@App/default/base.html.twig' %}
+
+{% block title %}{{ 'default.service.create.title'|trans }} · {{ parent() }}{% endblock title %}
+
+{% block page_header %}{% endblock %}
+
+{% block content_content %}
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h1 class="panel-title">{{ 'default.service.create.title'|trans }}</h1>
+        </div>
+        <div class="panel-body">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                    <input class="btn btn-primary" type="submit" value="{{ 'administration.actions.create' | trans }}" />
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock content_content %}
