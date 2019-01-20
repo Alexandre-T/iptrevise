@@ -149,16 +149,12 @@ class MachineManager implements LoggableManagerInterface, PaginatorInterface
      * Save new or modified Machine.
      *
      * @param Machine $machine
-     * @param Service    $service
      * @param User    $user
      */
-    public function save(Machine $machine, Service $service, User $user = null)
+    public function save(Machine $machine, User $user = null)
     {
         if ($user && empty($machine->getCreator())) {
             $machine->setCreator($user);
-        }
-        if ($user && empty($machine->getCreator())) {
-            $machine->addService($service);
         }
         $this->em->persist($machine);
         $this->em->flush();
