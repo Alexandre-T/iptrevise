@@ -1,24 +1,35 @@
 <?php
-namespace App\Entity;
+/**
+ * This file is part of the IP-Trevise Application.
+ *
+ * PHP version 7.1
+ *
+ * (c) Alexandre Tranchant <alexandre.tranchant@gmail.com>
+ *
+ * @category Entity
+ *
+ * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
+ * @copyright 2017 Cerema
+ * @license   CeCILL-B V1
+ *
+ * @see       http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt
+ */
 
+namespace App\Entity;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use DateTime;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SiteRepository")
- * @ORM\Table(name="te_site", options={"comment":"Table entité des sites"})
+ * @ORM\Table(name="te_site", options={"comment":"Table entité des réseaux"})
  * @Gedmo\Loggable
- *
- * @UniqueEntity("label", message="form.site.error.label.unique")
  */
-class Site implements InformationInterface, LabelInterface
+class Site
 {
-    //use ReferentTrait;
     /**
      * Site id.
      *
@@ -34,6 +45,9 @@ class Site implements InformationInterface, LabelInterface
      * Site label.
      *
      * @var string
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(max="32")
      *
      * @ORM\Column(
      *     type="string",
@@ -51,6 +65,12 @@ class Site implements InformationInterface, LabelInterface
      * Site color
      *
      * @var string
+     *
+     * @Assert\NotBlank()
+     * @Assert\Regex(
+     *     pattern="/^([0-9a-f]{3}|[0-9a-f]{6})$/i",
+     *     message="form.site.error.color.pattern"
+     * )
      *
      * @ORM\Column(
      *     type="string",
@@ -84,79 +104,129 @@ class Site implements InformationInterface, LabelInterface
     private $updated;
 
     /**
-     * Networks of this site.
+     * NEtworks of this site.
      *
-     * @var Network[]
+     * @var Network[]|Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Network", mappedBy="site", fetch="EXTRA_LAZY")
      */
     private $networks;
 
     /**
-     * Get the newtorks of the site
-     *
-     * @return Network[]
-     *
+     * Site constructor.
      */
-    public function getNetworks() : ?Collection
+    public function __construct()
+    {
+        $this->networks = new ArrayCollection();
+    }
+
+    /**
+     * Get identifier.
+     *
+     * @return int
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    /**
+     * Get Label.
+     *
+     * @return string
+     */
+    public function getLabel(): ?string
+    {
+        return $this->label;
+    }
+
+    /**
+     * @return string
+     */
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getCreated(): ?DateTime
+    {
+        return $this->created;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getUpdated(): ?DateTime
+    {
+        return $this->updated;
+    }
+
+    /**
+     * Get networks of the site.
+     *
+     * @return Network[]|Collection
+     */
+    public function getNetworks(): Collection
     {
         return $this->networks;
     }
 
     /**
-    * Get the name of the site
-    *
-    * @return string
-    */
-    public function getLabel() : ?string
-    {
-      return $this->label;
-    }
-
-    public function getColor() : ?string
-    {
-      return $this->color;
-    }
-
-    public function getId() : int
-    {
-      return $this->id;
-    }
-
-
+     * Setter of label.
+     *
+     * @param string $label
+     *
+     * @return Site
+     */
     public function setLabel(string $label): Site
     {
-      $this->label = $label;
-      return $this;
+        $this->label = $label;
+
+        return $this;
     }
 
+    /**
+     * Setter of color.
+     *
+     * @param string $color
+     *
+     * @return Site
+     */
     public function setColor(string $color): Site
     {
-      $this->color = $color;
-      return $this;
+        $this->color = $color;
+
+        return $this;
     }
 
-    public function setNetworks(array $networks): Site
+    /**
+     * Add network.
+     *
+     * @param Network $network
+     *
+     * @return Site
+     */
+    public function addNetwork(Network $network): Site
     {
-      $this->networks = $networks;
-      return $this;
+        $this->networks[] = $network;
+
+        return $this;
     }
 
-    public function getCreated(): ?DateTime
+    /**
+     * Remove network.
+     *
+     * @param Network $network
+     *
+     * @return Site
+     */
+    public function removeNetwork(Network $network): Site
     {
-      return $this->created;
-    }
+        $this->networks->removeElement($network);
 
-    public function getUpdated(): ?Datetime
-    {
-      return $this->updated;
+        return $this;
     }
-
-    public function getCreator(): ?User
-    {
-      $user = new User();
-      $user->setUsername("user");
-      return $user;
-    }
-
 }

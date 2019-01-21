@@ -20,13 +20,13 @@ namespace App\Repository;
 use Doctrine\ORM\EntityRepository;
 
 /**
- * Site Repository.
+ * Role Repository.
  *
  * @category Repository
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license CeCILL-B V1
  */
-class SiteRepository extends EntityRepository
+class RoleRepository extends EntityRepository
 {
 }

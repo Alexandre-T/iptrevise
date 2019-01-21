@@ -122,6 +122,14 @@ class LogFactory
         return $logs;
     }
 
+
+    /**
+     * Create Log bean from a Abstract Log Entry (Gedmo).
+     *
+     * @param AbstractLogEntry[] $logEntries of AbstractLogEntry $logEntry
+     *
+     * @return Log[]
+     */
     public static function createSiteLogs(array $logEntries): array
     {
         $logs = [];

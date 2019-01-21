@@ -156,6 +156,13 @@ class DataFactory
         return $result;
     }
 
+    /**
+     * Create Data from a serialized site data.
+     *
+     * @param array $rowdata
+     *
+     * @return array of Data
+     */
     public static function createSiteData(array $rowdata): array
     {
         //Initialization

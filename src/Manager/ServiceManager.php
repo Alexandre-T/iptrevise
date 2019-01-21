@@ -14,33 +14,33 @@
  *
  * @see       http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt
  */
-
+//TODO adapter au service
 namespace App\Manager;
 
 use App\Bean\Factory\LogFactory;
 use App\Entity\PaginatorInterface;
+use App\Entity\Service;
 use App\Entity\User;
-use App\Entity\Site;
-use App\Repository\SiteRepository;
+use App\Repository\ServiceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Gedmo\Loggable\Entity\LogEntry;
 use Gedmo\Loggable\Entity\Repository\LogEntryRepository;
 
 /**
- * Site Manager.
+ * Service Manager.
  *
  * @category Manager
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license CeCILL-B V1
  */
-class SiteManager implements LoggableManagerInterface, PaginatorInterface
+class ServiceManager implements LoggableManagerInterface, PaginatorInterface
 {
     /**
      * Const for the alias query.
      */
-    const ALIAS = 'site';
+    const ALIAS = 'service';
 
     /**
      * Entity manager.
@@ -52,64 +52,62 @@ class SiteManager implements LoggableManagerInterface, PaginatorInterface
     /**
      * Repository.
      *
-     * @var SiteRepository
+     * @var ServiceRepository
      */
     private $repository;
 
     /**
-     * SiteManager constructor.
+     * ServiceManager constructor.
      *
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->em = $entityManager;
-        $this->repository = $this->em->getRepository(Site::class);
+        $this->repository = $this->em->getRepository(Service::class);
     }
 
     /**
-     * Return the number of sites registered in database.
+     * Return the number of networks registered in database.
      *
      * @return int
-     *
-     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function count()
     {
         return $this->repository->createQueryBuilder(self::ALIAS)
-                ->select('COUNT(1)')
-                ->getQuery()
-                ->getSingleScalarResult();
+            ->select('COUNT(1)')
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     /**
-     * Delete site without verification.
+     * Delete service without verification.
      *
-     * @param Site $site
+     * @param Service $service
      */
-    public function delete(Site $site)
+    public function delete(Service $service)
     {
-        $this->em->remove($site);
+        $this->em->remove($service);
         $this->em->flush();
     }
 
     /**
      * Is this entity deletable?
      *
-     * @param Site $site
+     * @param Service $service
      *
      * @return bool true if entity is deletable
      */
-    public function isDeletable(Site $site): bool
+    public function isDeletable(Service $service): bool
     {
-        //A site is deletable if there is no networks referenced.
-        return 0 == count($site->getNetworks());
+        //A service is deletable if there is no IPs referenced.
+        return 0 == count($service->getMachines());
     }
 
     /**
-     * Return all sites.
+     * Return all services.
      *
-     * @return Site[]|null Array of network or null
+     * @return Service[]
      */
     public function getAll()
     {
@@ -117,9 +115,24 @@ class SiteManager implements LoggableManagerInterface, PaginatorInterface
     }
 
     /**
+     * Get service with given id.
+     *
+     * @param $serviceId int
+     *
+     * @return Service | null
+     */
+    public function getServiceById(int $serviceId): ?Service
+    {
+        /** @var Service $service */
+        $service = $this->repository->findOneBy(['id' => $serviceId]);
+
+        return $service;
+    }
+
+    /**
      * Retrieve logs of the axe.
      *
-     * @param Site $entity
+     * @param Service $entity
      *
      * @return array
      */
@@ -129,26 +142,21 @@ class SiteManager implements LoggableManagerInterface, PaginatorInterface
         $logRepository = $this->em->getRepository(LogEntry::class); // we use default log entry class
         $logs = $logRepository->getLogEntries($entity);
 
-        return LogFactory::createSiteLogs($logs);
+        return LogFactory::createServiceLogs($logs);
     }
 
     /**
-     * Save new or modified Site.
-     *
-     * @param Site $site
-     * @param User $user
-     */
-    public function save(Site $site, User $user = null)
+    * Save new or modified Service.
+    *
+    * @param Service $service
+    */
+    public function save(Service $service)
     {
-        if ($user && empty($site->getCreator())) {
-            $site->setCreator($user);
-        }
-        $this->em->persist($site);
+        $this->em->persist($service);
         $this->em->flush();
     }
 
-    /**
-     * Return the Query builder needed by the paginator.
+     /** Return the Query builder needed by the paginator.
      *
      * @return QueryBuilder
      */
@@ -156,9 +164,9 @@ class SiteManager implements LoggableManagerInterface, PaginatorInterface
     {
         $qb = $this->repository->createQueryBuilder(self::ALIAS);
 
-        $qb->leftJoin(self::ALIAS.'.networks', 'networks')
-            ->addSelect('COUNT(networks.id) AS networksCount')
-            ->groupBy(self::ALIAS.'.id');
+        $qb->leftJoin(self::ALIAS.'.machines', 'machines')
+           ->addSelect('COUNT(DISTINCT machines.id) AS machinesCount')
+           ->groupBy(self::ALIAS.'.id');
 
         return $qb;
     }

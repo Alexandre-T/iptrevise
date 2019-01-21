@@ -2,6 +2,8 @@
 
 {% set administration_entity_show = 'default_machine_show' %}
 
+{% set machines_macs = 'nl2br(machine.macs)' %}
+
 {% block title %}{{ 'default.machine.edit.title %name%'|trans({'%name%': machine.label})}} · {{ parent() }}{% endblock title %}
 
 {% block headline %}{{ 'default.machine.edit.title %name%'|trans({'%name%': machine.label})}}{% endblock %}

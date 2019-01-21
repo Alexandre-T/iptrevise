@@ -23,6 +23,7 @@ use App\Entity\Ip;
 use App\Entity\Network;
 use App\Entity\User;
 use App\Repository\IpRepository;
+use Countable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Gedmo\Loggable\Entity\LogEntry;
@@ -72,6 +73,8 @@ class IpManager implements LoggableManagerInterface, PaginatorInterface
      * Return the number of networks registered in database.
      *
      * @return int
+     *
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function count()
     {
@@ -119,9 +122,10 @@ class IpManager implements LoggableManagerInterface, PaginatorInterface
     {
         /** @var Ip[] $ips */
         $ips = $this->repository->findBy(['network' => $network], ['ip' => 'ASC']);
+        $nIp = is_array($ips) || $ips instanceof Countable ? count($ips) : 0;
 
         //We do this test before the loop for optimization
-        if (count($ips) == $network->getCapacity() || null === $network->getIp()) {
+        if ($nIp == $network->getCapacity() || null === $network->getIp()) {
             // All IP is referenced.
             return null;
         }
@@ -129,7 +133,7 @@ class IpManager implements LoggableManagerInterface, PaginatorInterface
         $index = $network->getMinIp();
         $cursor = 0;
         while ($index <= $network->getMaxIp()) {
-            if ($cursor > count($ips) - 1) {
+            if ($cursor > ($nIp - 1)) {
                 return $index;
             }
 

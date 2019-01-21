@@ -121,7 +121,23 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      * @Gedmo\Timestampable(on="update")
      */
     private $updated;
-
+    /**
+     * Machine location.
+     *
+     * @var string
+     *
+     * @ORM\Column(type="text", nullable=true, name="mac_location", options={"comment":"Localisation  de la machine"})
+     *
+     */
+    private $location;
+    /**
+     * Adresses Mac of the Machine.
+     *
+     * @var string
+     *
+     * @ORM\Column(type="text", nullable=true, name="mac_macs", options={"comment":"Adresses mac de la machine"})
+     */
+    private $macs;
     /**
      * Ip of this Machine.
      *
@@ -133,6 +149,10 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
     private $ips;
 
     /**
+     * Machine's tags.
+     *
+     * @var Tag[]|Collection
+     *
      * @ORM\ManyToMany(targetEntity="App\Entity\Tag", cascade={"persist"})
      * @ORM\JoinTable(
      *     name="tj_machinetag",
@@ -143,12 +163,22 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
     private $tags;
 
     /**
+     * Services done by machine.
+     *
+     * @var Service[]|Collection
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\Service", mappedBy="machines")
+     */
+    private $services;
+
+    /**
      * Machine constructor.
      */
     public function __construct()
     {
         $this->ips = new ArrayCollection();
         $this->tags = new ArrayCollection();
+        $this->services = new ArrayCollection();
     }
 
     /**
@@ -179,6 +209,26 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
     public function getDescription(): ?string
     {
         return $this->description;
+    }
+
+    /**
+     * Get the location of the machine.
+     *
+     * @return string
+     */
+    public function getLocation(): ?string
+    {
+        return $this->location;
+    }
+
+    /**
+     * Get the macs adresses of the machine.
+     *
+     * @return string
+     */
+    public function getMacs(): ?string
+    {
+        return $this->macs;
     }
 
     /**
@@ -219,6 +269,16 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
     public function getIps(): Collection
     {
         return $this->ips;
+    }
+
+    /**
+     * Return a collection of all Services.
+     *
+     * @return Collection
+     */
+    public function getServices(): Collection
+    {
+        return $this->services;
     }
 
     /**
@@ -264,19 +324,45 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
     }
 
     /**
+     * Set the location.
+     *
+     * @param string $location
+     *
+     * @return Machine
+     */
+    public function setLocation(string $location): Machine
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * Set the macs.
+     *
+     * @param string $macs
+     *
+     * @return Machine
+     */
+    public function setMacs(string $macs): Machine
+    {
+      $this->macs = $macs;
+
+      return $this;
+    }
+
+    /**
      * Add ip.
      *
      * @param Ip $ip
      *
      * @return Machine
      */
-    public function addIp(Ip $ip)
+    public function addIp(Ip $ip): Machine
     {
         $this->ips[] = $ip;
-
         return $this;
     }
-
     /**
      * Remove ip.
      *
@@ -284,9 +370,37 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      *
      * @return Machine
      */
-    public function removeIp(Ip $ip)
+    public function removeIp(Ip $ip): Machine
     {
         $this->ips->removeElement($ip);
+
+        return $this;
+    }
+
+    /**
+     * Add service.
+     *
+     * @param Service $service
+     *
+     * @return Machine
+     */
+    public function addService(Service $service): Machine
+    {
+        $this->services[] = $service;
+
+        return $this;
+    }
+
+    /**
+     * Remove service.
+     *
+     * @param Service $service
+     *
+     * @return Machine
+     */
+    public function removeService(Service $service): Machine
+    {
+        $this->services->removeElement($service);
 
         return $this;
     }
