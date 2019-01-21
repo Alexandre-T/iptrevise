@@ -19,9 +19,11 @@ namespace App\Controller;
 
 use App\Entity\Ip;
 use App\Entity\Machine;
+use App\Entity\Plage;
 use App\Form\Type\IpMachineType;
 use App\Form\Type\IpType;
 use App\Form\Type\MachineType;
+use App\Form\Type\PlageType;
 use App\Entity\Network;
 use App\Manager\IpManager;
 use App\Manager\MachineManager;
@@ -212,6 +214,69 @@ class NetworkExtraController extends Controller
 
         return $this->render('@App/default/network-extra/new-ip.html.twig', [
             'ip' => $ip,
+            'network' => $network,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * Reserve a new plage for the current network.
+     *
+     * @Route("/{id}/new-plage", name="default_network_new_plage")
+     * @Security("is_granted('ROLE_MANAGE_IP')")
+     *
+     * @param Request $request
+     * @param Network $network
+     *
+     * @return Response
+     */
+    public function newPlageAction(Request $request, Network $network)
+    {
+        //Ip initialization
+        // $ip = new Ip();
+        // $ip->setNetwork($network);
+
+        //Plage initialization
+        $plage = new Plage();
+        $plage->setNetwork($network);
+
+        //Form initialization
+        $form = $this->createForm(PlageType::class, $plage);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $plageService = $this->get(PlageManager::class);
+            $plageService->save($plage, $this->getUser());
+            //Flash message
+            $session = $this->get('session');
+            $trans = $this->get('translator.default');
+            $message = $trans->trans('default.plage.created %ipddeb% %ipfin%', ['%ipdeb%' => long2ip($plage->getStart()), '%ipfin%' => long2ip($plage->getEnd())]);
+            $session->getFlashBag()->add('success', $message);
+
+            return $this->redirectToRoute('default_plage_show', array('id' => $ip->getId()));
+        }
+
+        // The form was not submitted, the IP was not calculated
+        // We purpose the first non-reserved IP in the Network
+        if (null === $plage->getStart()) {
+            $ipManager = $this->get(IpManager::class);
+            $firstIp = $ipManager->getFirstNonReferencedIp($network);
+            if (null === $firstIp) {
+                //Flash message
+                $session = $this->get('session');
+                $trans = $this->get('translator.default');
+                $message = $trans->trans('default.network.no.space');
+                $session->getFlashBag()->add('error', $message);
+
+                return $this->redirectToRoute('default_network_show', array('id' => $network->getId()));
+            } else {
+                $plage->setStart($firstIp);
+                // We must set it.
+                $form->setData($plage);
+            }
+        }
+
+        return $this->render('@App/default/network-extra/new-plage.html.twig', [
+            'plage' => $plage,
             'network' => $network,
             'form' => $form->createView(),
         ]);

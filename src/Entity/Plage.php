@@ -141,6 +141,9 @@ class Plage
      */
     private $network;
 
+
+    private $color;
+
     /**
      * Get the identifier.
      *
@@ -290,6 +293,31 @@ class Plage
 
         return $this;
     }
+
+    /**
+     * Get the color of this network.
+     *
+     * @return string
+     */
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    /**
+     * Set Color of this network.
+     *
+     * @param string $color
+     *
+     * @return Plage
+     */
+    public function setColor(string $color): Plage
+    {
+        $this->color = $color;
+
+        return $this;
+    }
+
 
 
 }

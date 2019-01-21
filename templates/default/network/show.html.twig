@@ -64,6 +64,13 @@
                             {{ 'default.network.new-ip-machine.link' | trans }}
                         </a>
                     {% endif %}
+                    {% if is_granted('ROLE_MANAGE_IP') %}
+                        <a class="btn btn-default" href="{{ path('default_network_new_plage', {'id': network.id}) }}"
+                           data-toggle="tooltip" title="{{ 'default.network.new-plage.title' | trans }}">
+                            <span class="fa fa-fw fa-indent"></span>
+                            {{ 'default.network.new-plage.link' | trans }}
+                        </a>
+                    {% endif %}
                 </div>
             {% endif %}
         </div>

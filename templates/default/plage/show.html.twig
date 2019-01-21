@@ -1,0 +1,88 @@
+{% extends '@App/default/base.html.twig' %}
+
+{% import "@App/macro.html.twig" as app_macro %}
+
+{% set default_entity_show = 'default_ip_show' %}
+
+{% block title %}
+    {{ 'default.ip.show.title %name%'|trans({'%name%': ip.ip | ip })}} · {{ parent() }}
+{% endblock title %}
+
+{% block headline %}
+    {{ 'default.ip.show.title %name%'|trans({'%name%': ip.ip | ip })}}
+{% endblock headline %}
+
+{% block content_settings %}
+    <div class="panel panel-primary" id="administration-global-information">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{ 'administration.global-information' | trans }}</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-10">
+                    {{ app_macro.dl_ip(ip, false) }}
+                </div>
+                <div class="col-sm-2 text-right">
+                    <p>
+                        <span class="fa fa-indent fa-4x" style="color: {{ '#' ~ ip.network.color }}"></span>
+                    </p>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-sm-10">
+                    {{ app_macro.dl_network(ip.network) }}
+                </div>
+                <div class="col-sm-2 text-right">
+                    <p>
+                        <span class="fa fa-sitemap fa-4x" style="color: {{ '#' ~ ip.network.color }}"></span>
+                    </p>
+                </div>
+            </div>
+            <hr>
+            {% if ip.machine %}
+                <div class="row">
+                    <div class="col-sm-10">
+                        {{ app_macro.dl_machine(ip.machine) }}
+                    </div>
+                    <div class="col-sm-2 text-right">
+                        <p>
+                            <span class="fa fa-desktop fa-4x"></span>
+                        </p>
+                    </div>
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    <p>{{ 'default.ip.no.machine' | trans }}</p>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+{% endblock content_settings %}
+
+{% block content_action %}
+    {% if is_granted('ROLE_MANAGE_IP') %}
+        <h3>{{ 'administration.actions' | trans }}</h3>
+
+        <div class="text-center" id="default-actions">
+            <div class="btn-group-vertical">
+                <a class="btn-mini btn btn-default" href="{{ path('default_ip_edit', { 'id': ip.id }) }}"
+                   title="{{ 'default.ip.action.edit.title' | trans }}" data-toggle="tooltip"  data-placement="left">
+                    <span class="fa fa-pencil"></span>&nbsp;{{ 'administration.actions.edit' | trans }}
+                </a>
+                {% if isDeletable %}
+                    <button class="btn btn-danger btn-mini confirm-delete" data-toggle="modal" data-placement="left"
+                       title="{{ 'default.ip.action.delete.title' | trans }}" data-target="#confirm-delete"
+                       data-form="form">
+                        <span class="fa fa-trash-o"></span>&nbsp;{{ 'administration.actions.delete' | trans }}
+                    </button>
+                {% else %}
+                    <span class="btn btn-danger disabled">
+                        <span class="fa fa-trash-o"></span>&nbsp;{{ 'administration.actions.delete' | trans }}
+                    </span>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock content_action %}
