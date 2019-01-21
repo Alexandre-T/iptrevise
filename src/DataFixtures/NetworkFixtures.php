@@ -43,6 +43,7 @@ class NetworkFixtures extends Fixture
             $network = [];
             /** @var User $organiser */
             $organiser = $this->getReference('user_organiser');
+            $site = $this->getReference('site_default');
 
             for ($index = 0; $index <= 32; ++$index) {
                 $network[$index] = (new Network())
@@ -50,6 +51,7 @@ class NetworkFixtures extends Fixture
                     ->setDescription("Description $index")
                     ->setColor('000000')
                     ->setIp(ip2long("192.168.$index.0"))
+                    ->setSite($site)
                     ->setCidr($index);
 
                 if ($index % 5) {
@@ -74,7 +76,8 @@ class NetworkFixtures extends Fixture
     public function getDependencies()
     {
         return array(
-            UserFixtures::class,
+          UserFixtures::class,
+          SiteFixtures::class,
         );
     }
 }

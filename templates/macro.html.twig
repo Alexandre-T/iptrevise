@@ -27,6 +27,9 @@
         <dd>{{ machine.location }}</dd>
         <dt>{{ 'form.machine.field.description'| trans }}</dt>
         <dd>{{ machine.description }}</dd>
+        <dt>{{ 'form.machine.field.location'| trans }}</dt>
+        <dd>{{ machine.location }}</dd>
+        <dt>{{ 'form.machine.field.services'| trans }}</dt>
         <dt>{{ 'form.machine.field.creator'| trans }}</dt>
         <dd>{{ machine.creator | label }}</dd>
         <dt>{{ 'form.machine.field.tags'| trans }}</dt>
@@ -130,7 +133,11 @@
     <dt>{{ 'form.machine.field.macs'| trans }}{{i+1}} </dt>
         {% endfor %}<div>
     <dd>{{ machine.macs|nl2br }}</dd>
+<<<<<<< HEAD
   </dl>
+=======
+</dl>
+>>>>>>> upstream/master
 
 {% endmacro %}
 
@@ -147,7 +154,11 @@
                 </div>
             </div>
         </div>
+<<<<<<< HEAD
         {% if path != '' %}
+=======
+        {% if path is defined and path is not empty %}
+>>>>>>> upstream/master
           <a href="{{ path(path) }}">
               <div class="panel-footer">
                   <span class="pull-left">{{ 'txt.details' | trans }}</span>

@@ -121,13 +121,13 @@
                                         {% endif %}
                                     {% else %}
                                         {% if is_granted("ROLE_MANAGE_IP") and is_granted("ROLE_MANAGE_MACHINE") %}
-                                            <button href="#" data-toggle="tooltip" title="{{ 'default.ip.action.associate.title' | trans }}" class="btn btn-info">
+                                            <button data-toggle="tooltip" title="{{ 'default.ip.action.associate.title' | trans }}" class="btn btn-info">
                                                 <span class="fa fa-link"></span>
                                                 <span class="sr-only">{{ 'default.ip.action.associate' | trans }}</span>
                                             </button>
                                         {% endif %}
                                         {% if is_granted("ROLE_MANAGE_IP") %}
-                                            <button href="#" data-toggle="tooltip" title="{{ 'default.ip.action.create.title' | trans }}" class="btn btn-info">
+                                            <button data-toggle="tooltip" title="{{ 'default.ip.action.create.title' | trans }}" class="btn btn-info">
                                                 <span class="fa fa-plus"></span>
                                                 <span class="sr-only">{{ 'default.ip.action.create' | trans }}</span>
                                             </button>

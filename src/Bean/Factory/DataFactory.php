@@ -155,4 +155,30 @@ class DataFactory
 
         return $result;
     }
+
+    /**
+     * Create Data from a serialized site data.
+     *
+     * @param array $rowdata
+     *
+     * @return array of Data
+     */
+    public static function createSiteData(array $rowdata): array
+    {
+        //Initialization
+        $result = [];
+        foreach ($rowdata as $column => $value) {
+            $data = new Data();
+
+            $data->setLabel("form.site.field.$column");
+            if (empty($value)) {
+                $data->setNone(true);
+            } else {
+                $data->setName($value);
+            }
+            $result[] = $data;
+        }
+
+        return $result;
+    }
 }

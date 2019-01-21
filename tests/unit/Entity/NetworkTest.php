@@ -18,6 +18,7 @@ namespace App\Tests\Entity;
 
 use App\Entity\Network;
 use App\Entity\Ip;
+use App\Entity\Site;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -58,6 +59,7 @@ class NetworkTest extends TestCase
         self::assertNull($this->network->getCidr());
         self::assertNotNull($this->network->getIps());
         self::assertEmpty($this->network->getIps());
+        self::assertNull($this->network->getSite());
         self::assertNull($this->network->getUpdated());
     }
 
@@ -114,6 +116,17 @@ class NetworkTest extends TestCase
         
         self::assertEquals($this->network, $this->network->setColor($actual));
         self::assertEquals($expected, $this->network->getColor());
+    }
+
+    /**
+     * Tests site getter, setter and aliases.
+     */
+    public function testSite()
+    {
+        $expected = $actual = new Site();
+        
+        self::assertEquals($this->network, $this->network->setSite($actual));
+        self::assertEquals($expected, $this->network->getSite());
     }
 
     /**
