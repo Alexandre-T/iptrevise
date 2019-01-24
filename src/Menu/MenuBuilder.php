@@ -109,6 +109,11 @@ class MenuBuilder
                 'icon' => 'fw fa-desktop',
                 'route' => 'default_machine_index',
             ]);
+
+            $dropdownSettings->addChild('menu.main.site', [
+                'icon' => 'fw fa-building-o',
+                'route' => 'default_site_index',
+            ]);
         }
 
         // ... add more children
