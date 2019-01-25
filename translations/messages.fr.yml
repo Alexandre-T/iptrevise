@@ -186,9 +186,11 @@ form.ip.field.reason: 'Réservée pour'
 
 form.plage.field.ipdeb: 'Adresse IP début'
 form.plage.field.ipfin: 'Adresse IP fin'
+form.plage.field.label: 'Intitulé'
 form.plage.field.network: 'Réseau'
 form.plage.field.reason: 'Réservée pour'
 form.plage.help.ip: 'Entrez votre adresse IP'
+form.plage.help.label: 'Entrez ici l’intitulé de la plage'
 form.plage.help.reason: 'Entrez ici la raison pour laquelle vous réservez cette plage'
 
 form.ip.help.ip: 'Entrez votre adresse IP'

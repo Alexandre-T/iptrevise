@@ -27,6 +27,7 @@ use App\Form\Type\PlageType;
 use App\Entity\Network;
 use App\Manager\IpManager;
 use App\Manager\MachineManager;
+use App\Manager\PlageManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;

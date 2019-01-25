@@ -34,8 +34,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="te_plage")
  * @Gedmo\Loggable
  */
-class Plage
+class Plage implements InformationInterface, LabelInterface, ReferentInterface
 {
+    use ReferentTrait;
+
     /**
      * Internal identifier.
      *

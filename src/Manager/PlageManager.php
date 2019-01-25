@@ -24,6 +24,7 @@ use App\Entity\Ip;
 use App\Entity\Network;
 use App\Entity\User;
 use App\Repository\PlageRepository;
+use Countable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Gedmo\Loggable\Entity\LogEntry;
@@ -83,7 +84,7 @@ class PlageManager implements LoggableManagerInterface, PaginatorInterface
     }
 
     /**
-     * Delete ip without verification.
+     * Delete plage without verification.
      *
      * @param Plage $plage
      */
@@ -95,7 +96,7 @@ class PlageManager implements LoggableManagerInterface, PaginatorInterface
 
     /**
      * Return all free Plage.
-     * A free IP is an Plage¨without linked machine.
+     * A free Plage is a Plage¨without reserved ip.
      *
      * @param Network $network
      *
@@ -105,7 +106,7 @@ class PlageManager implements LoggableManagerInterface, PaginatorInterface
     {
         return $this->repository->findBy([
             'network' => $network,
-            'machine' => null,
+            // TODO
         ]);
     }
 
@@ -176,11 +177,11 @@ class PlageManager implements LoggableManagerInterface, PaginatorInterface
     /**
      * Is this entity deletable?
      *
-     * @param Ip $ip
+     * @param Plage $plage
      *
      * @return bool true if entity is deletable
      */
-    public function isDeletable(Ip $ip = null): bool
+    public function isDeletable(Plage $plage = null): bool
     {
         //An IP is always deletable.
         return true;
@@ -205,15 +206,15 @@ class PlageManager implements LoggableManagerInterface, PaginatorInterface
     /**
      * Save new or modified Ip.
      *
-     * @param Ip   $ip
+     * @param Plage   $plage
      * @param User $user
      */
-    public function save(Ip $ip, User $user = null)
+    public function save(Plage $plage, User $user = null)
     {
-        if ($user && empty($ip->getCreator())) {
-            $ip->setCreator($user);
+        if ($user && empty($plage->getCreator())) {
+            $plage->setCreator($user);
         }
-        $this->em->persist($ip);
+        $this->em->persist($plage);
         $this->em->flush();
     }
 

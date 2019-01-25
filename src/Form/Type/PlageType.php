@@ -50,6 +50,10 @@ class PlageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('label', null,[
+              'label' => 'form.plage.field.label',
+              'help_block' => 'form.plage.help.label',
+            ])
             ->add('start', AddressIpType::class, [
                 'label' => 'form.plage.field.ipdeb',
                 'help_block' => 'form.plage.help.ip',
