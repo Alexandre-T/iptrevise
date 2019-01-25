@@ -185,6 +185,7 @@ form.machine.field.ip: 'Adresse réseau'
 form.machine.field.label: 'Machine'
 form.machine.field.tags: 'Tags'
 form.machine.field.location: 'Localisation'
+form.machine.field.services: 'Services'
 form.machine.field.macs: 'Adresse mac '
 
 form.machine.help.description: 'Entrez une description de la machine (les services et applications qu’elle fournit)'
@@ -192,6 +193,7 @@ form.machine.help.interface: 'Entrez le nombre d’interfaces réseau physique d
 form.machine.help.label: 'Entrez l’intitulé de la machine'
 form.machine.help.tags: 'Entrez les tags que vous souhaitez associer à cette machine. Séparez chaque tag avec une virgule.'
 form.machine.help.location: 'Entrez la localisation que vous souhaitez associer à cette machine.'
+form.machine.help.services: 'Cochez les services proposés par la machine.'
 form.machine.help.macs: 'Entrez les adresses macs que vous souhaitez associer à cette machine.'
 
 form.network.field.address: 'Adresse/CIDR'

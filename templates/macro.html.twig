@@ -4,6 +4,7 @@
     {% import _self as self_macro %}
 
     {% set nbmacs = machine.macs|split("\n")|length %}
+    {% set nbservices = machine.services|length %}
 
     <dl class="dl-horizontal">
         <dt class="lead">{{ 'form.machine.field.label'| trans }}</dt>
@@ -30,6 +31,12 @@
         <dt>{{ 'form.machine.field.location'| trans }}</dt>
         <dd>{{ machine.location }}</dd>
         <dt>{{ 'form.machine.field.services'| trans }}</dt>
+        {% if machine.services is empty %}
+            <dd>{{ 'Pas de services'}}</dd>
+        {% else %}
+            <dd> {{ machine.services }}</dd>
+        {% endif %}
+
         <dt>{{ 'form.machine.field.creator'| trans }}</dt>
         <dd>{{ machine.creator | label }}</dd>
         <dt>{{ 'form.machine.field.tags'| trans }}</dt>
@@ -132,7 +139,7 @@
     <div>{% for i in 0..(nbmacs - 1) %}
     <dt>{{ 'form.machine.field.macs'| trans }}{{i+1}} </dt>
         {% endfor %}<div>
-    <dd>{{ machine.macs|nl2br }}</dd>
+    <dd>{{ machine.macs | nl2br }}</dd>
 </dl>
 
 {% endmacro %}
