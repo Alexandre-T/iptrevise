@@ -28,7 +28,7 @@ use Gedmo\Loggable\Entity\LogEntry;
 use Gedmo\Loggable\Entity\Repository\LogEntryRepository;
 
 /**
- * Ip Manager.
+ * Site Manager.
  *
  * @category Manager
  *
@@ -77,6 +77,7 @@ class SiteManager implements LoggableManagerInterface, PaginatorInterface
     public function count()
     {
         return $this->repository->createQueryBuilder(self::ALIAS)
+
             ->select('COUNT(1)')
             ->getQuery()
             ->getSingleScalarResult();
@@ -117,7 +118,13 @@ class SiteManager implements LoggableManagerInterface, PaginatorInterface
      */
     public function getQueryBuilder()
     {
-        return $this->repository->createQueryBuilder(self::ALIAS);
+        $qb = $this->repository->createQueryBuilder(self::ALIAS);
+
+        $qb->leftJoin(self::ALIAS.'.networks', 'networks')
+            ->addSelect('COUNT(networks.id) AS networksCount')
+            ->groupBy(self::ALIAS.'.id');
+
+        return $qb;
     }
 
     /**
@@ -130,6 +137,16 @@ class SiteManager implements LoggableManagerInterface, PaginatorInterface
     public function isDeletable(Site $site = null): bool
     {
         return 0 === count($site->getNetworks());
+    }
+
+    /**
+     * Return all sites.
+     *
+     * @return Site[]|null Array of site or null
+     */
+    public function getAll()
+    {
+        return $this->repository->findAll();
     }
 
     /**
@@ -151,7 +168,7 @@ class SiteManager implements LoggableManagerInterface, PaginatorInterface
     /**
      * Save new or modified Site.
      *
-     * @param Site   $site
+     * @param Site $site
      * @param User $user
      */
     public function save(Site $site, User $user = null)

@@ -411,7 +411,7 @@ class Network implements InformationInterface, LabelInterface
      *
      * @return Network
      */
-    public function setSite(Site $site): ?Network
+    public function setSite(Site $site): Network
     {
         $this->site = $site;
 
@@ -487,7 +487,6 @@ class Network implements InformationInterface, LabelInterface
 
         return $this;
     }
-
 
     /**
      * Count IPS.
