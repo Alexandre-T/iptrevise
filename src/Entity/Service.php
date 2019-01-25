@@ -1,10 +1,4 @@
 <?php
-<<<<<<< HEAD
-namespace App\Entity;
-use DateTime;
-use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
-=======
 /**
  * This file is part of the IP-Trevise Application.
  *
@@ -28,7 +22,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
->>>>>>> upstream/master
 
 /**
  * Service entity.
@@ -54,13 +47,10 @@ class Service
      * Service label
      *
      * @var string
-<<<<<<< HEAD
-=======
      *
      * @Assert\NotBlank()
      * @Assert\Length(max="32")
      *
->>>>>>> upstream/master
      * @ORM\Column(
      *     type="string",
      *     unique=true,
@@ -94,29 +84,17 @@ class Service
     private $updated;
 
     /**
-<<<<<<< HEAD
-     * Datetime last update (in the application) of the network.
-     *
-     * @var DateTime
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Machine")
-=======
      * List of all machines rendering the actual service.
      *
      * @var Machine[]|Collection
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Machine", inversedBy="services")
->>>>>>> upstream/master
      * @ORM\JoinTable(
      *     name="tj_machineservice",
      *     joinColumns={@ORM\JoinColumn(name="service_id", referencedColumnName="ser_id", nullable=false)},
      *     inverseJoinColumns={@ORM\JoinColumn(name="machine_id", referencedColumnName="mac_id", nullable=false)}
      * )
      */
-<<<<<<< HEAD
-    private $services;
-}
-=======
     private $machines;
 
     /**
@@ -221,4 +199,3 @@ class Service
 
 
 }
->>>>>>> upstream/master

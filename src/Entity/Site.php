@@ -1,10 +1,4 @@
 <?php
-<<<<<<< HEAD
-namespace App\Entity;
-use DateTime;
-use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
-=======
 /**
  * This file is part of the IP-Trevise Application.
  *
@@ -28,7 +22,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
->>>>>>> upstream/master
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SiteRepository")
@@ -53,12 +46,9 @@ class Site
      *
      * @var string
      *
-<<<<<<< HEAD
-=======
      * @Assert\NotBlank()
      * @Assert\Length(max="32")
      *
->>>>>>> upstream/master
      * @ORM\Column(
      *     type="string",
      *     unique=true,
@@ -76,15 +66,12 @@ class Site
      *
      * @var string
      *
-<<<<<<< HEAD
-=======
      * @Assert\NotBlank()
      * @Assert\Regex(
      *     pattern="/^([0-9a-f]{3}|[0-9a-f]{6})$/i",
      *     message="form.site.error.color.pattern"
      * )
      *
->>>>>>> upstream/master
      * @ORM\Column(
      *     type="string",
      *     length=6,
@@ -119,18 +106,12 @@ class Site
     /**
      * NEtworks of this site.
      *
-<<<<<<< HEAD
-     * @var Network[]
-=======
      * @var Network[]|Collection
->>>>>>> upstream/master
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Network", mappedBy="site", fetch="EXTRA_LAZY")
      */
     private $networks;
 
-<<<<<<< HEAD
-=======
     /**
      * Site constructor.
      */
@@ -248,5 +229,4 @@ class Site
 
         return $this;
     }
->>>>>>> upstream/master
 }

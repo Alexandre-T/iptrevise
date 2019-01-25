@@ -94,14 +94,9 @@ class MachineType extends AbstractType
             ->add('macs', null, [
               'label' => 'form.machine.field.macs',
               'help_block' => 'form.machine.help.macs',
-<<<<<<< HEAD
             ])
         ;
     }
-=======
-            ]);
-        }
->>>>>>> upstream/master
 
     /**
      * Configures the options for this type.

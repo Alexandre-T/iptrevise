@@ -1,6 +1,4 @@
 <?php
-<<<<<<< HEAD
-=======
 /**
  * This file is part of the IP-Trevise Application.
  *
@@ -16,7 +14,6 @@
  *
  * @see       http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt
  */
->>>>>>> upstream/master
 namespace App\Entity;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
@@ -34,13 +31,10 @@ class Role
      * Kind of role.
      *
      * True : User can update data on this site.
-<<<<<<< HEAD
-     * False : USer can only read data on this site.
-=======
+
      * False : User can only read data on this site.
      *
      * @var bool
->>>>>>> upstream/master
      *
      * @ORM\Column(
      *     type="boolean",
@@ -86,19 +80,14 @@ class Role
     /**
      * User authorized.
      *
-<<<<<<< HEAD
-     * @var
-=======
+
      * @var User
      *
->>>>>>> upstream/master
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="newRoles")
      * @ORM\JoinColumn(name="usr_id", referencedColumnName="usr_id", nullable=false, onDelete="CASCADE") User
      */
     private $user;
-<<<<<<< HEAD
-=======
 
     /**
      * Is it a readonly Role?
@@ -191,5 +180,4 @@ class Role
 
         return $this;
     }
->>>>>>> upstream/master
 }
