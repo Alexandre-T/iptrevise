@@ -233,6 +233,7 @@ form.network.help.description: 'Entrez la description du réseau.'
 form.network.help.ip: 'Entrez l’adresse réseau au format IPv4.'
 form.network.help.ip.readonly: 'Ce réseau dispose déjà d’adresse IP, vous ne pouvez pas changer son adresse réseau.'
 form.network.help.label: 'Entrez l’intitulé du réseau.'
+form.network.help.site: 'Entrez le site auquel appartient le réseau'
 form.network.help.cidr: 'Entrez le masque réseau (CIDR de 0 à 32).'
 form.network.help.cidr.readonly: 'Ce réseau dispose déjà d’adresse IP, vous ne pouvez pas changer son CIDR.'
 

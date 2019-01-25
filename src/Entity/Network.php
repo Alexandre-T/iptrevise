@@ -167,11 +167,21 @@ class Network implements InformationInterface, LabelInterface
      * @var Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Ip", mappedBy="network", fetch="EXTRA_LAZY")
-     * @ORM\OrderBy({"ip":"ASC"})
+     * @ORM\OrderBy({"ip" = "ASC"})
      *
      * @see http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/tutorials/extra-lazy-associations.html
      */
     private $ips;
+
+    /**
+     * Reserved ranges of IP for this network.
+     *
+     * @var Collection|Plage[]
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Plage", mappedBy="network", fetch="EAGER")
+     * @ORM\OrderBy({"start":"ASC"})
+     */
+    private $plages;
 
     /**
      * Network's site.
@@ -189,6 +199,7 @@ class Network implements InformationInterface, LabelInterface
     public function __construct()
     {
         $this->ips = new ArrayCollection();
+        $this->plages = new ArrayCollection();
     }
 
     /**
@@ -274,6 +285,26 @@ class Network implements InformationInterface, LabelInterface
     }
 
     /**
+     * Get reserved plage/range of the Network
+     *
+     * @return Collection|Plage[]
+     */
+    public function getPlages(): Collection
+    {
+        return $this->plages;
+    }
+
+    /**
+     * Return the site of this network.
+     *
+     * @return Site
+     */
+    public function getSite(): ?Site
+    {
+        return $this->site;
+    }
+
+    /**
      * Get the datetime creation of this network.
      *
      * @return DateTime
@@ -301,17 +332,6 @@ class Network implements InformationInterface, LabelInterface
     public function getIps(): ?Collection
     {
         return $this->ips;
-    }
-
-    /**
-    *Get the site of this network.
-    *
-    *@return string
-    */
-
-    public function getSite(): ?Site
-    {
-      return $this->site;
     }
 
     /**
@@ -383,8 +403,9 @@ class Network implements InformationInterface, LabelInterface
 
         return $this;
     }
+
     /**
-     * Set Site of this network.
+     * Setter of the  site.
      *
      * @param Site $site
      *
@@ -393,6 +414,7 @@ class Network implements InformationInterface, LabelInterface
     public function setSite(Site $site): Network
     {
         $this->site = $site;
+
         return $this;
     }
 
@@ -420,6 +442,34 @@ class Network implements InformationInterface, LabelInterface
     public function removeIp(Ip $ip)
     {
         $this->ips->removeElement($ip);
+
+        return $this;
+    }
+
+    /**
+     * Add reserved plage/range.
+     *
+     * @param Plage $plage
+     *
+     * @return Network
+     */
+    public function addPlage(Plage $plage)
+    {
+        $this->plages[] = $plage;
+
+        return $this;
+    }
+
+    /**
+     * Remove plage.
+     *
+     * @param Plage $plage
+     *
+     * @return Network
+     */
+    public function removePlage(Plage $plage)
+    {
+        $this->plages->removeElement($plage);
 
         return $this;
     }

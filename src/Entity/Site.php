@@ -16,19 +16,23 @@
  */
 
 namespace App\Entity;
-use DateTime;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use DateTime;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SiteRepository")
  * @ORM\Table(name="te_site", options={"comment":"Table entité des réseaux"})
  * @Gedmo\Loggable
+ *
+ * @UniqueEntity("label", message="form.site.error.label.unique")
  */
-class Site
+class Site implements InformationInterface, LabelInterface
 {
     /**
      * Site id.
@@ -228,5 +232,14 @@ class Site
         $this->networks->removeElement($network);
 
         return $this;
+    }
+
+    public function getCreator(): ?User
+    {
+        //FIXME
+        $user = new User();
+        $user->setUsername("FIXME");
+
+        return $user;
     }
 }
