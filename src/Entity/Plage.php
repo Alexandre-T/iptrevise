@@ -36,6 +36,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Plage
 {
+    use ReferentTrait;
+
     /**
      * Internal identifier.
      *
