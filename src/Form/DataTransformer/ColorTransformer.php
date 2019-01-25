@@ -38,7 +38,6 @@ class ColorTransformer implements DataTransformerInterface
      */
     public function transform($color)
     {
-        dump($color);
         if (is_null($color)) {
             return null;
         }
@@ -55,7 +54,6 @@ class ColorTransformer implements DataTransformerInterface
      */
     public function reverseTransform($color)
     {
-        dump($color);
         if (empty($color)) {
             return null;
         }
