@@ -185,7 +185,7 @@ form.machine.field.ip: 'Adresse réseau'
 form.machine.field.label: 'Machine'
 form.machine.field.tags: 'Tags'
 form.machine.field.location: 'Localisation'
-form.machine.field.macs: 'Adresse mac '
+form.machine.field.macs: 'Adresse mac n°'
 form.machine.field.services: 'Services'
 
 form.machine.help.description: 'Entrez une description de la machine (les services et applications qu’elle fournit)'

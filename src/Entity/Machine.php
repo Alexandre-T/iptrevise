@@ -38,6 +38,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @Gedmo\Loggable
  *
  * @UniqueEntity("label", message="form.machine.error.label.unique")
+ * @UniqueEntity("macs", message="form.machine.error.macs.unique")
  */
 class Machine implements InformationInterface, LabelInterface, TaggableInterface
 {

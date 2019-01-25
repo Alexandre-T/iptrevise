@@ -2,6 +2,7 @@ form.ip.error.ip.network %min% %max%: 'L’adresse Ip doit être comprise entre 
 form.ip.error.ip.unique: 'Cette adresse IP est déjà attribuée sur ce réseau'
 
 form.machine.error.label.unique: 'Cet intitulé de machine est déjà utilisé.'
+form.machine.error.macs.unique: 'Cette adresse mac est déjà utilisée.'
 form.machine.error.interface.min: 'Le nombre d’interface réseau doit être supérieur ou égal à {{ compared_value }}.'
 
 form.network.error.color.pattern: 'La couleur doit être au format hexadécimal. 000000 pour noir, FF0000 pour rouge, 00FF00 pour vert et 0000FF pour bleu.'
