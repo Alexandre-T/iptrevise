@@ -17,10 +17,7 @@
 
 namespace App\Form\Type;
 
-use App\Entity\Network;
 use App\Entity\Site;
-use App\Repository\SiteRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -35,7 +32,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license CeCILL-B V1
  */
-class NetworkType extends AbstractType
+class SiteType extends AbstractType
 {
     /**
      * Builds the form.
@@ -50,9 +47,9 @@ class NetworkType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $current = $options['data'];
+        /*$current = $options['data'];
 
-        if ($current instanceof Network && count($current->getIps())) {
+        if ($current instanceof Site && count($current->getNetworks())) {
             $disabled = true;
             $helpIp = 'form.network.help.ip.readonly';
             $helpCidr = 'form.network.help.cidr.readonly';
@@ -60,51 +57,17 @@ class NetworkType extends AbstractType
             $disabled = false;
             $helpIp = 'form.network.help.ip';
             $helpCidr = 'form.network.help.cidr';
-        }
+        }*/
 
         $builder
-            ->add('label', null, [
-                'label' => 'form.network.field.label',
-                'help_block' => 'form.network.help.label',
-            ])
-            ->add('ip', AddressIpType::class, [
-                'label' => 'form.network.field.ip',
-                'help_block' => $helpIp,
-                'disabled' => $disabled,
-                'attr' => [
-                    'placeholder' => '192.168.0.0',
-                ],
-            ])
-            ->add('cidr', null, [
-                'label' => 'form.network.field.cidr',
-                'help_block' => $helpCidr,
-                'disabled' => $disabled,
-                'attr' => [
-                    'placeholder' => '24',
-                ],
-            ])
-            ->add('site', EntityType::class, [
-                'class' => Site::class,
-                'query_builder' => function (SiteRepository $er) {
-                  return $er->createQueryBuilder('u')
-                  /*->orderBy('u.username', 'ASC')*/;
-                },
-                'choice_label' => 'label',
-                'help_block' => 'Sélectionnez le site'
-              ])
-            ->add('color', ColorType::class, [
-                'label' => 'form.network.field.color',
-                'help_block' => 'form.network.help.color',
-            ])
-            ->add('description', null, [
-                'label' => 'form.network.field.description',
-                'help_block' => 'form.network.help.description',
-            ])
-            // ->add('site', SiteType::class, [
-            //     'label' => 'form.network.field.site',
-            //     'help_block' => 'form.network.help.site'
-            // ])
-;
+        ->add('label', null, [
+            'label' => 'form.site.field.label',
+            'help_block' => 'form.site.help.label',
+        ])
+        ->add('color', ColorType::class, [
+            'label' => 'form.network.field.color',
+            'help_block' => 'form.network.help.color',
+        ]);
     }
 
     /**
@@ -115,24 +78,24 @@ class NetworkType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'App\Entity\Network',
+            'data_class' => 'App\Entity\Site',
             'render_fieldset' => false,
             'show_legend' => false,
-            'constraints' => [
+            /*'constraints' => [
                 new Callback([
-                    'callback' => [$this, 'checkNetwork'],
+                    'callback' => [$this, 'checkSite'],
                 ]),
-            ],
+            ],*/
         ]);
     }
 
     /**
-     * Check if the Adresse and cidr are valid.
+     * Check if the Adress and cidr are valid.
      *
      * @param Network                   $network
      * @param ExecutionContextInterface $context
      */
-    public function checkNetwork(Network $network, ExecutionContextInterface $context)
+    /*public function checkSite(Site $site, ExecutionContextInterface $context)
     {
         $result = $network->getIp() & ($network->getMask());
 
@@ -142,7 +105,7 @@ class NetworkType extends AbstractType
                 '%mean%' => long2ip($result).'/'.$network->getCidr(),
             ])->addViolation();
         }
-    }
+    }*/
 
     /**
      * Returns the prefix of the template block name for this type.
@@ -154,6 +117,6 @@ class NetworkType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'app_network';
+        return 'app_site';
     }
 }

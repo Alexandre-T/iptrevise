@@ -39,6 +39,26 @@
     </dl>
 {% endmacro %}
 
+{% macro dl_site(site, link = true) %}
+    {# Macro to write a definition list #}
+    {% import _self as self_macro %}
+    <dl class="dl-horizontal">
+        <dt class="lead">{{ 'form.site.field.label'| trans }}</dt>
+        {% if link %}
+            <dd class="lead">
+                <a  href="{{ path('default_site_show',{'id': site.id}) }}" data-toggle="tooltip"
+                    title="{{ 'link.site.show' | trans }}" data-placement="right">
+                    {{ site.label }}
+                </a>
+            </dd>
+        {% else %}
+            <dd class="lead">{{ site.label }}</dd>
+        {% endif %}
+        <dt>{{ 'form.site.field.creator'| trans }}</dt>
+        <dd>{{ site.creator | label }}</dd>
+    </dl>
+{% endmacro %}
+
 {% macro dl_network(network, link = true) %}
     <dl class="dl-horizontal">
         <dt class="lead">{{ 'form.network.field.network'| trans }}</dt>

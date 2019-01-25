@@ -2,11 +2,11 @@
 
 {% import "@App/macro.html.twig" as app_macro %}
 
-{% block title %}{{ 'default.machine.action.list'|trans }} · {{ parent() }}{% endblock title %}
+{% block title %}{{ 'default.site.list.title'|trans }} · {{ parent() }}{% endblock title %}
 
 {% block headline %}
-    <span class="fa fa-fw fa-desktop"></span>
-    {{ 'default.machine.action.list'|trans }}
+    <span class="fa fa-fw fa-building-o"></span>
+    {{ 'default.site.list.title'|trans }}
 {% endblock %}
 
 {% set direction = pagination.getDirection() %}
@@ -15,47 +15,36 @@
     <table class="table">
         <thead>
         <tr>
-            <th id="machine-color">&nbsp;&nbsp;<span class="fa fa-machine"></span></th>
-            <th id="machine-label">
-                {% if pagination.isSorted('machine.label') %}
+            <th id="site-color">&nbsp;&nbsp;<span class="fa fa-building-o"></span></th>
+            <th id="site-label">
+                {% if pagination.isSorted('site.label') %}
                     <span class="fa fa-sort-alpha-{{ direction }}"></span>
                 {% else %}
-                    <span class="fa fa-desktop"></span> 
+                    <span class="fa fa-sitemap"></span>
                 {% endif %}
-                {{ knp_pagination_sortable(pagination, 'form.machine.field.label' | trans, 'machine.label')}}
+                {{ knp_pagination_sortable(pagination, 'form.site.field.label' | trans, 'site.label')}}
             </th>
-            <th id="machine-address">
-                {% if pagination.isSorted('machine.interface') %}
-                    <span class="fa fa-sort-numeric-{{ direction }}"></span>
-                {% endif %}
-                {{ knp_pagination_sortable(pagination, 'form.machine.field.interface' | trans, 'machine.interface')}}
-            </th>
-            <th id="machine-ips"><span class="fa fa-indent"></span> {{ 'default.machine.ips' | trans }}</th>
-            <th id="machine-tags"><span class="fa fa-tags"></span> {{ 'form.machine.field.tags' | trans }}</th>
-            <th id="machine-actions">{{ 'default.machine.actions' | trans }}</th>
+            <th id="site-networks"><span class="fa fa-sitemap"></span> {{ 'default.site.networks' | trans }}</th>
+            <th id="site-actions">{{ 'default.site.actions' | trans }}</th>
         </tr>
         </thead>
         <tbody>
         {% for row in pagination %}
-            {% set machine = row[0] %}
+            {% set site = row[0] %}
             <tr class="row-{{ loop.index }}">
-                <td headers="machine-color"><span class="fa fa-desktop"></span></td>
-                <td headers="machine-label" class="th-icon">{{ machine.label }}</td>
-                <td headers="machine-interface" class="th-icon">{{ machine.interface }}</td>
-                <td headers="machine-ips" class="th-icon">{{ row['ipsCount'] | localizednumber }}</td>
-                <td headers="machine-tags" class="th-icon">{{ app_macro.tags(row['tagsConcat'] | split(',')) }}</td>
-                <td headers="machine-actions">
+                <td headers="site-color" style="color: {{ '#' ~ site.color }}"><span class="fa fa-building-o"></span></td>
+                <td headers="site-label" class="th-icon">{{ site.label }}</td>
+                <td headers="site-networks" class="th-icon">{{ row['networksCount'] | localizednumber }}</td>
+                <td headers="site-actions">
                     <div class="btn-group-xs btn-group">
-                        <a class="btn btn-default" href="{{ path('default_machine_show', { 'id': machine.id }) }}">
+                        <a class="btn btn-default" href="{{ path('default_site_show', { 'id': site.id }) }}">
                             <span class="fa fa-eye"></span>
                             <span class="sr-only">{{ 'default.action.show' | trans }}</span>
                         </a>
-                        {% if is_granted("ROLE_MANAGE_MACHINE") %}
-                        <a class="btn btn-default" href="{{ path('default_machine_edit', { 'id': machine.id }) }}">
-                            <span class="fa fa-edit"></span>
-                            <span class="sr-only">{{ 'default.action.edit' | trans }}</span>
-                        </a>
-                        {% endif %}
+                            <a class="btn btn-default" href="{{ path('default_site_edit', { 'id': site.id }) }}">
+                                <span class="fa fa-edit"></span>
+                                <span class="sr-only">{{ 'default.action.edit' | trans }}</span>
+                            </a>
                     </div>
                 </td>
             </tr>
@@ -68,14 +57,13 @@
 {% endblock content_content %}
 
 {% block content_action %}
-    {{ app_macro.panel_admin('desktop', 'default_machine_index', pagination.totalItemCount, 'default.machines') }}
-    {% if is_granted("ROLE_MANAGE_MACHINE") %}
+    {{ app_macro.panel_admin('building-o', 'default_site_index', pagination.totalItemCount, 'default.sites') }}
+
         <div class="text-center">
-            <a class="btn btn-default" href="{{ path('default_machine_new') }}" data-toggle="tooltip" data-placement="left"
-               title="{{ 'default.machine.action.create.title' | trans }}">
-                <span class="fa fa-desktop"></span>
-                {{ 'default.machine.create' | trans }}
+            <a class="btn btn-default" href="{{ path('default_site_new') }}" data-toggle="tooltip" data-placement="left"
+               title="{{ 'default.site.create.title' | trans }}">
+                <span class="fa fa-building-o"></span>
+                {{ 'default.site.create' | trans }}
             </a>
         </div>
-    {% endif %}
 {% endblock content_action %}
