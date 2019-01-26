@@ -79,6 +79,7 @@ class MachineType extends AbstractType
                 },
                 'choice_label' => 'label',//'form.machine.field.services',
                 'required' => false,
+                'by_reference' => false,
                 'multiple' => true,
                 'expanded' => true,
                 'help_block' => 'form.machine.help.services',

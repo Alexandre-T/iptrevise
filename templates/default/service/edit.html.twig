@@ -1,0 +1,54 @@
+{% extends '@App/default/base.html.twig' %}
+
+{% set administration_entity_show = 'default_service_show' %}
+
+{% block title %}{{ 'default.service.edit.title %name%'|trans({'%name%': service.label})}} · {{ parent() }}{% endblock title %}
+
+{% block headline %}{{ 'default.service.edit.title %name%'|trans({'%name%': service.label})}}{% endblock %}
+
+{% block content_settings %}
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h1 class="panel-title">{{ 'default.service.edit.title %name%'|trans({'%name%': service.label})}}</h1>
+        </div>
+        <div class="panel-body">
+            {{ form_start(edit_form) }}
+            {{ form_widget(edit_form) }}
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                    <button class="btn btn-primary" type="submit">
+                        <span class="fa fa-save"></span>
+                        {{ 'administration.actions.edit' | trans }}
+                    </button>
+                </div>
+            </div>
+            {{ form_end(edit_form) }}
+        </div>
+    </div>
+{% endblock content_settings%}
+
+{% block content_action %}
+    <h3>{{ 'administration.actions' | trans }}</h3>
+    <div class="text-center" id="administration-actions">
+        <div class="btn-group-vertical">
+            <a class="btn-mini btn btn-default" href="{{ path('default_service_index') }}"
+               data-placement="left" data-toggle="tooltip" title="{{ 'default.service.action.list.title' | trans }}">
+                <span class="fa fa-desktop"></span>&nbsp;{{ 'service.actions.back.list' | trans }}
+            </a>
+            <a class="btn-mini btn btn-default" href="{{ path('default_service_show', { 'id': service.id }) }}"
+               data-placement="left" data-toggle="tooltip" title="{{ 'default.service.action.show.title' | trans }}">
+                <span class="fa fa-eye"></span>&nbsp;{{ 'administration.actions.show' | trans }}
+            </a>
+            {% if isDeletable %}
+                <button class="btn btn-danger btn-mini confirm-delete" data-toggle="modal" data-target="#confirm-delete"
+                        data-form="form" data-placement="left" title="{{ 'default.service.action.delete.title' | trans }}">
+                    <span class="fa fa-trash-o"></span>&nbsp;{{ 'administration.actions.delete' | trans }}
+                </button>
+            {% else %}
+                <span class="btn btn-danger disabled">
+                    <span class="fa fa-trash-o"></span>&nbsp;{{ 'administration.actions.delete' | trans }}
+                </span>
+            {% endif %}
+        </div>
+    </div>
+{% endblock content_action %}

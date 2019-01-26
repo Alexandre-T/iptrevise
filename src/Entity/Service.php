@@ -198,5 +198,13 @@ class Service implements InformationInterface, LabelInterface
         return $this;
     }
 
+    public function getCreator(): ?User
+    {
+        //FIXME
+        $user = new User();
+        $user->setUsername("FIXME");
+
+        return $user;
+    }
 
 }
