@@ -318,6 +318,7 @@ machine.actions.back.list: 'Liste des machines'
 machine.actions.create-and-associate: 'Créer et associer'
 network.actions.back.list: 'Liste des réseaux'
 site.actions.back.list: 'Liste des sites'
+service.actions.back.list: 'Liste des services'
 
 txt.actions: 'Actions'
 txt.all-rights-reserved: 'Tous droits réservés.'
