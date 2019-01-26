@@ -118,7 +118,7 @@ class ServiceController extends Controller
      *
      * @Route("/{id}", name="default_service_show")
      * @Method("GET")
-     * @Security("is_granted('ROLE_READ_service')")
+     * @Security("is_granted('ROLE_READ_SERVICE')")
      *
      * @param Service $service
      *
@@ -133,7 +133,7 @@ class ServiceController extends Controller
         $view['information'] = InformationFactory::createInformation($service);
         $view['logs'] = $serviceManager->retrieveLogs($service);
         $view['service'] = $service;
-        $view['isDeletable'] = $this->isGranted('ROLE_MANAGE_service') && $serviceManager->isDeletable($service);
+        $view['isDeletable'] = $this->isGranted('ROLE_MANAGE_SERVICE') && $serviceManager->isDeletable($service);
 
         if ($view['isDeletable']){
             $view['delete_form'] = $this->createDeleteForm($service)->createView();

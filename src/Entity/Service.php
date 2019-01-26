@@ -30,7 +30,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="te_service")
  * @Gedmo\Loggable
  */
-class Service
+class Service implements InformationInterface, LabelInterface
 {
     /**
      * Service id.
@@ -197,5 +197,13 @@ class Service
         return $this;
     }
 
+    public function getCreator(): ?User
+    {
+        //FIXME
+        $user = new User();
+        $user->setUsername("FIXME");
+
+        return $user;
+    }
 
 }
