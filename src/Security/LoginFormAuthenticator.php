@@ -30,6 +30,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Security\Http\Util\TargetPathTrait;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
 
 /**
@@ -78,6 +79,11 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
      * @var RouterInterface
      */
     private $router;
+
+    /*
+     * Target path trait for symfony4
+     */
+    use TargetPathTrait;
 
     /**
      * LoginFormAuthenticator constructor.
@@ -130,6 +136,12 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             Security::LAST_USERNAME,
             $data['mail']
         );
+        /* @TODO Analyse */
+//        if ($token == 'ILuvAPIs') {
+//            throw new CustomUserMessageAuthenticationException(
+//                'ILuvAPIs is not a real API key: it\'s just a silly phrase'
+//            );
+//        }
 
         return $data;
     }
@@ -159,13 +171,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        //TODO : Compare this code with code from this project:
-        //https://github.com/Alexandre-T/jeuderole/blob/master/src/Security/AdminAuthenticator.php#L181
-        $username = $credentials['mail'];
-
-        return $this->em
-            ->getRepository('App:User')
-            ->findOneBy(['mail' => $username]);
+        return $userProvider->loadUserByUsername($credentials['mail']);
     }
 
     /**
@@ -187,7 +193,11 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     {
         //TODO: Add log like this project
         //https://github.com/Alexandre-T/jeuderole/blob/master/src/Security/AdminAuthenticator.php#L201
-        return new RedirectResponse($this->router->generate('home'));
+        if ($targetPath = $this->getTargetPath($request->getSession(), 'main')) {
+            return new RedirectResponse($targetPath);
+        }
+
+        return new RedirectResponse($this->router->generate('homepage'));
     }
 
     /**

@@ -11,10 +11,10 @@ security:
 
     # https://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     # https://knpuniversity.com/screencast/symfony2-ep2/user-provider
+    # https://symfony.com/doc/current/security/user_provider.html
     providers:
-        our_users:
-            entity:
-                class: App\Entity\User
+        ipmanager_provider:
+            id: App\Security\UserProvider
 
     firewalls:
         # Firewall without security for images, css, js and profiler
