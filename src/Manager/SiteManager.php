@@ -114,40 +114,10 @@ class SiteManager implements LoggableManagerInterface, PaginatorInterface
      */
     public function getAll()
     {
-<<<<<<< HEAD
         return $this->repository->findAll();
-=======
-        $qb = $this->repository->createQueryBuilder(self::ALIAS);
 
-        $qb->leftJoin(self::ALIAS.'.networks', 'networks')
-            ->addSelect('COUNT(networks.id) AS networksCount')
-            ->groupBy(self::ALIAS.'.id');
-
-        return $qb;
     }
 
-    /**
-     * Is this entity deletable?
-     *
-     * @param Site $site
-     *
-     * @return bool true if entity is deletable
-     */
-    public function isDeletable(Site $site = null): bool
-    {
-        return 0 === count($site->getNetworks());
->>>>>>> c644cd37ee3ad31d50659704b537e55692e9d95f
-    }
-
-    /**
-     * Return all sites.
-     *
-     * @return Site[]|null Array of site or null
-     */
-    public function getAll()
-    {
-        return $this->repository->findAll();
-    }
 
     /**
      * Retrieve logs of the axe.
