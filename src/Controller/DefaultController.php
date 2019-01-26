@@ -68,7 +68,11 @@ class DefaultController extends Controller
             $nSites = $siteManager->count();
             $output['nSites'] = $nSites;
         }
-
+        if ($this->isGranted('ROLE_READ_SERVICE')) {
+            $serviceManager = $this->get(ServiceManager::class);
+            $nServices = $serviceManager->count();
+            $output['nServices'] = $nServices;
+        }
         return $this->render('@App/default/index.html.twig', $output);
     }
 }

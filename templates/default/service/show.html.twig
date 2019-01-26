@@ -1,0 +1,102 @@
+{% extends '@App/default/base.html.twig' %}
+
+{% import "@App/macro.html.twig" as app_macro %}
+
+{% set default_entity_show = 'default_service_show' %}
+
+{% block title %}
+    {{ 'default.service.show.title %name%'|trans({'%name%': service.label})}} · {{ parent() }}
+{% endblock title %}
+
+{% block headline %}
+    {{ 'default.service.show.title %name%'|trans({'%name%': service.label})}}
+{% endblock headline %}
+
+{% block content_settings %}
+    <div class="panel panel-primary" id="administration-global-information">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{ 'administration.global-information' | trans }}</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-10">
+                    <div class="col-xs-12">
+                        {{ app_macro.dl_service(service, false) }}
+                    </div>
+                </div>
+                <div class="col-sm-2 text-right">
+                    <p>
+                        <span class="fa fa-building-o fa-4x" style="color: {{ '#' ~ service.color }}"></span>
+                    </p>
+                </div>
+            </div>
+
+
+
+        </div>
+        {% if service.machines.count %}
+        <table class="table">
+            <thead>
+                <tr>
+                <th id="service-machine-label">
+                    <span class="fa fa-sitemap fa-fw"></span>
+                    {{ 'form.machine.field.label' | trans }}
+                </th>
+                    <th id="service-machine-ip">
+                        <span class="fa fa-indent fa-fw"></span>
+                        {{ 'form.machine.field.ip' | trans }}
+                        <span class="fa fa-sort-numeric-asc fa-fw"></span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for machine in service.machines %}
+                <tr>
+                <td headers="service-machine-label">
+                    {%- if machine -%}
+                        <a href="{{ path('default_network_show', {'id': machine.id}) }}" title="{{ machine.label }}">{{ machine.label }}</a>
+                    {%- else -%}
+                        <em>{{ 'default.machine.none' | trans }}</em>
+                    {%- endif -%}
+                </td>
+                    <td headers="service-machine-ip">
+                        <a href="{{ path('default_ip_show', {'id': machine.id}) }}" title="{{ machine.ip | ip }}">
+                            {{ machine.ip | ip }}
+                        </a>
+                    </td>
+
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+{% endblock content_settings %}
+
+{% block content_action %}
+    <h3>{{ 'administration.actions' | trans }}</h3>
+
+    <div class="text-center" id="default-actions">
+        <div class="btn-group-vertical">
+            <a class="btn-mini btn btn-default" href="{{ path('default_service_index') }}"
+               data-placement="left" data-toggle="tooltip" title="{{ 'default.service.action.list.title' | trans }}">
+                <span class="fa fa-building-o"></span>&nbsp;{{ 'service.actions.back.list' | trans }}
+            </a>
+                <a class="btn-mini btn btn-default" href="{{ path('default_service_edit', { 'id': service.id }) }}"
+                   data-placement="left" data-toggle="tooltip" title="{{ 'default.service.action.edit.title' | trans }}">
+                    <span class="fa fa-pencil"></span>&nbsp;{{ 'administration.actions.edit' | trans }}
+                </a>
+                {% if isDeletable %}
+                    <button class="btn btn-danger btn-mini confirm-delete" data-toggle="modal" data-target="#confirm-delete"
+                       data-form="form" data-placement="left" title="{{ 'default.service.action.delete.title' | trans }}">
+                        <span class="fa fa-trash-o"></span>&nbsp;{{ 'administration.actions.delete' | trans }}
+                    </button>
+                {% else %}
+                    <span class="btn btn-danger disabled">
+                        <span class="fa fa-trash-o"></span>&nbsp;{{ 'administration.actions.delete' | trans }}
+                    </span>
+                {% endif %}
+        </div>
+    </div>
+{% endblock content_action %}
