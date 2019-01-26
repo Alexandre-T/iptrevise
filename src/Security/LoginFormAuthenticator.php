@@ -19,10 +19,13 @@ namespace App\Security;
 
 use App\Form\LoginForm;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
@@ -32,6 +35,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * LoginFormAuthenticator class.
@@ -60,9 +64,26 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
      * If you want to know which class is your entity manager, just type:
      * $ php ./bin/console debug:container entity_manager and select yours.
      *
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     private $em;
+
+    /**
+     * FlashBag interface.
+     *
+     * @var FlashBagInterface
+     */
+    private $flashBag;
+
+    /**
+     * Logger Interface.
+     *
+     * If you want to know which class is your logger, just type:
+     * $ php ./bin/console debug:container logger.
+     *
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * User password encoder.
@@ -74,11 +95,18 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     /**
      * Router Interface.
      * If you want to know which class is your password encoder, just type:
-     * php ./bin/console debug:container password_encoder.
+     * php ./bin/console debug:container router.
      *
      * @var RouterInterface
      */
     private $router;
+
+    /**
+     * Translator interface.
+     *
+     * @var TranslatorInterface
+     */
+    private $translator;
 
     /*
      * Target path trait for symfony4
@@ -90,15 +118,20 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
      *
      * @param FormFactoryInterface $formFactory
      * @param EntityManager        $em
+     * @param FlashBagInterface    $flashBag
+     * @param LoggerInterface      $logger
      * @param RouterInterface      $router
      * @param UserPasswordEncoder  $passwordEncoder
      */
-    public function __construct(FormFactoryInterface $formFactory, EntityManager $em, RouterInterface $router, UserPasswordEncoder $passwordEncoder)
+    public function __construct(FormFactoryInterface $formFactory, EntityManager $em, FlashBagInterface $flashBag, LoggerInterface $logger, RouterInterface $router, TranslatorInterface $translator, UserPasswordEncoder $passwordEncoder)
     {
         $this->formFactory = $formFactory;
         $this->em = $em;
+        $this->flashBag = $flashBag;
+        $this->logger = $logger;
         $this->router = $router;
         $this->passwordEncoder = $passwordEncoder;
+        $this->translator = $translator;
     }
 
     /**
@@ -136,12 +169,6 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             Security::LAST_USERNAME,
             $data['mail']
         );
-        /* @TODO Analyse */
-//        if ($token == 'ILuvAPIs') {
-//            throw new CustomUserMessageAuthenticationException(
-//                'ILuvAPIs is not a real API key: it\'s just a silly phrase'
-//            );
-//        }
 
         return $data;
     }
@@ -191,8 +218,18 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        //TODO: Add log like this project
-        //https://github.com/Alexandre-T/jeuderole/blob/master/src/Security/AdminAuthenticator.php#L201
+        //We log connection.
+        $this->logger->notice('Connection successful: %username%', ['%username%' => $token->getUser()->getUsername()]);
+
+        //Message for interface.
+        //@FIXME flash bag is translated two times and generates a warn.
+        $this->flashBag->add(
+            'success',
+            $this->translator->trans('security.connection.successful %username%', [
+                '%username%' => $token->getUser()->getUsername(),
+            ]));
+
+        //The user is redirect to the previous page
         if ($targetPath = $this->getTargetPath($request->getSession(), 'main')) {
             return new RedirectResponse($targetPath);
         }
@@ -217,8 +254,16 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
         //FIXME: This code is not a good solution. Change it with explanation above.
-        // TODO: Alexandre : If user is connected, return a 403 Response
-        // TODO: Alexandre : If user is not connected, redirect to login page.
+        // TODO: If user is connected, return a 403 Response
+        // TODO: If user is not connected, redirect to login page.
+        //We log connection.
+        $credentials = $exception->getToken()->getCredentials();
+        $mail = $credentials['mail'] ?? 'none provided';
+
+        $this->logger->notice("Connection failed with mail(%$mail%) Reason: %{$exception->getMessage()}%");
+
+        $this->flashBag->add('error', 'security.connection.failed');
+
         return null;
     }
 

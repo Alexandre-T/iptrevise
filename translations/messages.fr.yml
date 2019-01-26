@@ -295,6 +295,9 @@ machine.actions.create-and-associate: 'Créer et associer'
 network.actions.back.list: 'Liste des réseaux'
 site.actions.back.list: 'Liste des sites'
 
+security.connection.successful %username%: 'Authentification réussie. Bienvenue %username% !'
+security.connection.failed: 'Cette adresse email n’est pas référencée dans l’application ou le mot de passe est erroné.'
+
 txt.actions: 'Actions'
 txt.all-rights-reserved: 'Tous droits réservés.'
 txt.copyright %year% %owner%: '© 2005 - %year% par %owner%.'
