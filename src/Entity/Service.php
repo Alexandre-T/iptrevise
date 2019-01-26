@@ -30,8 +30,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="te_service")
  * @Gedmo\Loggable
  */
-class Service
+class Service implements InformationInterface, LabelInterface
 {
+    use ReferentTrait;
     /**
      * Service id.
      *

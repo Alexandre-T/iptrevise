@@ -35,8 +35,8 @@
         <table class="table">
             <thead>
                 <tr>
+                <th id="network-color">&nbsp;&nbsp;<span class="fa fa-network"></span></th>
                   <th id="site-ip-machine-label">
-                    <span class="fa fa-sitemap fa-fw"></span>
                     {{ 'form.network.field.label' | trans }}
                   </th>
                   <th id="site-ip-ip">
@@ -54,6 +54,7 @@
             <tbody>
                 {% for network in site.networks %}
                 <tr>
+                <td headers="network-color" style="color: {{ '#' ~ network.color }}"><span class="fa fa-sitemap"></span></td>
                     {%- if network -%}
                         <td headers="network-label" class="th-icon">{{ network.label }}</td>
                     {%- else -%}

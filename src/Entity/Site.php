@@ -34,6 +34,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class Site implements InformationInterface, LabelInterface
 {
+    use ReferentTrait;
+
     /**
      * Site id.
      *
@@ -232,14 +234,5 @@ class Site implements InformationInterface, LabelInterface
         $this->networks->removeElement($network);
 
         return $this;
-    }
-
-    public function getCreator(): ?User
-    {
-        //FIXME
-        $user = new User();
-        $user->setUsername("FIXME");
-
-        return $user;
     }
 }
