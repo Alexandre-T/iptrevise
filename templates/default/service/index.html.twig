@@ -5,7 +5,7 @@
 {% block title %}{{ 'default.service.list.title'| trans }} · {{ parent() }}{% endblock title %}
 
 {% block headline %}
-    <span class="fa fa-fw fa-building-o"></span>
+    <span class="fa fa-desktop"></span>
     {{ 'default.service.list.title'| trans }}
 {% endblock %}
 
@@ -15,7 +15,7 @@
     <table class="table">
         <thead>
         <tr>
-            <th id="service-color">&nbsp;&nbsp;<span class="fa fa-building-o"></span></th>
+            <th id="service-color">&nbsp;&nbsp;<span class="fa fa-service"></span></th>
             <th id="service-label">
                 {% if pagination.isSorted('service.label') %}
                     <span class="fa fa-sort-alpha-{{ direction }}"></span>
@@ -32,6 +32,7 @@
         {% for row in pagination %}
             {% set service = row[0] %}
             <tr class="row-{{ loop.index }}">
+                <td headers="service-color"><span class="fa fa-desktop"></span></td>
                 <td headers="service-label" class="th-icon">{{ service.label }}</td>
                 <td headers="service-machines" class="th-icon">{{ row['machinesCount'] | localizednumber }}</td>
                 <td headers="service-actions">
@@ -56,12 +57,12 @@
 {% endblock content_content %}
 
 {% block content_action %}
-    {{ app_macro.panel_admin('building-o', 'default_service_index', pagination.totalItemCount, 'default.services') }}
+    {{ app_macro.panel_admin('desktop', 'default_service_index', pagination.totalItemCount, 'default.services') }}
 
         <div class="text-center">
             <a class="btn btn-default" href="{{ path('default_service_new') }}" data-toggle="tooltip" data-placement="left"
                title="{{ 'default.service.create.title' | trans }}">
-                <span class="fa fa-building-o"></span>
+                <span class="fa fa-desktop"></span>
                 {{ 'default.service.create' | trans }}
             </a>
         </div>
