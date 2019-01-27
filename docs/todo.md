@@ -8,10 +8,6 @@ TODO List
     *  table-bordered
     *  .table-hover
     *  .table-condensed
-* Remplacer les $this->get(IpManager::class) par un $this->get('ip_manager')
-* Remplacer les $this->get(MachineManager::class) par un $this->get('machine_manager')
-* Remplacer les $this->get(NetworkManager::class) par un $this->get('network_manager')
-* Remplacer les $this->get(UserManager::class) par un $this->get('user_manager')
 * Ajouter dans les formulaires des champs non remplaçables (réservé par...)
 * Ajouter l'ergonomie des tags selon ce lien https://github.com/aehlke/tag-it
 * Vérifier les assertions dans le formulaire sur ip+machine

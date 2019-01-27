@@ -249,22 +249,19 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
      * @param Request                 $request
      * @param AuthenticationException $exception
      *
-     * @return Response|null
+     * @return RedirectResponse
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        //FIXME: This code is not a good solution. Change it with explanation above.
-        // TODO: If user is connected, return a 403 Response
-        // TODO: If user is not connected, redirect to login page.
-        //We log connection.
         $credentials = $exception->getToken()->getCredentials();
         $mail = $credentials['mail'] ?? 'none provided';
 
+        //We log connection.
         $this->logger->notice("Connection failed with mail(%$mail%) Reason: %{$exception->getMessage()}%");
 
         $this->flashBag->add('error', 'security.connection.failed');
 
-        return null;
+        return new RedirectResponse($this->router->generate('security_login'));
     }
 
     /**
