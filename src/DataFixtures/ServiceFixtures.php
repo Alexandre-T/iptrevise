@@ -17,6 +17,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\Service;
@@ -38,26 +39,43 @@ class ServiceFixtures extends Fixture
      */
     public function load(ObjectManager $manager)
     {
+        /** @var User $administrator */
+        $administrator = $this->getReference('user_admin');
+        $services = [
+            'DNS',
+            'Firewall',
+            'NTP',
+        ];
 
         if (in_array($this->container->get('kernel')->getEnvironment(), ['dev', 'test'])) {
             //Load dev and test data
-            // I add one user for each role (to test the security component)
+            $services[] = 'Service 0';
+        }
 
-            $serviceDns = ['DNS'];
-            $serviceRouter = ['ROUTER'];
-            $serviceFirewall = ['FIREWALL'];
-            //regarder user fixture.. peut être mettre dans MachineFixtures
+        foreach ($services as $label) {
             $service = new Service();
-            $service->setLabel('dns');
-            $service->setColor('black');
+            $service->setLabel($label);
+            $service->setCreator($administrator);
 
-            //These references are perhaps unuseful.
-            $this->addReference('service_default', $service);
+            $this->addReference('service_'.strtolower($label), $service);
 
             //Persist dev and test data
             $manager->persist($service);
         }
 
         $manager->flush();
+    }
+
+    /**
+     * This method return an array of fixtures classes
+     * on which the implementing class depends on.
+     *
+     * @return array
+     */
+    public function getDependencies()
+    {
+        return array(
+            UserFixtures::class,
+        );
     }
 }

@@ -28,11 +28,9 @@
         <dd>{{ machine.location }}</dd>
         <dt>{{ 'form.machine.field.description'| trans }}</dt>
         <dd>{{ machine.description }}</dd>
-        <dt>{{ 'form.machine.field.location'| trans }}</dt>
-        <dd>{{ machine.location }}</dd>
         <dt>{{ 'form.machine.field.services'| trans }}</dt>
         {% if machine.services is empty %}
-            <dd>{{ 'Pas de services'}}</dd>
+            <dd>{{ 'form.machine.field.services.none' | trans }}</dd>
         {% else %}
             <dd> {{ machine.services }}</dd>
         {% endif %}

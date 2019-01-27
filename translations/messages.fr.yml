@@ -157,6 +157,8 @@ default.network.show.title %name%: 'Consultation du réseau « %name% »'
 
 default.networks: 'Réseaux'
 
+default.service.not-deletable %name%: 'Le service %name% est toujours utilisé par des machines. Il ne peut pas être supprimé.'
+
 default.sites: 'Sites'
 default.site.list.title: 'Liste des sites'
 default.site.actions: 'Actions'
@@ -221,6 +223,7 @@ form.machine.field.label: 'Machine'
 form.machine.field.tags: 'Tags'
 form.machine.field.location: 'Localisation'
 form.machine.field.services: 'Services'
+form.machine.field.services.none: 'Aucun service rendu'
 form.machine.field.macs: 'Adresse mac '
 
 form.machine.help.description: 'Entrez une description de la machine (les services et applications qu’elle fournit)'
@@ -266,6 +269,7 @@ form.site.help.label: 'Entrez l’intitulé du site'
 form.service.field.creator: 'Référencée par'
 form.service.field.label: 'Service'
 form.service.field.machines: 'Machines'
+form.service.help.label: 'Entrez l’intitulé du service rendu (NTP, DNS, etc.)'
 
 form.ip.delete-ip.confirm: 'Oui, supprimez cette adresse IP'
 form.ip.delete-ip.unconfirm: 'Non, conservez cette adresse IP'
@@ -302,9 +306,10 @@ menu.admin.admin: 'Administration'
 menu.admin.users: 'Gestion des utilisateurs'
 
 menu.main.home: 'Accueil'
+menu.main.ips: 'Adresses IP'
 menu.main.networks: 'Réseaux'
 menu.main.machines: 'Machines'
-menu.main.ips: 'Adresses IP'
+menu.main.services: 'Services'
 menu.main.site: 'Sites'
 
 menu.user.edit-profile: 'Édition'

@@ -17,12 +17,13 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\Site;
 
 /**
- * LoadUserData class.
+ * Loading site class.
  *
  * @category DataFixtures
  *
@@ -38,24 +39,44 @@ class SiteFixtures extends Fixture
      */
     public function load(ObjectManager $manager)
     {
-
         if (in_array($this->container->get('kernel')->getEnvironment(), ['dev', 'test'])) {
             //Load dev and test data
-            // I add one user for each role (to test the security component)
-
+            /** @var User $admin */
+            $admin = $this->getReference('user_admin');
 
             //Site par defait
             $site = new Site();
             $site->setLabel('Site1');
-            $site->setColor('black');
+            $site->setColor('000000');
+            $site->setCreator($admin);
 
-            //These references are perhaps unuseful.
             $this->addReference('site_default', $site);
+
+            $site1 = new Site();
+            $site1->setLabel('Site rouge');
+            $site1->setColor('FF0000');
+            $site1->setCreator($admin);
+
+            $this->addReference('site_rouge', $site1);
 
             //Persist dev and test data
             $manager->persist($site);
+            $manager->persist($site1);
         }
 
         $manager->flush();
+    }
+
+    /**
+     * This method return an array of fixtures classes
+     * on which the implementing class depends on.
+     *
+     * @return array
+     */
+    public function getDependencies()
+    {
+        return array(
+            UserFixtures::class,
+        );
     }
 }
