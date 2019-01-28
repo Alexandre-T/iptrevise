@@ -9,13 +9,10 @@
  * @license   MIT
  *
  */
- 
+
 namespace App\Command;
-use App\Entity\File;
-use App\Entity\Passage;
 use App\Exception\LoadException;
-use App\Repository\CameraRepository;
-use App\Repository\FileRepository;
+use App\Repository\SiteRepository;
 use App\Utils\Header;
 use App\Utils\LoadUtils;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,9 +22,9 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-class LoadCommand extends Command
+class LoadSite extends Command
 {
-    use LockableTrait;
+    //use LockableTrait;
     /**
      * Nombre de colonnes.
      */
@@ -40,17 +37,11 @@ class LoadCommand extends Command
      */
     private $entityManager;
     /**
-     * The camera repository.
+     * The site repository.
      *
-     * @var CameraRepository
+     * @var SiteRepository
      */
-    private $cameraRepository;
-    /**
-     * The file repository.
-     *
-     * @var FileRepository
-     */
-    private $fileRepository;
+    private $siteRepository;
     /**
      * Loader service.
      *
@@ -67,9 +58,12 @@ class LoadCommand extends Command
     {
         parent::__construct();
         $this->entityManager = $entityManager;
-        $this->cameraRepository = $entityManager->getRepository('App:Camera');
-        $this->fileRepository = $entityManager->getRepository('App:File');
-        $this->loader = $loader;
+
+		$this->siteRepository = $entityManager->getRepository('App:Site');
+
+
+
+		$this->loader = $loader;
     }
     /**
      * Configure the command.
@@ -83,8 +77,6 @@ class LoadCommand extends Command
             ->setDescription('Charge en base le contenu des fichiers téléchargées .')
             //Add an option for purge to purge database
             ->addOption('purge', 'p', InputArgument::OPTIONAL, 'Répondre y si vous voulez purger les données en base (y/n)', 'n')
-            //Add an option for reload file already loaded
-            ->addOption('overload', 'o', InputArgument::OPTIONAL, 'Répondre y si vous voulez recharger les fichiers déjà chargés (y/n)', 'n')
             //Add an option for reload file already loaded
             ->addOption('transaction', 't', InputArgument::OPTIONAL, 'Valider la transaction après chaque fichier, à la fin du processus ou sans transaction ? (f/p/n)', 'f')
             //Add an option for reload file already loaded
@@ -108,27 +100,28 @@ class LoadCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
-        if (!$this->lock()) {
-            $output->writeln('<error>The command is already running in another process.</error>');
-            return 0;
-        }
+		$sansErreur = true;
+        // if (!$this->lock()) {
+        //     $output->writeln('<error>The command is already running in another process.</error>');
+        //     return 0;
+        // }
         // outputs multiple lines to the console (adding "\n" at the end of each line)
         $output->writeln([
             '<info>Loader lancé</info>',
             '<info>================</info>',
-            '<info>Étape 1 : interrogation de la base de données pour déterminer le nombre de caméras...</info>',
+            '<info>Étape 1 : interrogation de la base de données pour déterminer le nombre de sites...</info>',
             '<info>---------</info>',
         ]);
-        $cameras = $this->cameraRepository->searchActive();
-        $nCamera = count($cameras);
-        if ($nCamera) {
+        $sites = $this->siteRepository->searchActive();
+        $nSite = count($sites);
+        if ($nSite) {
             $output->writeln([
-                "<comment>$nCamera caméras actives</comment>",
+                "<comment>$nSite sites actifs</comment>",
                 '<info>Étape 2: Interrogations des fichiers à charger en base.</info>',
                 '<info>--------</info>',
             ]);
         } else {
-            $output->writeln('<info>Aucune caméra à interroger. Fin du processus.</info>');
+            $output->writeln('<info>Aucun site à interroger. Fin du processus.</info>');
             return 0;
         }
         //Set memory limit.
@@ -141,16 +134,18 @@ class LoadCommand extends Command
         }
         //Optimisation : on désactive le log des requêtes
         $this->entityManager->getConnection()->getConfiguration()->setSQLLogger(null);
-        foreach ($cameras as $camera) {
-            $output->writeln(sprintf('<comment>Parcours des fichiers la caméra « %s »</comment>', $camera->getName()));
-            $directoryname = __DIR__.'/../../data/downloaded/camera-'.$camera->getCode();
+        foreach ($sites as $site) {
+            $output->writeln(sprintf('<comment>Parcours des fichiers site « %s »</comment>', $site->getName()));
+            $directoryname = __DIR__.'/../../data/site-'.$site->getCode();
             $directoryInfo = new \SplFileInfo($directoryname);
             if (!$directoryInfo->isDir()) {
                 $output->writeln(sprintf('<error>%s n’est pas un répertoire</error>', $directoryname));
+				$sansErreur = false;
                 continue;
             }
             if (!$directoryInfo->isReadable()) {
                 $output->writeln(sprintf('<error>Le répertoire %s n’est pas lisible</error>', $directoryname));
+				$sansErreur = false;
                 continue;
             }
             //Parcours du répertoire
@@ -193,11 +188,6 @@ class LoadCommand extends Command
                 if ('f' === $input->getOption('transaction')) {
                     $this->entityManager->beginTransaction();
                 }
-                $fileEntity = new File();
-                $fileEntity->setFilename($filename);
-                $fileEntity->setDirectory('data/downloaded/camera-'.$camera->getCode());
-                $fileEntity->setMd5sum($empreinte);
-                $this->entityManager->persist($fileEntity);
                 $lignes = $this->loader->getLines($fileObject);
                 $output->writeln(sprintf('<comment>Fichier %s en cours de chargement (%d lignes).</comment> ', $fileInfo->getFilename(), $lignes));
                 // creates a new progress bar (50 units)
@@ -227,12 +217,17 @@ class LoadCommand extends Command
                             //On continue car on n'a pas le bon nombre de colonnes.
                             continue;
                         }
-                        $passage = new Passage();
-                        $passage
-                            ->setCamera($camera)
-                            ->setCoord($csv[$header->getColumn('coord')])
+                        $site = new Site();
+                        $site
+                            ->setSite($site)
+							->setLabel($csv[$header->getColumn('label')])
+							->setColor($csv[$header->getColumn('color')])
+                            ;
+							//->setCreated($csv[$header->getColumn('created')]) // à générer auto ?
+							//->setUpdated($csv[$header->getColumn('updated')]) // à générer auto ?
+                            /**->setCoord($csv[$header->getColumn('coord')])
                             ->setCreated(new \DateTime(substr($csv[$header->getColumn('created')], 0, -3)))
-                            ->setDataFictive(false)
+							->setDataFictive(false)
                             ->setFiability($csv[$header->getColumn('fiability')])
                             ->setFile($fileEntity)
                             ->setH($csv[$header->getColumn('h')])
@@ -249,10 +244,12 @@ class LoadCommand extends Command
                         } else {
                             $passage->setImmatCollision($csv[$header->getColumn('plaque_court')]);
                         }
+						 */
                         $this->entityManager->persist($passage);
                     } catch (LoadException $e) {
                         $output->writeln(sprintf('<error>Erreur lors du chargement : %s</error> ', $e->getMessage()));
-                        die();
+						$sansErreur = false;
+                        //die();
                     }
                     if (0 === ($batchSize % $input->getOption('fetch'))) {
                         $this->entityManager->flush();
@@ -268,13 +265,21 @@ class LoadCommand extends Command
                 if ('f' === $input->getOption('transaction')) {
                     // Validation pour chaque fichier
                     $output->writeln('<info>Validation de la transaction.</info>');
-                    $this->entityManager->commit();
+					if (sansErreur) {
+						$this->entityManager->commit();
+					} else {
+						$this->entityManager->rollback();
+					}
                 }
             }
             // Validation de l'ensemble du processus
-            if ('f' !== $input->getOption('transaction') && 'n' === $input->getOption('transaction')) {
+            if ('f' !== $input->getOption('transaction') && 'n' === $input->getOption('transaction') && sansErreur) {
                 $output->writeln('<info>Validation de la transaction.</info>');
-                $this->entityManager->commit();
+                if (sansErreur) {
+						$this->entityManager->commit();
+				} else {
+					$this->entityManager->rollback();
+				}
                 //$this->entityManager->clear();
             }
             $output->writeln(sprintf('<comment>Mémoire consommée : %s</comment>', memory_get_usage()));
