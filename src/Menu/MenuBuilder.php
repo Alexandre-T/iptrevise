@@ -110,6 +110,11 @@ class MenuBuilder
                 'route' => 'default_machine_index',
             ]);
 
+            $dropdownSettings->addChild('menu.main.services', [
+                'icon' => 'fw fa-stack-overflow',
+                'route' => 'default_service_index',
+            ]);
+
             $dropdownSettings->addChild('menu.main.site', [
                 'icon' => 'fw fa-building-o',
                 'route' => 'default_site_index',

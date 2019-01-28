@@ -4,6 +4,7 @@
     {% import _self as self_macro %}
 
     {% set nbmacs = machine.macs|split("\n")|length %}
+    {% set nbservices = machine.services|length %}
 
     <dl class="dl-horizontal">
         <dt class="lead">{{ 'form.machine.field.label'| trans }}</dt>
@@ -27,9 +28,13 @@
         <dd>{{ machine.location }}</dd>
         <dt>{{ 'form.machine.field.description'| trans }}</dt>
         <dd>{{ machine.description }}</dd>
-        <dt>{{ 'form.machine.field.location'| trans }}</dt>
-        <dd>{{ machine.location }}</dd>
         <dt>{{ 'form.machine.field.services'| trans }}</dt>
+        {% if machine.services is empty %}
+            <dd>{{ 'form.machine.field.services.none' | trans }}</dd>
+        {% else %}
+            <dd> {{ machine.services }}</dd>
+        {% endif %}
+
         <dt>{{ 'form.machine.field.creator'| trans }}</dt>
         <dd>{{ machine.creator | label }}</dd>
         <dt>{{ 'form.machine.field.tags'| trans }}</dt>
@@ -101,6 +106,26 @@
     </div>
 {% endmacro %}
 
+{% macro dl_service(service, link = true) %}
+    {# Macro to write a definition list #}
+    {% import _self as self_macro %}
+    <dl class="dl-horizontal">
+        <dt class="lead">{{ 'form.service.field.label'| trans }}</dt>
+        {% if link %}
+            <dd class="lead">
+                <a  href="{{ path('default_service_show',{'id': service.id}) }}" data-toggle="tooltip"
+                    title="{{ 'link.service.show' | trans }}" data-placement="right">
+                    {{ service.label }}
+                </a>
+            </dd>
+        {% else %}
+            <dd class="lead">{{ service.label }}</dd>
+        {% endif %}
+        <dt>{{ 'form.service.field.creator'| trans }}</dt>
+        <dd>{{ service.creator | label }}</dd>
+    </dl>
+{% endmacro %}
+
 {% macro dl_ip(ip, link = true) %}
     <dl class="dl-horizontal">
         <dt class="lead">{{ 'form.ip.field.ip'| trans }}</dt>
@@ -152,7 +177,7 @@
     <div>{% for i in 0..(nbmacs - 1) %}
     <dt>{{ 'form.machine.field.macs'| trans }}{{i+1}} </dt>
         {% endfor %}<div>
-    <dd>{{ machine.macs|nl2br }}</dd>
+    <dd>{{ machine.macs | nl2br }}</dd>
 </dl>
 
 {% endmacro %}

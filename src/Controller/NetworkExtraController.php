@@ -30,7 +30,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -374,9 +374,9 @@ class NetworkExtraController extends Controller
      *
      * @param Ip $ip the Ip entity
      *
-     * @return Form The form
+     * @return FormInterface The form
      */
-    private function createDeleteIpForm(Ip $ip): Form
+    private function createDeleteIpForm(Ip $ip): FormInterface
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('default_network_delete_ip', array('id' => $ip->getId())))
@@ -395,9 +395,9 @@ class NetworkExtraController extends Controller
      *
      * @param Ip $ip the Ip entity
      *
-     * @return Form The form
+     * @return FormInterface The form
      */
-    private function createLinkForm(Ip $ip): Form
+    private function createLinkForm(Ip $ip): FormInterface
     {
         $form = $this->createFormBuilder()
             ->setAction($this->generateUrl('default_network_link', array('id' => $ip->getId())))
@@ -413,9 +413,9 @@ class NetworkExtraController extends Controller
      *
      * @param Ip $ip the Ip entity
      *
-     * @return Form The form
+     * @return FormInterface The form
      */
-    private function createUnlinkForm(Ip $ip): Form
+    private function createUnlinkForm(Ip $ip): FormInterface
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('default_network_unlink', array('id' => $ip->getId())))

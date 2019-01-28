@@ -16,11 +16,13 @@
  */
 
 namespace App\Entity;
+
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -29,6 +31,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\ServiceRepository")
  * @ORM\Table(name="te_service")
  * @Gedmo\Loggable
+ *
+ * @UniqueEntity("label", message="form.service.error.label.unique")
  */
 class Service implements InformationInterface, LabelInterface
 {
@@ -45,12 +49,12 @@ class Service implements InformationInterface, LabelInterface
     private $id;
 
     /**
-     * Service label
+     * Service label.
      *
      * @var string
      *
      * @Assert\NotBlank()
-     * @Assert\Length(max="32")
+     * @Assert\Length(max="16")
      *
      * @ORM\Column(
      *     type="string",
@@ -163,7 +167,7 @@ class Service implements InformationInterface, LabelInterface
      *
      * @return Service
      */
-    public function setLabel(string $label): Service
+    public function setLabel(string $label): self
     {
         $this->label = $label;
 
@@ -177,7 +181,7 @@ class Service implements InformationInterface, LabelInterface
      *
      * @return Service
      */
-    public function addMachine(Machine $machine): Service
+    public function addMachine(Machine $machine): self
     {
         $this->machines[] = $machine;
 
@@ -191,12 +195,10 @@ class Service implements InformationInterface, LabelInterface
      *
      * @return Service
      */
-    public function removeMachine(Machine $machine): Service
+    public function removeMachine(Machine $machine): self
     {
         $this->machines->removeElement($machine);
 
         return $this;
     }
-
-
 }

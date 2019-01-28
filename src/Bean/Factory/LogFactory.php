@@ -122,7 +122,6 @@ class LogFactory
         return $logs;
     }
 
-
     /**
      * Create Log bean from a Abstract Log Entry (Gedmo).
      *
@@ -140,6 +139,29 @@ class LogFactory
             $logBean->setUsername($logEntry->getUsername());
             $logBean->setVersion($logEntry->getVersion());
             $logBean->setData(DataFactory::createSiteData($logEntry->getData()));
+            $logs[] = $logBean;
+        }
+
+        return $logs;
+    }
+
+    /**
+     * Create Log bean from a Abstract Log Entry (Gedmo).
+     *
+     * @param AbstractLogEntry[] $logEntries of AbstractLogEntry $logEntry
+     *
+     * @return Log[]
+     */
+    public static function createServiceLogs(array $logEntries): array
+    {
+        $logs = [];
+        foreach ($logEntries as $logEntry) {
+            $logBean = new Log();
+            $logBean->setAction('administration.log.action.'.$logEntry->getAction());
+            $logBean->setLogged($logEntry->getLoggedAt());
+            $logBean->setUsername($logEntry->getUsername());
+            $logBean->setVersion($logEntry->getVersion());
+            $logBean->setData(DataFactory::createServiceData($logEntry->getData()));
             $logs[] = $logBean;
         }
 
