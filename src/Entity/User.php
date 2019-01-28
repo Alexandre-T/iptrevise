@@ -465,7 +465,7 @@ class User implements InformationInterface, LabelInterface, UserInterface, Seria
      *
      * @return User
      */
-    public function addRole(Role $role): User
+    public function addNewRole(Role $role): User
     {
         $this->newRoles[] = $role;
 
@@ -479,7 +479,7 @@ class User implements InformationInterface, LabelInterface, UserInterface, Seria
      *
      * @return User
      */
-    public function removeRole(Role $role): User
+    public function removeNewRole(Role $role): User
     {
         $this->newRoles->removeElement($role);
 

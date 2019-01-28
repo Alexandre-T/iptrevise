@@ -1,6 +1,6 @@
 # to save the changes in local directory
 
-git commit -m "message"
+git commit -am "message"
 
 # to save changes in your local github
 

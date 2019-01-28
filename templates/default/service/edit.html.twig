@@ -1,17 +1,15 @@
 {% extends '@App/default/base.html.twig' %}
 
-{% set administration_entity_show = 'default_machine_show' %}
+{% set administration_entity_show = 'default_service_show' %}
 
-{% set machines_macs = 'nl2br(machine.macs)' %}
+{% block title %}{{ 'default.service.edit.title %name%'|trans({'%name%': service.label})}} · {{ parent() }}{% endblock title %}
 
-{% block title %}{{ 'default.machine.edit.title %name%'|trans({'%name%': machine.label})}} · {{ parent() }}{% endblock title %}
-
-{% block headline %}{{ 'default.machine.edit.title %name%'|trans({'%name%': machine.label})}}{% endblock %}
+{% block headline %}{{ 'default.service.edit.title %name%'|trans({'%name%': service.label})}}{% endblock %}
 
 {% block content_settings %}
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <h1 class="panel-title">{{ 'default.machine.edit.title %name%'|trans({'%name%': machine.label})}}</h1>
+            <h1 class="panel-title">{{ 'default.service.edit.title %name%'|trans({'%name%': service.label})}}</h1>
         </div>
         <div class="panel-body">
             {{ form_start(edit_form) }}
@@ -33,17 +31,17 @@
     <h3>{{ 'administration.actions' | trans }}</h3>
     <div class="text-center" id="administration-actions">
         <div class="btn-group-vertical">
-            <a class="btn-mini btn btn-default" href="{{ path('default_machine_index') }}" data-placement="left"
-               data-toggle="tooltip" title="{{ 'default.machine.action.list.title' | trans }}">
-                <span class="fa fa-desktop"></span>&nbsp;{{ 'default.machine.action.list' | trans }}
+            <a class="btn-mini btn btn-default" href="{{ path('default_service_index') }}"
+               data-placement="left" data-toggle="tooltip" title="{{ 'default.service.action.list.title' | trans }}">
+                <span class="fa fa-stack-overflow"></span>&nbsp;{{ 'service.actions.back.list' | trans }}
             </a>
-            <a class="btn-mini btn btn-default" href="{{ path('default_machine_show', { 'id': machine.id }) }}"
-               data-toggle="tooltip" title="{{ 'default.machine.action.show.title' | trans }}" data-placement="left">
+            <a class="btn-mini btn btn-default" href="{{ path('default_service_show', { 'id': service.id }) }}"
+               data-placement="left" data-toggle="tooltip" title="{{ 'default.service.action.show.title' | trans }}">
                 <span class="fa fa-eye"></span>&nbsp;{{ 'administration.actions.show' | trans }}
             </a>
             {% if isDeletable %}
                 <button class="btn btn-danger btn-mini confirm-delete" data-toggle="modal" data-target="#confirm-delete"
-                        data-form="form" data-placement="left" title="{{ 'default.machine.action.delete.title' | trans }}">
+                        data-form="form" data-placement="left" title="{{ 'default.service.action.delete.title' | trans }}">
                     <span class="fa fa-trash-o"></span>&nbsp;{{ 'administration.actions.delete' | trans }}
                 </button>
             {% else %}

@@ -167,7 +167,7 @@ class Network implements InformationInterface, LabelInterface
      * @var Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Ip", mappedBy="network", fetch="EXTRA_LAZY")
-     * @ORM\OrderBy({"ip":"ASC"})
+     * @ORM\OrderBy({"ip" = "ASC"})
      *
      * @see http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/tutorials/extra-lazy-associations.html
      */
@@ -179,7 +179,7 @@ class Network implements InformationInterface, LabelInterface
      * @var Collection|Plage[]
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Plage", mappedBy="network", fetch="EAGER")
-     * @ORM\OrderBy({"ip":"ASC"})
+     * @ORM\OrderBy({"start":"ASC"})
      */
     private $plages;
 
@@ -286,7 +286,7 @@ class Network implements InformationInterface, LabelInterface
 
     /**
      * Get reserved plage/range of the Network
-     * 
+     *
      * @return Collection|Plage[]
      */
     public function getPlages(): Collection
@@ -296,7 +296,7 @@ class Network implements InformationInterface, LabelInterface
 
     /**
      * Return the site of this network.
-     * 
+     *
      * @return Site
      */
     public function getSite(): ?Site
@@ -411,10 +411,10 @@ class Network implements InformationInterface, LabelInterface
      *
      * @return Network
      */
-    public function setSite(Site $site): ?Network
+    public function setSite(Site $site): Network
     {
         $this->site = $site;
-        
+
         return $this;
     }
 

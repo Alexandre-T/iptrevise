@@ -1,0 +1,69 @@
+{% extends '@App/default/base.html.twig' %}
+
+{% import "@App/macro.html.twig" as app_macro %}
+
+{% block title %}{{ 'default.site.list.title'|trans }} · {{ parent() }}{% endblock title %}
+
+{% block headline %}
+    <span class="fa fa-fw fa-building-o"></span>
+    {{ 'default.site.list.title'|trans }}
+{% endblock %}
+
+{% set direction = pagination.getDirection() %}
+
+{% block content_content %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th id="site-color">&nbsp;&nbsp;<span class="fa fa-site"></span></th>
+            <th id="site-label">
+                {% if pagination.isSorted('site.label') %}
+                    <span class="fa fa-sort-alpha-{{ direction }}"></span>
+                {% else %}
+                    <span class="fa fa-sitemap"></span>
+                {% endif %}
+                {{ knp_pagination_sortable(pagination, 'form.site.field.label' | trans, 'site.label')}}
+            </th>
+            <th id="site-networks"><span class="fa fa-sitemap"></span> {{ 'default.site.networks' | trans }}</th>
+            <th id="site-actions">{{ 'default.site.actions' | trans }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in pagination %}
+            {% set site = row[0] %}
+            <tr class="row-{{ loop.index }}">
+                <td headers="site-color" style="color: {{ '#' ~ site.color }}"><span class="fa fa-building-o"></span></td>
+                <td headers="site-label" class="th-icon">{{ site.label }}</td>
+                <td headers="site-networks" class="th-icon">{{ row['networksCount'] | localizednumber }}</td>
+                <td headers="site-actions">
+                    <div class="btn-group-xs btn-group">
+                        <a class="btn btn-default" href="{{ path('default_site_show', { 'id': site.id }) }}">
+                            <span class="fa fa-eye"></span>
+                            <span class="sr-only">{{ 'default.action.show' | trans }}</span>
+                        </a>
+                            <a class="btn btn-default" href="{{ path('default_site_edit', { 'id': site.id }) }}">
+                                <span class="fa fa-edit"></span>
+                                <span class="sr-only">{{ 'default.action.edit' | trans }}</span>
+                            </a>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="navigation text-right">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+{% endblock content_content %}
+
+{% block content_action %}
+    {{ app_macro.panel_admin('building-o', 'default_site_index', pagination.totalItemCount, 'default.sites') }}
+
+        <div class="text-center">
+            <a class="btn btn-default" href="{{ path('default_site_new') }}" data-toggle="tooltip" data-placement="left"
+               title="{{ 'default.site.create.title' | trans }}">
+                <span class="fa fa-building-o"></span>
+                {{ 'default.site.create' | trans }}
+            </a>
+        </div>
+{% endblock content_action %}

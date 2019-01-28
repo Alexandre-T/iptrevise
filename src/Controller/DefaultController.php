@@ -18,6 +18,8 @@ namespace App\Controller;
 use App\Manager\IpManager;
 use App\Manager\MachineManager;
 use App\Manager\NetworkManager;
+use App\Manager\SiteManager;
+use App\Manager\ServiceManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -62,6 +64,16 @@ class DefaultController extends Controller
             $output['nIps'] = $nIps;
         }
 
+        if ($this->isGranted('ROLE_READ_SITE')) {
+            $siteManager = $this->get(SiteManager::class);
+            $nSites = $siteManager->count();
+            $output['nSites'] = $nSites;
+        }
+        if ($this->isGranted('ROLE_READ_SERVICE')) {
+            $serviceManager = $this->get(ServiceManager::class);
+            $nServices = $serviceManager->count();
+            $output['nServices'] = $nServices;
+        }
         return $this->render('@App/default/index.html.twig', $output);
     }
 }

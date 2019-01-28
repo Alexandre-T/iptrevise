@@ -27,6 +27,10 @@
                         {{ 'default.ip.managment' | trans }}
                     </li>
                     <li>
+                        <i class="fa fa-fw fa-building-o"></i>
+                        {{ 'default.site.managment' | trans }}
+                    </li>
+                    <li>
                         <i class="fa fa-fw fa-users"></i>
                         {{ 'default.user.managment' | trans }}
                     </li>
@@ -45,6 +49,10 @@
 
 {% block content_sidebar %}
 
+    {% if is_granted("ROLE_READ_SITE") %}
+        {{ app_macro.panel_admin('building-o', 'default_site_index', nSites, 'default.sites') }}
+    {% endif %}
+
     {% if is_granted("ROLE_READ_NETWORK") %}
         {{ app_macro.panel_admin('sitemap', 'default_network_index', nNetworks, 'default.networks') }}
     {% endif %}
@@ -54,7 +62,7 @@
     {% endif %}
 
     {% if is_granted("ROLE_READ_IP") %}
-        {{ app_macro.panel_admin('indent', 'default_network_index', nIps, 'default.ips') }}
+        {{ app_macro.panel_admin('indent', '', nIps, 'default.ips') }}
     {% endif %}
 
 {% endblock content_sidebar %}

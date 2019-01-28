@@ -17,21 +17,20 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Service;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use App\Entity\Machine;
+use App\Entity\Site;
 
 /**
- * Load Machine Data for tests.
+ * Loading site class.
  *
  * @category DataFixtures
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license CeCILL-B V1
  */
-class MachineFixtures extends Fixture
+class SiteFixtures extends Fixture
 {
     /**
      * Load Data.
@@ -41,30 +40,28 @@ class MachineFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         if (in_array($this->container->get('kernel')->getEnvironment(), ['dev', 'test'])) {
-            $machine = [];
-            /** @var User $administrator */
-            $administrator = $this->getReference('user_admin');
-            /** @var User $organiser */
-            $organiser = $this->getReference('user_organiser');
-            /** @var Service $dnsService */
-            $dnsService = $this->getReference('service_dns');
+            //Load dev and test data
+            /** @var User $admin */
+            $admin = $this->getReference('user_admin');
 
-            for ($index = 0; $index <= 90; ++$index) {
-                $machine[$index] = (new Machine())
-                    ->setLabel("Machine $index")
-                    ->setDescription("Description $index")
-                    ->setInterface($index % 8 + 1)
-                    ->setCreator($organiser);
+            //Site par defait
+            $site = new Site();
+            $site->setLabel('Site1');
+            $site->setColor('000000');
+            $site->setCreator($admin);
 
-                if ($index % 5) {
-                    $machine[$index]
-                        ->addService($dnsService)
-                        ->setCreator($administrator);
-                }
+            $this->addReference('site_default', $site);
 
-                $this->addReference("machine_$index", $machine[$index]);
-                $manager->persist($machine[$index]);
-            }
+            $site1 = new Site();
+            $site1->setLabel('Site rouge');
+            $site1->setColor('FF0000');
+            $site1->setCreator($admin);
+
+            $this->addReference('site_rouge', $site1);
+
+            //Persist dev and test data
+            $manager->persist($site);
+            $manager->persist($site1);
         }
 
         $manager->flush();

@@ -63,8 +63,6 @@ class Version20181218081911 extends AbstractMigration
         $this->addSql('ALTER TABLE ts_user ADD usr_admin BOOLEAN DEFAULT \'false\' NOT NULL');
         $this->addSql('COMMENT ON COLUMN ts_user.usr_admin IS \'is user an admin\'');
         $this->addSql('COMMENT ON COLUMN ts_user.roles IS \'Roles de l\'\'utilisateur(DC2Type:json_array)\'');
-
-        //TODO convert content of json_array in user::roles into new table roles
     }
 
     public function down(Schema $schema)

@@ -1,6 +1,11 @@
+
 {% macro dl_machine(machine, link = true) %}
     {# Macro to write a definition list #}
     {% import _self as self_macro %}
+
+    {% set nbmacs = machine.macs|split("\n")|length %}
+    {% set nbservices = machine.services|length %}
+
     <dl class="dl-horizontal">
         <dt class="lead">{{ 'form.machine.field.label'| trans }}</dt>
         {% if link %}
@@ -15,16 +20,47 @@
         {% endif %}
         <dt>{{ 'form.machine.field.interface'| trans }}</dt>
         <dd>{{ machine.interface }}</dd>
-        <dt>{{ 'form.machine.field.description'| trans }}</dt>
-        <dd>{{ machine.description }}</dd>
+          <div>{% for i in 0..(nbmacs - 1)%}
+            <dt>&nbsp</dt>
+            <dd>&nbsp</dd>
+              {% endfor %}<div>
         <dt>{{ 'form.machine.field.location'| trans }}</dt>
         <dd>{{ machine.location }}</dd>
+        <dt>{{ 'form.machine.field.description'| trans }}</dt>
+        <dd>{{ machine.description }}</dd>
+        <dt>{{ 'form.machine.field.services'| trans }}</dt>
+        {% if machine.services is empty %}
+            <dd>{{ 'form.machine.field.services.none' | trans }}</dd>
+        {% else %}
+            <dd> {{ machine.services }}</dd>
+        {% endif %}
+
         <dt>{{ 'form.machine.field.creator'| trans }}</dt>
         <dd>{{ machine.creator | label }}</dd>
         <dt>{{ 'form.machine.field.tags'| trans }}</dt>
         <dd>
             {{ self_macro.tags(machine.tags) }}
         </dd>
+    </dl>
+{% endmacro %}
+
+{% macro dl_site(site, link = true) %}
+    {# Macro to write a definition list #}
+    {% import _self as self_macro %}
+    <dl class="dl-horizontal">
+        <dt class="lead">{{ 'form.site.field.label'| trans }}</dt>
+        {% if link %}
+            <dd class="lead">
+                <a  href="{{ path('default_site_show',{'id': site.id}) }}" data-toggle="tooltip"
+                    title="{{ 'link.site.show' | trans }}" data-placement="right">
+                    {{ site.label }}
+                </a>
+            </dd>
+        {% else %}
+            <dd class="lead">{{ site.label }}</dd>
+        {% endif %}
+        <dt>{{ 'form.site.field.creator'| trans }}</dt>
+        <dd>{{ site.creator | label }}</dd>
     </dl>
 {% endmacro %}
 
@@ -70,6 +106,26 @@
     </div>
 {% endmacro %}
 
+{% macro dl_service(service, link = true) %}
+    {# Macro to write a definition list #}
+    {% import _self as self_macro %}
+    <dl class="dl-horizontal">
+        <dt class="lead">{{ 'form.service.field.label'| trans }}</dt>
+        {% if link %}
+            <dd class="lead">
+                <a  href="{{ path('default_service_show',{'id': service.id}) }}" data-toggle="tooltip"
+                    title="{{ 'link.service.show' | trans }}" data-placement="right">
+                    {{ service.label }}
+                </a>
+            </dd>
+        {% else %}
+            <dd class="lead">{{ service.label }}</dd>
+        {% endif %}
+        <dt>{{ 'form.service.field.creator'| trans }}</dt>
+        <dd>{{ service.creator | label }}</dd>
+    </dl>
+{% endmacro %}
+
 {% macro dl_ip(ip, link = true) %}
     <dl class="dl-horizontal">
         <dt class="lead">{{ 'form.ip.field.ip'| trans }}</dt>
@@ -103,6 +159,29 @@
     {% endfor %}
 {% endmacro %}
 
+{% macro mac(machine, link = true) %}
+
+  {% import _self as self_macro %}
+
+  {% set nbmacs = machine.macs|split("\n")|length %}
+<dl class="dl-horizontal">
+    <dt class="lead">&nbsp</dt>
+    {% if link %}
+        <dd class="lead">
+            MAC
+        </dd>
+    {% else %}
+        <dd class="lead">&nbsp</dd>
+    {% endif %}
+
+    <div>{% for i in 0..(nbmacs - 1) %}
+    <dt>{{ 'form.machine.field.macs'| trans }}{{i+1}} </dt>
+        {% endfor %}<div>
+    <dd>{{ machine.macs | nl2br }}</dd>
+</dl>
+
+{% endmacro %}
+
 {% macro panel_admin(icon, path, quantity, text, type = 'panel-primary') %}
     <div class="panel {{ type }}">
         <div class="panel-heading">
@@ -116,12 +195,14 @@
                 </div>
             </div>
         </div>
-        <a href="{{ path(path) }}">
-            <div class="panel-footer">
-                <span class="pull-left">{{ 'txt.details' | trans }}</span>
-                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                <div class="clearfix"></div>
-            </div>
-        </a>
+        {% if path is defined and path is not empty %}
+          <a href="{{ path(path) }}">
+              <div class="panel-footer">
+                  <span class="pull-left">{{ 'txt.details' | trans }}</span>
+                  <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                  <div class="clearfix"></div>
+              </div>
+          </a>
+          {% endif %}
     </div>
 {% endmacro %}

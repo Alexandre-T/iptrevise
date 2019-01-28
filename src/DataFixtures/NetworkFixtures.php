@@ -17,6 +17,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Site;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -43,6 +44,10 @@ class NetworkFixtures extends Fixture
             $network = [];
             /** @var User $organiser */
             $organiser = $this->getReference('user_organiser');
+            /** @var Site $site */
+            $site = $this->getReference('site_default');
+            /** @var Site $site1 */
+            $site1 = $this->getReference('site_rouge');
 
             for ($index = 0; $index <= 32; ++$index) {
                 $network[$index] = (new Network())
@@ -50,12 +55,13 @@ class NetworkFixtures extends Fixture
                     ->setDescription("Description $index")
                     ->setColor('000000')
                     ->setIp(ip2long("192.168.$index.0"))
+                    ->setSite($site)
                     ->setCidr($index);
 
                 if ($index % 5) {
                     $network[$index]->setCreator($organiser);
+                    $network[$index]->setSite($site1);
                 }
-
 
                 $this->addReference("network_$index", $network[$index]);
                 $manager->persist($network[$index]);
@@ -74,7 +80,8 @@ class NetworkFixtures extends Fixture
     public function getDependencies()
     {
         return array(
-            UserFixtures::class,
+          UserFixtures::class,
+          SiteFixtures::class,
         );
     }
 }
