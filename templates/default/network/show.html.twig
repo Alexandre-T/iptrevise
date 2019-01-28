@@ -2,6 +2,10 @@
 
 {% import "@App/macro.html.twig" as app_macro %}
 
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ asset('noir.png') }}">
+{% endblock %}
+
 {% set default_entity_show = 'default_network_show' %}
 
 {% block title %}
@@ -160,6 +164,9 @@
             </tbody>
         </table>
         {% endif %}
+        <div>
+            <img src="{{ asset('images/noir.png') }}" width="100%"/>
+        </div>
     </div>
 {% endblock content_settings %}
 
