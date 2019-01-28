@@ -21,6 +21,9 @@ use App\Bean\Factory\InformationFactory;
 use App\Entity\Ip;
 use App\Form\Type\IpType;
 use App\Manager\IpManager;
+use App\Entity\Network;
+use App\Form\Type\NetworkType;
+use App\Manager\NetworkManager;
 use App\Entity\Plage;
 use App\Form\Type\PlageType;
 use App\Manager\PlageManager;
@@ -42,10 +45,45 @@ use Symfony\Component\HttpFoundation\Response;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license CeCILL-B V1
  *
- * @Route("ip")
+ * @Route("plage")
  */
 class PlageController extends Controller
 {
+
+  /**
+  * Limit of plage per page for listing
+  */
+  const LIMIT_PER_PAGE = 25;
+
+  /**
+   * Lists all plage entities.
+   *
+   * @Route("/", name="default_plage_index")
+   * @Method("GET")
+   * @Security("is_granted('ROLE_READ_NETWORK')")
+   *
+   * @param Request $request
+   *
+   * @return Response
+   */
+  public function indexAction(Request $request)
+  {
+      //Retrieving all services
+      $networkManager = $this->get(NetworkManager::class);
+      $paginator = $this->get('knp_paginator');
+      $pagination = $paginator->paginate(
+          $networkManager->getQueryBuilder(), /* queryBuilder NOT result */
+          $request->query->getInt('page', 1)/*page number*/,
+          self::LIMIT_PER_PAGE,
+          ['defaultSortFieldName' => 'network.label', 'defaultSortDirection' => 'asc']
+      );
+
+      return $this->render('@App/default/plage/index.html.twig', [
+          'pagination' => $pagination,
+      ]);
+  }
+
+
     /**
      * Finds and displays a ip entity.
      *
@@ -62,7 +100,7 @@ class PlageController extends Controller
         /** @var PlageManager $plageManager */
         $plageManager = $this->get(PlageManager::class);
         $view = [];
-        $isDeletable = $this->isGranted('ROLE_MANAGE_plage') && $plageManager->isDeletable($plage);
+        $isDeletable = $this->isGranted('ROLE_MANAGE_IP') && $plageManager->isDeletable($plage);
         if ($isDeletable){
             $view['delete_form'] = $this->createDeleteForm($plage)->createView();
         }
@@ -78,105 +116,100 @@ class PlageController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing ip entity.
+     * Displays a form to edit an existing plage entity.
      *
-     * @Route("/{id}/edit", name="default_ip_edit")
+     * @Route("/{id}/edit", name="default_plage_edit")
      * @Method({"GET", "POST"})
      * @Security("is_granted('ROLE_MANAGE_IP')")
      *
      * @param Request $request The request
-     * @param Ip      $ip      The ip entity
+     * @param Plage      $plage      The plage entity
      *
      * @return RedirectResponse|Response
      */
-    public function editAction(Request $request, Ip $ip)
+    public function editAction(Request $request, Plage $plage)
     {
         $view = [];
-        $ipService = $this->get(IpManager::class);
-        $isDeletable = $ipService->isDeletable($ip);
+        $plageService = $this->get(PlageManager::class);
+        $isDeletable = $plageService->isDeletable($plage);
         if ($isDeletable){
-            $view['delete_form'] = $this->createDeleteForm($ip)->createView();
+            $view['delete_form'] = $this->createDeleteForm($plage)->createView();
         }
 
-        $editForm = $this->createForm(IpType::class, $ip);
+        $editForm = $this->createForm(PlageType::class, $plage);
         $editForm->handleRequest($request);
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $ipService->save($ip, $this->getUser());
+            $plageService->save($plage, $this->getUser());
             //Flash message
             $session = $this->get('session');
             $trans = $this->get('translator.default');
-            $message = $trans->trans('default.ip.updated %name%', ['%name%' => long2ip($ip->getIp())]);
+            $message = $trans->trans('default.plage.updated %name%', ['%name%' => $plage->getLabel()]);
             $session->getFlashBag()->add('success', $message);
 
-            return $this->redirectToRoute('default_ip_show', array('id' => $ip->getId()));
+            return $this->redirectToRoute('default_plage_show', array('id' => $plage->getId()));
         }
-        $logs = $ipService->retrieveLogs($ip);
-        $information = InformationFactory::createInformation($ip);
+        $logs = $plageService->retrieveLogs($plage);
+        $information = InformationFactory::createInformation($plage);
 
-        return $this->render('@App/default/ip/edit.html.twig', array_merge($view, [
+        return $this->render('@App/default/plage/edit.html.twig', array_merge($view, [
             'isDeletable' => $isDeletable,
             'logs' => $logs,
             'information' => $information,
-            'ip' => $ip,
+            'plage' => $plage,
             'edit_form' => $editForm->createView(),
         ]));
     }
 
     /**
-     * Deletes a ip entity.
+     * Deletes a plage entity.
      *
-     * @Route("/{id}", name="default_ip_delete")
+     * @Route("/{id}", name="default_plage_delete")
      * @Method("DELETE")
      * @Security("is_granted('ROLE_MANAGE_IP')")
      *
      * @param Request $request The request
-     * @param Ip      $ip      The $ip entity
+     * @param Plage      $plage      The $plage entity
      *
      * @return RedirectResponse | Response
      */
-    public function deleteAction(Request $request, Ip $ip)
+    public function deleteAction(Request $request, Plage $plage)
     {
-        $network = $ip->getNetwork();
-        $machine = $ip->getMachine();
+        $network = $plage->getNetwork();
 
-        $form = $this->createDeleteForm($ip);
+        $form = $this->createDeleteForm($plage);
         $form->handleRequest($request);
         $session = $this->get('session');
         $trans = $this->get('translator.default');
-        $ipManager = $this->get(IpManager::class);
-        $isDeletable = $ipManager->isDeletable($ip);
+        $plageManager = $this->get(PlageManager::class);
+        $isDeletable = $plageManager->isDeletable($plage);
 
         if ($isDeletable && $form->isSubmitted() && $form->isValid()) {
-            $ipManager->delete($ip);
-            $message = $trans->trans('default.ip.deleted %name%', ['%name%' => long2ip($ip->getIp())]);
+            $plageManager->delete($plage);
+            $message = $trans->trans('default.plage.deleted %name%', ['%name%' => $plage->getLabel()]);
             $session->getFlashBag()->add('success', $message);
         }elseif (!$isDeletable){
-            $message = $trans->trans('default.ip.not-deletable %name%', ['%name%' => long2ip($ip->getIp())]);
+            $message = $trans->trans('default.plage.not-deletable %name%', ['%name%' => $plage->getLabel()]);
             $session->getFlashBag()->add('warning', $message);
-            return $this->redirectToRoute('default_ip_show', ['id' => $ip->getId()]);
+            return $this->redirectToRoute('default_network_show', ['id' => $ip->getId()]);
         }
 
-        if (null === $machine) {
-            return $this->redirectToRoute('default_network_show', ['id' => $network->getId()]);
-        } else {
-            return $this->render('@App/default/ip/delete.html.twig', [
-                'machine' => $machine,
-                'network' => $network,
-            ]);
-        }
+        return $this->render('@App/default/plage/delete.html.twig', [
+            'network' => $network,
+        ]);
+
     }
 
     /**
      * Creates a form to delete a ip entity.
      *
-     * @param Ip $ip The ip entity
+     * @param Plage $plage The ip entity
      *
      * @return Form The form
      */
-    private function createDeleteForm(Ip $ip)
+    private function createDeleteForm(Plage $plage)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('default_ip_delete', array('id' => $ip->getId())))
+            ->setAction($this->generateUrl('default_plage_delete', array('id' => $plage->getId())))
             ->setMethod('DELETE')
             ->add('delete', SubmitType::class, [
                 'attr' => ['class' => 'btn-danger confirm-delete'],

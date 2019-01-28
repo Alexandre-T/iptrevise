@@ -250,31 +250,31 @@ class NetworkExtraController extends Controller
             //Flash message
             $session = $this->get('session');
             $trans = $this->get('translator.default');
-            $message = $trans->trans('default.plage.created %ipddeb% %ipfin%', ['%ipdeb%' => long2ip($plage->getStart()), '%ipfin%' => long2ip($plage->getEnd())]);
+            $message = $trans->trans('default.plage.created %ipdeb% %ipfin%', ['%ipdeb%' => long2ip($plage->getStart()), '%ipfin%' => long2ip($plage->getEnd())]);
             $session->getFlashBag()->add('success', $message);
 
-            return $this->redirectToRoute('default_plage_show', array('id' => $ip->getId()));
+            return $this->redirectToRoute('default_plage_show', array('id' => $plage->getId()));
         }
 
         // The form was not submitted, the IP was not calculated
         // We purpose the first non-reserved IP in the Network
-        if (null === $plage->getStart()) {
-            $ipManager = $this->get(IpManager::class);
-            $firstIp = $ipManager->getFirstNonReferencedIp($network);
-            if (null === $firstIp) {
-                //Flash message
-                $session = $this->get('session');
-                $trans = $this->get('translator.default');
-                $message = $trans->trans('default.network.no.space');
-                $session->getFlashBag()->add('error', $message);
-
-                return $this->redirectToRoute('default_network_show', array('id' => $network->getId()));
-            } else {
-                $plage->setStart($firstIp);
-                // We must set it.
-                $form->setData($plage);
-            }
-        }
+        // if (null === $plage->getStart()) {
+        //     $ipManager = $this->get(PlageManager::class);
+        //     $firstIp = $ipManager->getFirstNonReferencedIp($network);
+        //     if (null === $firstIp) {
+        //         //Flash message
+        //         $session = $this->get('session');
+        //         $trans = $this->get('translator.default');
+        //         $message = $trans->trans('default.network.no.space');
+        //         $session->getFlashBag()->add('error', $message);
+        //
+        //         return $this->redirectToRoute('default_network_show', array('id' => $network->getId()));
+        //     } else {
+        //         $plage->setStart($firstIp);
+        //         // We must set it.
+        //         $form->setData($plage);
+        //     }
+        // }
 
         return $this->render('@App/default/network-extra/new-plage.html.twig', [
             'plage' => $plage,

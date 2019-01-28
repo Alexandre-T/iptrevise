@@ -1,8 +1,8 @@
 {% extends '@App/base.html.twig' %}
 
-{% set administration_entity_show = 'default_ip_show' %}
+{% set administration_entity_show = 'default_plage_show' %}
 
-{% block title %}{{ 'default.ip.redirect.title' | trans }} · {{ parent() }}{% endblock title %}
+{% block title %}{{ 'default.plage.redirect.title' | trans }} · {{ parent() }}{% endblock title %}
 
 {% block page_header %}{% endblock %}
 
@@ -14,22 +14,22 @@
                     <h1 class="panel-title">{{ 'default.action.confirm' | trans }}</h1>
                 </div>
                 <div class="panel-body">
-                    <p>{{ 'default.ip.redirect.question' | trans }}</p>
+                    <p>{{ 'default.plage.redirect.question' | trans }}</p>
                 </div>
                 <div class="panel-footer">
                     <div class="btn-group-justified button-group">
                         <a href="{{ path('default_network_show', {'id': network.id}) }}" title="" class="btn btn-default">
                             <span class="fa fa-fw fa-sitemap"></span>
-                            {{ 'default.ip.redirect.network %name%' | trans({'%name%': network.label }) }}
+                            {{ 'default.plage.redirect.network %name%' | trans({'%name%': network.label }) }}
                         </a>
-                        <a href="{{ path('default_machine_show', {'id': machine.id}) }}" title="" class="btn btn-default">
-                            <span class="fa fa-fw fa-desktop"></span>
-                            {{ 'default.ip.redirect.machine %name%' | trans({'%name%': machine.label }) }}
+                        <a href="{{ path('default_plage_index', {'id': network.id}) }}" title="" class="btn btn-default">
+                            <span class="fa fa-fw fa-sitemap"></span>
+                            {{ 'default.plage.redirect.network.index %name%' | trans({'%name%': network.label }) }}
                         </a>
-                    </div>
+                      </div>
                 </div>
             </div>
         </div>
     </div>
-    
+
 {% endblock content_row %}
