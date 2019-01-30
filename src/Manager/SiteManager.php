@@ -19,8 +19,8 @@ namespace App\Manager;
 
 use App\Bean\Factory\LogFactory;
 use App\Entity\PaginatorInterface;
-use App\Entity\Site;
 use App\Entity\User;
+use App\Entity\Site;
 use App\Repository\SiteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -95,59 +95,29 @@ class SiteManager implements LoggableManagerInterface, PaginatorInterface
     }
 
     /**
-     * Return SITE from its id.
-     *
-     * @param int $id
-     *
-     * @return Site|null
-     */
-    public function getById(int $id): ?Site
-    {
-        /** @var Site $site */
-        $site = $this->repository->findOneBy([
-            'id' => $id,
-        ]);
-
-        return $site;
-    }
-
-    /**
-     * Return the Query builder needed by the paginator.
-     *
-     * @return QueryBuilder
-     */
-    public function getQueryBuilder()
-    {
-        $qb = $this->repository->createQueryBuilder(self::ALIAS);
-
-        $qb->leftJoin(self::ALIAS.'.networks', 'networks')
-            ->addSelect('COUNT(networks.id) AS networksCount')
-            ->groupBy(self::ALIAS.'.id');
-
-        return $qb;
-    }
-
-    /**
      * Is this entity deletable?
      *
      * @param Site $site
      *
      * @return bool true if entity is deletable
      */
-    public function isDeletable(Site $site = null): bool
+    public function isDeletable(Site $site): bool
     {
-        return 0 === count($site->getNetworks());
+        //A site is deletable if there is no networks referenced.
+        return 0 == count($site->getNetworks());
     }
 
     /**
      * Return all sites.
      *
-     * @return Site[]|null Array of site or null
+     * @return Site[]|null Array of network or null
      */
     public function getAll()
     {
         return $this->repository->findAll();
+
     }
+
 
     /**
      * Retrieve logs of the axe.
@@ -173,11 +143,26 @@ class SiteManager implements LoggableManagerInterface, PaginatorInterface
      */
     public function save(Site $site, User $user = null)
     {
-        // @FIXME
-//        if ($user && empty($site->getCreator())) {
-//            $site->setCreator($user);
-//        }
+        if ($user && empty($site->getCreator())) {
+            $site->setCreator($user);
+        }
         $this->em->persist($site);
         $this->em->flush();
+    }
+
+    /**
+     * Return the Query builder needed by the paginator.
+     *
+     * @return QueryBuilder
+     */
+    public function getQueryBuilder()
+    {
+        $qb = $this->repository->createQueryBuilder(self::ALIAS);
+
+        $qb->leftJoin(self::ALIAS.'.networks', 'networks')
+            ->addSelect('COUNT(networks.id) AS networksCount')
+            ->groupBy(self::ALIAS.'.id');
+
+        return $qb;
     }
 }
