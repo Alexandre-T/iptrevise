@@ -31,6 +31,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 /**
  * NetworkController class.
  *
@@ -138,6 +140,24 @@ class NetworkController extends Controller
 
         return $this->render('@App/default/network/show.html.twig', $view);
     }
+    /**
+     * Finds and displays a network entity.
+     *
+     * @Route("/matrice", name="default_network_matrice")
+     * @Method("GET")
+     * @Security("is_granted('ROLE_READ_NETWORK')")
+     *
+     * @param Network $network
+     *
+     * @return Response
+     */
+
+    public function matriceAction(Network $network)
+    {
+        $file = new File('/public/images/noir.png');
+        return $this->file($file);
+
+}
 
     /**
      * Displays a form to edit an existing network entity.
