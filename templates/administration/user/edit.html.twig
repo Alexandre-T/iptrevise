@@ -7,13 +7,32 @@
 {% block page_header %}{% endblock %}
 
 {% block content_settings %}
+
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h1 class="panel-title">{{ 'administration.user.edit.title %name%'|trans({'%name%': user.username})}}</h1>
         </div>
-        <div class="panel-body">
+        <div class="panel-body" >
             {{ form_start(edit_form) }}
-            {{ form_widget(edit_form) }}
+            {{ form_row(edit_form.label) }}
+            {{ form_row(edit_form.mail) }}
+            {{ form_row(edit_form.roles) }}
+            <div class="role_list"
+              data-prototype="{{form_widget(edit_form.newRoles.vars.prototype)|e('html_attr')}}"
+              data-index="{{edit_form.newRoles|length}}">
+              {% for role in edit_form.newRoles %}
+                <div class="role_item">
+                  <a href="#" class="btn btn-danger btn-mini confirm-delete deleteRole pull-right"
+                      <span class="fa fa-trash-o"></span>&nbsp;{{ 'administration.actions.delete' | trans }}
+                  </a>
+                  {{ form_widget(role) }}
+                </div>
+              {% endfor %}
+              <a href="#" class="btn btn-default btn-mini addRole"
+                  <span class="fa fa-user"></span>&nbsp;Add a Role
+              </a>
+
+            </div>
             <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-9">
                     <button class="btn btn-primary" type="submit">
@@ -25,6 +44,7 @@
             {{ form_end(edit_form) }}
         </div>
     </div>
+
 {% endblock content_settings%}
 
 {% block content_action %}
@@ -52,3 +72,35 @@
         </div>
     </div>
 {% endblock content_action %}
+
+{% block foot_script %}
+  {{parent()}}
+
+
+  <script type="text/javascript">
+    var $collectionHolder;
+    $(document).ready(function(){
+      $collectionHolder = $('.role_list');
+
+      $collectionHolder.on('click', '.deleteRole', function(e){
+        e.preventDefault();
+        $(this).closest('.role_item')
+          .remove();
+      });
+      $collectionHolder.on('click', '.addRole', function(e){
+        e.preventDefault();
+        var prototype = $collectionHolder.data('prototype');
+        var index = $collectionHolder.data('index');
+
+        var newForm = prototype.replace(/_name_/g, index);
+
+        $collectionHolder.data('index', index + 1);
+
+        $(this).before(newForm);
+
+      });
+
+    });
+    </script>
+
+{% endblock foot_script %}
