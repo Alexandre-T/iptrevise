@@ -30,42 +30,53 @@
                     </p>
                 </div>
             </div>
-
-
-
         </div>
         {% if site.networks.count %}
         <table class="table">
             <thead>
                 <tr>
-                <th id="site-ip-machine-label">
-                    <span class="fa fa-sitemap fa-fw"></span>
+                <th id="network-color">&nbsp;&nbsp;<span class="fa fa-network"></span></th>
+                  <th id="site-ip-machine-label">
                     {{ 'form.network.field.label' | trans }}
-                </th>
-                    <th id="site-ip-ip">
-                        <span class="fa fa-indent fa-fw"></span>
-                        {{ 'form.network.field.ip' | trans }}
-                        <span class="fa fa-sort-numeric-asc fa-fw"></span>
+                  </th>
+                  <th id="site-ip-ip">
+                    {{ 'form.network.field.address' | trans }}
+                  </th>
+                  <th id="site-network-addresses">
+                    <span class="fa fa-indent fa-fw"></span>
+                    {{ 'default.network.ips' | trans }}
+                  </th>
+                  <th id="site-ip-ip">
+                    {{ 'default.network.actions' | trans }}
                     </th>
                 </tr>
             </thead>
             <tbody>
                 {% for network in site.networks %}
                 <tr>
-                <td headers="site-network-label">
+                <td headers="network-color" style="color: {{ '#' ~ network.color }}"><span class="fa fa-sitemap"></span></td>
                     {%- if network -%}
-                        <a href="{{ path('default_network_show', {'id': network.id}) }}" title="{{ network.label }}">{{ network.label }}</a>
+                        <td headers="network-label" class="th-icon">{{ network.label }}</td>
                     {%- else -%}
-                        <em>{{ 'default.machine.none' | trans }}</em>
+                        <em>{{ 'default.network.none' | trans }}</em>
                     {%- endif -%}
-                </td>
-                    <td headers="site-network-ip">
-                        <a href="{{ path('default_ip_show', {'id': network.id}) }}" title="{{ network.ip | ip }}">
-                            {{ network.ip | ip }}
-                        </a>
+
+                    <td headers="network-address" class="th-icon">{{ network.ip | network(network.cidr) }}</td>
+                    <td headers="network-ips" class="th-icon"> {{network.ips.count}} / {{ network.capacity | localizednumber }}</td>
+                    <td headers="network-actions">
+                        <div class="btn-group-xs btn-group">
+                            <a class="btn btn-default" href="{{ path('default_network_show', { 'id': network.id }) }}">
+                                <span class="fa fa-eye"></span>
+                                <span class="sr-only">{{ 'default.action.show' | trans }}</span>
+                            </a>
+                            {% if is_granted('ROLE_MANAGE_NETWORK') %}
+                                <a class="btn btn-default" href="{{ path('default_network_edit', { 'id': network.id }) }}">
+                                    <span class="fa fa-edit"></span>
+                                    <span class="sr-only">{{ 'default.action.edit' | trans }}</span>
+                                </a>
+                            {% endif %}
+                        </div>
                     </td>
-
-
                 </tr>
                 {% endfor %}
             </tbody>
@@ -83,6 +94,7 @@
                data-placement="left" data-toggle="tooltip" title="{{ 'default.site.action.list.title' | trans }}">
                 <span class="fa fa-building-o"></span>&nbsp;{{ 'site.actions.back.list' | trans }}
             </a>
+            {% if is_granted('ROLE_MANAGE_SITE') %}
                 <a class="btn-mini btn btn-default" href="{{ path('default_site_edit', { 'id': site.id }) }}"
                    data-placement="left" data-toggle="tooltip" title="{{ 'default.site.action.edit.title' | trans }}">
                     <span class="fa fa-pencil"></span>&nbsp;{{ 'administration.actions.edit' | trans }}
@@ -97,6 +109,7 @@
                         <span class="fa fa-trash-o"></span>&nbsp;{{ 'administration.actions.delete' | trans }}
                     </span>
                 {% endif %}
+            {% endif %}
         </div>
     </div>
 {% endblock content_action %}
