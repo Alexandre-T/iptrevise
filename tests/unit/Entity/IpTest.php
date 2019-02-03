@@ -11,8 +11,8 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema
  * @license   CeCILL-B V1
- * @see       http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt
  *
+ * @see       http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt
  */
 
 namespace App\Tests\Entity;
@@ -29,7 +29,6 @@ use PHPUnit\Framework\TestCase;
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license CeCILL-B V1
- *
  */
 class IpTest extends TestCase
 {
@@ -47,7 +46,7 @@ class IpTest extends TestCase
     }
 
     /**
-     * All value must be null after creation
+     * All value must be null after creation.
      */
     public function testConstructor()
     {
@@ -92,7 +91,7 @@ class IpTest extends TestCase
         self::assertEquals($this->ip, $this->ip->setReason($actual));
         self::assertEquals($expected, $this->ip->getReason());
     }
-    
+
     /**
      * Tests ip getter, setter and aliases.
      */

@@ -1,0 +1,123 @@
+{% extends '@App/default/base.html.twig' %}
+
+{% import "@App/macro.html.twig" as app_macro %}
+
+{% set default_entity_show = 'default_plage_show' %}
+
+{% block title %}
+    {{ 'default.plage.show.title %name%'|trans({'%name%': plage.label})}} · {{ parent() }}
+{% endblock title %}
+
+{% block headline %}
+    {{ 'default.plage.show.title %name%'|trans({'%name%': plage.label })}}
+{% endblock headline %}
+
+{% block content_settings %}
+    <div class="panel panel-primary" id="administration-global-information">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{ 'administration.global-information' | trans }}</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-10">
+                    {{ app_macro.dl_plage(plage, false) }}
+                </div>
+                <div class="col-sm-2 text-right">
+                    <p>
+                        <span class="fa fa-indent fa-4x" style="color: {{ '#' ~ plage.network.color }}"></span>
+                    </p>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-sm-10">
+                    {{ app_macro.dl_network(plage.network) }}
+                </div>
+                <div class="col-sm-2 text-right">
+                    <p>
+                        <span class="fa fa-sitemap fa-4x" style="color: {{ '#' ~ plage.network.color }}"></span>
+                    </p>
+                </div>
+            </div>
+
+            {% if plage.network.plages.count %}
+            <table class="table">
+                <thead>
+                    <tr>
+                    <th id="site-ip-machine-label">
+                        <span class="fa fa-sitemap fa-fw"></span>
+                        {{ 'form.plage.field.label' | trans }}
+                    </th>
+                    <th id="plage-reason">
+                          {{ 'form.plage.field.reason' | trans }}
+                    </th>
+                        <th id="plage-ip-ipdeb">
+                            <span class="fa fa-indent fa-fw"></span>
+                            {{ 'form.plage.field.ipdeb' | trans }}
+                            <span class="fa fa-sort-numeric-asc fa-fw"></span>
+                        </th>
+                        <th id="plage-ip-ipfin">
+                            <span class="fa fa-indent fa-fw"></span>
+                            {{ 'form.plage.field.ipfin' | trans }}
+                            <span class="fa fa-sort-numeric-asc fa-fw"></span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for plage in plage.network.plages %}
+                    <tr>
+                    <td headers="network-plage-label">
+                        {%- if plage -%}
+                            <a href="{{ path('default_plage_show', {'id': plage.id}) }}" title="{{ plage.label }}">{{ plage.label }}</a>
+                        {%- else -%}
+                            <em>{{ 'default.machine.none' | trans }}</em>
+                        {%- endif -%}
+                    </td>
+                    <td headers="network-plage-reason">
+                      <dd>{{plage.reason}}</dd>
+                    </td>
+                        <td headers="network-plage-ipdeb">
+                          <dd>{{ plage.start | ip }}</dd>
+                        </td>
+                        <td headers="network-plage-ipfin">
+                          <dd>{{ plage.end | ip }}</dd>
+                        </td>
+
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+            <hr>
+
+
+        </div>
+    </div>
+{% endblock content_settings %}
+
+{% block content_action %}
+    {% if is_granted('ROLE_MANAGE_IP') %}
+        <h3>{{ 'administration.actions' | trans }}</h3>
+
+        <div class="text-center" id="default-actions">
+            <div class="btn-group-vertical">
+                <a class="btn-mini btn btn-default" href="{{ path('default_plage_edit', { 'id': plage.id }) }}"
+                   title="{{ 'default.plage.action.edit.title' | trans }}" data-toggle="tooltip"  data-placement="left">
+                    <span class="fa fa-pencil"></span>&nbsp;{{ 'administration.actions.edit' | trans }}
+                </a>
+                {% if isDeletable %}
+                    <button class="btn btn-danger btn-mini confirm-delete" data-toggle="modal" data-placement="left"
+                       title="{{ 'default.plage.action.delete.title' | trans }}" data-target="#confirm-delete"
+                       data-form="form">
+                        <span class="fa fa-trash-o"></span>&nbsp;{{ 'administration.actions.delete' | trans }}
+                    </button>
+                {% else %}
+                    <span class="btn btn-danger disabled">
+                        <span class="fa fa-trash-o"></span>&nbsp;{{ 'administration.actions.delete' | trans }}
+                    </span>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock content_action %}

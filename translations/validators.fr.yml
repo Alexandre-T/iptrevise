@@ -11,6 +11,10 @@ form.network.error.label.unique: 'Cet intitulé de réseau est déjà utilisé.'
 form.network.error.cidr.min: 'Le masque (CIDR) doit être supérieur ou égal à 0.'
 form.network.error.cidr.max: 'Le masque (CIDR) doit être inférieur ou égal à 32.'
 
+form.plage.error.ip.network %min% %max%: 'Les adresses Ip doivent être comprise entre %min% et %max%.'
+form.plage.error.ip.unique: 'Une adresse Ip a déjà été réservée sur cette plage'
+form.plage.error.plage.mixed: 'Vous essayez de réserver une plage d’adresses sur une autre plage'
+
 form.service.error.label.unique: 'Un service du même nom existe déjà'
 
 form.tag.error.too-long %tag%: 'Le tag « %tag% » doit contenir moins de 16 caractères.'

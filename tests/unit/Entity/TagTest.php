@@ -11,6 +11,7 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema
  * @license   CeCILL-B V1
+ *
  * @see       http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt
  */
 
@@ -26,7 +27,6 @@ use PHPUnit\Framework\TestCase;
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license CeCILL-B V1
- *
  */
 class TagTest extends TestCase
 {
@@ -44,15 +44,15 @@ class TagTest extends TestCase
     }
 
     /**
-     * All value must be null after creation
+     * All value must be null after creation.
      */
     public function testConstructor()
     {
         self::assertNull($this->tag->getCreated());
         self::assertNull($this->tag->getId());
         self::assertNull($this->tag->getLabel());
-        self::assertNotNull((string)($this->tag));
-        self::assertEmpty((string)($this->tag));
+        self::assertNotNull((string) ($this->tag));
+        self::assertEmpty((string) ($this->tag));
         self::assertNull($this->tag->getUpdated());
     }
 
@@ -63,6 +63,6 @@ class TagTest extends TestCase
     {
         self::assertEquals($this->tag, $this->tag->setLabel('label'));
         self::assertEquals('label', $this->tag->getLabel());
-        self::assertEquals('label', (string)($this->tag));
+        self::assertEquals('label', (string) ($this->tag));
     }
 }
