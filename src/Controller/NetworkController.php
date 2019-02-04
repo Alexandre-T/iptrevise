@@ -33,6 +33,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+
 /**
  * NetworkController class.
  *
@@ -149,15 +151,18 @@ class NetworkController extends Controller
      *
      * @param Network $network
      *
-     * @return Response
+     * @return BinaryFileResponse
      */
 
     public function matriceAction(Network $network)
     {
-        $file = new File('/public/images/noir.png');
-        return $this->file($file);
-
-}
+        $filePath = $this->get('kernel')->getRootDir().'/../public/images/noir.png';
+        $filename = 'noir.png';
+        $response = new BinaryFileResponse($filePath);
+        $response->trustXSendfileTypeHeader();
+        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $filename);
+        return $response;
+    }
 
     /**
      * Displays a form to edit an existing network entity.

@@ -167,8 +167,10 @@
         <div>
             <!--<img src="{{ asset('images/noir.png') }}" width="100%"/>-->
             <!--<img src="{{asset('/network/matrice')}}"/>-->
-            <img src="/network/matrice"/>
-        </div
+            <!--<img src="/network/matrice"/>-->
+            <img src="{{path('default_network_matrice')}}"  />
+            <img src="{{render(controller('App\\Controller\\NetworkController::matriceAction',{'network' : network}))}}" />
+        </div>
     </div>
 {% endblock content_settings %}
 
