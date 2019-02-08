@@ -44,7 +44,7 @@ script:
   # Composer must be validated.
   - composer validate --no-interaction --ansi --verbose
   # Launch server
-  - php bin/console server:run
+  - php bin/console server:start
   # Unit test
   - php bin/codecept run unit
   # Functional test
