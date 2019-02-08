@@ -34,9 +34,9 @@ install:
   # Database oonfiguration
   - cp .env.travis .env
   # Database migration
-  - php bin/console doctrine:migrations:migrate
+  - php bin/console doctrine:migrations:migrate -n
   # Data test installation
-  - php bin/console doctrine:fixtures:load --env=dev --fixtures=src/DataFixtures
+  - php bin/console doctrine:fixtures:load --env=dev --fixtures=src/DataFixtures -n
 
 
 # Run script and log coverage in the "build" directory
