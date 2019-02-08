@@ -80,11 +80,10 @@ class UserTest extends TestCase
      */
     public function testAdmin()
     {
-        self::assertEquals($this->user, $this->user->setAdmin(true));
+        self::assertEquals($this->user, $this->user->setRoles(['ROLE_ADMIN']));
         self::assertTrue($this->user->isAdmin());
-        self::assertEquals($this->user, $this->user->setAdmin(false));
+        self::assertEquals($this->user, $this->user->setRoles([]));
         self::assertFalse($this->user->isAdmin());
-
     }
 
     /**

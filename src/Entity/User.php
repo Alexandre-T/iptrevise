@@ -138,15 +138,6 @@ class User implements InformationInterface, LabelInterface, UserInterface, Seria
     private $newRoles = [];
 
     /**
-     * Is this user an admin?
-     *
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false, name="usr_admin", options={"default":false,"comment":"is user an admin"})
-     */
-    private $admin = false;
-
-    /**
      * A non-persisted field that's used to create the encoded password.
      *
      * @var string
@@ -431,7 +422,7 @@ class User implements InformationInterface, LabelInterface, UserInterface, Seria
      */
     public function isAdmin(): bool
     {
-        return $this->admin;
+        return in_array('ROLE_ADMIN', $this->getRoles());
     }
 
     /**
@@ -442,20 +433,6 @@ class User implements InformationInterface, LabelInterface, UserInterface, Seria
     public function getNewRoles(): Collection
     {
         return $this->newRoles;
-    }
-
-    /**
-     * Set this user as an admin.
-     *
-     * @param bool $admin
-     *
-     * @return User
-     */
-    public function setAdmin(bool $admin): User
-    {
-        $this->admin = $admin;
-
-        return $this;
     }
 
     /**

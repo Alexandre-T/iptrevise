@@ -51,23 +51,22 @@ class RoleType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
-
         $builder
-        ->add('readOnly', CheckboxType::class, [
-            'label' => 'readOnly ?',
-            'required' => false,
-        ])
-        ->add('site', EntityType::class, [
-            'class' => Site::class,
-            'query_builder' => function (SiteRepository $er) {
-              return $er->createQueryBuilder('u')
-              /*->orderBy('u.username', 'ASC')*/;
-            },
-            'choice_label' => 'label',
-            'help_block' => 'Sélectionnez le site'
-          ])
-          ;
+            ->add('site', EntityType::class, [
+                'class' => Site::class,
+                'query_builder' => function (SiteRepository $er) {
+                  return $er->createQueryBuilder('s')
+                    ->orderBy('s.label', 'ASC');
+                },
+                'choice_label' => 'label',
+                'help_block' => 'Sélectionnez le site'
+              ])
+            //TODO Remplacer par deux radio bouttons : Accès en lecture seule
+            //TODO Remplacer par deux radio bouttons : Création, modification et suppression autorisées
+            ->add('readOnly', CheckboxType::class, [
+                'label' => 'Lecture uniquement',
+                'required' => false,
+            ]);
     }
 
     /**
