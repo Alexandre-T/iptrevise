@@ -1,0 +1,96 @@
+language: php
+
+services:
+  - postgresql
+
+addons:
+  postgresql: "9.6"
+
+# Allows using containers
+sudo: false
+
+# Cache composer packages so "composer install" is faster
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+# Base versions to test raw with the Symfony latest version.
+php:
+  - 7.1
+  - 7.2
+  - 7.3
+
+# The Symfony version implies that you require the full framework, not single components
+# Requiring single components is much harder to do... And probably not flexible enough, even if it's lighter.
+env:
+  global:
+    - SYMFONY_VERSION=""
+
+# Heavy matrix to test every version of the bundle/package
+matrix:
+  # Fast finish allows to set the build as "finished" even if the "allow_failures" matrix elements are not finished yet.
+  fast_finish: true
+  include:
+    # @see https://symfony.com/roadmap
+    - php: 7.1
+      env: SYMFONY_VERSION="3.4.x"
+    - php: 7.2
+      env: SYMFONY_VERSION="3.4.x"
+    - php: 7.3
+      env: SYMFONY_VERSION="3.4.x"
+    - php: 7.1
+      env: SYMFONY_VERSION="4.1.x"
+    - php: 7.2
+      env: SYMFONY_VERSION="4.1.x"
+    - php: 7.3
+      env: SYMFONY_VERSION="4.1.x"
+    - php: 7.1
+      env: SYMFONY_VERSION="4.2.x"
+    - php: 7.2
+      env: SYMFONY_VERSION="4.2.x"
+    - php: 7.3
+      env: SYMFONY_VERSION="4.2.x"
+    - php: 7.1
+      env: SYMFONY_VERSION="4.3.x"
+    - php: 7.2
+      env: SYMFONY_VERSION="4.3.x"
+    - php: 7.3
+      env: SYMFONY_VERSION="4.3.x"
+  allow_failures:
+    #  Jan 2019: End of support for security fixes for Sf4.0
+    - php: 7.3
+    - env: SYMFONY_VERSION="4.1.x"
+    - env: SYMFONY_VERSION="4.2.x"
+    - env: SYMFONY_VERSION="4.3.x"
+
+# Update composer, and update Symfony version depending on the matrix
+before_install:
+  - composer selfupdate
+  - if [ "$SYMFONY_VERSION" != "" ]; then composer require --dev --no-update symfony/symfony:$SYMFONY_VERSION; fi
+  - mkdir -p build/logs
+
+install:
+  # Database creation
+  - psql -c 'create database symfony;' -U postgres
+  # Install application
+  - composer install --verbose
+  # Database migration
+  - php bin/console doctrine:migrations:migrate
+  # Data test installation
+  - php bin/console doctrine:fixtures:load --env=dev --fixtures=src/DataFixtures
+
+# Run script and log coverage in the "build" directory
+script:
+  - php bin/console server:run
+  # Unit test
+  - php bin/codecept run unit
+  # Functional test
+  - php bin/codecept run functional
+
+# After a build, sends a notification to this e-mail with the build results.
+notifications:
+  email:
+    recipients:
+      - alexandre.tranchant@gmail.com
+    on_success: never
+    on_failure: change
