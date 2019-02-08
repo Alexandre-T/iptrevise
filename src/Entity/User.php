@@ -133,7 +133,7 @@ class User implements InformationInterface, LabelInterface, UserInterface, Seria
      *
      * @var Role[]
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\Role", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\Role", mappedBy="user", orphanRemoval=true, cascade={"persist"})
      */
     private $newRoles = [];
 
@@ -446,7 +446,7 @@ class User implements InformationInterface, LabelInterface, UserInterface, Seria
 
     /**
      * Set this user as an admin.
-     * 
+     *
      * @param bool $admin
      *
      * @return User
@@ -454,10 +454,10 @@ class User implements InformationInterface, LabelInterface, UserInterface, Seria
     public function setAdmin(bool $admin): User
     {
         $this->admin = $admin;
-        
+
         return $this;
     }
-    
+
     /**
      * Add role.
      *
@@ -468,6 +468,7 @@ class User implements InformationInterface, LabelInterface, UserInterface, Seria
     public function addNewRole(Role $role): User
     {
         $this->newRoles[] = $role;
+        $role->setUser($this);
 
         return $this;
     }
@@ -485,4 +486,5 @@ class User implements InformationInterface, LabelInterface, UserInterface, Seria
 
         return $this;
     }
+    
 }

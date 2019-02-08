@@ -26,7 +26,20 @@
                         <dt>{{ 'form.user.field.roles'| trans }}</dt>
                         <dd>{{ user.roles | roles }}</dd>
                     </dl>
+                    <table>
+                      {% for role in user.newRoles%}
+                        <tr>
+                          {%if role.readOnly %}
+                            <td>ReaderOnly</td>
+                          {%else%}
+                            <td>Organiser</td>
+                          {%endif%}
+                          <td>{{role.site.label}}</td>
+                        </tr>
+                      {%endfor%}
+                    </table>
                 </div>
+
                 <div class="col-sm-2 text-right">
                     <img src="{{ user.mail | gravatarFilter }}" class="img-rounded"/>
                 </div>
