@@ -146,6 +146,30 @@
     </dl>
 {% endmacro %}
 
+{% macro dl_plage(plage, link = true) %}
+    <dl class="dl-horizontal">
+        <dt class="lead">{{ 'form.plage.field.plage'| trans }}</dt>
+        {% if link %}
+            <dd class="lead">
+                <a  href="{{ path('default_plage_show',{'id': plage.id}) }}" data-toggle="tooltip"
+                    title="{{ 'link.plage.show' | trans }}" data-placement="right">
+                    {{ ip.ip | ip }}
+                </a>
+            </dd>
+        {% else %}
+            <dd class="lead">{{ plage.label }}</dd>
+        {% endif %}
+        <dt>{{ 'form.plage.field.ipdeb'| trans }}</dt>
+        <dd>{{ plage.start | ip }}</dd>
+        <dt>{{ 'form.plage.field.ipfin'| trans }}</dt>
+        <dd>{{ plage.end | ip }}</dd>
+        <dt>{{ 'form.plage.field.reason'| trans }}</dt>
+        <dd>{{ plage.reason }}</dd>
+        <dt>{{ 'form.plage.field.creator'| trans }}</dt>
+        <dd>{{ plage.creator | label }}</dd>
+    </dl>
+{% endmacro %}
+
 {% macro tags(tags) %}
     {% set alreadyTagged = [] %}
     {% for tag in tags %}
