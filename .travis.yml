@@ -31,13 +31,19 @@ install:
   - psql -c 'create database symfony;' -U postgres
   # Install application
   - composer install --verbose
+  # Database oonfiguration
+  - cp .env.travis .env
   # Database migration
   - php bin/console doctrine:migrations:migrate
   # Data test installation
   - php bin/console doctrine:fixtures:load --env=dev --fixtures=src/DataFixtures
 
+
 # Run script and log coverage in the "build" directory
 script:
+  # Composer must be validated.
+  - composer validate --no-interaction --ansi --verbose
+  # Launch server
   - php bin/console server:run
   # Unit test
   - php bin/codecept run unit

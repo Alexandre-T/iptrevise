@@ -32,7 +32,6 @@
         "sensio/distribution-bundle": "^5.0",
         "sensio/framework-extra-bundle": "^3.0",
         "sensiolabs/security-checker": "^4.1",
-        "symfony/annotations-pack": "^1.0",
         "symfony/asset": "^3.3",
         "symfony/console": "^3.3",
         "symfony/expression-language": "^3.3",
