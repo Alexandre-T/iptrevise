@@ -22,9 +22,9 @@
                             <span class="fa fa-fw fa-sitemap"></span>
                             {{ 'default.plage.redirect.network %name%' | trans({'%name%': network.label }) }}
                         </a>
-                        <a href="{{ path('default_plage_index', {'id': network.id}) }}" title="" class="btn btn-default">
+                        <a href="{{ path('default_network_index', {'id': network.id}) }}" title="" class="btn btn-default">
                             <span class="fa fa-fw fa-sitemap"></span>
-                            {{ 'default.plage.redirect.network.index %name%' | trans({'%name%': network.label }) }}
+                            {{ 'default.plage.redirect.network.index' | trans }}
                         </a>
                       </div>
                 </div>

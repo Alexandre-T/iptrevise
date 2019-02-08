@@ -17,21 +17,20 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Service;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use App\Entity\Machine;
+use App\Entity\Service;
 
 /**
- * Load Machine Data for tests.
+ * LoadUserData class.
  *
  * @category DataFixtures
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license CeCILL-B V1
  */
-class MachineFixtures extends Fixture
+class ServiceFixtures extends Fixture
 {
     /**
      * Load Data.
@@ -40,31 +39,28 @@ class MachineFixtures extends Fixture
      */
     public function load(ObjectManager $manager)
     {
+        /** @var User $administrator */
+        $administrator = $this->getReference('user_admin');
+        $services = [
+            'DNS',
+            'Firewall',
+            'NTP',
+        ];
+
         if (in_array($this->container->get('kernel')->getEnvironment(), ['dev', 'test'])) {
-            $machine = [];
-            /** @var User $administrator */
-            $administrator = $this->getReference('user_admin');
-            /** @var User $organiser */
-            $organiser = $this->getReference('user_organiser');
-            /** @var Service $dnsService */
-            $dnsService = $this->getReference('service_dns');
+            //Load dev and test data
+            $services[] = 'Service 0';
+        }
 
-            for ($index = 0; $index <= 90; ++$index) {
-                $machine[$index] = (new Machine())
-                    ->setLabel("Machine $index")
-                    ->setDescription("Description $index")
-                    ->setInterface($index % 8 + 1)
-                    ->setCreator($organiser);
+        foreach ($services as $label) {
+            $service = new Service();
+            $service->setLabel($label);
+            $service->setCreator($administrator);
 
-                if ($index % 5) {
-                    $machine[$index]
-                        ->addService($dnsService)
-                        ->setCreator($administrator);
-                }
+            $this->addReference('service_'.strtolower($label), $service);
 
-                $this->addReference("machine_$index", $machine[$index]);
-                $manager->persist($machine[$index]);
-            }
+            //Persist dev and test data
+            $manager->persist($service);
         }
 
         $manager->flush();

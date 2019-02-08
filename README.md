@@ -58,6 +58,6 @@ php bin/codecept run functional
 
 Launch acceptance test: (not implemented)
 ```
-php bin/codecept run unit
+php bin/codecept run acceptance
 ```
 

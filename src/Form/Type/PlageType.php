@@ -93,7 +93,7 @@ class PlageType extends AbstractType
     }
 
     /**
-     * Check if the IP is in the Network.
+     * Check if the Plage is in the Network.
      *
      * @param Plage                        $Plage
      * @param ExecutionContextInterface $context
@@ -101,12 +101,37 @@ class PlageType extends AbstractType
     public function checkPlageInNetwork(Plage $plage, ExecutionContextInterface $context)
     {
         if ($plage->getEnd() > $plage->getNetwork()->getMaxIp() || $plage->getStart() < $plage->getNetwork()->getMinIp()) {
-            $context->buildViolation('form.plage.error.plage.network %min% %max%', [
+            $context->buildViolation('form.plage.error.ip.network %min% %max%', [
                 '%min%' => long2ip($plage->getNetwork()->getMinIp()),
                 '%max%' => long2ip($plage->getNetwork()->getMaxIp()),
             ])->addViolation();
         }
-    }
+        $plages = $plage->getNetwork()->getPlages();
+        $check = 0;
+        foreach ($plages as &$plagesNetwork){
+          if ($plage->getStart() <= $plagesNetwork->getEnd() && $plage->getStart() >= $plagesNetwork->getStart()){
+            $check++;
+          }
+          if ($plage->getEnd() <= $plagesNetwork->getEnd() && $plage->getEnd() >= $plagesNetwork->getStart()){
+            $check++;
+          }
+        }
+        if ($check > 0){
+          $context->buildViolation('form.plage.error.plage.mixed')->addViolation();
+        }
+        $check = 0;
+        $ips = $plage->getNetwork()->getIps();
+        foreach ($ips as $ip){
+          if ($ip->getIp() >= $plage->getStart() && $ip->getIp() <= $plage->getEnd()){
+            $check++;
+          }
+        }
+        if ($check > 0){
+          $context->buildViolation('form.plage.error.ip.unique')->addViolation();
+        }
+      }
+
+
 
     /**
      * Returns the prefix of the template block name for this type.
