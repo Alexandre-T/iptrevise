@@ -20,10 +20,7 @@ php:
   - 7.2
   - 7.3
 
-# Update composer, and update Symfony version depending on the matrix
 before_install:
-  - composer selfupdate
-  - if [ "$SYMFONY_VERSION" != "" ]; then composer require --dev --no-update symfony/symfony:$SYMFONY_VERSION; fi
   - mkdir -p build/logs
 
 install:
