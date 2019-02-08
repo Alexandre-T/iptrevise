@@ -22,3 +22,5 @@ form.tag.error.too-long %tag%: 'Le tag « %tag% » doit contenir moins de 16 c
 form.user.error.roles.empty: 'Vous devez sélectionner au moins un rôle.'
 form.user.error.mail.unique: 'Cette adresse mail est déjà utilisée.'
 form.user.error.label.unique: 'Cet identifiant est déjà utilisé.'
+
+form.site.error.label.unique: 'Cet intitulé de site est déjà utilisé'
