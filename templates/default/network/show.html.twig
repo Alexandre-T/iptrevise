@@ -2,10 +2,6 @@
 
 {% import "@App/macro.html.twig" as app_macro %}
 
-{% block stylesheets %}
-<link rel="stylesheet" href="{{ asset('noir.png') }}">
-{% endblock %}
-
 {% set default_entity_show = 'default_network_show' %}
 
 {% block title %}
@@ -242,12 +238,12 @@
             </tbody>
         </table>
         {% endif %}
-        <div>
-            <!--<img src="{{ asset('images/noir.png') }}" width="100%"/>-->
-            <!--<img src="{{asset('/network/matrice')}}"/>-->
-            <!--<img src="/network/matrice"/>-->
-            <img src="{{path('default_network_matrice')}}"  />
-            <img src="{{render(controller('App\\Controller\\NetworkController::matriceAction',{'network' : network}))}}" />
+        <div class="panel-body">
+            {#<img src="{{ asset('images/noir.png') }}" width="100%"/>#}
+            {#<img src="{{asset('/network/matrice')}}"/>#}
+            {#<img src="/network/matrice"/>#}
+            <img src="{{path('default_network_matrice', {'network': network.id})}}"  alt="Matrice" width="100%" height="100"/>
+            {#<img src="{{render(controller('App\\Controller\\NetworkController::matriceAction',{'network' : network}))}}" />#}
         </div>
     </div>
 {% endblock content_settings %}

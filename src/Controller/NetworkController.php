@@ -145,23 +145,32 @@ class NetworkController extends Controller
     /**
      * Finds and displays a network entity.
      *
-     * @Route("/matrice", name="default_network_matrice")
+     * @Route("/matrice/{network}", name="default_network_matrice")
      * @Method("GET")
      * @Security("is_granted('ROLE_READ_NETWORK')")
      *
      * @param Network $network
      *
-     * @return BinaryFileResponse
+     * @return Response
      */
 
     public function matriceAction(Network $network)
     {
-        $filePath = $this->get('kernel')->getRootDir().'/../public/images/noir.png';
-        $filename = 'noir.png';
-        $response = new BinaryFileResponse($filePath);
-        $response->trustXSendfileTypeHeader();
-        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $filename);
-        return $response;
+        $image = imagecreate ( 100 , 100 );
+        imagecolorallocate($image, 0, 255, 0);
+
+        //FIXME Cette partie de code est moche, mais je n'ai rien trouvé de mieux pour le moment
+        ob_start();
+        imagejpeg($image);
+        $imageString = ob_get_clean();
+
+        $headers= array(
+            'Content-type'=>'image/jpeg',
+            'Pragma'=>'no-cache',
+            'Cache-Control'=>'no-cache'
+        );
+
+        return new Response($imageString, 200, $headers);
     }
 
     /**
