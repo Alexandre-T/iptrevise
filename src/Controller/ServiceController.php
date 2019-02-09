@@ -1,6 +1,4 @@
 <?php
-//TODO ROLE_READ_SERVICE ?
-//TODO ROLE_READ_SERVICE ?
 /**
  * This file is part of the IP-Trevise Application.
  *
@@ -20,25 +18,23 @@
 namespace App\Controller;
 
 use App\Bean\Factory\InformationFactory;
-use App\Form\Type\ServiceType; //TODO ServiceType
 use App\Entity\Service;
-use App\Manager\ServiceManager; // à faire
-
-//regarder quelle son les use pertinent
-use App\Manager\NetworkManager;
+use App\Form\Type\ServiceType;
+use App\Manager\ServiceManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Service CRUD Controller
- * .
+ * Service CRUD Controller.
+ *
+ *
  * @category Controller
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
@@ -48,38 +44,39 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ServiceController extends Controller
 {
-  /**
-   * Limit of services per page for listing
-   */
-  const LIMIT_PER_PAGE = 25;
+    /**
+     * Limit of services per page for listing.
+     */
+    const LIMIT_PER_PAGE = 25;
 
-  /**
-   * Lists all service entities.
-   *
-   * @Route("/", name="default_service_index")
-   * @Method("GET")
-   * @Security("is_granted('ROLE_READ_SERVICE')")
-   *
-   * @param Request $request
-   *
-   * @return Response
-   */
-  public function indexAction(Request $request)
-  {
-      //Retrieving all services
-      $serviceManager = $this->get(ServiceManager::class);
-      $paginator = $this->get('knp_paginator');
-      $pagination = $paginator->paginate(
+    /**
+     * List all service entities.
+     *
+     * @Route("/", name="default_service_index")
+     * @Method("GET")
+     * @Security("is_granted('ROLE_READ_SERVICE')")
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function indexAction(Request $request)
+    {
+        //Retrieving all services
+        $serviceManager = $this->get(ServiceManager::class);
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
           $serviceManager->getQueryBuilder(), /* queryBuilder NOT result */
           $request->query->getInt('page', 1)/*page number*/,
           self::LIMIT_PER_PAGE,
           ['defaultSortFieldName' => 'service.label', 'defaultSortDirection' => 'asc']
       );
 
-      return $this->render('@App/default/service/index.html.twig', [
+        return $this->render('@App/default/service/index.html.twig', [
           'pagination' => $pagination,
       ]);
-  }
+    }
+
     /**
      * Creates a new service entity.
      *
@@ -98,7 +95,7 @@ class ServiceController extends Controller
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $serviceService = $this->get(ServiceManager::class); //TODO ServiceManager
-            $serviceService->save($service);
+            $serviceService->save($service, $this->getUser());
             //Flash message
             $session = $this->get('session');
             $trans = $this->get('translator.default');
@@ -113,6 +110,7 @@ class ServiceController extends Controller
             'form' => $form->createView(),
         ]);
     }
+
     /**
      * Finds and displays a service entity.
      *
@@ -135,7 +133,7 @@ class ServiceController extends Controller
         $view['service'] = $service;
         $view['isDeletable'] = $this->isGranted('ROLE_MANAGE_SERVICE') && $serviceManager->isDeletable($service);
 
-        if ($view['isDeletable']){
+        if ($view['isDeletable']) {
             $view['delete_form'] = $this->createDeleteForm($service)->createView();
         }
 
@@ -160,7 +158,7 @@ class ServiceController extends Controller
         $view = [];
         $isDeletable = $serviceService->isDeletable($service);
 
-        if ($isDeletable){
+        if ($isDeletable) {
             $view['delete_form'] = $this->createDeleteForm($service)->createView();
         }
 
@@ -214,10 +212,10 @@ class ServiceController extends Controller
 
             $message = $trans->trans('default.service.deleted %name%', ['%name%' => $service->getLabel()]);
             $session->getFlashBag()->add('success', $message);
-        }elseif (!$isDeletable){
-
+        } elseif (!$isDeletable) {
             $message = $trans->trans('default.service.not-deletable %name%', ['%name%' => $service->getLabel()]);
             $session->getFlashBag()->add('warning', $message);
+
             return $this->redirectToRoute('default_service_show', ['id' => $service->getId()]);
         }
 
@@ -229,7 +227,7 @@ class ServiceController extends Controller
      *
      * @param Service $service The service entity
      *
-     * @return Form The form
+     * @return FormInterface The form
      */
     private function createDeleteForm(Service $service)
     {

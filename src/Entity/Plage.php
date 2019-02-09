@@ -34,8 +34,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="te_plage")
  * @Gedmo\Loggable
  */
-class Plage
+class Plage implements InformationInterface, LabelInterface, ReferentInterface
 {
+    use ReferentTrait;
+
     /**
      * Internal identifier.
      *
@@ -140,6 +142,9 @@ class Plage
      * @Gedmo\Versioned
      */
     private $network;
+
+
+    private $color;
 
     /**
      * Get the identifier.
@@ -290,6 +295,31 @@ class Plage
 
         return $this;
     }
+
+    /**
+     * Get the color of this network.
+     *
+     * @return string
+     */
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    /**
+     * Set Color of this network.
+     *
+     * @param string $color
+     *
+     * @return Plage
+     */
+    public function setColor(string $color): Plage
+    {
+        $this->color = $color;
+
+        return $this;
+    }
+
 
 
 }

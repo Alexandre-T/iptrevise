@@ -155,6 +155,10 @@ class UserController extends Controller
         $editForm->handleRequest($request);
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $userService->save($user, $this->getUser());
+            //$user=$editForm->getData();
+            //$em = $this->getDoctrine()->getManager();
+            //$em->persist($user);
+            //$em->flush();
             //Flash message
             $session = $this->get('session');
             $trans = $this->get('translator.default');

@@ -5,7 +5,7 @@
 {% block title %}{{ 'default.service.list.title'| trans }} · {{ parent() }}{% endblock title %}
 
 {% block headline %}
-    <span class="fa fa-desktop"></span>
+    <span class="fa fa-stack-overflow"></span>
     {{ 'default.service.list.title'| trans }}
 {% endblock %}
 
@@ -32,7 +32,7 @@
         {% for row in pagination %}
             {% set service = row[0] %}
             <tr class="row-{{ loop.index }}">
-                <td headers="service-color"><span class="fa fa-desktop"></span></td>
+                <td headers="service-color"><span class="fa fa-stack-overflow"></span></td>
                 <td headers="service-label" class="th-icon">{{ service.label }}</td>
                 <td headers="service-machines" class="th-icon">{{ row['machinesCount'] | localizednumber }}</td>
                 <td headers="service-actions">
@@ -62,7 +62,7 @@
         <div class="text-center">
             <a class="btn btn-default" href="{{ path('default_service_new') }}" data-toggle="tooltip" data-placement="left"
                title="{{ 'default.service.create.title' | trans }}">
-                <span class="fa fa-desktop"></span>
+                <span class="fa fa-stack-overflow"></span>
                 {{ 'default.service.create' | trans }}
             </a>
         </div>

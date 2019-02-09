@@ -69,6 +69,7 @@ class MachineCrudCest
         $I->wantToTest('The length of each field');
         $I->fillField('Machine', str_repeat('a', 33));
         $I->fillField('Interface', -2);
+        $I->checkOption('Firewall');
         $I->fillField('app_machine[tags]', 'toto,titi,12345678901234567');
         $I->click('Créer');
         $I->seeCurrentUrlEquals('/machine/new');
@@ -92,6 +93,8 @@ class MachineCrudCest
         $I->see('Informations générales');
         $I->see('AMachine Codeception', 'dd.lead');
         $I->see('Description de codeception', 'dd');
+        $I->see('Firewall', 'dd');
+        $I->dontSee('DNS', 'dd');
         $I->see('9', 'dd');
         $I->see('titi', 'span.label');
         $I->see('toto', 'span.label');
@@ -124,6 +127,8 @@ class MachineCrudCest
         $I->seeInField('Interface', '9');
 
         $I->fillField('Machine', 'AMachine Codeception');
+        $I->checkOption('DNS');
+        $I->uncheckOption('Firewall');
         $I->fillField('app_machine[description]', 'Description de codeception2');
         $I->fillField('Interface', '11');
 
@@ -132,6 +137,8 @@ class MachineCrudCest
         $I->seeCurrentUrlEquals("/machine/$id");
         $I->see('La machine « AMachine Codeception » a été modifiée avec succès', '.alert-success');
 
+        $I->dontSee('Firewall', 'dd');
+        $I->see('DNS', 'dd');
         $I->see('Journal de bord');
         $I->see('2', 'td[headers="logs-version"].row2');
         $I->see('Modification', 'td[headers="logs-action"].row2');
