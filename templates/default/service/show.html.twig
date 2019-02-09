@@ -33,34 +33,52 @@
         <table class="table">
             <thead>
                 <tr>
-                <th id="service-machine-label">
-                    <span class="fa fa-sitemap fa-fw"></span>
-                    {{ 'form.machine.field.label' | trans }}
-                </th>
+                    <th id="service-machine-label">
+                        <span class="fa fa-sitemap fa-fw"></span>
+                        {{ 'form.machine.field.label' | trans }}
+                    </th>
+                    <th id="service-machine-ip-network">
+                        <span class="fa fa-sitemap fa-fw"></span>
+                        {{ 'form.ip.field.network' | trans }}
+                        {#<span class="fa fa-sort-numeric-asc fa-fw"></span>#}
+                    </th>
                     <th id="service-machine-ip">
                         <span class="fa fa-indent fa-fw"></span>
                         {{ 'form.machine.field.ip' | trans }}
-                        <span class="fa fa-sort-numeric-asc fa-fw"></span>
+                        {#<span class="fa fa-sort-numeric-asc fa-fw"></span>#}
                     </th>
                 </tr>
             </thead>
             <tbody>
                 {% for machine in service.machines %}
                 <tr>
-                <td headers="service-machine-label">
-                    {%- if machine -%}
-                        <a href="{{ path('default_network_show', {'id': machine.id}) }}" title="{{ machine.label }}">{{ machine.label }}</a>
-                    {%- else -%}
-                        <em>{{ 'default.machine.none' | trans }}</em>
-                    {%- endif -%}
-                </td>
-                    <td headers="service-machine-ip">
-                        <a href="{{ path('default_ip_show', {'id': machine.id}) }}" title="{{ machine.ip | ip }}">
-                            {{ machine.ip | ip }}
-                        </a>
+                    <td headers="service-machine-label">
+                        {%- if machine -%}
+                            <a href="{{ path('default_machine_show', {'id': machine.id}) }}" title="{{ machine.label }}">{{ machine.label }}</a>
+                        {%- else -%}
+                            <em>{{ 'default.machine.none' | trans }}</em>
+                        {%- endif -%}
                     </td>
-
-
+                    <td headers="service-machine-ip-network">
+                        {% if machine.ips %}
+                            {% for ip in machine.ips %}
+                                <a href="{{ path('default_network_show', {'id': ip.network.id}) }}" title="{{ ip.network.label }}">
+                                    {{ ip.network.label }}
+                                </a>&nbsp;
+                            {% endfor %}
+                        {% endif %}
+                    </td>
+                    <td headers="service-machine-ip">
+                        {% if machine.ips %}
+                            {% for ip in machine.ips %}
+                                <a href="{{ path('default_ip_show', {'id': ip.id}) }}" title="{{ ip.ip | ip }}">
+                                    {{ ip.ip | ip }}
+                                </a>&nbsp;
+                            {% endfor %}
+                        {% else %}
+                            {{ 'default.machine.ips.none' | trans }}
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

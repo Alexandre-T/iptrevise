@@ -107,14 +107,12 @@ services:
         calls:
             - [ setTranslator, ['@translator.default']]
 
-    # Label twig filter
-    app.twig.label_extension:
-        class: App\Twig\LabelExtension
+    # Services twig filter
+    app.twig.services_extension:
+        class: App\Twig\ServicesExtension
         public: false
         tags:
             - { name: twig.extension }
-        calls:
-            - [ setTranslator, ['@translator.default']]
 
     # Label twig filter
     app.twig.label_extension:

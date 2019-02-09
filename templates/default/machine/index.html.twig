@@ -60,9 +60,7 @@
             </tr>
             <tr>
               <td colspan="2">
-                {% for service in machine.services %}
-                {{service}}
-                {% endfor %}
+                {{ machine.services | services }}
               </td>
               <td headers="machine-tags" class="th-icon"><span class="fa fa-tags">{{ 'form.machine.field.tags' | trans }}{{ app_macro.tags(row['tagsConcat'] | split(',')) }}</td>
             </tr>
