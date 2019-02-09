@@ -238,6 +238,13 @@
             </tbody>
         </table>
         {% endif %}
+        <div class="panel-body">
+            {#<img src="{{ asset('images/noir.png') }}" width="100%"/>#}
+            {#<img src="{{asset('/network/matrice')}}"/>#}
+            {#<img src="/network/matrice"/>#}
+            <img src="{{path('default_network_matrice', {'network': network.id})}}"  alt="Matrice" width="100%" height="100"/>
+            {#<img src="{{render(controller('App\\Controller\\NetworkController::matriceAction',{'network' : network}))}}" />#}
+        </div>
     </div>
 {% endblock content_settings %}
 
