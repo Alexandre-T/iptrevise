@@ -1,15 +1,15 @@
 {% extends '@App/default/base.html.twig' %}
 
-{% set administration_entity_show = 'default_network_show' %}
+{% set administration_entity_show = 'default_plage_show' %}
 
-{% block title %}{{ 'default.network.edit.title %name%'|trans({'%name%': network.label})}} · {{ parent() }}{% endblock title %}
+{% block title %}{{ 'default.plage.edit.title %name%'|trans({'%name%': plage.label})}} · {{ parent() }}{% endblock title %}
 
-{% block headline %}{{ 'default.network.edit.title %name%'|trans({'%name%': network.label})}}{% endblock %}
+{% block headline %}{{ 'default.plage.edit.title %name%'|trans({'%name%': plage.label })}}{% endblock %}
 
 {% block content_settings %}
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <h1 class="panel-title">{{ 'default.network.edit.title %name%'|trans({'%name%': network.label})}}</h1>
+            <h1 class="panel-title">{{ 'default.plage.edit.title %name%'|trans({'%name%': plage.label })}}</h1>
         </div>
         <div class="panel-body">
             {{ form_start(edit_form) }}
@@ -24,8 +24,15 @@
             </div>
             {{ form_end(edit_form) }}
         </div>
+        <div class="panel-footer text-right">
+            {% if plage.creator %}
+                <em>{{ 'form.plage.field.reserved-by %name%' | trans({'%name%':plage.creator.label}) }}</em>
+            {% else %}
+                <em>{{ 'form.plage.field.reserved-by-deleted-user' | trans }}</em>
+            {% endif %}
+        </div>
     </div>
-{% endblock content_settings %}
+{% endblock content_settings%}
 
 {% block content_action %}
     <h3>{{ 'administration.actions' | trans }}</h3>
@@ -35,13 +42,13 @@
                data-placement="left" data-toggle="tooltip" title="{{ 'default.network.action.list.title' | trans }}">
                 <span class="fa fa-sitemap"></span>&nbsp;{{ 'network.actions.back.list' | trans }}
             </a>
-            <a class="btn-mini btn btn-default" href="{{ path('default_network_show', { 'id': network.id }) }}"
-               data-placement="left" data-toggle="tooltip" title="{{ 'default.network.action.show.title' | trans }}">
+            <a class="btn-mini btn btn-default" href="{{ path('default_plage_show', { 'id': plage.id }) }}"
+               data-placement="left" data-toggle="tooltip" title="{{ 'default.plage.action.show.title' | trans }}">
                 <span class="fa fa-eye"></span>&nbsp;{{ 'administration.actions.show' | trans }}
             </a>
             {% if isDeletable %}
                 <button class="btn btn-danger btn-mini confirm-delete" data-toggle="modal" data-target="#confirm-delete"
-                        data-form="form" data-placement="left" title="{{ 'default.network.action.delete.title' | trans }}">
+                        data-form="form" title="{{ 'default.plage.action.delete.title' | trans }}" data-placement="left">
                     <span class="fa fa-trash-o"></span>&nbsp;{{ 'administration.actions.delete' | trans }}
                 </button>
             {% else %}

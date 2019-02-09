@@ -133,18 +133,9 @@ class User implements InformationInterface, LabelInterface, UserInterface, Seria
      *
      * @var Role[]
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\Role", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\Role", mappedBy="user", orphanRemoval=true, cascade={"persist"})
      */
     private $newRoles = [];
-
-    /**
-     * Is this user an admin?
-     *
-     * @var bool
-     *
-     * @ORM\Column(type="boolean", nullable=false, name="usr_admin", options={"default":false,"comment":"is user an admin"})
-     */
-    private $admin = false;
 
     /**
      * A non-persisted field that's used to create the encoded password.
@@ -431,7 +422,7 @@ class User implements InformationInterface, LabelInterface, UserInterface, Seria
      */
     public function isAdmin(): bool
     {
-        return $this->admin;
+        return in_array('ROLE_ADMIN', $this->getRoles());
     }
 
     /**
@@ -445,20 +436,6 @@ class User implements InformationInterface, LabelInterface, UserInterface, Seria
     }
 
     /**
-     * Set this user as an admin.
-     * 
-     * @param bool $admin
-     *
-     * @return User
-     */
-    public function setAdmin(bool $admin): User
-    {
-        $this->admin = $admin;
-        
-        return $this;
-    }
-    
-    /**
      * Add role.
      *
      * @param Role $role
@@ -468,6 +445,7 @@ class User implements InformationInterface, LabelInterface, UserInterface, Seria
     public function addNewRole(Role $role): User
     {
         $this->newRoles[] = $role;
+        $role->setUser($this);
 
         return $this;
     }
@@ -485,4 +463,5 @@ class User implements InformationInterface, LabelInterface, UserInterface, Seria
 
         return $this;
     }
+    
 }

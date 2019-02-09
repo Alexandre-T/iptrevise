@@ -31,6 +31,10 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+
 /**
  * NetworkController class.
  *
@@ -137,6 +141,36 @@ class NetworkController extends Controller
         }
 
         return $this->render('@App/default/network/show.html.twig', $view);
+    }
+    /**
+     * Finds and displays a network entity.
+     *
+     * @Route("/matrice/{network}", name="default_network_matrice")
+     * @Method("GET")
+     * @Security("is_granted('ROLE_READ_NETWORK')")
+     *
+     * @param Network $network
+     *
+     * @return Response
+     */
+
+    public function matriceAction(Network $network)
+    {
+        $image = imagecreate ( 100 , 100 );
+        imagecolorallocate($image, 0, 255, 0);
+
+        //FIXME Cette partie de code est moche, mais je n'ai rien trouvé de mieux pour le moment
+        ob_start();
+        imagejpeg($image);
+        $imageString = ob_get_clean();
+
+        $headers= array(
+            'Content-type'=>'image/jpeg',
+            'Pragma'=>'no-cache',
+            'Cache-Control'=>'no-cache'
+        );
+
+        return new Response($imageString, 200, $headers);
     }
 
     /**
