@@ -135,7 +135,7 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      * Adresses Mac of the Machine.
      *
      * @var string
-     *
+     * @Assert\NotBlank()
      * @ORM\Column(type="text", nullable=true, name="mac_macs", options={"comment":"Adresses mac de la machine"})
      */
     private $macs;
