@@ -2,7 +2,7 @@
 /**
  * This file is part of the IP-Trevise Application.
  *
- * PHP version 7.1
+ * PHP version 7.2
  *
  * (c) Alexandre Tranchant <alexandre.tranchant@gmail.com>
  *
@@ -39,8 +39,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @UniqueEntity("label", message="form.network.error.label.unique")
  */
-class Network implements InformationInterface, LabelInterface
+class Network implements ColorInterface, InformationInterface, LabelInterface
 {
+    use ColorTrait;
     use ReferentTrait;
     /**
      * Internal identifier.
@@ -139,7 +140,7 @@ class Network implements InformationInterface, LabelInterface
      * )
      * @Gedmo\Versioned
      */
-    private $color;
+    private $color = '000000';
 
     /**
      * Datetime creation (in the application) of the network.
@@ -275,17 +276,7 @@ class Network implements InformationInterface, LabelInterface
     }
 
     /**
-     * Get the color of this network.
-     *
-     * @return string
-     */
-    public function getColor(): ?string
-    {
-        return $this->color;
-    }
-
-    /**
-     * Get reserved plage/range of the Network
+     * Get reserved plage/range of the Network.
      *
      * @return Collection|Plage[]
      */
@@ -341,7 +332,7 @@ class Network implements InformationInterface, LabelInterface
      *
      * @return Network
      */
-    public function setLabel(string $label): Network
+    public function setLabel(string $label): self
     {
         $this->label = $label;
 
@@ -355,7 +346,7 @@ class Network implements InformationInterface, LabelInterface
      *
      * @return Network
      */
-    public function setDescription(string $description): Network
+    public function setDescription(string $description): self
     {
         $this->description = $description;
 
@@ -369,7 +360,7 @@ class Network implements InformationInterface, LabelInterface
      *
      * @return Network
      */
-    public function setIp(int $ip): Network
+    public function setIp(int $ip): self
     {
         $this->ip = $ip;
 
@@ -383,23 +374,9 @@ class Network implements InformationInterface, LabelInterface
      *
      * @return Network
      */
-    public function setCidr(int $cidr): Network
+    public function setCidr(int $cidr): self
     {
         $this->cidr = $cidr;
-
-        return $this;
-    }
-
-    /**
-     * Set Color of this network.
-     *
-     * @param string $color
-     *
-     * @return Network
-     */
-    public function setColor(string $color): Network
-    {
-        $this->color = $color;
 
         return $this;
     }
@@ -411,7 +388,7 @@ class Network implements InformationInterface, LabelInterface
      *
      * @return Network
      */
-    public function setSite(Site $site): Network
+    public function setSite(Site $site): self
     {
         $this->site = $site;
 
@@ -481,7 +458,7 @@ class Network implements InformationInterface, LabelInterface
      *
      * @return Network
      */
-    public function setIps(Collection $ips): Network
+    public function setIps(Collection $ips): self
     {
         $this->ips = $ips;
 
@@ -505,9 +482,9 @@ class Network implements InformationInterface, LabelInterface
      */
     public function getCapacity()
     {
-        if ($this->cidr == 32) {
+        if (32 == $this->cidr) {
             return 1;
-        } elseif ($this->cidr == 31) {
+        } elseif (31 == $this->cidr) {
             return 2;
         }
 
@@ -521,7 +498,7 @@ class Network implements InformationInterface, LabelInterface
      */
     public function getMinIp(): int
     {
-        if ($this->cidr == 32 || $this->cidr == 31) {
+        if (32 == $this->cidr || 31 == $this->cidr) {
             return $this->getIp();
         }
 
@@ -535,9 +512,9 @@ class Network implements InformationInterface, LabelInterface
      */
     public function getMaxIp(): int
     {
-        if ($this->cidr == 32) {
+        if (32 == $this->cidr) {
             return $this->getIp();
-        } elseif ($this->cidr == 31) {
+        } elseif (31 == $this->cidr) {
             return $this->getIp() + 1;
         }
 
@@ -551,9 +528,9 @@ class Network implements InformationInterface, LabelInterface
      */
     public function getBroadcast(): ?int
     {
-        if ($this->cidr == 32) {
+        if (32 == $this->cidr) {
             return $this->getIp();
-        } elseif ($this->cidr == 31) {
+        } elseif (31 == $this->cidr) {
             return null;
         }
 

@@ -11,6 +11,7 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema
  * @license   CeCILL-B V1
+ *
  * @see       http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt
  */
 
@@ -28,7 +29,6 @@ use PHPUnit\Framework\TestCase;
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license CeCILL-B V1
- *
  */
 class NetworkTest extends TestCase
 {
@@ -46,13 +46,13 @@ class NetworkTest extends TestCase
     }
 
     /**
-     * All value must be null after creation
+     * All value must be null after creation.
      */
     public function testConstructor()
     {
         self::assertNull($this->network->getCreated());
         self::assertNull($this->network->getId());
-        self::assertNull($this->network->getColor());
+        self::assertEquals('000000', $this->network->getColor());
         self::assertNull($this->network->getLabel());
         self::assertNull($this->network->getDescription());
         self::assertNull($this->network->getIp());
@@ -69,7 +69,7 @@ class NetworkTest extends TestCase
     public function testLabel()
     {
         $expected = $actual = 'label';
-        
+
         self::assertEquals($this->network, $this->network->setLabel($actual));
         self::assertEquals($expected, $this->network->getLabel());
     }
@@ -80,7 +80,7 @@ class NetworkTest extends TestCase
     public function testDescription()
     {
         $expected = $actual = 'description';
-        
+
         self::assertEquals($this->network, $this->network->setDescription($actual));
         self::assertEquals($expected, $this->network->getDescription());
     }
@@ -91,7 +91,7 @@ class NetworkTest extends TestCase
     public function testIp()
     {
         $expected = $actual = ip2long('255.255.255.250');
-        
+
         self::assertEquals($this->network, $this->network->setIp($actual));
         self::assertEquals($expected, $this->network->getIp());
     }
@@ -102,7 +102,7 @@ class NetworkTest extends TestCase
     public function testCidr()
     {
         $expected = $actual = 24;
-        
+
         self::assertEquals($this->network, $this->network->setCidr($actual));
         self::assertEquals($expected, $this->network->getCidr());
     }
@@ -113,9 +113,29 @@ class NetworkTest extends TestCase
     public function testColor()
     {
         $expected = $actual = 'color';
-        
+
         self::assertEquals($this->network, $this->network->setColor($actual));
         self::assertEquals($expected, $this->network->getColor());
+        self::assertEquals(0, $this->network->getRed());
+        self::assertEquals(0, $this->network->getGreen());
+        self::assertEquals(0, $this->network->getBlue());
+
+        $expected = $actual = 'FEFDFC';
+
+        self::assertEquals($this->network, $this->network->setColor($actual));
+        self::assertEquals($expected, $this->network->getColor());
+        self::assertEquals(254, $this->network->getRed());
+        self::assertEquals(253, $this->network->getGreen());
+        self::assertEquals(252, $this->network->getBlue());
+
+        $actual = 'FED';
+        $expected = 'FFEEDD';
+
+        self::assertEquals($this->network, $this->network->setColor($actual));
+        self::assertEquals($expected, $this->network->getColor());
+        self::assertEquals(255, $this->network->getRed());
+        self::assertEquals(238, $this->network->getGreen());
+        self::assertEquals(221, $this->network->getBlue());
     }
 
     /**
@@ -124,7 +144,7 @@ class NetworkTest extends TestCase
     public function testSite()
     {
         $expected = $actual = new Site();
-        
+
         self::assertEquals($this->network, $this->network->setSite($actual));
         self::assertEquals($expected, $this->network->getSite());
     }
@@ -189,7 +209,6 @@ class NetworkTest extends TestCase
         self::assertEquals('255.0.0.0', long2ip($this->network->getMask()));
         self::assertEquals('0.255.255.255', long2ip($this->network->getWildcard()));
 
-
         $this->network->setIp(ip2long('10.0.0.0'));
         $this->network->setCidr(24);
 
@@ -229,7 +248,6 @@ class NetworkTest extends TestCase
         self::assertEquals('172.22.47.255', long2ip($this->network->getBroadcast()));
         self::assertEquals('255.255.240.0', long2ip($this->network->getMask()));
         self::assertEquals('0.0.15.255', long2ip($this->network->getWildcard()));
-
     }
 
     /**
@@ -286,7 +304,5 @@ class NetworkTest extends TestCase
         self::assertEquals('0.0.0.0', long2ip($this->network->getBroadcast()));
         self::assertEquals('255.255.255.255', long2ip($this->network->getMask()));
         self::assertEquals('0.0.0.0', long2ip($this->network->getWildcard()));
-
     }
-
 }

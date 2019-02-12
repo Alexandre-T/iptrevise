@@ -11,6 +11,7 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema
  * @license   CeCILL-B V1
+ *
  * @see       http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt
  */
 
@@ -28,7 +29,6 @@ use PHPUnit\Framework\TestCase;
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license CeCILL-B V1
- *
  */
 class RoleTest extends TestCase
 {
@@ -46,7 +46,7 @@ class RoleTest extends TestCase
     }
 
     /**
-     * All value must be null after creation
+     * All value must be null after creation.
      */
     public function testConstructor()
     {
@@ -73,7 +73,7 @@ class RoleTest extends TestCase
     public function testSite()
     {
         $expected = $actual = new Site();
-        
+
         self::assertEquals($this->role, $this->role->setSite($actual));
         self::assertEquals($expected, $this->role->getSite());
     }
@@ -84,7 +84,7 @@ class RoleTest extends TestCase
     public function testUser()
     {
         $expected = $actual = new User();
-        
+
         self::assertEquals($this->role, $this->role->setUser($actual));
         self::assertEquals($expected, $this->role->getUser());
     }
