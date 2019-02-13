@@ -189,13 +189,19 @@ class NetworkController extends Controller
         }
 
         // color the adresses reserved by the network with its color
-        //$color = networkColor($network) //FIXME use color of the network to define a color with rgb values in a imagecolorallocate
-        $color = imagecolorallocate($image, 255, 0, 0);// pure red for all networks for now
+        $color = imagecolorallocate($image,
+                                    $network->getRed(),
+                                    $network->getGreen(),
+                                    $network->getBlue());
+
+        $red = imagecolorallocate($image, 255, 0, 0);
+
         $ips = $network->getIps();
-        $adressIndex = 0;
+        $plages = $network->getPlages();
+
         // the first line will be initialized at 0 in the loops by adding 1
         $line = -1;
-
+        $adressIndex = 0;
         for( $i = 0; $i < $height; $i++ )
         {
           for( $j = 0; $j < $width; $j++ )
@@ -208,6 +214,7 @@ class NetworkController extends Controller
                 {
                     $line += 1;
                 }
+
                $adress = $network->getIp() + ($adressIndex %($width/$adressWidth))+($line*($width/$adressWidth));
                foreach ($ips as $ip)
                {
@@ -216,7 +223,28 @@ class NetworkController extends Controller
                        $setColor = true;
                        imagesetpixel($image, $j, $i, $color);
                    }
+               }/*
+
+               if ($inPlage)
+               {
+                   if ($plages->getEnd() == $adress)
+                   {
+                       $inPlage = false;
+                   }
+                   $setColor = true;
                }
+               else
+               {
+                   foreach ($plages as $plage)
+                   {
+                       if ($plage->getStart() == $adress)
+                       {
+                           $setColor = true;
+                           $inPlage = true;
+                           imagesetpixel($image, $j, $i, $color);
+                       }
+                   }
+               }*/
             }
             if ( $setColor )
             {
