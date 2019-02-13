@@ -34,7 +34,6 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
  */
 class MachineType extends AbstractType
 {
-
     /**
      * Builds the form.
      *
@@ -75,9 +74,10 @@ class MachineType extends AbstractType
             ->add('services', EntityType::class, [
                 'class' => Service::class,
                 'query_builder' => function (ServiceRepository $er) {
-                    return $er->createQueryBuilder('u');
+                    return $er->createQueryBuilder('s')
+                        ->orderBy('s.label', 'ASC');
                 },
-                'choice_label' => 'label',//'form.machine.field.services',
+                'choice_label' => 'label',
                 'required' => false,
                 'by_reference' => false,
                 'multiple' => true,
@@ -96,7 +96,7 @@ class MachineType extends AbstractType
               'label' => 'form.machine.field.macs',
               'help_block' => 'form.machine.help.macs',
             ]);
-        }
+    }
 
     /**
      * Configures the options for this type.

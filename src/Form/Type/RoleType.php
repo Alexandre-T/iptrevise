@@ -17,21 +17,26 @@
 
 namespace App\Form\Type;
 
+use App\Entity\Role;
+use App\Entity\Site;
+use App\Repository\SiteRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
- * User form builder.
+ * Role form builder.
  *
  * @category App\Form\Type
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license CeCILL-B V1
  */
-class UserType extends AbstractType
+class RoleType extends AbstractType
 {
     /**
      * Builds the form.
@@ -47,36 +52,21 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('label', null, [
-                'label' => 'form.user.field.username',
-                'help_block' => 'form.user.help.username',
-            ])
-            ->add('mail', null, [
-                'label' => 'form.user.field.mail',
-                'help_block' => 'form.user.help.mail',
-            ])
-            ->add('roles', ChoiceType::class, [
-                'label' => 'form.user.field.roles',
-                'help_block' => 'form.user.help.roles',
-                'expanded' => true,
-                'multiple' => true,
-                'choices' => [
-                    'form.user.field.roles.option.admin' => 'ROLE_ADMIN',
-                    'form.user.field.roles.option.reader' => 'ROLE_READER',
-                    'form.user.field.roles.option.ORGANISER' => 'ROLE_ORGANISER',
-                    'form.user.field.roles.option.user' => 'ROLE_USER',
-                ],
-            ])
-            ->add('newRoles', CollectionType::class, [
-                'entry_type' => RoleType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-                'label' => false,
-
-
-            ])
-        ;
+            ->add('site', EntityType::class, [
+                'class' => Site::class,
+                'query_builder' => function (SiteRepository $er) {
+                  return $er->createQueryBuilder('s')
+                    ->orderBy('s.label', 'ASC');
+                },
+                'choice_label' => 'label',
+                'help_block' => 'Sélectionnez le site'
+              ])
+            //TODO Remplacer par deux radio bouttons : Accès en lecture seule
+            //TODO Remplacer par deux radio bouttons : Création, modification et suppression autorisées
+            ->add('readOnly', CheckboxType::class, [
+                'label' => 'Lecture uniquement',
+                'required' => false,
+            ]);
     }
 
     /**
@@ -86,23 +76,29 @@ class UserType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'App\Entity\User',
+        $resolver->setDefaults([
+            'data_class' => 'App\Entity\Role',
             'render_fieldset' => false,
             'show_legend' => false,
-        ));
+            /*'constraints' => [
+                new Callback([
+                    'callback' => [$this, 'checkSite'],
+                ]),
+            ],*/
+        ]);
     }
+
 
     /**
      * Returns the prefix of the template block name for this type.
      *
      * The block prefix defaults to the underscored short class name with
-     * the "Type" suffix removed (e.g. "UserProfileType" => "user_profile").
+     * the "Type" suffix removed (e.g. "NetworkProfileType" => "network_profile").
      *
      * @return string The prefix of the template block name
      */
     public function getBlockPrefix()
     {
-        return 'app_user';
+        return 'app_role';
     }
 }

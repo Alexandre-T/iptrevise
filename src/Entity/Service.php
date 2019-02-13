@@ -93,12 +93,7 @@ class Service implements InformationInterface, LabelInterface
      *
      * @var Machine[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Machine", inversedBy="services")
-     * @ORM\JoinTable(
-     *     name="tj_machineservice",
-     *     joinColumns={@ORM\JoinColumn(name="service_id", referencedColumnName="ser_id", nullable=false)},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="machine_id", referencedColumnName="mac_id", nullable=false)}
-     * )
+     * @ORM\ManyToMany(targetEntity="App\Entity\Machine", mappedBy="services")
      */
     private $machines;
 
