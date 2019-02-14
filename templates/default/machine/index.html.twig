@@ -78,11 +78,18 @@
     {{ app_macro.panel_admin('desktop', '', pagination.totalItemCount, 'default.machines') }}
     {% if is_granted("ROLE_MANAGE_MACHINE") %}
         <div class="text-center">
+        <div class="btn-group-vertical">
             <a class="btn btn-default" href="{{ path('default_machine_new') }}" data-toggle="tooltip" data-placement="left"
                title="{{ 'default.machine.action.create.title' | trans }}">
                 <span class="fa fa-desktop"></span>
                 {{ 'default.machine.create' | trans }}
             </a>
+            <a class="btn btn-default" href="{{ path('default_deleted_machine_index') }}" data-toggle="tooltip" data-placement="left"
+               title="{{ 'default.machine.deleted.title' | trans }}">
+                <span class="fa fa-desktop"></span>
+                {{ 'default.machine.deleted' | trans }}
+            </a>
+        </div>
         </div>
     {% endif %}
 {% endblock content_action %}
