@@ -2,7 +2,7 @@
 /**
  * This file is part of the IP-Trevise Application.
  *
- * PHP version 7.1
+ * PHP version 7.2
  *
  * (c) Alexandre Tranchant <alexandre.tranchant@gmail.com>
  *
@@ -16,11 +16,11 @@
  */
 
 namespace App\Entity;
+
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
-
 
 /**
  * Reserved ranges/Plages class.
@@ -34,8 +34,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="te_plage")
  * @Gedmo\Loggable
  */
-class Plage
+class Plage implements ColorInterface, InformationInterface, LabelInterface, ReferentInterface
 {
+    use ColorTrait;
     use ReferentTrait;
 
     /**
@@ -144,6 +145,28 @@ class Plage
     private $network;
 
     /**
+     * Range color.
+     *
+     * @var string
+     *
+     * @Assert\NotBlank()
+     * @Assert\Regex(
+     *     pattern="/^([0-9a-f]{3}|[0-9a-f]{6})$/i",
+     *     message="form.site.error.color.pattern"
+     * )
+     *
+     * @ORM\Column(
+     *     type="string",
+     *     length=6,
+     *     nullable=false,
+     *     name="pla_couleur",
+     *     options={"default":000000,"comment":"Couleur ergonomique de la plage"}
+     * )
+     * @Gedmo\Versioned
+     */
+    private $color = '000000';
+
+    /**
      * Get the identifier.
      *
      * @return int
@@ -208,7 +231,7 @@ class Plage
      *
      * @return DateTime
      */
-    public function getCreated(): DateTime
+    public function getCreated(): ?DateTime
     {
         return $this->created;
     }
@@ -218,7 +241,7 @@ class Plage
      *
      * @return DateTime
      */
-    public function getUpdated(): DateTime
+    public function getUpdated(): ?DateTime
     {
         return $this->updated;
     }
@@ -230,7 +253,7 @@ class Plage
      *
      * @return Plage
      */
-    public function setLabel(string $label): Plage
+    public function setLabel(string $label): self
     {
         $this->label = $label;
 
@@ -244,7 +267,7 @@ class Plage
      *
      * @return Plage
      */
-    public function setStart(int $start): Plage
+    public function setStart(int $start): self
     {
         $this->start = $start;
 
@@ -258,7 +281,7 @@ class Plage
      *
      * @return Plage
      */
-    public function setEnd(int $end): Plage
+    public function setEnd(int $end): self
     {
         $this->end = $end;
 
@@ -272,7 +295,7 @@ class Plage
      *
      * @return Plage
      */
-    public function setReason(string $reason): Plage
+    public function setReason(string $reason): self
     {
         $this->reason = $reason;
 
@@ -286,12 +309,10 @@ class Plage
      *
      * @return Plage
      */
-    public function setNetwork(Network $network): Plage
+    public function setNetwork(Network $network): self
     {
         $this->network = $network;
 
         return $this;
     }
-
-
 }

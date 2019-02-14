@@ -28,9 +28,34 @@
                     </dl>
                 </div>
                 <div class="col-sm-2 text-right">
-                    <img src="{{ user.mail | gravatarFilter }}" class="img-rounded"/>
+                    <img src="{{ user.mail | gravatarFilter }}" class="img-rounded" alt="gravatar"/>
                 </div>
             </div>
+        </div>
+        <div class="panel-heading">
+            <h3 class="panel-title">{{ 'administration.access-information' | trans }}</h3>
+        </div>
+        <div class="panel-body">
+            {% if user.isAdmin %}
+                <div class="alert alert-info">
+                    {{ 'message.role.admin.all-access' | trans }}
+                </div>
+            {% else %}
+                <dl class="dl-horizontal">
+                    {% for role in user.newRoles%}
+                        <dt>{{role.site.label}}</dt>
+                        {%if role.readOnly %}
+                            <dd>{{ 'ROLE_READER' | trans }}</dd>
+                        {%else%}
+                            <dd>{{ 'ROLE_ORGANISER' | trans }}</dd>
+                        {%endif%}
+                    {% else %}
+                        <div class="alert alert-warning">
+                            {{ 'message.role.admin.no-access' | trans }}
+                        </div>
+                    {%endfor%}
+                </dl>
+            {% endif %}
         </div>
     </div>
 {% endblock content_settings %}

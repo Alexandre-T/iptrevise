@@ -11,6 +11,7 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema
  * @license   CeCILL-B V1
+ *
  * @see       http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt
  */
 
@@ -27,7 +28,6 @@ use PHPUnit\Framework\TestCase;
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license CeCILL-B V1
- *
  */
 class UserTest extends TestCase
 {
@@ -45,7 +45,7 @@ class UserTest extends TestCase
     }
 
     /**
-     * All value must be null after creation
+     * All value must be null after creation.
      */
     public function testConstructor()
     {
@@ -72,7 +72,6 @@ class UserTest extends TestCase
     {
         self::assertEquals($this->user, $this->user->setLabel('label'));
         self::assertEquals('label', $this->user->getLabel());
-
     }
 
     /**
@@ -80,11 +79,10 @@ class UserTest extends TestCase
      */
     public function testAdmin()
     {
-        self::assertEquals($this->user, $this->user->setAdmin(true));
+        self::assertEquals($this->user, $this->user->setRoles(['ROLE_ADMIN']));
         self::assertTrue($this->user->isAdmin());
-        self::assertEquals($this->user, $this->user->setAdmin(false));
+        self::assertEquals($this->user, $this->user->setRoles([]));
         self::assertFalse($this->user->isAdmin());
-
     }
 
     /**
@@ -102,7 +100,7 @@ class UserTest extends TestCase
     }
 
     /**
-     * Tests password setter and erasing
+     * Tests password setter and erasing.
      */
     public function testPassword()
     {
@@ -115,7 +113,7 @@ class UserTest extends TestCase
     }
 
     /**
-     * Tests plain password setter and erasing
+     * Tests plain password setter and erasing.
      */
     public function testPlainPassword()
     {
@@ -159,7 +157,7 @@ class UserTest extends TestCase
     }
 
     /**
-     * Test the hasRole function
+     * Test the hasRole function.
      */
     public function testHasRole()
     {
@@ -182,7 +180,6 @@ class UserTest extends TestCase
         self::assertFalse($this->user->hasRole('foo'));
         self::assertFalse($this->user->hasRole('ROLE_ADMIN'));
         self::assertTrue($this->user->hasRole('ROLE_USER'));
-
     }
 
     /**
@@ -192,19 +189,19 @@ class UserTest extends TestCase
     {
         $role1 = new Role();
         $role2 = new Role();
-        $this->user->addRole($role1);
+        $this->user->addNewRole($role1);
         self::assertCount(1, $this->user->getNewRoles());
         self::assertTrue($this->user->getNewRoles()->contains($role1));
         self::assertFalse($this->user->getNewRoles()->contains($role2));
-        $this->user->addRole($role2);
+        $this->user->addNewRole($role2);
         self::assertCount(2, $this->user->getNewRoles());
         self::assertTrue($this->user->getNewRoles()->contains($role1));
         self::assertTrue($this->user->getNewRoles()->contains($role2));
-        $this->user->removeRole($role1);
+        $this->user->removeNewRole($role1);
         self::assertCount(1, $this->user->getNewRoles());
         self::assertFalse($this->user->getNewRoles()->contains($role1));
         self::assertTrue($this->user->getNewRoles()->contains($role2));
-        $this->user->removeRole($role2);
+        $this->user->removeNewRole($role2);
         self::assertCount(0, $this->user->getNewRoles());
         self::assertFalse($this->user->getNewRoles()->contains($role1));
         self::assertFalse($this->user->getNewRoles()->contains($role2));

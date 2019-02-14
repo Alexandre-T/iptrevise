@@ -7,13 +7,35 @@
 {% block page_header %}{% endblock %}
 
 {% block content_settings %}
+
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h1 class="panel-title">{{ 'administration.user.edit.title %name%'|trans({'%name%': user.username})}}</h1>
         </div>
-        <div class="panel-body">
+        <div class="panel-body" >
             {{ form_start(edit_form) }}
-            {{ form_widget(edit_form) }}
+            {{ form_row(edit_form.label) }}
+            {{ form_row(edit_form.mail) }}
+            <h4>Accès par défaut de cet utilisateur.</h4>
+            {{ form_row(edit_form.roles) }}
+            <div class="role_list"
+              data-prototype="{{form_widget(edit_form.newRoles.vars.prototype)|e('html_attr')}}"
+              data-index="{{edit_form.newRoles|length}}">
+                <h4>Accès de cet utilisateur, site par site.</h4>
+                {% for role in edit_form.newRoles %}
+                    <div class="role_item">
+                        <p class="text-right">
+                          <button class="btn btn-danger btn-mini confirm-delete deleteRole">
+                              <span class="fa fa-minus"></span>&nbsp;{{ 'role.actions.delete' | trans }}
+                          </button>
+                        </p>
+                      {{ form_widget(role) }}
+                    </div>
+                {% endfor %}
+                <button class="btn btn-default btn-mini addRole pull-right">
+                    <span class="fa fa-plus"></span>&nbsp;Ajouter un accès à un nouveau site
+                </button>
+            </div>
             <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-9">
                     <button class="btn btn-primary" type="submit">
@@ -25,6 +47,7 @@
             {{ form_end(edit_form) }}
         </div>
     </div>
+
 {% endblock content_settings%}
 
 {% block content_action %}
@@ -52,3 +75,35 @@
         </div>
     </div>
 {% endblock content_action %}
+
+{% block foot_script %}
+  {{parent()}}
+
+
+  <script type="text/javascript">
+    var $collectionHolder;
+    $(document).ready(function(){
+      $collectionHolder = $('.role_list');
+
+      $collectionHolder.on('click', '.deleteRole', function(e){
+        e.preventDefault();
+        $(this).closest('.role_item')
+          .remove();
+      });
+      $collectionHolder.on('click', '.addRole', function(e){
+        e.preventDefault();
+        var prototype = $collectionHolder.data('prototype');
+        var index = $collectionHolder.data('index');
+
+        var newForm = prototype.replace(/_name_/g, index);
+
+        $collectionHolder.data('index', index + 1);
+
+        $(this).before(newForm);
+
+      });
+
+    });
+    </script>
+
+{% endblock foot_script %}

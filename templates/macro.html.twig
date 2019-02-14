@@ -20,20 +20,20 @@
         {% endif %}
         <dt>{{ 'form.machine.field.interface'| trans }}</dt>
         <dd>{{ machine.interface }}</dd>
-          <div>{% for i in 0..(nbmacs - 1)%}
-            <dt>&nbsp</dt>
-            <dd>&nbsp</dd>
-              {% endfor %}<div>
+            {% for i in 0..(nbmacs - 1)%}
+                <dt>&nbsp</dt>
+                <dd>&nbsp</dd>
+            {% endfor %}
         <dt>{{ 'form.machine.field.location'| trans }}</dt>
         <dd>{{ machine.location }}</dd>
         <dt>{{ 'form.machine.field.description'| trans }}</dt>
         <dd>{{ machine.description }}</dd>
         <dt>{{ 'form.machine.field.services'| trans }}</dt>
-        {% if machine.services is empty %}
-            <dd>{{ 'form.machine.field.services.none' | trans }}</dd>
-        {% else %}
-            <dd> {{ machine.services }}</dd>
-        {% endif %}
+            {% for service in machine.services%}
+                <dd> {{ service.label }}</dd>
+            {% else %}
+                <dd>{{ 'form.machine.field.services.none' | trans }}</dd>
+            {% endfor %}
 
         <dt>{{ 'form.machine.field.creator'| trans }}</dt>
         <dd>{{ machine.creator | label }}</dd>
@@ -146,6 +146,30 @@
     </dl>
 {% endmacro %}
 
+{% macro dl_plage(plage, link = true) %}
+    <dl class="dl-horizontal">
+        <dt class="lead">{{ 'form.plage.field.plage'| trans }}</dt>
+        {% if link %}
+            <dd class="lead">
+                <a  href="{{ path('default_plage_show',{'id': plage.id}) }}" data-toggle="tooltip"
+                    title="{{ 'link.plage.show' | trans }}" data-placement="right">
+                    {{ ip.ip | ip }}
+                </a>
+            </dd>
+        {% else %}
+            <dd class="lead">{{ plage.label }}</dd>
+        {% endif %}
+        <dt>{{ 'form.plage.field.ipdeb'| trans }}</dt>
+        <dd>{{ plage.start | ip }}</dd>
+        <dt>{{ 'form.plage.field.ipfin'| trans }}</dt>
+        <dd>{{ plage.end | ip }}</dd>
+        <dt>{{ 'form.plage.field.reason'| trans }}</dt>
+        <dd>{{ plage.reason }}</dd>
+        <dt>{{ 'form.plage.field.creator'| trans }}</dt>
+        <dd>{{ plage.creator | label }}</dd>
+    </dl>
+{% endmacro %}
+
 {% macro tags(tags) %}
     {% set alreadyTagged = [] %}
     {% for tag in tags %}
@@ -161,25 +185,24 @@
 
 {% macro mac(machine, link = true) %}
 
-  {% import _self as self_macro %}
+    {% import _self as self_macro %}
 
-  {% set nbmacs = machine.macs|split("\n")|length %}
-<dl class="dl-horizontal">
-    <dt class="lead">&nbsp</dt>
-    {% if link %}
-        <dd class="lead">
-            MAC
-        </dd>
-    {% else %}
-        <dd class="lead">&nbsp</dd>
-    {% endif %}
+    {% set nbmacs = machine.macs|split("\n")|length %}
+    <dl class="dl-horizontal">
+        <dt class="lead">&nbsp</dt>
+        {% if link %}
+            <dd class="lead">
+                MAC
+            </dd>
+        {% else %}
+            <dd class="lead">&nbsp</dd>
+        {% endif %}
 
-    <div>{% for i in 0..(nbmacs - 1) %}
-    <dt>{{ 'form.machine.field.macs'| trans }}{{i+1}} </dt>
-        {% endfor %}<div>
-    <dd>{{ machine.macs | nl2br }}</dd>
-</dl>
-
+        {% for i in 0..(nbmacs - 1) %}
+            <dt>{{ 'form.machine.field.macs'| trans }}{{i+1}} </dt>
+        {% endfor %}
+        <dd>{{ machine.macs | nl2br }}</dd>
+    </dl>
 {% endmacro %}
 
 {% macro panel_admin(icon, path, quantity, text, type = 'panel-primary') %}
