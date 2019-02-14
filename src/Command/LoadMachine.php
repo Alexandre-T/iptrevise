@@ -12,9 +12,11 @@
 
 namespace App\Command;
 use App\Exception\LoadException;
-use App\Entity\Site;
+use App\Entity\Machine;
+use App\Entity\Service;
 use App\Utils\Header;
 use App\Utils\LoadUtils;
+use App\Manager\ServiceManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -24,9 +26,10 @@ use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 
 
-class LoadSite extends Command
+class LoadMachine extends Command
 {
   /**
   * The entity manager.
@@ -58,7 +61,7 @@ class LoadSite extends Command
   {
     $this
     // the name of the command (the part after "bin/console")
-    ->setName('app:load:site')
+    ->setName('app:load:machine')
     // the short description shown while running "php bin/console list"
     ->setDescription('Charge en base le contenu des fichiers téléchargées .')
     // the full command description shown when running the command with
@@ -107,44 +110,78 @@ class LoadSite extends Command
     $output->writeln([
       '<info>Loader lancé</info>',
       '<info>================</info>',
-      '<info>Étape 1 : interrogation du fichier de sites...</info>',
+      '<info>Étape 1 : interrogation du fichier de machines...</info>',
       '<info>---------</info>'
+
     ]);
-    $fd=fopen("Data/site.csv","r");
+
+    $fd=fopen("Data/machine.csv","r");
     $validator = Validation::createValidator();
     $nligne = 1;
     if (!$fd) {
-      $output->writeln('Pas de fichier Data/sites.csv présent');
+      $output->writeln('Pas de fichier Data/machines.csv présent');
     } else {
       $this->entityManager->beginTransaction();
       //Optimisation : on désactive le log des requêtes
       $this->entityManager->getConnection()->getConfiguration()->setSQLLogger(null);
       while(!feof($fd)) {
         $Ligne = fgets($fd,255);
-        $ligne = preg_split("/,/", $Ligne); // ligne[0] label ligne[1] color
+        $ligne = preg_split("/,/", $Ligne);
+        //[0]:label [1]:inteface [2]:macs [3]:location [4]:description
+        //[5]:services
+        //WIP:
+        //Peut-etre une liste de tags en septieme element
+        //A demander au client
         if ($ligne[0] !== "") {
           $violations0 = $validator->validate($ligne[0], [new length(['max' => 32]),
           new NotBlank(),]);
-          $violations1 = $validator->validate($ligne[1],
-          [new regex(['pattern' => "/^([0-9a-f]{3}|[0-9a-f]{6})$/i",
-          'message' => 'form.site.error.color.pattern']), //message dans validator.fr.yml
+          $violations1 = $validator->validate(intval($ligne[1]),
+          [new GreaterThanOrEqual(['value'=>"0",
+          'message'=>"form.machine.error.interface.min"]),
           new NotBlank(),]);
           $sansErreur = $this->errorMessage($violations0, $nligne, $output)
           && $this->errorMessage($violations1, $nligne, $output)
           && $sansErreur;
+          $serviceManager = new ServiceManager($this->entityManager);
+          $all = $serviceManager->getAll();
           if ($sansErreur) {
-            $site = new Site();
-            $site
+            $machine = new machine();
+            $machine
             ->setLabel($ligne[0])
-            ->setColor($ligne[1])
+            ->setInterface(intval($ligne[1]))
+            ->setMacs($ligne[2])
+            ->setLocation($ligne[3])
+            ->setDescription($ligne[4])
             ;
-            $this->entityManager->persist($site);
+            $services = preg_split("/;/", $ligne[5]);
+            foreach ($services as $service) {
+              $found = false;
+              foreach ($all as $al) {
+                if ($al->getLabel() === $service) {
+                  $found = true;
+                  $machine->addService($al);
+                }
+              }
+              if (!$found) {
+                //WIP :
+                //je cree le nouveau service si il n'existait pas avant dans la
+                //base de donnee. Je dois peut-etre afficher un message ici ?
+                //A demander au client
+                $Service = new service();
+                $Service->setLabel($service);
+                $this->entityManager->persist($Service);
+                $machine->addService($Service);
+              }
+            }
+            $this->entityManager->persist($machine);
           }
           $nligne++;
         }
       }
       $this->entityManager->flush();
+
       $output->writeln("\n");
+
       $output->writeln('<info>Validation de la transaction.</info>');
       if ($sansErreur) {
         $this->entityManager->commit();
@@ -154,9 +191,12 @@ class LoadSite extends Command
         $output->writeln('<info>Transaction non validé.</info>');
       }
       $output->writeln(sprintf('<comment>Mémoire consommée : %s</comment>', memory_get_usage()));
+
       $output->writeln('Fin du processus.');
+
       //Closing file
       fclose($fd);
+
       return 0;
     }
   }
