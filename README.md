@@ -1,4 +1,4 @@
-# IP Manager
+# IP Manager [![Build Status](https://travis-ci.org/Alexandre-T/iptrevise.svg?branch=master)](https://travis-ci.org/Alexandre-T/iptrevise)
 
 Ip Manager for a tech team on network where DHCP protocols are forbidden. 
 
