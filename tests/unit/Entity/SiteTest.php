@@ -11,6 +11,7 @@
  * @author    Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @copyright 2017 Cerema
  * @license   CeCILL-B V1
+ *
  * @see       http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt
  */
 
@@ -27,7 +28,6 @@ use PHPUnit\Framework\TestCase;
  *
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license CeCILL-B V1
- *
  */
 class SiteTest extends TestCase
 {
@@ -45,7 +45,7 @@ class SiteTest extends TestCase
     }
 
     /**
-     * All value must be null after creation
+     * All value must be null after creation.
      */
     public function testConstructor()
     {
@@ -65,7 +65,7 @@ class SiteTest extends TestCase
         self::assertEquals($this->site, $this->site->setLabel('label'));
         self::assertEquals('label', $this->site->getLabel());
     }
-    
+
     /**
      * Tests color getter, setter and aliases.
      */
