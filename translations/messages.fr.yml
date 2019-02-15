@@ -51,6 +51,12 @@ administration.user.not-deletable %name%: 'Cet utilisateur a créé des réseaux
 administration.user.show.title %name%: 'Utilisateur %name%'
 administration.user.updated %name%: 'Les modifications apportées à l’utilisateur %name% ont été enregistrées avec succès !'
 
+command.loader-launched: 'Chargement lancé.'
+command.reading-file %filename%: 'Lecture du fichier %filename%.'
+command.missing-file %filename%: 'Pas de fichier %filename% présent.'
+command.unreadable-file %filename%: 'Impossible de lire le fichier %filename%.'
+command.error.line %line% %error%: 'Erreur dans votre fichier à la ligne %line% : %error%'
+
 default.action.confirm: 'Confirmation'
 default.action.edit: 'Éditer'
 default.action.link: 'Lier cette adresse IP à une machine'

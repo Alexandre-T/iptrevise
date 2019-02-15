@@ -37,29 +37,6 @@ abstract class AbstractLoader extends Command
     protected $translator;
 
     /**
-     * ConstraintViolationList.
-     *
-     * @param array $ligne
-     * @return ConstraintViolationList
-     */
-    abstract function validateEntity(array $ligne): ConstraintViolationList;
-
-    /**
-     * Transform line into abstract entity and save it.
-     *
-     * @param array $ligne
-     * @return InformationInterface
-     */
-    abstract function loadEntity(array $ligne): InformationInterface;
-
-    /**
-     * Return the name of the file (site, ip, machine, etc.).
-     *
-     * @return string
-     */
-    abstract function getFilename(): string;
-
-    /**
      * DownloadCommand constructor.
      *
      * @param EntityManagerInterface $entityManager
@@ -76,7 +53,7 @@ abstract class AbstractLoader extends Command
     /**
      * Execute the command.
      *
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
      *
      * @return int|null
@@ -88,16 +65,21 @@ abstract class AbstractLoader extends Command
         $sansErreur = true;
         $filename = basename($this->getFilename());
         $output->writeln([
-            '<info>Chargement lancé</info>',
-            "<info>Lecture du fichier $filename</info>",
+            '<info>' . $this->translator->trans('command.loader-launched') . '</info>',
+            '<info>' . $this->translator->trans('command.reading-file %filename%', ['%filename%' => $filename]) . '</info>',
         ]);
 
         //FIXME Corriger ce code qui n'indique pas à l'administrateur pourquoi son fichier ne se charge pas.
+        //On doit savoir si le fichier existe ou non
+        //On doit savoir si le fichier est accessible en lecture ou non.
         $fd = fopen($this->getFilename(), 'r');
 
         $nligne = 1;
         if (!$fd) {
-            $output->writeln('Pas de fichier Data/sites.csv présent');
+            $output->writeln(
+                '<error>'
+                . $this->translator->trans('command.missing-file %filename%', ['%filename%' => $filename])
+                . '</error>');
 
             return 2;
         }
@@ -117,9 +99,13 @@ abstract class AbstractLoader extends Command
                     $this->entityManager->persist($entity);
                 }
                 foreach ($violations as $violation) {
-                    $output->writeln(sprintf('<error>Erreur ligne %d : %s</error>',
-                            $nligne,
-                            $violation->getMessage())
+                    $output->writeln(
+                        '<error>'
+                        . $this->translator->trans('command.error.line %line% %error%', [
+                            '%line%' => $nligne,
+                            '%error%' => $this->translator->trans($violation->getMessage(), [], 'validators')
+                        ])
+                        . '</error>'
                     );
                     $sansErreur = false;
                 }
@@ -138,7 +124,7 @@ abstract class AbstractLoader extends Command
             $output->writeln('<info>Transaction validé.</info>');
         } else {
             $this->entityManager->rollback();
-            $output->writeln('<warning>Transaction non validé.</warning>');
+            $output->writeln('<error>Transaction non validé.</error>');
         }
         $output->writeln(sprintf('<comment>Mémoire consommée : %s</comment>', memory_get_usage()));
 
@@ -146,4 +132,27 @@ abstract class AbstractLoader extends Command
 
         return $sansErreur ? 0 : 1;
     }
+
+    /**
+     * Return the name of the file (site, ip, machine, etc.).
+     *
+     * @return string
+     */
+    abstract function getFilename(): string;
+
+    /**
+     * ConstraintViolationList.
+     *
+     * @param array $ligne
+     * @return ConstraintViolationList
+     */
+    abstract function validateEntity(array $ligne): ConstraintViolationList;
+
+    /**
+     * Transform line into abstract entity and save it.
+     *
+     * @param array $ligne
+     * @return InformationInterface
+     */
+    abstract function loadEntity(array $ligne): InformationInterface;
 }
