@@ -121,13 +121,15 @@ abstract class AbstractLoader extends Command
 
         if ($sansErreur) {
             $this->entityManager->commit();
+            //FIXME AJOUTER LE NOMBRE D'ENTITES CREEES
+            //FIXME TRADUIRE
             $output->writeln('<info>Transaction validé.</info>');
         } else {
             $this->entityManager->rollback();
+            //FIXME TRADUIRE
             $output->writeln('<error>Transaction non validé.</error>');
         }
-        $output->writeln(sprintf('<comment>Mémoire consommée : %s</comment>', memory_get_usage()));
-
+        //FIXME TRADUIRE
         $output->writeln('Fin du processus.');
 
         return $sansErreur ? 0 : 1;
