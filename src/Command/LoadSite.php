@@ -58,7 +58,7 @@ class LoadSite extends AbstractLoader
         $violations->addAll(
             $validator->validate($ligne[0],
             [
-                new length(['max' => 32]),
+                new Length(['max' => 32]),
                 new NotBlank(),
             ]
             )

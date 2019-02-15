@@ -54,7 +54,7 @@ class LoadIp extends AbstractLoader
         //FIXME S'IL EST NON VIDE TESTER QUE LE RESEAU EXISTE !
         //FIXME TESTER QUE LE LIBELLE DE LA MACHINE EST NON VIDE !
         //FIXME S'IL EST NON VIDE TESTER QUE LA MACHINE EXISTE !
-        $violations->addAll($validator->validate($ligne[3], [new Length('max="32"')]));
+        $violations->addAll($validator->validate($ligne[3], [new Length(['max' => 32])]));
         
         return $violations;
     }
