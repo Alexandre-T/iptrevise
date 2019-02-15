@@ -1,0 +1,49 @@
+{% extends '@App/default/base.html.twig' %}
+
+{% import "@App/macro.html.twig" as app_macro %}
+
+{% block title %}{{ 'default.ip.deleted.list.title'|trans }} · {{ parent() }}{% endblock title %}
+
+{% block headline %}
+    <span class="fa fa-fw fa-indent"></span>
+    {{ 'default.ip.deleted.list.title'|trans }}
+{% endblock %}
+
+{% set direction = pagination.getDirection() %}
+
+{% block content_content %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th id="deleted-ip-label">
+                {% if pagination.isSorted('ext_log_entries.data.ip') %}
+                    <span class="fa fa-sort-alpha-{{ direction }}"></span>
+                {% else %}
+                    <span class="fa fa-indent"></span>
+                {% endif %}
+                {{ knp_pagination_sortable(pagination, 'form.ip.field.label' | trans, 'ext_log_entries.data.ip')}}
+            </th>
+            <th id="deleted-ip-actions">{{ 'default.ip.deleted.actions' | trans }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in pagination %}
+            {% set ip = row %}
+            <tr class="row-{{ loop.index }}">
+            <td headers="deleted-ip-label" class="th-icon">{{ ip.data.ip | ip }}</td>
+                <td headers="ip-actions">
+                    <div class="btn-group-xs btn-group">
+                        <a class="btn btn-default" href="{{ path('default_deleted_ip_show', { 'id': ip.id }) }}">
+                            <span class="fa fa-eye"></span>
+                            <span class="sr-only">{{ 'default.action.show' | trans }}</span>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="navigation text-right">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+{% endblock content_content %}

@@ -1,0 +1,59 @@
+{% extends '@App/default/base.html.twig' %}
+
+{% import "@App/macro.html.twig" as app_macro %}
+
+{% block title %}{{ 'default.site.deleted.list.title'|trans }} · {{ parent() }}{% endblock title %}
+
+{% block headline %}
+    <span class="fa fa-fw fa-building-o"></span>
+    {{ 'default.site.deleted.list.title'|trans }}
+{% endblock %}
+
+{% set direction = pagination.getDirection() %}
+
+{% block content_content %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th id="deleted-site-label">
+                {% if pagination.isSorted('ext_log_entries.data.label') %}
+                    <span class="fa fa-sort-alpha-{{ direction }}"></span>
+                {% else %}
+                    <span class="fa fa-sitemap"></span>
+                {% endif %}
+                {{ knp_pagination_sortable(pagination, 'form.site.field.label' | trans, 'ext_log_entries.data.label')}}
+            </th>
+            <th id="deleted-site-actions">{{ 'default.site.deleted.actions' | trans }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in pagination %}
+            {% set site = row %}
+            <tr class="row-{{ loop.index }}">
+            <td headers="deleted-site-label" class="th-icon">{{ site.data.label }}</td>
+                <td headers="site-actions">
+                    <div class="btn-group-xs btn-group">
+                        <a class="btn btn-default" href="{{ path('default_deleted_site_show', { 'id': site.id }) }}">
+                            <span class="fa fa-eye"></span>
+                            <span class="sr-only">{{ 'default.action.show' | trans }}</span>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="navigation text-right">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+{% endblock content_content %}
+
+{% block content_action %}
+
+        <div class="text-center">
+        <a class="btn-mini btn btn-default" href="{{ path('default_site_index') }}"
+           data-placement="left" data-toggle="tooltip" title="{{ 'default.site.action.list.title' | trans }}">
+            <span class="fa fa-building-o"></span>&nbsp;{{ 'site.actions.back.list' | trans }}
+        </a>
+        </div>
+{% endblock content_action %}
