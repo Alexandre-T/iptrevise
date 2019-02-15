@@ -1,0 +1,28 @@
+{% extends '@App/default/baseDeleted.html.twig' %}
+
+{% import "@App/macro.html.twig" as app_macro %}
+
+{% set default_entity_show = 'default_deleted_ip_show' %}
+
+{% block title %}
+    {{ 'default.ip.deleted.show.title %name%'|trans({'%name%': log.data.ip | ip})}} · {{ parent() }}
+{% endblock title %}
+
+{% block headline %}
+    {{ 'default.ip.deleted.show.title %name%'|trans({'%name%': log.data.ip | ip})}}
+{% endblock headline %}
+
+
+
+{% block content_action %}
+    <h3>{{ 'administration.actions' | trans }}</h3>
+
+    <div class="text-center" id="default-actions">
+        <div class="btn-group-vertical">
+            <a class="btn-mini btn btn-default" href="{{ path('default_deleted_ip_index') }}"
+               data-placement="left" data-toggle="tooltip" title="{{ 'default.ip.deleted.title.back' | trans }}">
+                <span class="fa fa-indent"></span>&nbsp;{{ 'default.ip.deleted' | trans }}
+            </a>
+        </div>
+    </div>
+{% endblock content_action %}

@@ -24,4 +24,4 @@ form.user.error.mail.unique: 'Cette adresse mail est déjà utilisée.'
 form.user.error.label.unique: 'Cet identifiant est déjà utilisé.'
 
 form.site.error.label.unique: 'Cet intitulé de site est déjà utilisé'
-form.site.error.color.pattern: 'La couleur du site doit être de la forme : [0-9a-f]{3}|[0-9a-f]{6}'
+form.site.error.color.pattern: 'La couleur du site doit être saisie au format HTML sans le Hashtag : FFF ou AA2331'

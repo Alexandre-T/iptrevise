@@ -110,7 +110,7 @@ class SiteManager implements LoggableManagerInterface, PaginatorInterface
     /**
      * Return all sites.
      *
-     * @return Site[]|null Array of network or null
+     * @return Site[]|null Array of sites or null
      */
     public function getAll()
     {

@@ -1,0 +1,28 @@
+{% extends '@App/default/baseDeleted.html.twig' %}
+
+{% import "@App/macro.html.twig" as app_macro %}
+
+{% set default_entity_show = 'default_deleted_network_show' %}
+
+{% block title %}
+    {{ 'default.network.deleted.show.title %name%'|trans({'%name%': log.data.label})}} · {{ parent() }}
+{% endblock title %}
+
+{% block headline %}
+    {{ 'default.network.deleted.show.title %name%'|trans({'%name%': log.data.label})}}
+{% endblock headline %}
+
+
+
+{% block content_action %}
+    <h3>{{ 'administration.actions' | trans }}</h3>
+
+    <div class="text-center" id="default-actions">
+        <div class="btn-group-vertical">
+            <a class="btn-mini btn btn-default" href="{{ path('default_deleted_network_index') }}"
+               data-placement="left" data-toggle="tooltip" title="{{ 'default.network.deleted.title.back' | trans }}">
+                <span class="fa fa-sitemap"></span>&nbsp;{{ 'default.network.deleted' | trans }}
+            </a>
+        </div>
+    </div>
+{% endblock content_action %}
