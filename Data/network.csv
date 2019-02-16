@@ -1,3 +1,3 @@
 reseautest,192.168.12.0,24,000000,site,description
-reseautest2,127.192.0.0,16,0000FF,site2
-reseautest42,1.0.0.0,8,FF0000,site42,test
+reseautest2,127.192.0.0,16,0000FF,site2,
+reseautest42,1.0.0.0,8,FF0000,site42,test,
