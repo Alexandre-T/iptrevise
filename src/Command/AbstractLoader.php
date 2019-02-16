@@ -1,4 +1,4 @@
-<?php
+error<?php
 /**
  * This file is part of the IP-Trevise Application.
  *
@@ -63,6 +63,7 @@ abstract class AbstractLoader extends Command
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $sansErreur = true;
+        $nEntity = 0;
         $filename = basename($this->getFilename());
         $output->writeln([
             '<info>' . $this->translator->trans('command.loader-launched') . '</info>',
@@ -72,6 +73,23 @@ abstract class AbstractLoader extends Command
         //FIXME Corriger ce code qui n'indique pas à l'administrateur pourquoi son fichier ne se charge pas.
         //On doit savoir si le fichier existe ou non
         //On doit savoir si le fichier est accessible en lecture ou non.
+        //Done
+        $fileInfo = new \SplFileInfo($filename);
+
+        if (!($fileInfo->isFile())) {
+          $output->writeln(
+                '<error>'
+                . $this->translator->trans('command.missing-file %filename%', ['%filename%' => $filename])
+                . '</error>');
+            return 2;
+        } elseif (!($fileInfo->isReadable())) {
+          $output->writeln(
+            '<error>'
+            . $this->translator->trans('command.unreadable-file %filename%', ['%filename%' => $filename])
+            . '</error>');
+          return 3;
+        }
+
         $fd = fopen($this->getFilename(), 'r');
 
         $nligne = 1;
@@ -97,6 +115,7 @@ abstract class AbstractLoader extends Command
                     //$entity->setCreator($creator);
 
                     $this->entityManager->persist($entity);
+                    $nEntity++;
                 }
                 foreach ($violations as $violation) {
                     $output->writeln(
@@ -122,12 +141,25 @@ abstract class AbstractLoader extends Command
         if ($sansErreur) {
             $this->entityManager->commit();
             //FIXME AJOUTER LE NOMBRE D'ENTITES CREEES
+            //Done
             //FIXME TRADUIRE
-            $output->writeln('<info>Transaction validé.</info>');
+            //Done
+            $output->writeln(
+              '<info>'
+              . $this->translator->trans('command.transaction.valid')
+              . $this->translator->trans('command.transaction.entity-number %nEntity% %name%', [
+                '%nEntity%' => $nEntity,
+                '%name%' => $filename
+              ])
+              . '</info>');
         } else {
             $this->entityManager->rollback();
             //FIXME TRADUIRE
-            $output->writeln('<error>Transaction non validé.</error>');
+            //Done
+            $output->writeln(
+              '<error>'
+              . $this->translator->trans('command.transaction.invalid')
+              . '</error>');
         }
         //FIXME TRADUIRE
         $output->writeln('Fin du processus.');
