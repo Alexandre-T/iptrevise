@@ -70,23 +70,19 @@ abstract class AbstractLoader extends Command
       '<info>' . $this->translator->trans('command.reading-file %filename%', ['%filename%' => $filename]) . '</info>',
     ]);
 
-    //FIXME Corriger ce code qui n'indique pas à l'administrateur pourquoi son fichier ne se charge pas.
-    //On doit savoir si le fichier existe ou non
-    //On doit savoir si le fichier est accessible en lecture ou non.
-    //Done
     $fileInfo = new \SplFileInfo($this->getFilename());
 
     if (!($fileInfo->isFile())) {
 
       $output->writeln(
         '<error>'
-        . $this->translator->trans('command.missing-file %filename%', ['%filename%' => $filename])
+        . $this->translator->trans('command.missing-file %filename%', ['%filename%' => $this->getFilename()])
         . '</error>');
         return 2;
     } elseif (!($fileInfo->isReadable())) {
       $output->writeln(
         '<error>'
-        . $this->translator->trans('command.unreadable-file %filename%', ['%filename%' => $filename])
+        . $this->translator->trans('command.unreadable-file %filename%', ['%filename%' => $this->getFilename()])
         . '</error>');
         return 3;
     }
@@ -97,7 +93,7 @@ abstract class AbstractLoader extends Command
     if (!$fd) {
       $output->writeln(
         '<error>'
-        . $this->translator->trans('command.missing-file %filename%', ['%filename%' => $filename])
+        . $this->translator->trans('command.missing-file %filename%', ['%filename%' => $this->getFilename()])
         . '</error>');
 
         return 2;
@@ -140,10 +136,6 @@ abstract class AbstractLoader extends Command
 
     if ($sansErreur) {
       $this->entityManager->commit();
-      //FIXME AJOUTER LE NOMBRE D'ENTITES CREEES
-      //Done
-      //FIXME TRADUIRE
-      //Done
       $output->writeln(
         '<info>'
         . $this->translator->trans('command.transaction.valid')

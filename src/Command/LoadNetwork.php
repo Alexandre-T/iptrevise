@@ -48,11 +48,7 @@ class LoadNetwork extends AbstractLoader
     $violations->addAll($validator->validate($ligne[4], [
       new NotBlank()
     ]));
-    //FIXME TESTER QUE LE LIBELLE DU SITE EST NON VIDE !
-    //Done
-    //FIXME S'IL EST NON VIDE TESTER QUE LE SITE EXISTE !
-    //Done
-    if (!count($violations)) {
+    if (empty($violations)) {
       $violations->addAll($validator->validate($siteRepository->findOneBy(['label' => $ligne[4]]), [
         new NotNull([
           'message' => sprintf('form.network.error.site.exist %s', $ligne[4])
@@ -86,34 +82,33 @@ class LoadNetwork extends AbstractLoader
             new NotBlank()
           ]));
 
-          return $violations;
-        }
+    return $violations;
+  }
 
-        /**
-        * Create network and return it.
-        * @param array $ligne
-        * @return InformationInterface
-        */
-        function loadEntity(array $ligne): InformationInterface
-        {
-          $siteRepository = $this->entityManager->getRepository('App:Site');
-          /** @var Site $site */
-          $site = $siteRepository->findOneBy(['label' => $ligne[4]]);
-          $network = new network();
-          $network
-          ->setLabel($ligne[0])
-          ->setIp(ip2long($ligne[1]))
-          ->setCidr(intval($ligne[2]))
-          ->setColor($ligne[3])
-          ->setSite($site)
-          ->setDescription($ligne[5])
-          ;
-          return $network;
-        }
+  /**
+  * Create network and return it.
+  * @param array $ligne
+  * @return InformationInterface
+  */
+  function loadEntity(array $ligne): InformationInterface
+  {
+    $siteRepository = $this->entityManager->getRepository('App:Site');
+    /** @var Site $site */
+    $site = $siteRepository->findOneBy(['label' => $ligne[4]]);
+    $network = new network();
+    $network
+    ->setLabel($ligne[0])
+    ->setIp(ip2long($ligne[1]))
+    ->setCidr(intval($ligne[2]))
+    ->setColor($ligne[3])
+    ->setSite($site)
+    ->setDescription($ligne[5])
+    ;
+    return $network;
+  }
 
-        function getFilename(): string
-        {
-          return __DIR__ . '/../../Data/network.csv';
-        }
-
-      }
+  function getFilename(): string
+  {
+    return __DIR__ . '/../../Data/network.csv';
+  }
+}

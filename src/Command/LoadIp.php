@@ -55,35 +55,31 @@ class LoadIp extends AbstractLoader
     $violations->addAll($validator->validate($ligne[1], [
       new NotBlank()
     ]));
-    if (!count($violations)) {
+    if (empty($violations)) {
       $violations->addAll($validator->validate($networkRepository->findOneBy(['label' => $ligne[1]]), [
         new NotNull([
-          'message' => sprintf('form.ip.error.network.exist %s', $ligne[1])
-          //'message' => 'form.ip.error.network.exist %network%', ['%network%' => $ligne[1]]
+          //Translation should be launched here.
+          'message' => $this->translator->trans(
+              'form.ip.error.network.exist %network%',
+              ['%network%' => $ligne[1]],
+              'validators'
+          )
         ])
       ]));
     }
-    $nCount = !count($violations);
-    //FIXME TESTER QUE LE LIBELLE DU RESEAU EST NON VIDE !
-    //Done
-    //FIXME S'IL EST NON VIDE TESTER QUE LE RESEAU EXISTE !
-    //Done
-    $violations->addAll($validator->validate($ligne[2], [
-      new NotBlank()
-    ]));
-    if (count($violations) !== $nCount) {
-      $violations->addAll($validator->validate($machineRepository->findOneBy(['label' => $ligne[2]]), [
+
+    $emptyViolation = $validator->validate($ligne[2], [ new NotBlank() ]);
+
+    if (empty($emptyViolation)) {
+        $violations->addAll($emptyViolation);
+    } else {
+        $violations->addAll($validator->validate($machineRepository->findOneBy(['label' => $ligne[2]]), [
         new NotNull([
           'message' => sprintf('form.ip.error.machine.exist %s', $ligne[2])
           //'message' => 'form.ip.error.machine.exist %machine%', ['%machine%' => $ligne[2]]
         ])
       ]));
     }
-    //FIXME TESTER QUE LE LIBELLE DE LA MACHINE EST NON VIDE !
-    //Done
-    //FIXME S'IL EST NON VIDE TESTER QUE LA MACHINE EXISTE !
-    //Done
-
     $violations->addAll($validator->validate($ligne[0], [new NotBlank()]));
     $violations->addAll($validator->validate($ligne[3], [new Length(['max' => 32])]));
 

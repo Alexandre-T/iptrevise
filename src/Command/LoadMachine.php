@@ -98,14 +98,13 @@ class LoadMachine extends AbstractLoader
     //Bonne idée l'importation de service !
     $services = preg_split('/;/', $ligne[5]); //Original le preg_split !
     foreach ($services as $service) {
-      if ($service !== '') {
+      if (!empty($service)) {
         /** @var Service $serv */
         $serv = $serviceRepository->findOneBy(['label' => $service]);
         $machine->addService($serv);
       }
     }
-    //FIXME Créer une Commande LoadService
-    //WIP
+
     return $machine;
   }
 
