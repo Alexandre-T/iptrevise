@@ -118,6 +118,6 @@ class LoadIp extends AbstractLoader
   */
   function getFilename(): string
   {
-    return __DIR__ . '/../../Data/ip.csv';
+    return __DIR__ . '/../../data/ip.csv';
   }
 }

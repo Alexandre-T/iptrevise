@@ -101,6 +101,6 @@ class LoadSite extends AbstractLoader
     */
     function getFilename(): string
     {
-      return __DIR__ . '/../../Data/site.csv';
+      return __DIR__ . '/../../data/site.csv';
     }
   }

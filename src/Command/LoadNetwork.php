@@ -109,6 +109,6 @@ class LoadNetwork extends AbstractLoader
 
   function getFilename(): string
   {
-    return __DIR__ . '/../../Data/network.csv';
+    return __DIR__ . '/../../data/network.csv';
   }
 }
