@@ -52,6 +52,7 @@ administration.user.show.title %name%: 'Utilisateur %name%'
 administration.user.updated %name%: 'Les modifications apportées à l’utilisateur %name% ont été enregistrées avec succès !'
 
 command.loader-launched: 'Chargement lancé.'
+command.loader-finished: 'Fin du processus.'
 command.reading-file %filename%: 'Lecture du fichier %filename%.'
 command.missing-file %filename%: 'Pas de fichier %filename% présent.'
 command.unreadable-file %filename%: 'Impossible de lire le fichier %filename%.'
