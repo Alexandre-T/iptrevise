@@ -88,8 +88,8 @@ class LoadSite extends AbstractLoader
     function loadEntity(array $ligne): InformationInterface
     {
       $site = new Site();
-      $site->setColor($ligne[0]);
-      $site->setLabel($ligne[1]);
+      $site->setColor($ligne[1]);
+      $site->setLabel($ligne[0]);
 
       return $site;
     }

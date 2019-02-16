@@ -59,7 +59,7 @@ command.unreadable-file %filename%: 'Impossible de lire le fichier %filename%.'
 command.error.line %line% %error%: 'Erreur dans votre fichier à la ligne %line% : %error%'
 command.transaction.valid: 'Transaction validé.'
 command.transaction.invalid: 'Transaction non validé.'
-command.transaction.entity-number %nEntity% %name%: '%nEntity% %name%s créés.'
+command.transaction.entity-number %nEntity% %name%: ' %nEntity% %name%s créés.'
 
 default.action.confirm: 'Confirmation'
 default.action.edit: 'Éditer'

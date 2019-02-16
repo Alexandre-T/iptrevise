@@ -74,9 +74,10 @@ abstract class AbstractLoader extends Command
     //On doit savoir si le fichier existe ou non
     //On doit savoir si le fichier est accessible en lecture ou non.
     //Done
-    $fileInfo = new \SplFileInfo($filename);
+    $fileInfo = new \SplFileInfo($this->getFilename());
 
     if (!($fileInfo->isFile())) {
+
       $output->writeln(
         '<error>'
         . $this->translator->trans('command.missing-file %filename%', ['%filename%' => $filename])
@@ -106,16 +107,6 @@ abstract class AbstractLoader extends Command
       $ligne = fgetcsv($fd, null, ',');
       if (!empty($ligne[0])) {
         $violations = $this->validateEntity($ligne);
-        if (empty($violations)) {
-          $entity = $this->loadEntity($ligne);
-          //TODO Ajouter un créateur, on pourrait créer un utilisateur bidon qui n'a aucun droit de connexion
-          //Cela permettrait de voir dans les journaux de bord qu'ils ont été créés par l'importateur de données.
-          //$creator = ????;
-          //$entity->setCreator($creator);
-
-          $this->entityManager->persist($entity);
-          $nEntity++;
-        }
         foreach ($violations as $violation) {
           $output->writeln(
             '<error>'
@@ -126,6 +117,16 @@ abstract class AbstractLoader extends Command
             . '</error>'
           );
           $sansErreur = false;
+        }
+        if ($sansErreur) {
+          $entity = $this->loadEntity($ligne);
+          //TODO Ajouter un créateur, on pourrait créer un utilisateur bidon qui n'a aucun droit de connexion
+          //Cela permettrait de voir dans les journaux de bord qu'ils ont été créés par l'importateur de données.
+          //$creator = ????;
+          //$entity->setCreator($creator);
+
+          $this->entityManager->persist($entity);
+          $nEntity++;
         }
         ++$nligne;
       }
@@ -148,7 +149,7 @@ abstract class AbstractLoader extends Command
         . $this->translator->trans('command.transaction.valid')
         . $this->translator->trans('command.transaction.entity-number %nEntity% %name%', [
           '%nEntity%' => $nEntity,
-          '%name%' => $filename
+          '%name%' => basename($this->getFilename(),'.csv')
         ])
         . '</info>');
     } else {

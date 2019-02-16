@@ -1,4 +1,4 @@
-service<?php
+<?php
 /**
 * This file is part of the IP-Trevise Application.
 *

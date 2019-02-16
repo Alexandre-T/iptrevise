@@ -52,10 +52,11 @@ class LoadNetwork extends AbstractLoader
     //Done
     //FIXME S'IL EST NON VIDE TESTER QUE LE SITE EXISTE !
     //Done
-    if (!count($violation)) {
+    if (!count($violations)) {
       $violations->addAll($validator->validate($siteRepository->findOneBy(['label' => $ligne[4]]), [
         new NotNull([
-          'message' => 'form.network.error.site.exist %site%', ['%site%' => $ligne[4]]
+          'message' => sprintf('form.network.error.site.exist %s', $ligne[4])
+          //'message' => 'form.network.error.site.exist %site%', ['%site%' => $ligne[4]]
         ])
       ]));
     }
@@ -65,8 +66,9 @@ class LoadNetwork extends AbstractLoader
 
       $violations->addAll($validator->validate($ligne[1], [
         new Regex([
-          'pattern' => '^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$',
-          'message' => 'form.network.error.ip.address.pattern %address%', ['%address%' => $ligne[1]]
+          'pattern' => '/^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/i',
+          //'message' => 'form.network.error.ip.address.pattern %address%', ['%address%' => $ligne[1]]
+          'message' => sprintf('form.network.error.ip.address.pattern %s', $ligne[1])
         ]),
         new NotBlank()]));
         $violations->addAll($validator->validate(intval($ligne[2]), [
@@ -106,6 +108,7 @@ class LoadNetwork extends AbstractLoader
           ->setSite($site)
           ->setDescription($ligne[5])
           ;
+          return $network;
         }
 
         function getFilename(): string

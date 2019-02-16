@@ -62,11 +62,14 @@ class LoadMachine extends AbstractLoader
     ]));
     $services = preg_split('/;/', $ligne[5]);
     foreach ($services as $service) {
-      $violations->addAll($validator->validate($serviceRepository->findOneBy(['label' => $service]), [
-        new NotNull([
-          'message' => 'form.machine.error.service.exist %service%', ['%service%' => $service]
-        ])
-      ]));
+      if ($service !== '') {
+        $violations->addAll($validator->validate($serviceRepository->findOneBy(['label' => $service]), [
+          new NotNull([
+            //'message' => 'form.machine.error.service.exist %service%', ['%service%' => $service]
+            'message' => sprintf('form.machine.error.service.exist %s', $service)
+          ])
+        ]));
+      }
     }
     //FIXME Tester si chacun des services dans $ligne5 existe déjà dans la base sinon erreur.
     //Done
@@ -95,9 +98,11 @@ class LoadMachine extends AbstractLoader
     //Bonne idée l'importation de service !
     $services = preg_split('/;/', $ligne[5]); //Original le preg_split !
     foreach ($services as $service) {
-      /** @var Service $serv */
-      $serv = $serviceRepository->findOneBy(['label' => $service]);
-      $machine->addService($serv);
+      if ($service !== '') {
+        /** @var Service $serv */
+        $serv = $serviceRepository->findOneBy(['label' => $service]);
+        $machine->addService($serv);
+      }
     }
     //FIXME Créer une Commande LoadService
     //WIP
