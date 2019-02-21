@@ -70,11 +70,18 @@
 
     {% if is_granted('ROLE_MANAGE_NETWORK') %}
         <div class="text-center">
+        <div class="btn-group-vertical">
             <a class="btn btn-default" href="{{ path('default_network_new') }}" data-toggle="tooltip" data-placement="left"
                title="{{ 'default.network.action.list.title' | trans }}">
                 <span class="fa fa-sitemap"></span>
                 {{ 'default.network.create' | trans }}
             </a>
+            <a class="btn btn-default" href="{{ path('default_deleted_network_index') }}" data-toggle="tooltip" data-placement="left"
+               title="{{ 'default.network.deleted.title' | trans }}">
+                <span class="fa fa-sitemap"></span>
+                {{ 'default.network.deleted' | trans }}
+            </a>
+        </div>
         </div>
     {% endif %}
 {% endblock content_action %}

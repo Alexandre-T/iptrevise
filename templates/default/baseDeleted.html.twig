@@ -15,18 +15,11 @@
     <div class="content-tabs">
         {# <!-- Nav tabs --> #}
         <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a href="#general" aria-controls="home" role="tab" data-toggle="tab">{{ 'default.tab.general' | trans }}</a></li>
-            {% block content_tabs_header %}{% endblock content_tabs_header %}
-            <li role="presentation"><a href="#logs" aria-controls="profile" role="tab" data-toggle="tab">{{ 'default.tab.logs' | trans }}</a></li>
-            <li role="presentation"><a href="#informations" aria-controls="messages" role="tab" data-toggle="tab">{{ 'default.tab.informations' | trans }}</a></li>
+            <li role="presentation" class="active"><a href="#logs" aria-controls="profile" role="tab" data-toggle="tab">{{ 'default.tab.logs' | trans }}</a></li>
         </ul>
         {# <!-- Tab panes --> #}
         <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active" id="general">
-                {% block content_settings %}{% endblock content_settings %}
-            </div>
-            {% block content_tabs_body %}{% endblock content_tabs_body %}
-            <div role="tabpanel" class="tab-pane" id="logs">
+            <div role="tabpanel" class="tab-pane active" id="logs">
                 {% block content_logs %}
                     {% if logs is defined and logs | length > 0 %}
                         <div class="panel panel-default" id="default-logs">
@@ -79,36 +72,7 @@
                     {% endif %}
                 {% endblock content_logs %}
             </div>
-            <div role="tabpanel" class="tab-pane" id="informations">
-                {% block content_information %}
-                    {% if information is defined %}
-                        <div class="panel panel-default" id="default-creator-information">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">{{ 'administration.information' | trans }}</h3>
-                            </div>
-                            <div class="panel-body">
-                                <dl class="dl-horizontal">
-                                    {% if information.created %}
-                                        <dt>{{ 'administration.created.at' | trans}}</dt>
-                                        <dd>{{ information.created | localizeddate('short', 'short') }}</dd>
-                                    {% endif %}
-                                    {% if information.creator %}
-                                        <dt>{{ 'administration.created.by' | trans}}</dt>
-                                        <dd>{{ information.creator }}</dd>
-                                    {% endif %}
-                                    {% if information.updated %}
-                                        <dt>{{ 'administration.updated.at' | trans}}</dt>
-                                        <dd>{{ information.updated | localizeddate('short', 'short') }}</dd>
-                                    {% endif %}
-                                </dl>
-                            </div>
-                            <div class="panel-footer text-right">
-                                <em>{{ 'default.tab.informations.explanation' | trans }}</em>
-                            </div>
-                        </div>
-                    {% endif %}
-                {% endblock content_information %}
-            </div>
+
         </div>
     </div>
     {% endblock content_tabs %}
@@ -117,43 +81,3 @@
 {% block content_sidebar %}
     {% block content_action %}{% endblock content_action %}
 {% endblock content_sidebar %}
-
-{% block modal %}
-    {% if delete_form is defined %}
-        {{ form_start(delete_form) }}
-        <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmModal">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content panel-danger">
-                    <div class="modal-header panel-heading">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="{{ 'administration.delete.confirm.close' | trans }}">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <h4 class="modal-title">{{ 'administration.delete.confirm.title' | trans }}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                           <div class="col-sm-2">
-                               <p class="text-right">
-                                   <span class="fa fa-exclamation-triangle fa-fw fa-3x"></span>
-                               </p>
-                           </div>
-                            <div class="col-sm-10">
-                                <p>{{ 'administration.delete.confirm.core' | trans }}</p>
-                           </div>
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">
-                            <span class="fa fa-close"></span>&nbsp;{{ 'administration.delete.confirm.cancel' | trans }}
-                        </button>
-                        {% if delete_form is defined %}
-                            {{ form_widget(delete_form.delete) }}
-                        {% endif %}
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
-        {{ form_end(delete_form) }}
-    {% endif %}
-{% endblock %}

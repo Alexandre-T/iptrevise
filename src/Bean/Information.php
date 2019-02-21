@@ -40,7 +40,7 @@ class Information
     private $creator;
 
     /**
-     * @var DateTime Date and time creation of the entity
+     * @var DateTime Date and time update of the entity
      */
     private $updated;
 
