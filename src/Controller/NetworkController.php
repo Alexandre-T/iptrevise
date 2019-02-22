@@ -202,6 +202,7 @@ class NetworkController extends Controller
         // the first line will be initialized at 0 in the loops by adding 1
         $line = -1;
         $adressIndex = 0;
+        $inPlage = false;
         for( $i = 0; $i < $height; $i++ )
         {
           for( $j = 0; $j < $width; $j++ )
@@ -221,13 +222,12 @@ class NetworkController extends Controller
                    if ($ip->getIp() == $adress)
                    {
                        $setColor = true;
-                       imagesetpixel($image, $j, $i, $color);
                    }
-               }/*
+               }
 
                if ($inPlage)
                {
-                   if ($plages->getEnd() == $adress)
+                   if ($endPlage == $adress)
                    {
                        $inPlage = false;
                    }
@@ -241,12 +241,13 @@ class NetworkController extends Controller
                        {
                            $setColor = true;
                            $inPlage = true;
+                           $endPlage = $plage->getEnd();
                            imagesetpixel($image, $j, $i, $color);
                        }
                    }
-               }*/
+               }
             }
-            if ( $setColor )
+            if ( $setColor ) //&& (($j % $adressWidth) != 0))
             {
                 imagesetpixel($image, $j, $i, $color);
             }
