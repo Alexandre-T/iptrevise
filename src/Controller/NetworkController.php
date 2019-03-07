@@ -219,18 +219,14 @@ class NetworkController extends Controller
                     $adress = $network->getIp() + ($adressIndex %($width/$adressWidth))+($line*($width/$adressWidth));
                 }
 
-
-               foreach ($ips as $ip)
-               {
-                   if ($ip->getIp() == $adress)
-                   {
-                       $setColor = true;
-                   }
-               }
-
                if ($inPlage)
                {
                    $setColor = true;
+                   if ($endPlage == $adress-1)
+                   {
+                       $inPlage = false;
+                       $setColor = false;
+                   }
                }
                else
                {
@@ -248,16 +244,22 @@ class NetworkController extends Controller
                        }
                    }
                }
+
+               foreach ($ips as $ip)
+               {
+                   if ($ip->getIp() == $adress)
+                   {
+                       $setColor = true;
+                   }
+               }
             }
+
             if ( $setColor )
             {
                 if ($inPlage)
                 {
                     imagesetpixel($image, $j, $i, $plageColor);
-                    if ($endPlage == $adress)
-                    {
-                        $inPlage = false;
-                    }
+
                 }
                 else
                 {
