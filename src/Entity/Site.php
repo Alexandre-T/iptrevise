@@ -2,7 +2,7 @@
 /**
  * This file is part of the IP-Trevise Application.
  *
- * PHP version 7.1
+ * PHP version 7.2
  *
  * (c) Alexandre Tranchant <alexandre.tranchant@gmail.com>
  *
@@ -32,8 +32,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *
  * @UniqueEntity("label", message="form.site.error.label.unique")
  */
-class Site implements InformationInterface, LabelInterface
+class Site implements ColorInterface, InformationInterface, LabelInterface
 {
+    use ColorTrait;
     use ReferentTrait;
 
     /**
@@ -68,7 +69,7 @@ class Site implements InformationInterface, LabelInterface
     private $label;
 
     /**
-     * Site color
+     * Site color.
      *
      * @var string
      *
@@ -83,11 +84,11 @@ class Site implements InformationInterface, LabelInterface
      *     length=6,
      *     nullable=false,
      *     name="sit_couleur",
-     *     options={"default":000000,"comment":"Couleur ergonomique du réseau"}
+     *     options={"default":000000,"comment":"Couleur ergonomique du site"}
      * )
      * @Gedmo\Versioned
      */
-    private $color;
+    private $color = '000000';
 
     /**
      * Datetime creation (in the application) of the site.
@@ -110,7 +111,7 @@ class Site implements InformationInterface, LabelInterface
     private $updated;
 
     /**
-     * NEtworks of this site.
+     * Networks of this site.
      *
      * @var Network[]|Collection
      *
@@ -147,14 +148,6 @@ class Site implements InformationInterface, LabelInterface
     }
 
     /**
-     * @return string
-     */
-    public function getColor(): ?string
-    {
-        return $this->color;
-    }
-
-    /**
      * @return DateTime
      */
     public function getCreated(): ?DateTime
@@ -187,23 +180,9 @@ class Site implements InformationInterface, LabelInterface
      *
      * @return Site
      */
-    public function setLabel(string $label): Site
+    public function setLabel(string $label): self
     {
         $this->label = $label;
-
-        return $this;
-    }
-
-    /**
-     * Setter of color.
-     *
-     * @param string $color
-     *
-     * @return Site
-     */
-    public function setColor(string $color): Site
-    {
-        $this->color = $color;
 
         return $this;
     }
@@ -215,7 +194,7 @@ class Site implements InformationInterface, LabelInterface
      *
      * @return Site
      */
-    public function addNetwork(Network $network): Site
+    public function addNetwork(Network $network): self
     {
         $this->networks[] = $network;
 
@@ -229,7 +208,7 @@ class Site implements InformationInterface, LabelInterface
      *
      * @return Site
      */
-    public function removeNetwork(Network $network): Site
+    public function removeNetwork(Network $network): self
     {
         $this->networks->removeElement($network);
 

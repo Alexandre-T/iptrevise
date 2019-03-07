@@ -60,10 +60,17 @@
     {{ app_macro.panel_admin('building-o', 'default_site_index', pagination.totalItemCount, 'default.sites') }}
 
         <div class="text-center">
+        <div class="btn-group-vertical">
             <a class="btn btn-default" href="{{ path('default_site_new') }}" data-toggle="tooltip" data-placement="left"
                title="{{ 'default.site.create.title' | trans }}">
                 <span class="fa fa-building-o"></span>
                 {{ 'default.site.create' | trans }}
             </a>
+            <a class="btn btn-default" href="{{ path('default_deleted_site_index') }}" data-toggle="tooltip" data-placement="left"
+               title="{{ 'default.site.deleted.title' | trans }}">
+                <span class="fa fa-building-o"></span>
+                {{ 'default.site.deleted' | trans }}
+            </a>
+        </div>
         </div>
 {% endblock content_action %}

@@ -1,20 +1,23 @@
 form.ip.error.ip.network %min% %max%: 'L’adresse Ip doit être comprise entre %min% et %max%.'
 form.ip.error.ip.unique: 'Cette adresse IP est déjà attribuée sur ce réseau'
+form.ip.error.network.exist %network%: 'Le réseau « %network% » n’existe pas.'
+form.ip.error.machine.exist %machine%: 'La machine « %machine% » n’existe pas.'
 
 form.machine.error.label.unique: 'Cet intitulé de machine est déjà utilisé.'
 form.machine.error.macs.unique: 'Cette adresse mac est déjà utilisée.'
 form.machine.error.interface.min: 'Le nombre d’interface réseau doit être supérieur ou égal à {{ compared_value }}.'
+form.machine.error.service.exist %service%: 'Le service « %service% » n’existe pas.'
 
 form.network.error.color.pattern: 'La couleur doit être au format hexadécimal. 000000 pour noir, FF0000 pour rouge, 00FF00 pour vert et 0000FF pour bleu.'
 form.network.error.ip.address %address% %mean%: '« %address% » n’est pas une adresse réseau valide. Est-ce que vous pensiez à « %mean% » ?'
+form.network.error.ip.address.pattern %address%: ' %address% n’est pas une adresse IP valide, une IP valide est par exemple de la forme : 192.168.127.0 .'
 form.network.error.ip.min: 'Cette adresse IP n’est pas valide.'
 form.network.error.label.unique: 'Cet intitulé de réseau est déjà utilisé.'
 form.network.error.cidr.min: 'Le masque (CIDR) doit être supérieur ou égal à 0.'
 form.network.error.cidr.max: 'Le masque (CIDR) doit être inférieur ou égal à 32.'
+form.network.error.site.exist %site%: 'Le site « %site% » n’existe pas.'
 
 form.plage.error.ip.network %min% %max%: 'Les adresses Ip doivent être comprise entre %min% et %max%.'
-form.plage.error.ip.unique: 'Une adresse Ip a déjà été réservée sur cette plage'
-form.plage.error.plage.mixed: 'Vous essayez de réserver une plage d’adresses sur une autre plage'
 
 form.service.error.label.unique: 'Un service du même nom existe déjà'
 
@@ -25,3 +28,4 @@ form.user.error.mail.unique: 'Cette adresse mail est déjà utilisée.'
 form.user.error.label.unique: 'Cet identifiant est déjà utilisé.'
 
 form.site.error.label.unique: 'Cet intitulé de site est déjà utilisé'
+form.site.error.color.pattern: 'La couleur du site doit être saisie au format HTML sans le Hashtag : FFF ou AA2331'

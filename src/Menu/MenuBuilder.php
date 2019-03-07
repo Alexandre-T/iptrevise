@@ -200,6 +200,28 @@ class MenuBuilder
                     'icon' => 'fw fa-group',
                     'route' => 'administration_user_index',
                 ]);
+                $dropdownAdmin->addChild('divider_1', ['divider' => true])
+                    ->setExtra('translation_domain', false);
+                $dropdownAdmin->addChild('default.entity.deleted', [
+                    'dropdown-header' => true,
+                ]);
+                $dropdownAdmin->addChild('default.site.deleted', [
+                        'icon' => 'fw fa-building-o',
+                        'route' => 'default_deleted_site_index',
+                ]);
+                $dropdownAdmin->addChild('default.network.deleted', [
+                        'icon' => 'fw fa-sitemap',
+                        'route' => 'default_deleted_network_index',
+                ]);
+                $dropdownAdmin->addChild('default.machine.deleted', [
+                        'icon' => 'fw fa-desktop',
+                        'route' => 'default_deleted_machine_index',
+                ]);
+                $dropdownAdmin->addChild('default.ip.deleted', [
+                        'icon' => 'fw fa-indent',
+                        'route' => 'default_deleted_ip_index',
+                ]);
+
             } else {
                 $dropdownAdmin->addChild('menu.admin.confirm', [
                     'icon' => 'fw fa-check',
