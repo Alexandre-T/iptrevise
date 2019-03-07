@@ -45,6 +45,8 @@ class SecurityCest
         $I->see('Réseaux', '.navbar');
         $I->see('Machines', '.navbar');
 
+        $I->see('Authentification réussie. Bienvenue reader@example.org !', '.alert-success');
+
         $I->wantToTest('Reader privileges');
         $I->amOnPage('/machine/');
         $I->dontSeeLink('Nouvelle machine');
@@ -103,6 +105,8 @@ class SecurityCest
         $I->dontSee('Machines', '.navbar');
         $I->dontSee('Adresses IP', '.navbar');
 
+        $I->see('Authentification réussie. Bienvenue user@example.org !', '.alert-success');
+
         $I->dontSee('Gestion des utilisateurs', '.navbar');
 
         $I->click('Déconnexion');
@@ -131,6 +135,8 @@ class SecurityCest
 
         $I->see('Gestion des utilisateurs', '.navbar');
 
+        $I->see('Authentification réussie. Bienvenue administrator@example.org !', '.alert-success');
+
         $I->click('Déconnexion');
         $I->seeCurrentUrlEquals('/');
         $I->see('Connexion', '.navbar');
@@ -154,6 +160,8 @@ class SecurityCest
 
         $I->see('Réseaux', '.navbar');
         $I->see('Machines', '.navbar');
+
+        $I->see('Authentification réussie. Bienvenue organiser@example.org !', '.alert-success');
 
         $I->dontSee('Gestion des utilisateurs', '.navbar');
 

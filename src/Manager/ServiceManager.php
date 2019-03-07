@@ -14,7 +14,7 @@
  *
  * @see       http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt
  */
-//TODO adapter au service
+
 namespace App\Manager;
 
 use App\Bean\Factory\LogFactory;
@@ -23,6 +23,7 @@ use App\Entity\Service;
 use App\Entity\User;
 use App\Repository\ServiceRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 use Gedmo\Loggable\Entity\LogEntry;
 use Gedmo\Loggable\Entity\Repository\LogEntryRepository;
@@ -74,10 +75,14 @@ class ServiceManager implements LoggableManagerInterface, PaginatorInterface
      */
     public function count()
     {
-        return $this->repository->createQueryBuilder(self::ALIAS)
-            ->select('COUNT(1)')
-            ->getQuery()
-            ->getSingleScalarResult();
+        try {
+            return $this->repository->createQueryBuilder(self::ALIAS)
+                ->select('COUNT(1)')
+                ->getQuery()
+                ->getSingleScalarResult();
+        } catch (NonUniqueResultException $e) {
+            return 0;
+        }
     }
 
     /**
@@ -100,7 +105,7 @@ class ServiceManager implements LoggableManagerInterface, PaginatorInterface
      */
     public function isDeletable(Service $service): bool
     {
-        //A service is deletable if there is no IPs referenced.
+        //A service is deletable if there is no Machine using it.
         return 0 == count($service->getMachines());
     }
 
@@ -146,17 +151,22 @@ class ServiceManager implements LoggableManagerInterface, PaginatorInterface
     }
 
     /**
-    * Save new or modified Service.
-    *
-    * @param Service $service
-    */
-    public function save(Service $service)
+     * Save new or modified Service.
+     *
+     * @param Service $service
+     * @param User    $user
+     */
+    public function save(Service $service, User $user)
     {
+        if ($user && empty($service->getCreator())) {
+            $service->setCreator($user);
+        }
+
         $this->em->persist($service);
         $this->em->flush();
     }
 
-     /** Return the Query builder needed by the paginator.
+    /** Return the Query builder needed by the paginator.
      *
      * @return QueryBuilder
      */

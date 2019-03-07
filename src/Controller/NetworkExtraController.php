@@ -19,18 +19,21 @@ namespace App\Controller;
 
 use App\Entity\Ip;
 use App\Entity\Machine;
+use App\Entity\Plage;
 use App\Form\Type\IpMachineType;
 use App\Form\Type\IpType;
 use App\Form\Type\MachineType;
+use App\Form\Type\PlageType;
 use App\Entity\Network;
 use App\Manager\IpManager;
 use App\Manager\MachineManager;
+use App\Manager\PlageManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -86,6 +89,51 @@ class NetworkExtraController extends Controller
             return $this->render('@App/default/network-extra/delete-ip.html.twig', [
                 'confirm_form' => $form->createView(),
                 'ip' => $ip,
+            ]);
+        }
+    }
+
+    /**
+     * Deletes a plage from network.
+     *
+     * @Route("/{id}/delete-plage", name="default_network_delete_plage")
+     * @ParamConverter("plage", class="App:Plage")
+     * @Security("is_granted('ROLE_MANAGE_IP')")
+     *
+     * @param Request $request The request
+     * @param Plage      $plage      the plage to delete
+     *
+     * @return RedirectResponse|Response
+     */
+    public function deletePlageAction(Request $request,Plage $plage)
+    {
+        $network = $plage->getNetwork();
+
+        $trans = $this->get('translator.default');
+
+        $form = $this->createDeletePlageForm($plage);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            //Prepare the message before deleteing.
+            $message = $trans->trans('default.plage.deleted %name%', [
+              '%name%' => $plage->getLabel()
+            ]);
+
+            //Deleting
+            $plageManager = $this->get(PlageManager::class);
+            $plageManager->delete($plage);
+
+            //Flash Message
+            $session = $this->get('session');
+            $session->getFlashBag()->add('success', $message);
+
+            //Redirecting
+            return $this->redirectToRoute('default_network_show', ['id' => $network->getId()]);
+        } else {
+            return $this->render('@App/default/network-extra/delete-plage.html.twig', [
+                'confirm_form' => $form->createView(),
+                'plage' => $plage,
             ]);
         }
     }
@@ -212,6 +260,69 @@ class NetworkExtraController extends Controller
 
         return $this->render('@App/default/network-extra/new-ip.html.twig', [
             'ip' => $ip,
+            'network' => $network,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * Reserve a new plage for the current network.
+     *
+     * @Route("/{id}/new-plage", name="default_network_new_plage")
+     * @Security("is_granted('ROLE_MANAGE_IP')")
+     *
+     * @param Request $request
+     * @param Network $network
+     *
+     * @return Response
+     */
+    public function newPlageAction(Request $request, Network $network)
+    {
+        //Ip initialization
+        // $ip = new Ip();
+        // $ip->setNetwork($network);
+
+        //Plage initialization
+        $plage = new Plage();
+        $plage->setNetwork($network);
+
+        //Form initialization
+        $form = $this->createForm(PlageType::class, $plage);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $plageService = $this->get(PlageManager::class);
+            $plageService->save($plage, $this->getUser());
+            //Flash message
+            $session = $this->get('session');
+            $trans = $this->get('translator.default');
+            $message = $trans->trans('default.plage.created %ipdeb% %ipfin%', ['%ipdeb%' => long2ip($plage->getStart()), '%ipfin%' => long2ip($plage->getEnd())]);
+            $session->getFlashBag()->add('success', $message);
+
+            return $this->redirectToRoute('default_plage_show', array('id' => $plage->getId()));
+        }
+
+        // The form was not submitted, the IP was not calculated
+        // We purpose the first non-reserved IP in the Network
+        // if (null === $plage->getStart()) {
+        //     $ipManager = $this->get(PlageManager::class);
+        //     $firstIp = $ipManager->getFirstNonReferencedIp($network);
+        //     if (null === $firstIp) {
+        //         //Flash message
+        //         $session = $this->get('session');
+        //         $trans = $this->get('translator.default');
+        //         $message = $trans->trans('default.network.no.space');
+        //         $session->getFlashBag()->add('error', $message);
+        //
+        //         return $this->redirectToRoute('default_network_show', array('id' => $network->getId()));
+        //     } else {
+        //         $plage->setStart($firstIp);
+        //         // We must set it.
+        //         $form->setData($plage);
+        //     }
+        // }
+
+        return $this->render('@App/default/network-extra/new-plage.html.twig', [
+            'plage' => $plage,
             'network' => $network,
             'form' => $form->createView(),
         ]);
@@ -374,9 +485,9 @@ class NetworkExtraController extends Controller
      *
      * @param Ip $ip the Ip entity
      *
-     * @return Form The form
+     * @return FormInterface The form
      */
-    private function createDeleteIpForm(Ip $ip): Form
+    private function createDeleteIpForm(Ip $ip): FormInterface
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('default_network_delete_ip', array('id' => $ip->getId())))
@@ -391,13 +502,34 @@ class NetworkExtraController extends Controller
     }
 
     /**
+     * Creates a form to ask confirmation before deleting an plage.
+     *
+     * @param Plage $ip the Ip entity
+     *
+     * @return FormInterface The form
+     */
+    private function createDeletePlageForm(Plage $plage): FormInterface
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('default_network_delete_plage', array('id' => $plage->getLabel())))
+            ->setMethod('DELETE')
+            ->add('confirm', SubmitType::class, [
+                'attr' => ['class' => 'btn-danger confirm-delete'],
+                'icon' => 'trash-o',
+                'label' => 'form.plage.delete-plage.confirm',
+            ])
+            ->getForm()
+            ;
+    }
+
+    /**
      * Creates a form to ssociate/link an ip to an existing machine.
      *
      * @param Ip $ip the Ip entity
      *
-     * @return Form The form
+     * @return FormInterface The form
      */
-    private function createLinkForm(Ip $ip): Form
+    private function createLinkForm(Ip $ip): FormInterface
     {
         $form = $this->createFormBuilder()
             ->setAction($this->generateUrl('default_network_link', array('id' => $ip->getId())))
@@ -413,9 +545,9 @@ class NetworkExtraController extends Controller
      *
      * @param Ip $ip the Ip entity
      *
-     * @return Form The form
+     * @return FormInterface The form
      */
-    private function createUnlinkForm(Ip $ip): Form
+    private function createUnlinkForm(Ip $ip): FormInterface
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('default_network_unlink', array('id' => $ip->getId())))

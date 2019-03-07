@@ -19,6 +19,7 @@ namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -65,6 +66,15 @@ class UserType extends AbstractType
                     'form.user.field.roles.option.ORGANISER' => 'ROLE_ORGANISER',
                     'form.user.field.roles.option.user' => 'ROLE_USER',
                 ],
+            ])
+            ->add('newRoles', CollectionType::class, [
+                'entry_type' => RoleType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'label' => false,
+
+
             ])
         ;
     }

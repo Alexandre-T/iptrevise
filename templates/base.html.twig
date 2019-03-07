@@ -23,12 +23,21 @@
                 <span class="fa fa-globe"></span>
                 {{ app_title }}
             </a>
+
         {% endblock %}
 
         {% block menu %}
             {{ mopa_bootstrap_menu('main', {'automenu': 'navbar'}) }}
             {{ mopa_bootstrap_menu('admin', {'automenu': 'navbar', 'pull-right': true}) }}
             {{ mopa_bootstrap_menu('user', {'automenu': 'navbar', 'pull-right': true}) }}
+            <div class="recherche_p">
+
+            <form action="/search" id="searchthis" method="get">
+            <input id="search" name="search" value="" enctype="text/plain" type="text" placeholder="Rechercher..." />
+            <input id="search-btn" type="submit" value="GO" />
+            </form>
+
+            </div>
         {% endblock %}
     {% endembed %}
 {% endblock navbar %}
@@ -36,7 +45,7 @@
 {% block footer %}{% endblock footer %}
 
 {% block foot_script %}
-    {% block modal %}{% endblock modal%}
+    {% block modal %}{% endblock modal %}
     {% block foot_script_assetic %}
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>

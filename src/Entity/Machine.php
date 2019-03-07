@@ -128,7 +128,6 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      * @var string
      *
      * @ORM\Column(type="text", nullable=true, name="mac_location", options={"comment":"Localisation  de la machine"})
-     *
      */
     private $location;
     /**
@@ -168,7 +167,12 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      *
      * @var Service[]|Collection
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Service", mappedBy="machines")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Service", inversedBy="machines")
+     * @ORM\JoinTable(
+     *     name="tj_machineservice",
+     *     joinColumns={@ORM\JoinColumn(name="machine_id", referencedColumnName="mac_id", nullable=false)},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="service_id", referencedColumnName="ser_id", nullable=false)}
+     * )
      */
     private $services;
 
@@ -289,7 +293,7 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      *
      * @return Machine
      */
-    public function setLabel(string $label): Machine
+    public function setLabel(string $label): self
     {
         $this->label = $label;
 
@@ -303,7 +307,7 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      *
      * @return Machine
      */
-    public function setDescription(string $description): Machine
+    public function setDescription(string $description): self
     {
         $this->description = $description;
 
@@ -317,7 +321,7 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      *
      * @return Machine
      */
-    public function setInterface(int $interface): Machine
+    public function setInterface(int $interface): self
     {
         $this->interface = $interface;
 
@@ -331,7 +335,7 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      *
      * @return Machine
      */
-    public function setLocation(string $location): Machine
+    public function setLocation(string $location): self
     {
         $this->location = $location;
 
@@ -345,11 +349,11 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      *
      * @return Machine
      */
-    public function setMacs(string $macs): Machine
+    public function setMacs(string $macs): self
     {
-      $this->macs = $macs;
+        $this->macs = $macs;
 
-      return $this;
+        return $this;
     }
 
     /**
@@ -359,11 +363,13 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      *
      * @return Machine
      */
-    public function addIp(Ip $ip): Machine
+    public function addIp(Ip $ip): self
     {
         $this->ips[] = $ip;
+
         return $this;
     }
+
     /**
      * Remove ip.
      *
@@ -371,7 +377,7 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      *
      * @return Machine
      */
-    public function removeIp(Ip $ip): Machine
+    public function removeIp(Ip $ip): self
     {
         $this->ips->removeElement($ip);
 
@@ -385,9 +391,9 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      *
      * @return Machine
      */
-    public function addService(Service $service): Machine
+    public function addService(Service $service): self
     {
-        $this->services[] = $service;
+        $this->services->add($service);
 
         return $this;
     }
@@ -399,7 +405,7 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      *
      * @return Machine
      */
-    public function removeService(Service $service): Machine
+    public function removeService(Service $service): self
     {
         $this->services->removeElement($service);
 

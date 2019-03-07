@@ -17,6 +17,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Service;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -41,17 +42,24 @@ class MachineFixtures extends Fixture
     {
         if (in_array($this->container->get('kernel')->getEnvironment(), ['dev', 'test'])) {
             $machine = [];
+            /** @var User $administrator */
+            $administrator = $this->getReference('user_admin');
             /** @var User $organiser */
             $organiser = $this->getReference('user_organiser');
+            /** @var Service $dnsService */
+            $dnsService = $this->getReference('service_dns');
 
             for ($index = 0; $index <= 90; ++$index) {
                 $machine[$index] = (new Machine())
                     ->setLabel("Machine $index")
                     ->setDescription("Description $index")
-                    ->setInterface($index % 8 + 1);
+                    ->setInterface($index % 8 + 1)
+                    ->setCreator($organiser);
 
                 if ($index % 5) {
-                    $machine[$index]->setCreator($organiser);
+                    $machine[$index]
+                        ->addService($dnsService)
+                        ->setCreator($administrator);
                 }
 
                 $this->addReference("machine_$index", $machine[$index]);

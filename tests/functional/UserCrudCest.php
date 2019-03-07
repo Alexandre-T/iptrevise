@@ -133,6 +133,7 @@ class UserCrudCest
         $I->see("Codeception", 'td[headers="user-username"]');
 
         $I->wantTo('Edit my creation');
+        //TODO Ajouter les tests sur les rôles.
         $I->amOnPage("/administration/user/$id/edit");
         $I->canSeeCurrentUrlEquals("/administration/user/$id/edit");
 

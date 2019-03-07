@@ -130,6 +130,21 @@ class MachineManager implements LoggableManagerInterface, PaginatorInterface
     }
 
     /**
+     * Get Machine with given label.
+     *
+     * @param $machineLab string
+     *
+     * @return Machine | null
+     */
+    public function getMachineByLabel(string $machineLab): ?Machine
+    {
+        /** @var Machine $machine */
+        $machine = $this->repository->findOneBy(['label' => $machineLab]);
+
+        return $machine;
+    }
+
+    /**
      * Retrieve logs of the axe.
      *
      * @param Machine $entity

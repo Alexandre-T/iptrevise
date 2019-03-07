@@ -31,6 +31,10 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+
 /**
  * NetworkController class.
  *
@@ -137,6 +141,101 @@ class NetworkController extends Controller
         }
 
         return $this->render('@App/default/network/show.html.twig', $view);
+    }
+
+    private function getAdressSize(Network $network)
+    {
+    }
+
+    private function isReserved(Network $network, int $adressIndex)
+    {
+    }
+    /**
+     * Generates the occupation graph for a network entity.
+     *
+     * @Route("/matrice/{network}", name="default_network_matrice")
+     * @Method("GET")
+     * @Security("is_granted('ROLE_READ_NETWORK')")
+     *
+     * @param Network $network
+     *
+     * @return Response
+     */
+
+    public function matriceAction(Network $network)
+    {
+        // create background image ( default : grey)
+        // FIXME change $height and $width according to network cidr?
+        $height = 64;
+        $width = 1024;
+        $image = imagecreate ( $width , $height );
+        imagecolorallocate($image, 127, 127, 127);
+
+        // get the size in pixels of each adress according to the network cidr
+        $cidr = $network->getCidr();
+        /*if ($cidr < 16) { TODO gestion d'erreur
+            return -1;
+        }*/
+        $adressWidth = 1;
+        $adressHeight = 1;
+        for ($i = 0; $i < $cidr - 16; $i++)
+        {
+            if ($i % 2 == 0)
+            {
+                $adressHeight *= 2;
+            } else {
+                $adressWidth *= 2;
+            }
+        }
+
+        // color the adresses reserved by the network with its color
+        //$color = networkColor($network) //FIXME use color of the network to define a color with rgb values in a imagecolorallocate
+        $color = imagecolorallocate($image, 255, 0, 0);// pure red for all networks for now
+        $ips = $network->getIps();
+        $adressIndex = 0;
+        // the first line will be initialized at 0 in the loops by adding 1
+        $line = -1;
+
+        for( $i = 0; $i < $height; $i++ )
+        {
+          for( $j = 0; $j < $width; $j++ )
+          {
+            if ( $j % $adressWidth == 0 )
+            {
+                $setColor = false;
+                $adressIndex += 1;
+                if ($i % $adressHeight == 0 && $j == 0 )
+                {
+                    $line += 1;
+                }
+               $adress = $network->getIp() + ($adressIndex %($width/$adressWidth))+($line*($width/$adressWidth));
+               foreach ($ips as $ip)
+               {
+                   if ($ip->getIp() == $adress)
+                   {
+                       $setColor = true;
+                       imagesetpixel($image, $j, $i, $color);
+                   }
+               }
+            }
+            if ( $setColor )
+            {
+                imagesetpixel($image, $j, $i, $color);
+            }
+          }
+      }
+        //FIXME Cette partie de code est moche, mais je n'ai rien trouvé de mieux pour le moment
+        ob_start();
+        imagejpeg($image);
+        $imageString = ob_get_clean();
+
+        $headers= array(
+            'Content-type'=>'image/jpeg',
+            'Pragma'=>'no-cache',
+            'Cache-Control'=>'no-cache'
+        );
+
+        return new Response($imageString, 200, $headers);
     }
 
     /**
