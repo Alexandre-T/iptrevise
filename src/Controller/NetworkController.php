@@ -143,13 +143,6 @@ class NetworkController extends Controller
         return $this->render('@App/default/network/show.html.twig', $view);
     }
 
-    private function getAdressSize(Network $network)
-    {
-    }
-
-    private function isReserved(Network $network, int $adressIndex)
-    {
-    }
     /**
      * Generates the occupation graph for a network entity.
      *
@@ -195,7 +188,7 @@ class NetworkController extends Controller
                                     $network->getBlue());
 
         $red = imagecolorallocate($image, 255, 0, 0);
-
+        $green=imagecolorallocate($image, 0,255, 0);
         $ips = $network->getIps();
         $plages = $network->getPlages();
 
@@ -209,14 +202,24 @@ class NetworkController extends Controller
           {
             if ( $j % $adressWidth == 0 )
             {
-                $setColor = false;
-                $adressIndex += 1;
                 if ($i % $adressHeight == 0 && $j == 0 )
                 {
                     $line += 1;
                 }
 
-               $adress = $network->getIp() + ($adressIndex %($width/$adressWidth))+($line*($width/$adressWidth));
+                $setColor = false;
+                $adressIndex += 1;
+
+                if($adressIndex % ($width/$adressWidth) == 0)
+                {
+                    $adress = $network->getIp() + ($width/$adressWidth)+($line*($width/$adressWidth));
+                }
+                else
+                {
+                    $adress = $network->getIp() + ($adressIndex %($width/$adressWidth))+($line*($width/$adressWidth));
+                }
+
+
                foreach ($ips as $ip)
                {
                    if ($ip->getIp() == $adress)
@@ -227,10 +230,6 @@ class NetworkController extends Controller
 
                if ($inPlage)
                {
-                   if ($endPlage == $adress)
-                   {
-                       $inPlage = false;
-                   }
                    $setColor = true;
                }
                else
@@ -242,14 +241,28 @@ class NetworkController extends Controller
                            $setColor = true;
                            $inPlage = true;
                            $endPlage = $plage->getEnd();
-                           imagesetpixel($image, $j, $i, $color);
+                           $plageColor = imagecolorallocate($image,
+                                                       $plage->getRed(),
+                                                       $plage->getGreen(),
+                                                       $plage->getBlue());
                        }
                    }
                }
             }
-            if ( $setColor ) //&& (($j % $adressWidth) != 0))
+            if ( $setColor )
             {
-                imagesetpixel($image, $j, $i, $color);
+                if ($inPlage)
+                {
+                    imagesetpixel($image, $j, $i, $plageColor);
+                    if ($endPlage == $adress)
+                    {
+                        $inPlage = false;
+                    }
+                }
+                else
+                {
+                    imagesetpixel($image, $j, $i, $color);
+                }
             }
           }
       }
