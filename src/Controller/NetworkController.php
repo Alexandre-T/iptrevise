@@ -187,22 +187,26 @@ class NetworkController extends Controller
                                     $network->getGreen(),
                                     $network->getBlue());
 
-        $red = imagecolorallocate($image, 255, 0, 0);
-        $green=imagecolorallocate($image, 0,255, 0);
         $ips = $network->getIps();
         $plages = $network->getPlages();
 
         // the first line will be initialized at 0 in the loops by adding 1
         $line = -1;
         $adressIndex = 0;
-        $inPlage = false;
+
+        // default value of $startPlage and $endPlage are not in the network
+        $startPlage = $network->getIp()+ 2**(32 - $cidr);
+        $endPlage = $network->getIp()+ + 2**(32 - $cidr);
+
         for( $i = 0; $i < $height; $i++ )
         {
           for( $j = 0; $j < $width; $j++ )
           {
-            if ( $j % $adressWidth == 0 )
+
+            if ($j % $adressWidth == 0 )
             {
-                if ($i % $adressHeight == 0 && $j == 0 )
+
+                if ( $i % $adressHeight == 0 && $j == 0 )
                 {
                     $line += 1;
                 }
@@ -210,6 +214,7 @@ class NetworkController extends Controller
                 $setColor = false;
                 $adressIndex += 1;
 
+                // if $adressIndex % ($width/$adressWidth) == 0 then the adress is exactly ($width/$adressWidth) plus the line
                 if($adressIndex % ($width/$adressWidth) == 0)
                 {
                     $adress = $network->getIp() + ($width/$adressWidth)+($line*($width/$adressWidth));
@@ -219,14 +224,9 @@ class NetworkController extends Controller
                     $adress = $network->getIp() + ($adressIndex %($width/$adressWidth))+($line*($width/$adressWidth));
                 }
 
-               if ($inPlage)
+               if ($adress >= $startPlage && $adress <= $endPlage)
                {
                    $setColor = true;
-                   if ($endPlage == $adress-1)
-                   {
-                       $inPlage = false;
-                       $setColor = false;
-                   }
                }
                else
                {
@@ -235,8 +235,9 @@ class NetworkController extends Controller
                        if ($plage->getStart() == $adress)
                        {
                            $setColor = true;
-                           $inPlage = true;
+                           $startPlage = $plage->getStart();
                            $endPlage = $plage->getEnd();
+                           // the color used is the plage's color not the network's  color
                            $plageColor = imagecolorallocate($image,
                                                        $plage->getRed(),
                                                        $plage->getGreen(),
@@ -252,14 +253,13 @@ class NetworkController extends Controller
                        $setColor = true;
                    }
                }
-            }
+           }
 
             if ( $setColor )
             {
-                if ($inPlage)
+                if ($adress >= $startPlage && $adress <= $endPlage)
                 {
                     imagesetpixel($image, $j, $i, $plageColor);
-
                 }
                 else
                 {
