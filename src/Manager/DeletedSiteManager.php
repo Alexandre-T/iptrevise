@@ -88,7 +88,7 @@ class DeletedSiteManager implements LoggableManagerInterface, PaginatorInterface
     public function getOtherLogEntriesQuery($log)
     {
 
-      $qb = $this->em->createQuery('SELECT log FROM Gedmo\Loggable\Entity\LogEntry log WHERE log.objectId = ?1 ORDER BY log.version')
+      $qb = $this->em->createQuery('SELECT log FROM Gedmo\Loggable\Entity\LogEntry log WHERE log.objectId = ?1 AND log.objectClass = \'App\Entity\Site\' ORDER BY log.version')
       ->setParameter(1, $log->getObjectId());
 
       return $qb;
@@ -124,7 +124,7 @@ class DeletedSiteManager implements LoggableManagerInterface, PaginatorInterface
 
         $qb->where(self::ALIAS.'.objectClass = \'App\Entity\Site\'')
             ->andWhere(self::ALIAS.'.action = \'create\'')
-            ->andWhere(self::ALIAS.'.objectId IN (SELECT log.objectId FROM Gedmo\Loggable\Entity\LogEntry log WHERE log.action = \'remove\')');
+            ->andWhere(self::ALIAS.'.objectId IN (SELECT log.objectId FROM Gedmo\Loggable\Entity\LogEntry log WHERE log.action = \'remove\' AND log.objectClass = \'App\Entity\Site\')');
             //->setParameter('query', $qb);
 
         return $qb;

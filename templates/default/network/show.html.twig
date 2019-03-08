@@ -35,6 +35,18 @@
                     <em>{{ network.description }}</em>
                 </p>
             {% endif %}
+            <hr>
+            <div class="row">
+                <div class="col-sm-10">
+                    {{ app_macro.dl_site(network.site) }}
+                </div>
+                <div class="col-sm-2 text-right">
+                    <p>
+                        <span class="fa fa-building-o fa-4x" style="color: {{ '#' ~ network.site.color }}"></span>
+                    </p>
+                </div>
+            </div>
+            <hr>
             {% if 0 == network.ips.count %}
                 <div class="alert alert-info">
                     <p>{{ 'default.network.no.ip' | trans }}</p>
