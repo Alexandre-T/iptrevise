@@ -112,13 +112,13 @@
                   {{ machine.label }}
                 </a>
               </td>
-              <td headers="machine-ip-ip" class="th-icon">
+              <td headers="machine-ip-ip" class="missing">
                 {{ 'default.machine.missing.ip' | trans }}
               </td>
-              <td headers="machine-ip-network-label" class="th-icon">
+              <td headers="machine-ip-network-label" class="missing">
                 {{ 'default.machine.missing.network' | trans }}
               </td>
-              <td headers="machine-ip-network-label" class="th-icon">
+              <td headers="machine-ip-network-label" class="missing">
                 {{ 'default.machine.missing.site' | trans }}
               </td>
               <td headers="machine-actions" rowspan="2">
@@ -143,7 +143,7 @@
       </tbody>
     </table>
     {% if nbmac == 0 %}
-    <td> {{ 'default.missing.result' | trans }} </td>
+    <td class="missing"> {{ 'default.missing.result' | trans }} </td>
     {% endif %}
     <div class="navigation text-right">
       {{ knp_pagination_render(pagination) }}
@@ -195,7 +195,7 @@
                 </a>
               </td>
             {% else %}
-              <td>
+              <td class="missing">
                 {{ 'default.ip.missing.site' | trans }}
               </td>
             {% endif %}
@@ -206,7 +206,7 @@
                 </a>
               </td>
             {% else %}
-              <td>
+              <td class="missing">
                 {{ 'default.ip.missing.network' | trans }}
               </td>
             {% endif %}
@@ -217,7 +217,7 @@
                 </a>
               </td>
             {% else %}
-              <td>
+              <td class="missing">
                 {{ 'default.ip.missing.machine' | trans }}
               </td>
             {% endif %}
@@ -227,7 +227,7 @@
       </tbody>
     </table>
     {% if nbips == 0 %}
-      <td> {{ 'default.missing.result' | trans }} </td>
+      <td class="missing"> {{ 'default.missing.result' | trans }} </td>
     {% endif %}
     <div class="navigation text-right">
       {{ knp_pagination_render(pagination) }}

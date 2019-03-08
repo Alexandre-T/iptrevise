@@ -34,6 +34,11 @@ label.required::after {
 .recherche_p {
   margin-top: 10px;
 }
+
+.missing {
+  color: #9d9d9d;
+}
+
 #searchthis #search {
   color: #9d9d9d;
   background-color: transparent;   /* Couleur de fond */
