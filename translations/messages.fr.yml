@@ -165,6 +165,8 @@ default.ip.missing.machine: 'No Machine Linked'
 default.ip.missing.network: 'No Network Associated'
 default.ip.missing.site: 'No SIte Associated'
 
+default.missing.result: 'No Results'
+
 default.machines: 'Machines'
 
 default.plage.action.edit: 'Modifier'
