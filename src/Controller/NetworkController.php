@@ -195,8 +195,8 @@ class NetworkController extends Controller
         $adressIndex = 0;
 
         // default value of $startPlage and $endPlage are not in the network
-        $startPlage = $network->getIp()+ 2**(32 - $cidr);
-        $endPlage = $network->getIp()+ + 2**(32 - $cidr);
+        $startPlage = $network->getIp()+ 2**(32 - $cidr)+1;
+        $endPlage = $network->getIp()+ + 2**(32 - $cidr)+1;
 
         for( $i = 0; $i < $height; $i++ )
         {
