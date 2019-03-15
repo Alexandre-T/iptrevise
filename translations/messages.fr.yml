@@ -127,9 +127,12 @@ default.machine.action.create.title: 'Enregistrer une nouvelle machine.'
 default.machine.action.delete.title: 'Supprimer cette machine.'
 default.machine.action.edit.title: 'Éditer les informations sur cette machine.'
 default.machine.action.list: 'Liste des machines'
+default.action.search: 'Résultat de la recherche'
 default.machine.action.list.title: 'Retourner à la liste des machines.'
 default.machine.action.show.title: 'Retourner à la fiche complète de cette machine.'
 default.machine.actions: 'Actions'
+default.machine.networks: 'Networks'
+default.machine.sites: 'Sites'
 default.machine.create: 'Nouvelle machine'
 default.machine.created %name%: 'La machine « %name% » a été créée avec succès !'
 default.machine.create.title: 'Créer une nouvelle machine'
@@ -153,6 +156,16 @@ default.machine.deleted.list.title: 'Liste des machines supprimées'
 default.machine.deleted.actions: 'Actions'
 default.machine.deleted.title.back: 'Retouner à la liste des machines supprimées'
 default.machine.deleted.show.title %name%: 'Journal de bord de la machine supprimée « %name% »'
+
+default.machine.missing.ip: 'No Ip Adress Linked'
+default.machine.missing.network: 'No Network Associated'
+default.machine.missing.site: 'No Site Associated'
+
+default.ip.missing.machine: 'No Machine Linked'
+default.ip.missing.network: 'No Network Associated'
+default.ip.missing.site: 'No SIte Associated'
+
+default.missing.result: 'No Results'
 
 default.machines: 'Machines'
 
@@ -263,6 +276,8 @@ default.tab.logs: 'Journal de bord'
 default.tab.logs.explanation: 'Toutes les modifications effectuées sont consignées dans le journal de bord ci-dessus.'
 default.tab.informations: 'Informations'
 default.tab.informations.explanation: 'Cet onglet présente le·a créateur·trice, la date de création et la date de dernière modification'
+default.tab.machines: 'Machines'
+default.tab.ips : 'Adresses IPs'
 
 default.user.managment: 'Gestion des utilisateurs, de leurs privilèges'
 
