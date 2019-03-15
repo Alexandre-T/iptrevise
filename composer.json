@@ -31,7 +31,7 @@
         "mopa/bootstrap-bundle": "^3.2",
         "sensio/distribution-bundle": "^5.0",
         "sensio/framework-extra-bundle": "^3.0",
-        "sensiolabs/security-checker": "^4.1",
+        "sensiolabs/security-checker": "^5.0",
         "symfony/asset": "^3.3",
         "symfony/console": "^3.3",
         "symfony/expression-language": "^3.3",
