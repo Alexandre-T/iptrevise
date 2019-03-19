@@ -31,7 +31,7 @@
         "mopa/bootstrap-bundle": "^3.2",
         "sensio/distribution-bundle": "^5.0",
         "sensio/framework-extra-bundle": "^3.0",
-        "sensiolabs/security-checker": "^4.1",
+        "sensiolabs/security-checker": "^5.0",
         "symfony/asset": "^3.3",
         "symfony/console": "^3.3",
         "symfony/expression-language": "^3.3",
@@ -76,7 +76,7 @@
     "scripts": {
         "auto-scripts": {
             "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
-            "security:check --end-point=http://security.sensiolabs.org/check_lock": "symfony-cmd",
+            "security:check --end-point=https://security.symfony.com/check_lock": "symfony-cmd",
             "cache:clear --no-warmup": "symfony-cmd",
             "cache:warmup": "symfony-cmd",
             "cache:clear": "symfony-cmd",

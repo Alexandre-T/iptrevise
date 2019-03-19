@@ -4,6 +4,7 @@ form.ip.error.network.exist %network%: 'Le réseau « %network% » n’existe pa
 form.ip.error.machine.exist %machine%: 'La machine « %machine% » n’existe pas.'
 
 form.machine.error.label.unique: 'Cet intitulé de machine est déjà utilisé.'
+form.machine.error.macs.unique: 'Cette adresse mac est déjà utilisée.'
 form.machine.error.interface.min: 'Le nombre d’interface réseau doit être supérieur ou égal à {{ compared_value }}.'
 form.machine.error.service.exist %service%: 'Le service « %service% » n’existe pas.'
 

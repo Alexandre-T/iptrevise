@@ -191,6 +191,7 @@ class Network implements ColorInterface, InformationInterface, LabelInterface
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Site", inversedBy="networks", fetch="EAGER")
      * @ORM\JoinColumn(name="site_id", referencedColumnName="sit_id", nullable=false, onDelete="RESTRICT")
+     * @Gedmo\Versioned
      */
     private $site;
 

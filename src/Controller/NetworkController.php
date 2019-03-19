@@ -143,13 +143,6 @@ class NetworkController extends Controller
         return $this->render('@App/default/network/show.html.twig', $view);
     }
 
-    private function getAdressSize(Network $network)
-    {
-    }
-
-    private function isReserved(Network $network, int $adressIndex)
-    {
-    }
     /**
      * Generates the occupation graph for a network entity.
      *
@@ -189,38 +182,89 @@ class NetworkController extends Controller
         }
 
         // color the adresses reserved by the network with its color
-        //$color = networkColor($network) //FIXME use color of the network to define a color with rgb values in a imagecolorallocate
-        $color = imagecolorallocate($image, 255, 0, 0);// pure red for all networks for now
+        $color = imagecolorallocate($image,
+                                    $network->getRed(),
+                                    $network->getGreen(),
+                                    $network->getBlue());
+
         $ips = $network->getIps();
-        $adressIndex = 0;
+        $plages = $network->getPlages();
+
         // the first line will be initialized at 0 in the loops by adding 1
         $line = -1;
+        $adressIndex = 0;
+
+        // default value of $startPlage and $endPlage are not in the network
+        $startPlage = $network->getIp()+ 2**(32 - $cidr)+1;
+        $endPlage = $network->getIp()+ + 2**(32 - $cidr)+1;
 
         for( $i = 0; $i < $height; $i++ )
         {
           for( $j = 0; $j < $width; $j++ )
           {
-            if ( $j % $adressWidth == 0 )
+
+            if ($j % $adressWidth == 0 )
             {
-                $setColor = false;
-                $adressIndex += 1;
-                if ($i % $adressHeight == 0 && $j == 0 )
+
+                if ( $i % $adressHeight == 0 && $j == 0 )
                 {
                     $line += 1;
                 }
-               $adress = $network->getIp() + ($adressIndex %($width/$adressWidth))+($line*($width/$adressWidth));
+
+                $setColor = false;
+                $adressIndex += 1;
+
+                // if $adressIndex % ($width/$adressWidth) == 0 then the adress is exactly ($width/$adressWidth) plus the line
+                if($adressIndex % ($width/$adressWidth) == 0)
+                {
+                    $adress = $network->getIp() + ($width/$adressWidth)+($line*($width/$adressWidth));
+                }
+                else
+                {
+                    $adress = $network->getIp() + ($adressIndex %($width/$adressWidth))+($line*($width/$adressWidth));
+                }
+
+               if ($adress >= $startPlage && $adress <= $endPlage)
+               {
+                   $setColor = true;
+               }
+               else
+               {
+                   foreach ($plages as $plage)
+                   {
+                       if ($plage->getStart() == $adress)
+                       {
+                           $setColor = true;
+                           $startPlage = $plage->getStart();
+                           $endPlage = $plage->getEnd();
+                           // the color used is the plage's color not the network's  color
+                           $plageColor = imagecolorallocate($image,
+                                                       $plage->getRed(),
+                                                       $plage->getGreen(),
+                                                       $plage->getBlue());
+                       }
+                   }
+               }
+
                foreach ($ips as $ip)
                {
                    if ($ip->getIp() == $adress)
                    {
                        $setColor = true;
-                       imagesetpixel($image, $j, $i, $color);
                    }
                }
-            }
+           }
+
             if ( $setColor )
             {
-                imagesetpixel($image, $j, $i, $color);
+                if ($adress >= $startPlage && $adress <= $endPlage)
+                {
+                    imagesetpixel($image, $j, $i, $plageColor);
+                }
+                else
+                {
+                    imagesetpixel($image, $j, $i, $color);
+                }
             }
           }
       }

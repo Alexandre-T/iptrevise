@@ -167,6 +167,16 @@ class IpManager implements LoggableManagerInterface, PaginatorInterface
     }
 
     /**
+     * Return all ips.
+     *
+     * @return Ip[]
+     */
+    public function getAll()
+    {
+        return $this->repository->findAll();
+    }
+
+    /**
      * Return the Query builder needed by the paginator.
      *
      * @return QueryBuilder

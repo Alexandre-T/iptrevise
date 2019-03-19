@@ -31,6 +31,7 @@ class Role
      * Kind of role.
      *
      * True : User can update data on this site.
+
      * False : User can only read data on this site.
      *
      * @var bool
@@ -79,6 +80,7 @@ class Role
     /**
      * User authorized.
      *
+
      * @var User
      *
      * @ORM\Id

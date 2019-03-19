@@ -1,0 +1,243 @@
+{% extends '@App/default/base.html.twig' %}
+
+{% import "@App/macro.html.twig" as app_macro %}
+
+{% block title %}{{ 'default.action.search'| trans }} · {{ parent() }}{% endblock title %}
+
+{% block headline %}
+<span class="fa fa-fw fa-desktop"></span><span class="fa fa-fw fa-indent"></span>
+{{ 'default.action.search'| trans }}
+{% endblock %}
+
+{% set direction = pagination.getDirection() %}
+{% set direction2 = pagination2.getDirection() %}
+{% set nbmac = 0 %}
+{% set nbips = 0 %}
+
+{% block content_content %}
+<ul class="nav nav-tabs" role="tablist">
+  <li role="presentation" class="active"><a href="#machines" aria-controls="home" role="tab" data-toggle="tab">{{ 'default.tab.machines' | trans }}</a></li>
+  {% block content_tabs_header %}{% endblock content_tabs_header %}
+  <li role="presentation"><a href="#ips" aria-controls="profile" role="tab" data-toggle="tab">{{ 'default.tab.ips' | trans }}</a></li>
+</ul>
+{% set res = result %}
+<div class="tab-content">
+  <div role="tabpanel" class="tab-pane active" id="machines">
+    <table class="table">
+      <thead>
+        <tr>
+          <th id="machine-color">&nbsp;&nbsp;<span class="fa fa-machine"></span></th>
+          <th id="machine-label">
+            {% if pagination.isSorted('machine.label') %}
+              <span class="fa fa-sort-alpha-{{ direction }}"></span>
+            {% else %}
+              <span class="fa fa-desktop"></span> 
+            {% endif %}
+            {{ knp_pagination_sortable(pagination, 'form.machine.field.label' | trans, 'machine.label')}}
+          </th>
+
+          <th id="machine-ips"><span class="fa fa-indent"></span> {{ 'default.machine.ips' | trans }}</th>
+          <th id="machine-actions"><span class="fa fa-sitemap"></span> {{ 'default.machine.networks' | trans }}</th>
+          <th id="machine-actions"><span class="fa fa-building-o"></span> {{ 'default.machine.sites' | trans }}</th>
+          <th id="machine-actions">{{ 'default.machine.actions' | trans }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in pagination %}
+          {% set machine = row[0] %}
+          {% set s = 0 %}
+          {% for service in machine.services %}
+            {% if res in service.label %}
+              {% set s = 1 %}
+            {% endif %}
+          {% endfor %}
+          {% if machine.ips is not empty %}
+            {% for ip in machine.ips %}
+              {% if res in machine.label or res in ip.ip | ip or res in machine.tags or res in ip.network.label or res in machine.location or s == 1 or res in ip.network.site.label %}
+                <tr class="row-{{ loop.index }}">
+                  {% if loop.first %}
+                    {% set nbmac = nbmac + 1 %}
+                    <td headers="machine-color" rowspan="2"><span class="fa fa-desktop"></span></td>
+                    <td headers="machine-label" class="th-icon">
+                      <a href="{{ path('default_machine_show', {'id': machine.id}) }}" title="{{ machine.label }}">
+                        {{ machine.label }}
+                      </a>
+                    </td>
+                  {% else %}
+                    <td></td>
+                  {% endif %}
+                  <td headers="machine-ip-ip" class="th-icon">
+                    <a href="{{ path('default_ip_show', {'id': ip.id}) }}" title="{{ ip.ip | ip }}">
+                      {{ ip.ip | ip }}
+                    </a>
+                  </td>
+                  <td headers="machine-ip-network-label" class="th-icon">
+                    <a href="{{ path('default_network_show', {'id': ip.network.id}) }}" title="{{ ip.network.label }}">
+                      {{ ip.network.label }}
+                    </a>
+                  </td>
+                  <td headers="machine-ip-network-label" class="th-icon">
+                    <a href="{{ path('default_site_show', {'id': ip.network.site.id}) }}" title="{{ ip.network.site.label }}">
+                      {{ ip.network.site.label }}
+                    </a>
+                  </td>
+                  {% if loop.first %}
+                  <td headers="machine-actions" rowspan="2">
+                    <div class="btn-group-xs btn-group">
+                      <a class="btn btn-default" href="{{ path('default_machine_show', { 'id': machine.id }) }}">
+                        <span class="fa fa-eye"></span>
+                        <span class="sr-only">{{ 'default.action.show' | trans }}</span>
+                      </a>
+                      {% if is_granted("ROLE_MANAGE_MACHINE") %}
+                        <a class="btn btn-default" href="{{ path('default_machine_edit', { 'id': machine.id }) }}">
+                          <span class="fa fa-edit"></span>
+                          <span class="sr-only">{{ 'default.action.edit' | trans }}</span>
+                        </a>
+                      {% else %}
+                        <td></td>
+                      {% endif %}
+                    </div>
+                  </td>
+                  {% endif %}
+                </tr>
+              {% endif %}
+            {% endfor %}
+          {% else %}
+          {% if res in machine.label or res in machine.tags or res in machine.location or s == 1 %}
+            {% set nbmac = nbmac + 1 %}
+            <tr>
+              <td headers="machine-color" rowspan="2"><span class="fa fa-desktop"></span></td>
+              <td headers="machine-label" class="th-icon">
+                <a href="{{ path('default_machine_show', {'id': machine.id}) }}" title="{{ machine.label }}">
+                  {{ machine.label }}
+                </a>
+              </td>
+              <td headers="machine-ip-ip" class="missing">
+                {{ 'default.machine.missing.ip' | trans }}
+              </td>
+              <td headers="machine-ip-network-label" class="missing">
+                {{ 'default.machine.missing.network' | trans }}
+              </td>
+              <td headers="machine-ip-network-label" class="missing">
+                {{ 'default.machine.missing.site' | trans }}
+              </td>
+              <td headers="machine-actions" rowspan="2">
+                <div class="btn-group-xs btn-group">
+                  <a class="btn btn-default" href="{{ path('default_machine_show', { 'id': machine.id }) }}">
+                    <span class="fa fa-eye"></span>
+                    <span class="sr-only">{{ 'default.action.show' | trans }}</span>
+                  </a>
+                  {% if is_granted("ROLE_MANAGE_MACHINE") %}
+                  <a class="btn btn-default" href="{{ path('default_machine_edit', { 'id': machine.id }) }}">
+                    <span class="fa fa-edit"></span>
+                    <span class="sr-only">{{ 'default.action.edit' | trans }}</span>
+                  </a>
+                </div>
+              </td>
+              {% endif %}
+            </tr>
+            {% endif %}
+          {% endif %}
+          <tr></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% if nbmac == 0 %}
+    <td class="missing"> {{ 'default.missing.result' | trans }} </td>
+    {% endif %}
+    <div class="navigation text-right">
+      {{ knp_pagination_render(pagination) }}
+    </div>
+    {% block content_settings %}{% endblock content_settings %}
+  </div>
+
+
+
+  {# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ DEUXIEME PAGE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #}
+
+
+
+
+  <div role="tabpanel" class="tab-pane" id="ips">
+    {% block content_ips %}
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th id="machine-color">&nbsp;&nbsp;<span class="fa fa-machine"></span></th>
+          <th id="machine-ips"><span class="fa fa-indent"></span> {{ 'default.machine.ips' | trans }}</th>
+          <th id="machine-actions"><span class="fa fa-building-o"></span> {{ 'default.machine.sites' | trans }}</th>
+          <th id="machine-actions"><span class="fa fa-sitemap"></span> {{ 'default.machine.networks' | trans }}</th>
+          <th id="machine-label">
+            {% if pagination.isSorted('machine.label') %}
+              <span class="fa fa-sort-alpha-{{ direction }}"></span>
+            {% else %}
+              <span class="fa fa-desktop"></span> 
+            {% endif %}
+            {{ knp_pagination_sortable(pagination, 'form.machine.field.label' | trans, 'machine.label')}}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for ip in pagination2 %}
+          {% if res in ip.ip | ip or (ip.machine is not empty) and res in ip.machine.label or res in ip.network.label or res in ip.network.site.label %} {# Ajouter site #}
+            {% set nbips = nbips + 1 %}
+            <td headers="machine-color" rowspan="2"><span class="fa fa-indent"></span></td>
+            <td headers="machine-ip-ip" class="th-icon">
+              <a href="{{ path('default_ip_show', {'id': ip.id}) }}" title="{{ ip.ip | ip }}">
+                {{ ip.ip | ip }}
+              </a>
+            </td>
+            {% if ip.network.site %}
+              <td>
+                <a href="{{ path('default_site_show', {'id': ip.network.site.id}) }}" title="{{ ip.network.site.label }}">
+                  {{ ip.network.site.label }}
+                </a>
+              </td>
+            {% else %}
+              <td class="missing">
+                {{ 'default.ip.missing.site' | trans }}
+              </td>
+            {% endif %}
+            {% if ip.network %}
+              <td headers="machine-ip-network-label" class="th-icon">
+                <a href="{{ path('default_network_show', {'id': ip.network.id}) }}" title="{{ ip.network.label }}">
+                  {{ ip.network.label }}
+                </a>
+              </td>
+            {% else %}
+              <td class="missing">
+                {{ 'default.ip.missing.network' | trans }}
+              </td>
+            {% endif %}
+            {% if ip.machine %}
+              <td headers="machine-ip-network-label" class="th-icon">
+                <a href="{{ path('default_network_show', {'id': ip.machine.id}) }}" title="{{ ip.machine.label }}">
+                  {{ ip.machine.label }}
+                </a>
+              </td>
+            {% else %}
+              <td class="missing">
+                {{ 'default.ip.missing.machine' | trans }}
+              </td>
+            {% endif %}
+            <tr></tr>
+          {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+    {% if nbips == 0 %}
+      <td class="missing"> {{ 'default.missing.result' | trans }} </td>
+    {% endif %}
+    <div class="navigation text-right">
+      {{ knp_pagination_render(pagination) }}
+    </div>
+    {% endblock content_ips %}
+  </div>
+</div>
+{% endblock content_content %}
+
+{% block content_action %}
+{{ app_macro.panel_admin('desktop', '', pagination.totalItemCount, 'default.machines') }}
+{{ app_macro.panel_admin('indent', '', pagination.totalItemCount, 'default.ips') }}
+{% endblock content_action %}
