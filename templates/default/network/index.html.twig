@@ -31,17 +31,26 @@
                 {{ knp_pagination_sortable(pagination, 'form.network.field.address' | trans, 'network.ip')}}
             </th>
             <th id="network-ips"><span class="fa fa-indent"></span> {{ 'default.network.ips' | trans }}</th>
+            <th id="network-site">
+              {% if pagination.isSorted('network.site.label') %}
+                <span class="fa fa-sort-alpha-{{ direction }}"></span>
+              {% endif %}
+              {{ knp_pagination_sortable(pagination, 'default.network.site' | trans, 'network.site.label')}}
+            </th>
             <th id="network-actions">{{ 'default.network.actions' | trans }}</th>
         </tr>
         </thead>
         <tbody>
         {% for row in pagination %}
+            {% set role = app.user.newRoles.get(1) %}
             {% set network = row[0] %}
             <tr class="row-{{ loop.index }}">
+                {% if role == null %}
                 <td headers="network-color" style="color: {{ '#' ~ network.color }}"><span class="fa fa-sitemap"></span></td>
                 <td headers="network-label" class="th-icon">{{ network.label }}</td>
                 <td headers="network-address" class="th-icon">{{ network.ip | network(network.cidr) }}</td>
                 <td headers="network-ips" class="th-icon">{{ row['ipsCount'] | localizednumber }} / {{ network.capacity | localizednumber }}</td>
+                <td headers="network-site" class="th-icon">{{network.site.Label}}</td>
                 <td headers="network-actions">
                     <div class="btn-group-xs btn-group">
                         <a class="btn btn-default" href="{{ path('default_network_show', { 'id': network.id }) }}">
@@ -56,6 +65,7 @@
                         {% endif %}
                     </div>
                 </td>
+                {% endif %}
             </tr>
         {% endfor %}
         </tbody>

@@ -38,7 +38,7 @@ use Gedmo\Loggable\Entity\Repository\LogEntryRepository;
 class NetworkManager implements LoggableManagerInterface, PaginatorInterface
 {
     /**
-     * Const for the alias query.
+       * Const for the alias query.
      */
     const ALIAS = 'network';
 
@@ -178,6 +178,8 @@ class NetworkManager implements LoggableManagerInterface, PaginatorInterface
 
         $qb->leftJoin(self::ALIAS.'.ips', 'ips')
             ->addSelect('COUNT(ips.id) AS ipsCount')
+            ->leftjoin(self::ALIAS. '.site', 'site')
+            ->addSelect('COUNT(site.label) AS siteCount')
             ->groupBy(self::ALIAS.'.id');
 
         return $qb;

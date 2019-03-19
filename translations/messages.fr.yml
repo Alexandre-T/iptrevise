@@ -205,6 +205,7 @@ default.network.no.space: 'Toutes les adresses IP sont réservées pour ce rése
 default.network.not-deletable %name%: 'La réseau « %name% » possèdent encore des adresses IPs, il ne peut pas être effacé.'
 default.network.updated %name%: 'Le réseau « %name% » a été modifié avec succès !'
 default.network.show.title %name%: 'Consultation du réseau « %name% »'
+default.network.site: 'Site'
 default.network.deleted: 'Réseaux supprimés'
 default.network.deleted.title: 'Consulter la liste des réseaux précédemment supprimés'
 default.network.deleted.list.title: 'Liste des réseaux supprimés'
