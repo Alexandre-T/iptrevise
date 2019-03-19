@@ -13,6 +13,7 @@
 {% set direction2 = pagination2.getDirection() %}
 {% set nbmac = 0 %}
 {% set nbips = 0 %}
+{% set user = app.user %}
 
 {% block content_content %}
 <ul class="nav nav-tabs" role="tablist">
@@ -51,8 +52,19 @@
               {% set s = 1 %}
             {% endif %}
           {% endfor %}
+
+
           {% if machine.ips is not empty %}
             {% for ip in machine.ips %}
+
+            {% set u = 0 %}
+            {% for r in user.newRoles %}
+            {% if r.site.label in ip.network.site.label %}
+            {% set u = 1 %}
+            {% endif %}
+            {% endfor %}
+
+            {% if u == 1 %}
               {% if res in machine.label or res in ip.ip | ip or res in machine.tags or res in ip.network.label or res in machine.location or s == 1 or res in ip.network.site.label %}
                 <tr class="row-{{ loop.index }}">
                   {% if loop.first %}
@@ -100,6 +112,7 @@
                   </td>
                   {% endif %}
                 </tr>
+              {% endif %}
               {% endif %}
             {% endfor %}
           {% else %}
@@ -180,6 +193,15 @@
       </thead>
       <tbody>
         {% for ip in pagination2 %}
+
+          {% set u = 0 %}
+          {% for r in user.newRoles %}
+          {% if r.site.label in ip.network.site.label %}
+          {% set u = 1 %}
+          {% endif %}
+          {% endfor %}
+
+          {% if u == 1 %}
           {% if res in ip.ip | ip or (ip.machine is not empty) and res in ip.machine.label or res in ip.network.label or res in ip.network.site.label %} {# Ajouter site #}
             {% set nbips = nbips + 1 %}
             <td headers="machine-color" rowspan="2"><span class="fa fa-indent"></span></td>
@@ -222,6 +244,7 @@
               </td>
             {% endif %}
             <tr></tr>
+          {% endif %}
           {% endif %}
         {% endfor %}
       </tbody>
