@@ -21,7 +21,7 @@
   {% block content_tabs_header %}{% endblock content_tabs_header %}
   <li role="presentation"><a href="#ips" aria-controls="profile" role="tab" data-toggle="tab">{{ 'default.tab.ips' | trans }}</a></li>
 </ul>
-{% set res = result %}
+{% set searchRes = result %}
 <div class="tab-content">
   <div role="tabpanel" class="tab-pane active" id="machines">
     <table class="table">
@@ -46,10 +46,10 @@
       <tbody>
         {% for row in pagination %}
           {% set machine = row[0] %}
-          {% set s = 0 %}
+          {% set searchService = 0 %}
           {% for service in machine.services %}
-            {% if res in service.label %}
-              {% set s = 1 %}
+            {% if searchRes in service.label %}
+              {% set searchService = 1 %}
             {% endif %}
           {% endfor %}
 
@@ -57,15 +57,15 @@
           {% set firsttime = 0 %}
           {% if machine.ips is not empty %}
             {% for ip in machine.ips %}
-            {% set u = 0 %}
-            {% for r in user.newRoles %}
-            {% if r.site.label in ip.network.site.label %}
-            {% set u = 1 %}
+            {% set isAuthorized = 0 %}
+            {% for role in user.newRoles %}
+            {% if role.site.label in ip.network.site.label %}
+            {% set isAuthorized = 1 %}
             {% endif %}
             {% endfor %}
 
-            {% if u == 1 %}
-              {% if res in machine.label or res in ip.ip | ip or res in machine.tags or res in ip.network.label or res in machine.location or s == 1 or res in ip.network.site.label %}
+            {% if isAuthorized == 1 %}
+              {% if searchRes in machine.label or searchRes in ip.ip | ip or searchRes in machine.tags or searchRes in ip.network.label or searchRes in machine.location or searchService == 1 or searchRes in ip.network.site.label %}
                 <tr class="row-{{ loop.index }}">
                   {% if loop.first or firsttime == 0 %}
                     {% set nbmac = nbmac + 1 %}
@@ -117,7 +117,7 @@
               {% endif %}
             {% endfor %}
           {% else %}
-          {% if res in machine.label or res in machine.tags or res in machine.location or s == 1 %}
+          {% if searchRes in machine.label or searchRes in machine.tags or searchRes in machine.location or searchService == 1 %}
             {% set nbmac = nbmac + 1 %}
             <tr>
               <td headers="machine-color" rowspan="2"><span class="fa fa-desktop"></span></td>
@@ -195,15 +195,15 @@
       <tbody>
         {% for ip in pagination2 %}
 
-          {% set u = 0 %}
-          {% for r in user.newRoles %}
-          {% if r.site.label in ip.network.site.label %}
-          {% set u = 1 %}
+          {% set isAuthorized = 0 %}
+          {% for role in user.newRoles %}
+          {% if role.site.label in ip.network.site.label %}
+          {% set isAuthorized = 1 %}
           {% endif %}
           {% endfor %}
 
-          {% if u == 1 %}
-          {% if res in ip.ip | ip or (ip.machine is not empty) and res in ip.machine.label or res in ip.network.label or res in ip.network.site.label %} {# Ajouter site #}
+          {% if isAuthorized == 1 %}
+          {% if searchRes in ip.ip | ip or (ip.machine is not empty) and searchRes in ip.machine.label or searchRes in ip.network.label or searchRes in ip.network.site.label %} {# Ajouter site #}
             {% set nbips = nbips + 1 %}
             <td headers="machine-color" rowspan="2"><span class="fa fa-indent"></span></td>
             <td headers="machine-ip-ip" class="th-icon">
