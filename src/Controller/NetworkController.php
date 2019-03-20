@@ -232,7 +232,7 @@ class NetworkController extends Controller
                {
                    foreach ($plages as $plage)
                    {
-                       if ($plage->getStart() == $adress)
+                       if ( $adress >= $plage->getStart() && $adress <=  $plage->getEnd() )
                        {
                            $setColor = true;
                            $startPlage = $plage->getStart();
