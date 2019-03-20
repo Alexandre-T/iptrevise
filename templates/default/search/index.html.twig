@@ -54,9 +54,9 @@
           {% endfor %}
 
 
+          {% set firsttime = 0 %}
           {% if machine.ips is not empty %}
             {% for ip in machine.ips %}
-
             {% set u = 0 %}
             {% for r in user.newRoles %}
             {% if r.site.label in ip.network.site.label %}
@@ -67,8 +67,9 @@
             {% if u == 1 %}
               {% if res in machine.label or res in ip.ip | ip or res in machine.tags or res in ip.network.label or res in machine.location or s == 1 or res in ip.network.site.label %}
                 <tr class="row-{{ loop.index }}">
-                  {% if loop.first %}
+                  {% if loop.first or firsttime == 0 %}
                     {% set nbmac = nbmac + 1 %}
+                    {% set firsttime = 1 %}
                     <td headers="machine-color" rowspan="2"><span class="fa fa-desktop"></span></td>
                     <td headers="machine-label" class="th-icon">
                       <a href="{{ path('default_machine_show', {'id': machine.id}) }}" title="{{ machine.label }}">
