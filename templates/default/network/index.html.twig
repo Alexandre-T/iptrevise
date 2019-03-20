@@ -35,36 +35,37 @@
               {% if pagination.isSorted('network.site.label') %}
                 <span class="fa fa-sort-alpha-{{ direction }}"></span>
               {% endif %}
-              {{ knp_pagination_sortable(pagination, 'default.network.site' | trans, 'network.site.label')}}
+              {{ knp_pagination_sortable(pagination, 'default.network.site' | trans, 'network.site')}}
             </th>
             <th id="network-actions">{{ 'default.network.actions' | trans }}</th>
         </tr>
         </thead>
         <tbody>
         {% for row in pagination %}
-            {% set role = app.user.newRoles.get(1) %}
+            {% set role = app.user.newRoles.get(0) %}
             {% set network = row[0] %}
             <tr class="row-{{ loop.index }}">
-                {% if role == null %}
-                <td headers="network-color" style="color: {{ '#' ~ network.color }}"><span class="fa fa-sitemap"></span></td>
-                <td headers="network-label" class="th-icon">{{ network.label }}</td>
-                <td headers="network-address" class="th-icon">{{ network.ip | network(network.cidr) }}</td>
-                <td headers="network-ips" class="th-icon">{{ row['ipsCount'] | localizednumber }} / {{ network.capacity | localizednumber }}</td>
-                <td headers="network-site" class="th-icon">{{network.site.Label}}</td>
-                <td headers="network-actions">
-                    <div class="btn-group-xs btn-group">
-                        <a class="btn btn-default" href="{{ path('default_network_show', { 'id': network.id }) }}">
-                            <span class="fa fa-eye"></span>
-                            <span class="sr-only">{{ 'default.action.show' | trans }}</span>
-                        </a>
-                        {% if is_granted('ROLE_MANAGE_NETWORK') %}
-                            <a class="btn btn-default" href="{{ path('default_network_edit', { 'id': network.id }) }}">
-                                <span class="fa fa-edit"></span>
-                                <span class="sr-only">{{ 'default.action.edit' | trans }}</span>
-                            </a>
-                        {% endif %}
-                    </div>
-                </td>
+              {% if (is_granted ('ROLE_ADMIN') or network.site.id == role.site.id) %}
+              <td headers="network-color" style="color: {{ '#' ~ network.color }}"><span class="fa fa-sitemap"></span></td>
+              <td headers="network-label" class="th-icon">{{ network.label }}</td>
+              <td headers="network-address" class="th-icon">{{ network.ip | network(network.cidr) }}</td>
+              <td headers="network-ips" class="th-icon">{{ row['ipsCount'] | localizednumber }} / {{ network.capacity | localizednumber }}</td>
+              <td headers="network-site" class="th-icon">{{network.site.Label}}</td>
+              <td headers="network-actions">
+                  <div class="btn-group-xs btn-group">
+                      <a class="btn btn-default" href="{{ path('default_network_show', { 'id': network.id }) }}">
+                          <span class="fa fa-eye"></span>
+                          <span class="sr-only">{{ 'default.action.show' | trans }}</span>
+                      </a>
+                      {% if is_granted('ROLE_MANAGE_NETWORK') %}
+                          <a class="btn btn-default" href="{{ path('default_network_edit', { 'id': network.id }) }}">
+                              <span class="fa fa-edit"></span>
+                              <span class="sr-only">{{ 'default.action.edit' | trans }}</span>
+                          </a>
+                      {% endif %}
+                  </div>
+              </td>
+
                 {% endif %}
             </tr>
         {% endfor %}

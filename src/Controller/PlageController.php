@@ -113,11 +113,13 @@ class PlageController extends Controller
         $plages = $network->getPlages();
         $check = 0;
         foreach ($plages as &$plagesNetwork){
-          if ($plage->getStart() <= $plagesNetwork->getEnd() && $plage->getStart() >= $plagesNetwork->getStart()){
-            $check++;
-          }
-          if ($plage->getEnd() <= $plagesNetwork->getEnd() && $plage->getEnd() >= $plagesNetwork->getStart()){
-            $check++;
+          if ($plage->getId() != $plagesNetwork->getId()){
+            if ($plage->getStart() <= $plagesNetwork->getEnd() && $plage->getStart() >= $plagesNetwork->getStart()){
+              $check++;
+            }
+            if ($plage->getEnd() <= $plagesNetwork->getEnd() && $plage->getEnd() >= $plagesNetwork->getStart()){
+              $check++;
+            }
           }
         }
         if ($check > 0){
@@ -134,7 +136,7 @@ class PlageController extends Controller
         if ($check > 0){
           $warning = $trans->trans('form.plage.error.ip.unique');
           $session->getFlashBag()->add('warning', $warning);
-        } 
+        }
 
         return $this->render('@App/default/plage/show.html.twig', array_merge($view, [
             'isDeletable' => $isDeletable,

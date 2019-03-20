@@ -30,8 +30,10 @@
         </thead>
         <tbody>
         {% for row in pagination %}
+          {% set role = app.user.newRoles.get(0) %}
             {% set site = row[0] %}
             <tr class="row-{{ loop.index }}">
+              {% if ( is_granted ('ROLE_ADMIN') or site.id == role.site.id) %}
                 <td headers="site-color" style="color: {{ '#' ~ site.color }}"><span class="fa fa-building-o"></span></td>
                 <td headers="site-label" class="th-icon">{{ site.label }}</td>
                 <td headers="site-networks" class="th-icon">{{ row['networksCount'] | localizednumber }}</td>
@@ -47,6 +49,7 @@
                             </a>
                     </div>
                 </td>
+                {% endif %}
             </tr>
         {% endfor %}
         </tbody>
