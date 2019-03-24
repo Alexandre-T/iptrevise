@@ -187,6 +187,7 @@ class NetworkController extends Controller
                                     $network->getGreen(),
                                     $network->getBlue());
 
+        $white = imagecolorallocate($image, 255, 255, 255);
         $ips = $network->getIps();
         $plages = $network->getPlages();
 
@@ -265,6 +266,10 @@ class NetworkController extends Controller
                 {
                     imagesetpixel($image, $j, $i, $color);
                 }
+            }
+            if ($j % $adressWidth == 0  ||$i % $adressHeight == 0 )
+            {
+                imagesetpixel($image, $j, $i, $white);
             }
           }
       }
