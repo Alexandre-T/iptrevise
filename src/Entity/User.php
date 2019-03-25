@@ -463,5 +463,5 @@ class User implements InformationInterface, LabelInterface, UserInterface, Seria
 
         return $this;
     }
-    
+
 }

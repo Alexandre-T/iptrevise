@@ -69,7 +69,9 @@ class LogFactory
             $logBean->setLogged($logEntry->getLoggedAt());
             $logBean->setUsername($logEntry->getUsername());
             $logBean->setVersion($logEntry->getVersion());
-            $logBean->setData(DataFactory::createNetworkData($logEntry->getData()));
+            if ($logEntry->getAction() != 'remove'){
+              $logBean->setData(DataFactory::createNetworkData($logEntry->getData()));
+            }
             $logs[] = $logBean;
         }
 
@@ -92,7 +94,9 @@ class LogFactory
             $logBean->setLogged($logEntry->getLoggedAt());
             $logBean->setUsername($logEntry->getUsername());
             $logBean->setVersion($logEntry->getVersion());
-            $logBean->setData(DataFactory::createMachineData($logEntry->getData()));
+            if ($logEntry->getAction() != 'remove'){
+              $logBean->setData(DataFactory::createMachineData($logEntry->getData()));
+            }
             $logs[] = $logBean;
         }
 
@@ -115,7 +119,9 @@ class LogFactory
             $logBean->setLogged($logEntry->getLoggedAt());
             $logBean->setUsername($logEntry->getUsername());
             $logBean->setVersion($logEntry->getVersion());
-            $logBean->setData(DataFactory::createIpData($logEntry->getData()));
+            if ($logEntry->getAction() != 'remove'){
+              $logBean->setData(DataFactory::createIpData($logEntry->getData()));
+            }
             $logs[] = $logBean;
         }
 
@@ -138,7 +144,9 @@ class LogFactory
             $logBean->setLogged($logEntry->getLoggedAt());
             $logBean->setUsername($logEntry->getUsername());
             $logBean->setVersion($logEntry->getVersion());
-            $logBean->setData(DataFactory::createSiteData($logEntry->getData()));
+            if ($logEntry->getAction() != 'remove'){
+              $logBean->setData(DataFactory::createSiteData($logEntry->getData()));
+            }
             $logs[] = $logBean;
         }
 

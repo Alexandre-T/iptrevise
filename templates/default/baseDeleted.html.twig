@@ -1,0 +1,83 @@
+{% extends '@App/base.html.twig' %}
+
+{% block content_content %}
+    {% block content_breadcrumb %}
+        {% if path is defined and path is not null %}
+            <ol class="breadcrumb" id="content-breadcrumb">
+                {%  for node in path %}
+                    <li><a href="{{ path( default_entity_show, {'slug': node.slug}) }}" title="{{ node.name }}">{{ node.name }}</a></li>
+                {% endfor %}
+            </ol>
+        {% endif %}
+    {% endblock content_breadcrumb %}
+
+    {% block content_tabs %}
+    <div class="content-tabs">
+        {# <!-- Nav tabs --> #}
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#logs" aria-controls="profile" role="tab" data-toggle="tab">{{ 'default.tab.logs' | trans }}</a></li>
+        </ul>
+        {# <!-- Tab panes --> #}
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="logs">
+                {% block content_logs %}
+                    {% if logs is defined and logs | length > 0 %}
+                        <div class="panel panel-default" id="default-logs">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">{{ 'administration.log' | trans }}</h3>
+                            </div>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th class="text-center" id="logs-version">{{ 'administration.log.version' | trans }}</th>
+                                    <th class="text-center" id="logs-action">{{ 'administration.log.action' | trans }}</th>
+                                    <th class="text-center" id="logs-date">{{ 'administration.log.date' | trans }}</th>
+                                    <th class="text-center" id="logs-user">{{ 'administration.log.user' | trans }}</th>
+                                    <th class="text-center" id="logs-value">{{ 'administration.log.new-value' | trans }}</th>
+                                </tr>
+                                </thead>
+                                {% for log in logs %}
+                                    <tr>
+                                        <td headers="logs-version" class="text-center row{{ log.version }}">{{ log.version }}</td>
+                                        <td headers="logs-action" class="text-center row{{ log.version }}">
+                                            <span class="label label-default">{{ log.action | trans }}</span>
+                                        </td>
+                                        <td headers="logs-date" class="text-center row{{ log.version }}">{{ log.logged | localizeddate('medium','medium')}}</td>
+                                        <td headers="logs-user" class="text-center row{{ log.version }}">{{ log.username }}</td>
+                                        <td headers="logs-value" class="row{{ log.version }}">
+                                            <dl class="dl-horizontal">
+                                                {% for row in log.data %}
+                                                    <dt>{{ row.label | trans }}</dt>
+                                                    {% if row.none %}
+                                                        <dd>{{ 'administration.none' | trans }}</dd>
+                                                    {% elseif row.noMore %}
+                                                        <dd>{{ 'administration.no-more %entity% %id%' | trans({'id': row.id, 'entity':row.entity}) }}</dd>
+                                                    {% elseif row.label == 'form.user.field.roles' %}
+                                                        <dd>{{ row.name | roles }}</dd>
+                                                    {% elseif row.translate %}
+                                                        <dd>{{ row.name | trans }}</dd>
+                                                    {% else %}
+                                                        <dd>{{ row.name }}</dd>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </dl>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                            <div class="panel-footer text-right">
+                                <em>{{ 'default.tab.logs.explanation' | trans }}</em>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endblock content_logs %}
+            </div>
+
+        </div>
+    </div>
+    {% endblock content_tabs %}
+{% endblock content_content %}
+
+{% block content_sidebar %}
+    {% block content_action %}{% endblock content_action %}
+{% endblock content_sidebar %}

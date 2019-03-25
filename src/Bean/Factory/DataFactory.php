@@ -86,6 +86,8 @@ class DataFactory
             } else {
                 if ('ip' == $column) {
                     $data->setName(long2ip($value));
+                } elseif ($column == 'site'){
+                    $data->setName($value['id']);
                 } else {
                     $data->setName($value);
                 }
