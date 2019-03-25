@@ -31,6 +31,7 @@ class NetworkVoter extends Voter
     if (!$subject instanceof Network) {
       return false;
     }
+    return true;
   }
 
   protected function voteOnAttribute($attribute, $subject, TokenInterface $token)

@@ -31,6 +31,7 @@ class MachineVoter extends Voter
     if (!$subject instanceof Machine) {
       return false;
     }
+    return true;
   }
 
   protected function voteOnAttribute($attribute, $subject, TokenInterface $token)

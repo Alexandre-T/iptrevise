@@ -25,22 +25,30 @@ class SiteVoter extends Voter
     // edit or view
     if (!in_array($attribute, [self::VIEW, self::EDIT])) {
       return false;
+
     }
+
 
     // only vote on Network objects inside this voter
     if (!$subject instanceof Site) {
       return false;
     }
+    return true;
   }
 
   protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
   {
+
+    if ($this->security->isGranted('ROLE_ADMIN')) {
+      return true;
+    }
 
     $user = $token->getUser();
 
     //user is logged in
     if (!$user instanceof UserInterface) {
       return false;
+
     }
 
     $site = $subject;
@@ -74,10 +82,6 @@ class SiteVoter extends Voter
 
   private function canEdit(Network $network, User $user)
   {
-    // user is admin
-    if ($this->security->isGranted('ROLE_ADMIN')) {
-      return true;
-    }
 
     $roles=$user->getNewRoles();
     foreach($roles as $role) {
