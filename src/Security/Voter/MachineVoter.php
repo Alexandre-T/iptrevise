@@ -3,6 +3,7 @@
 namespace App\Security\Voter;
 
 use App\Entity\Machine;
+use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -36,7 +37,10 @@ class MachineVoter extends Voter
 
   protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
   {
-
+    // user is admin
+    if ($this->security->isGranted('ROLE_ADMIN')) {
+      return true;
+    }
     $user = $token->getUser();
 
     //user is logged in
@@ -86,10 +90,7 @@ class MachineVoter extends Voter
 
     private function canEdit(Machine $machine, User $user)
     {
-      // user is admin
-      if ($this->security->isGranted('ROLE_ADMIN')) {
-        return true;
-      }
+
 
       $ips=getIps();
       $networks=array();

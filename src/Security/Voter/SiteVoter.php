@@ -3,6 +3,7 @@
 namespace App\Security\Voter;
 
 use App\Entity\Site;
+use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -80,7 +81,7 @@ class SiteVoter extends Voter
 
   }
 
-  private function canEdit(Network $network, User $user)
+  private function canEdit(Site $site, User $user)
   {
 
     $roles=$user->getNewRoles();

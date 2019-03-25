@@ -3,6 +3,7 @@
 namespace App\Security\Voter;
 
 use App\Entity\Network;
+use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -36,6 +37,10 @@ class NetworkVoter extends Voter
 
   protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
   {
+    // user is admin
+    if ($this->security->isGranted('ROLE_ADMIN')) {
+      return true;
+    }
 
     $user = $token->getUser();
 
@@ -76,10 +81,7 @@ class NetworkVoter extends Voter
 
   private function canEdit(Network $network, User $user)
   {
-    // user is admin
-    if ($this->security->isGranted('ROLE_ADMIN')) {
-      return true;
-    }
+
 
     $site=$network->getSite();
     $roles=$user->getNewRoles();
