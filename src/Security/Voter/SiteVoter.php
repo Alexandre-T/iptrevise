@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Security;
 
-class NetworkVoter extends Voter
+class SiteVoter extends Voter
 {
   const VIEW = 'view';
   const EDIT = 'edit';
@@ -28,7 +28,7 @@ class NetworkVoter extends Voter
     }
 
     // only vote on Network objects inside this voter
-    if (!$subject instanceof Network) {
+    if (!$subject instanceof Site) {
       return false;
     }
   }
@@ -81,7 +81,7 @@ class NetworkVoter extends Voter
 
     $roles=$user->getNewRoles();
     foreach($roles as $role) {
-      if($role->getSite() == $site && $role->!isReadOnly(){
+      if($role->getSite() == $site && !($role->isReadOnly())) {
         return true;
       }
     }

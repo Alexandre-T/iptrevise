@@ -65,7 +65,7 @@ class MachineVoter extends Voter
     $networks=array();
 
     foreach($ips as $ip){
-      if(!in_array($ip->getNetwork()$networks) {
+      if(!in_array($ip->getNetwork(),$networks)) {
         $networks[]=$ip->getNetwork();
       }
     }
@@ -94,7 +94,7 @@ class MachineVoter extends Voter
       $networks=array();
 
       foreach($ips as $ip){
-        if(!in_array($ip->getNetwork()$networks) {
+        if(!in_array($ip->getNetwork(),$networks)) {
           $networks[]=$ip->getNetwork();
         }
       }
@@ -102,7 +102,7 @@ class MachineVoter extends Voter
         $site=$network->getSite();
         $roles=$user->getNewRoles();
         foreach($roles as $role) {
-          if($role->getSite() == $site && $role->!isReadOnly()) {
+          if($role->getSite() == $site && !($role->isReadOnly())) {
             return true;
           }
 

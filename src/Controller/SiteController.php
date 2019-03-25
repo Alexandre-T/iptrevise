@@ -53,7 +53,7 @@ class SiteController extends Controller
      *
      * @Route("/", name="default_site_index")
      * @Method("GET")
-     * @Security("is_granted('ROLE_READ_SITE')")
+     * @Security("is_granted('ROLE_USER')")
      *
      * @param Request $request
      *
@@ -81,7 +81,7 @@ class SiteController extends Controller
      *
      * @Route("/new", name="default_site_new")
      * @Method({"GET", "POST"})
-     * @Security("is_granted('ROLE_MANAGE_SITE')")
+     * @Security("is_granted('ROLE_ADMIN')")
      *
      * @param Request $request
      *
@@ -117,7 +117,7 @@ class SiteController extends Controller
      *
      * @Route("/{id}", name="default_site_show")
      * @Method("GET")
-     * @Security("is_granted('ROLE_READ_SITE')")
+     * @Security("is_granted('ROLE_USER')")
      *
      * @param Site $site
      *
@@ -125,6 +125,7 @@ class SiteController extends Controller
      */
     public function showAction(Site $site)
     {
+      $this->denyAccessUnlessGranted('view', $site);
         /** @var SiteManager $siteManager */
         $siteManager = $this->get(SiteManager::class);
 
@@ -132,7 +133,7 @@ class SiteController extends Controller
         $view['information'] = InformationFactory::createInformation($site);
         $view['logs'] = $siteManager->retrieveLogs($site);
         $view['site'] = $site;
-        $view['isDeletable'] = $this->isGranted('ROLE_MANAGE_SITE') && $siteManager->isDeletable($site);
+        $view['isDeletable'] = $this->isGranted('ROLE_ADMIN') && $siteManager->isDeletable($site);
 
         if ($view['isDeletable']){
             $view['delete_form'] = $this->createDeleteForm($site)->createView();
@@ -146,7 +147,7 @@ class SiteController extends Controller
      *
      * @Route("/{id}/edit", name="default_site_edit")
      * @Method({"GET", "POST"})
-     * @Security("is_granted('ROLE_MANAGE_SITE')")
+     * @Security("is_granted('ROLE_USER')")
      *
      * @param Request $request The request
      * @param Site $site The site entity
@@ -155,6 +156,8 @@ class SiteController extends Controller
      */
     public function editAction(Request $request, Site $site)
     {
+        $this->denyAccessUnlessGranted('edit', $site);
+
         $siteService = $this->get(SiteManager::class);
         $view = [];
         $isDeletable = $siteService->isDeletable($site);
@@ -192,7 +195,7 @@ class SiteController extends Controller
      *
      * @Route("/{id}", name="default_site_delete")
      * @Method("DELETE")
-     * @Security("is_granted('ROLE_MANAGE_SITE')")
+     * @Security("is_granted('ROLE_ADMIN')")
      *
      * @param Request $request The request
      * @param Site $site The $site entity
@@ -201,6 +204,8 @@ class SiteController extends Controller
      */
     public function deleteAction(Request $request, Site $site)
     {
+        $this->denyAccessUnlessGranted('edit', $site);
+
         $form = $this->createDeleteForm($site);
         $form->handleRequest($request);
         $session = $this->get('session');
@@ -232,6 +237,7 @@ class SiteController extends Controller
      */
     private function createDeleteForm(Site $site)
     {
+        $this->denyAccessUnlessGranted('edit', $site);
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('default_site_delete', array('id' => $site->getId())))
             ->setMethod('DELETE')

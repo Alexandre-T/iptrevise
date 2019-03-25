@@ -83,7 +83,7 @@ class NetworkVoter extends Voter
     $site=$network->getSite();
     $roles=$user->getNewRoles();
     foreach($roles as $role) {
-      if($role->getSite() == $site && $role->!isReadOnly(){
+      if($role->getSite() == $site && !($role->isReadOnly())) {
         return true;
       }
     }
