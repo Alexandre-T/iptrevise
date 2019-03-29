@@ -190,14 +190,14 @@ class NetworkController extends Controller
         $white = imagecolorallocate($image, 255, 255, 255);
         $ips = $network->getIps();
         $plages = $network->getPlages();
-
+        $end = $network->getIp()+(2**(32-$cidr));
         // the first line will be initialized at 0 in the loops by adding 1
         $line = -1;
         $adressIndex = 0;
 
         // default value of $startPlage and $endPlage are not in the network
-        $startPlage = $network->getIp()+ 2**(32 - $cidr)+1;
-        $endPlage = $network->getIp()+ + 2**(32 - $cidr)+1;
+        $startPlage = $end+1;
+        $endPlage = $end+1;
 
         for( $i = 0; $i < $height; $i++ )
         {
@@ -225,17 +225,13 @@ class NetworkController extends Controller
                     $adress = $network->getIp() + ($adressIndex %($width/$adressWidth))+($line*($width/$adressWidth));
                 }
 
-               if ($adress >= $startPlage && $adress <= $endPlage)
-               {
-                   $setColor = true;
-               }
-               else
+                /*if the current address does not belong to the current plage, check if it belongs to another plage in the network*/
+               if ($adress < $startPlage || $adress > $endPlage)
                {
                    foreach ($plages as $plage)
                    {
                        if ( $adress >= $plage->getStart() && $adress <=  $plage->getEnd() )
                        {
-                           $setColor = true;
                            $startPlage = $plage->getStart();
                            $endPlage = $plage->getEnd();
                            // the color used is the plage's color not the network's  color
@@ -256,18 +252,20 @@ class NetworkController extends Controller
                }
            }
 
-            if ( $setColor )
-            {
-                if ($adress >= $startPlage && $adress <= $endPlage)
-                {
-                    imagesetpixel($image, $j, $i, $plageColor);
-                }
-                else
-                {
-                    imagesetpixel($image, $j, $i, $color);
-                }
-            }
-            if ($j % $adressWidth == 0  ||$i % $adressHeight == 0 )
+           /* the color of a plage of address is set first*/
+           if ( $adress >= $startPlage && $adress <= $endPlage)
+           {
+               imagesetpixel($image, $j, $i, $plageColor);
+           }
+           /*the color of a reserved adress on the network is set after*/
+           if ($setColor)
+           {
+               imagesetpixel($image, $j, $i, $color);
+           }
+
+           /* if the address is greater or equal to the broadcast address, it cannot be reserved so it is set to white*/
+           /*a white grid is set to have an idea of the dimension of an ip address on the network */
+            if ($j % $adressWidth == 0  ||$i % $adressHeight == 0  || $adress >= $end -1)
             {
                 imagesetpixel($image, $j, $i, $white);
             }
