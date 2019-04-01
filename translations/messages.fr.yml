@@ -412,6 +412,7 @@ menu.admin.users: 'Gestion des utilisateurs'
 
 menu.main.home: 'Accueil'
 menu.main.ips: 'Adresses IP'
+menu.main.listings: 'Listings'
 menu.main.networks: 'Réseaux'
 menu.main.machines: 'Machines'
 menu.main.services: 'Services'

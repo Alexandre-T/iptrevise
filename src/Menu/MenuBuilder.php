@@ -93,8 +93,8 @@ class MenuBuilder
         ]);
 
         if ($this->authorization->isGranted('ROLE_READER')) {
-            $dropdownSettings = $menu->addChild('menu.main.networks', [
-                'icon' => 'fw fa-sitemap',
+            $dropdownSettings = $menu->addChild('menu.main.listings', [
+                'icon' => 'fas fa-list',
                 'pull-right' => true,
                 'dropdown' => true,
                 'caret' => true,
