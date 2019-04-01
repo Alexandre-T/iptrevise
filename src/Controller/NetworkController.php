@@ -127,6 +127,7 @@ class NetworkController extends Controller
      */
     public function showAction(Network $network)
     {
+        $this->denyAccessUnlessGranted('view', $network);
         /** @var NetworkManager $networkManager */
         $networkManager = $this->get(NetworkManager::class);
 
@@ -296,6 +297,7 @@ class NetworkController extends Controller
      */
     public function editAction(Request $request, Network $network)
     {
+        $this->denyAccessUnlessGranted('edit', $network);
         $networkService = $this->get(NetworkManager::class);
         $view = [];
         $isDeletable = $networkService->isDeletable($network);
@@ -342,6 +344,7 @@ class NetworkController extends Controller
      */
     public function deleteAction(Request $request, Network $network)
     {
+        $this->denyAccessUnlessGranted('edit', $network);
         $form = $this->createDeleteForm($network);
         $form->handleRequest($request);
         $session = $this->get('session');
@@ -373,6 +376,7 @@ class NetworkController extends Controller
      */
     private function createDeleteForm(Network $network)
     {
+        $this->denyAccessUnlessGranted('edit', $network);
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('default_network_delete', array('id' => $network->getId())))
             ->setMethod('DELETE')
