@@ -26,6 +26,7 @@ use Doctrine\ORM\EntityRepository;
 use App\Bean\Factory\InformationFactory;
 use App\Manager\MachineManager;
 use App\Manager\NetworkManager;
+use App\Manager\UserManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -85,6 +86,7 @@ class SearchController extends Controller
       ['defaultSortFieldName' => 'machine.label', 'defaultSortDirection' => 'asc']
     );
 
+    //$user = $this->getUser();
 
     $ipManager = $this->get(IpManager::class);
     $pagination2 = $paginator->paginate(
@@ -93,6 +95,7 @@ class SearchController extends Controller
       self::LIMIT_PER_PAGE,
       ['defaultSortFieldName' => 'ip.ip | ip', 'defaultSortDirection' => 'asc']
     );
+
 
     if (isset($_GET['search'])) { $search = $_GET['search']; } else { $search = "FailToCatch"; }
 
