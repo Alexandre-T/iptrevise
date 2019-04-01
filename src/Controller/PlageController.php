@@ -107,6 +107,37 @@ class PlageController extends Controller
         $information = InformationFactory::createInformation($plage);
         $logs = $plageManager->retrieveLogs($plage);
 
+        $session = $this->get('session');
+        $trans = $this->get('translator.default');
+        $network = $plage->getNetwork();
+        $plages = $network->getPlages();
+        $check = 0;
+        foreach ($plages as &$plagesNetwork){
+          if ($plage->getId() != $plagesNetwork->getId()){
+            if ($plage->getStart() <= $plagesNetwork->getEnd() && $plage->getStart() >= $plagesNetwork->getStart()){
+              $check++;
+            }
+            if ($plage->getEnd() <= $plagesNetwork->getEnd() && $plage->getEnd() >= $plagesNetwork->getStart()){
+              $check++;
+            }
+          }
+        }
+        if ($check > 0){
+          $warning  = $trans->trans('form.plage.error.plage.mixed');
+          $session->getFlashBag()->add('warning', $warning);
+        }
+        $check = 0;
+        $ips = $plage->getNetwork()->getIps();
+        foreach ($ips as $ip){
+          if ($ip->getIp() >= $plage->getStart() && $ip->getIp() <= $plage->getEnd()){
+            $check++;
+          }
+        }
+        if ($check > 0){
+          $warning = $trans->trans('form.plage.error.ip.unique');
+          $session->getFlashBag()->add('warning', $warning);
+        }
+
         return $this->render('@App/default/plage/show.html.twig', array_merge($view, [
             'isDeletable' => $isDeletable,
             'logs' => $logs,
@@ -150,6 +181,7 @@ class PlageController extends Controller
         }
         $logs = $plageService->retrieveLogs($plage);
         $information = InformationFactory::createInformation($plage);
+
 
         return $this->render('@App/default/plage/edit.html.twig', array_merge($view, [
             'isDeletable' => $isDeletable,

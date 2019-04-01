@@ -302,11 +302,13 @@ class NetworkExtraController extends Controller
             $plages = $network->getPlages();
             $check = 0;
             foreach ($plages as &$plagesNetwork){
-              if ($plage->getStart() <= $plagesNetwork->getEnd() && $plage->getStart() >= $plagesNetwork->getStart()){
-                $check++;
-              }
-              if ($plage->getEnd() <= $plagesNetwork->getEnd() && $plage->getEnd() >= $plagesNetwork->getStart()){
-                $check++;
+              if ($plage->getId() != $plagesNetwork->getId()){
+                if ($plage->getStart() <= $plagesNetwork->getEnd() && $plage->getStart() >= $plagesNetwork->getStart()){
+                  $check++;
+                }
+                if ($plage->getEnd() <= $plagesNetwork->getEnd() && $plage->getEnd() >= $plagesNetwork->getStart()){
+                  $check++;
+                }
               }
             }
             if ($check > 0){

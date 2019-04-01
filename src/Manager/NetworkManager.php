@@ -26,6 +26,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Gedmo\Loggable\Entity\LogEntry;
 use Gedmo\Loggable\Entity\Repository\LogEntryRepository;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 
 /**
  * Network Manager.
@@ -38,7 +39,7 @@ use Gedmo\Loggable\Entity\Repository\LogEntryRepository;
 class NetworkManager implements LoggableManagerInterface, PaginatorInterface
 {
     /**
-     * Const for the alias query.
+       * Const for the alias query.
      */
     const ALIAS = 'network';
 
@@ -178,8 +179,25 @@ class NetworkManager implements LoggableManagerInterface, PaginatorInterface
 
         $qb->leftJoin(self::ALIAS.'.ips', 'ips')
             ->addSelect('COUNT(ips.id) AS ipsCount')
+            ->leftjoin(self::ALIAS. '.site', 'site1')
+            ->addSelect('IDENTITY(network.site) as HIDDEN site')
             ->groupBy(self::ALIAS.'.id');
 
         return $qb;
+    }
+
+    /**
+     * This method will add the HIDDEN field, the sortable field.
+     *
+     * @see https://github.com/KnpLabs/KnpPaginatorBundle/issues/196
+     *
+     * @param QueryBuilder $queryBuilder
+     *
+     * @return QueryBuilder
+     */
+    protected function addHiddenField(QueryBuilder $queryBuilder): QueryBuilder
+    {
+        return $queryBuilder
+            ->addSelect('network.site.label as HIDDEN site.label');
     }
 }
