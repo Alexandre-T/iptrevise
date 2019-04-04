@@ -12,6 +12,9 @@
     {{ 'default.network.show.title %name%'|trans({'%name%': network.label})}}
 {% endblock headline %}
 
+{% block content_new_tab %}
+    <li role="presentation"><a href="#graph" aria-controls="messages" role="tab" data-toggle="tab">{{ 'graphe surveillance' }}</a></li>
+{% endblock content_new_tab %}
 {% block content_settings %}
     <div class="panel panel-primary" id="administration-global-information">
         <div class="panel-heading">
@@ -259,7 +262,49 @@
         </div>
     </div>
 {% endblock content_settings %}
+{% block content_new_tab_body %}
+    <div role="tabpanel" class="tab-pane" id="graph">
+        <div class="panel panel-default" id="default-graph">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{'Graphe de surveillance' }}</h3>
+            </div>
+            {%if n_count >=0 %}
+                <table class="table">
+                    <tr>
+                        <th>{{network.label}}</th>
+                        {% for net in networks %}
+                            <th><a href="{{ path('default_network_show', {'id': net.id}) }}" title="{{ net.label }}">{{ net.label }}</a></th>
+                        {% endfor %}
+                    </tr>
+                    {% for machine in machines %}
+                        <tr>
+                            <td><a href="{{ path('default_machine_show', {'id': machine[0].id}) }}" title="{{ machine[0].label }}">{{ machine[0].label }}</a></td>
+                            {% for i in 0..n_count%}
+                                {% if networks[i] in machine[1]%}
+                                    <td>&#10060</td>
+                                {% else %}
+                                    <td></td>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
 
+                    {% endfor %}
+
+
+                </table>
+            {% endif %}
+            <div class="panel-footer text-right">
+                {%if n_count >=0 %}
+                    <em>{{ 'Une croix signifie que la machine concernée possède une adresse ip dans le réseau nommé par la colonne' }}</em>
+                {% else %}
+                    <em>{{"Aucune machine de ce réseau n'a d'adresses ip dans un réseau différent"}}</em>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+{% endblock content_new_tab_body %}
 {% block content_action %}
     <h3>{{ 'administration.actions' | trans }}</h3>
 

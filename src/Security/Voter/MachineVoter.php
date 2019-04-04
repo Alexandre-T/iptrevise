@@ -66,19 +66,20 @@ class MachineVoter extends Voter
     if ($this->canEdit($machine, $user)) {
       return true;
     }
-    $ips=getIps();
+    $ips=$machine->getIps();
     $networks=array();
-
+    $withoutNetwork=true;
     foreach($ips as $ip){
-      if(!in_array($ip->getNetwork(),$networks)) {
+      if($ip->getNetwork()!=NULL and !in_array($ip->getNetwork(),$networks) ) {
         $networks[]=$ip->getNetwork();
+        $withoutNetwork=false;
       }
     }
     foreach($networks as $network){
       $site=$network->getSite();
       $roles=$user->getNewRoles();
       foreach($roles as $role) {
-        if($role->getSite() == $site){
+        if($role->getSite() == $site or $withoutNetwork==true){
           return true;
         }
 
@@ -94,10 +95,12 @@ class MachineVoter extends Voter
 
       $ips=getIps();
       $networks=array();
+      $withoutNetwork=true;
 
       foreach($ips as $ip){
-        if(!in_array($ip->getNetwork(),$networks)) {
+        if($ip->getNetwork()!=NULL and !in_array($ip->getNetwork(),$networks)) {
           $networks[]=$ip->getNetwork();
+          $withoutNetwork=false;
         }
       }
       foreach($networks as $network){
@@ -107,6 +110,8 @@ class MachineVoter extends Voter
           if($role->getSite() == $site && !($role->isReadOnly())) {
             return true;
           }
+          else if($withoutNetwork==true){
+            return true;
 
         }
         return false;

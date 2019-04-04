@@ -20,6 +20,7 @@ namespace App\Controller;
 use App\Bean\Factory\InformationFactory;
 use App\Form\Type\NetworkType;
 use App\Entity\Network;
+use App\Entity\Machine;
 use App\Manager\NetworkManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -130,16 +131,64 @@ class NetworkController extends Controller
         $this->denyAccessUnlessGranted('view', $network);
         /** @var NetworkManager $networkManager */
         $networkManager = $this->get(NetworkManager::class);
+        $network_machines = array();
 
+        foreach($network->getIps() as $ip){
+          if($ip->getMachine()!=NULL and !in_array($ip->getMachine(), $network_machines)) {
+            $network_machines[] =  $ip->getMachine();
+          }
+        }
+        $m_count=0;
+        $n_count=0;
+        $machines=array();
+        $networks=array();
+        $is_in_network=false;
+        $is_dangerous=false;
+        foreach($network_machines as $machine ) {
+          $machine->getIps();
+          $is_in_network=false;
+          $is_dangerous=false;
+          if(count($machine->getIps())>1){
+            foreach($machine->getIps() as $ip){
+              if($ip->getNetwork()==$network) {
+                $is_in_network=true;
+              }
+              else {
+                $is_dangerous=true;
+              }
+            }
+            if($is_in_network and $is_dangerous) {
+              $machines[]=array();
+              $machines[$m_count][0]=$machine;
+              $machines[$m_count][1]=array();
+
+              foreach($machine->getIps() as $ip){
+                if(($ip->getNetwork() !=$network) and !in_array($ip->getNetwork(), $machines[$m_count][1])) {
+                  $machines[$m_count][1][]=$ip->getNetwork();
+                  if(!in_array($ip->getNetwork(), $networks)) {
+                    $networks[]=$ip->getNetwork();
+                    $n_count++;
+                  }
+                }
+              }
+              $m_count++;
+            }
+          }
+        }
+        $n_count--;
         $view = [];
         $view['information'] = InformationFactory::createInformation($network);
         $view['logs'] = $networkManager->retrieveLogs($network);
         $view['network'] = $network;
         $view['isDeletable'] = $this->isGranted('ROLE_MANAGE_NETWORK') && $networkManager->isDeletable($network);
-
+        ;
         if ($view['isDeletable']){
             $view['delete_form'] = $this->createDeleteForm($network)->createView();
         }
+        $view['machines']=$machines;
+        $view['networks']=$networks;
+        $view['m_count']=$m_count;
+        $view['n_count']=$n_count;
 
         return $this->render('@App/default/network/show.html.twig', $view);
     }
@@ -379,7 +428,6 @@ class NetworkController extends Controller
      */
     private function createDeleteForm(Network $network)
     {
-        $this->denyAccessUnlessGranted('edit', $network);
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('default_network_delete', array('id' => $network->getId())))
             ->setMethod('DELETE')

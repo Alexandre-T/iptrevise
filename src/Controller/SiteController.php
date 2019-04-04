@@ -53,7 +53,7 @@ class SiteController extends Controller
      *
      * @Route("/", name="default_site_index")
      * @Method("GET")
-     * @Security("is_granted('ROLE_USER')")
+     * @Security("is_granted('ROLE_READ_SITE')")
      *
      * @param Request $request
      *
@@ -81,7 +81,7 @@ class SiteController extends Controller
      *
      * @Route("/new", name="default_site_new")
      * @Method({"GET", "POST"})
-     * @Security("is_granted('ROLE_ADMIN')")
+     * @Security("is_granted('ROLE_MANAGE_SITE')")
      *
      * @param Request $request
      *
@@ -117,7 +117,7 @@ class SiteController extends Controller
      *
      * @Route("/{id}", name="default_site_show")
      * @Method("GET")
-     * @Security("is_granted('ROLE_USER')")
+     * @Security("is_granted('ROLE_READ_SITE')")
      *
      * @param Site $site
      *
@@ -147,7 +147,7 @@ class SiteController extends Controller
      *
      * @Route("/{id}/edit", name="default_site_edit")
      * @Method({"GET", "POST"})
-     * @Security("is_granted('ROLE_USER')")
+     * @Security("is_granted('ROLE_MANAGE_SITE')")
      *
      * @param Request $request The request
      * @param Site $site The site entity
@@ -237,7 +237,7 @@ class SiteController extends Controller
      */
     private function createDeleteForm(Site $site)
     {
-        $this->denyAccessUnlessGranted('edit', $site);
+        
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('default_site_delete', array('id' => $site->getId())))
             ->setMethod('DELETE')
