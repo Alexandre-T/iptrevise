@@ -19,6 +19,7 @@
             {% block content_tabs_header %}{% endblock content_tabs_header %}
             <li role="presentation"><a href="#logs" aria-controls="profile" role="tab" data-toggle="tab">{{ 'default.tab.logs' | trans }}</a></li>
             <li role="presentation"><a href="#informations" aria-controls="messages" role="tab" data-toggle="tab">{{ 'default.tab.informations' | trans }}</a></li>
+            {% block content_new_tab %}{% endblock content_new_tab %}
         </ul>
         {# <!-- Tab panes --> #}
         <div class="tab-content">
@@ -109,6 +110,7 @@
                     {% endif %}
                 {% endblock content_information %}
             </div>
+            {% block content_new_tab_body %}{% endblock content_new_tab_body %}
         </div>
     </div>
     {% endblock content_tabs %}
