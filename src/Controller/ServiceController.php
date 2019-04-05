@@ -41,6 +41,8 @@ use Symfony\Component\HttpFoundation\Response;
  * @license CeCILL-B V1
  *
  * @Route("service") // faire une route "service"
+ * @Security("is_granted('ROLE_ADMIN')")
+ * 
  */
 class ServiceController extends Controller
 {
@@ -54,7 +56,6 @@ class ServiceController extends Controller
      *
      * @Route("/", name="default_service_index")
      * @Method("GET")
-     * @Security("is_granted('ROLE_READ_SERVICE')")
      *
      * @param Request $request
      *
@@ -82,7 +83,6 @@ class ServiceController extends Controller
      *
      * @Route("/new", name="default_service_new")
      * @Method({"GET", "POST"})
-     * @Security("is_granted('ROLE_MANAGE_SERVICE')")
      *
      * @param Request $request
      *
@@ -116,7 +116,6 @@ class ServiceController extends Controller
      *
      * @Route("/{id}", name="default_service_show")
      * @Method("GET")
-     * @Security("is_granted('ROLE_READ_SERVICE')")
      *
      * @param Service $service
      *
@@ -145,7 +144,6 @@ class ServiceController extends Controller
      *
      * @Route("/{id}/edit", name="default_service_edit")
      * @Method({"GET", "POST"})
-     * @Security("is_granted('ROLE_MANAGE_SERVICE')")
      *
      * @param Request $request The request
      * @param Service $service The service entity
@@ -191,7 +189,7 @@ class ServiceController extends Controller
      *
      * @Route("/{id}", name="default_service_delete")
      * @Method("DELETE")
-     * @Security("is_granted('ROLE_MANAGE_SERVICE')")
+     * @Security("is_granted('ROLE_ADMIN')")
      *
      * @param Request $request The request
      * @param Service $service The $service entity
