@@ -42,7 +42,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @Route("service") // faire une route "service"
  * @Security("is_granted('ROLE_ADMIN')")
- * 
+ *
  */
 class ServiceController extends Controller
 {
@@ -189,7 +189,6 @@ class ServiceController extends Controller
      *
      * @Route("/{id}", name="default_service_delete")
      * @Method("DELETE")
-     * @Security("is_granted('ROLE_ADMIN')")
      *
      * @param Request $request The request
      * @param Service $service The $service entity
