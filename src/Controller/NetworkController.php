@@ -20,7 +20,6 @@ namespace App\Controller;
 use App\Bean\Factory\InformationFactory;
 use App\Form\Type\NetworkType;
 use App\Entity\Network;
-use App\Entity\Machine;
 use App\Manager\NetworkManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -28,13 +27,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 /**
  * NetworkController class.
@@ -70,7 +66,7 @@ class NetworkController extends Controller
         $networkManager = $this->get(NetworkManager::class);
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
-            $networkManager->getQueryBuilder(), /* queryBuilder NOT result */
+            $networkManager->getQueryBuilderByUser($this->getUser()), /* queryBuilder NOT result */
             $request->query->getInt('page', 1)/*page number*/,
             self::LIMIT_PER_PAGE,
             ['defaultSortFieldName' => 'network.label', 'defaultSortDirection' => 'asc']
@@ -142,8 +138,6 @@ class NetworkController extends Controller
         $n_count=0;
         $machines=array();
         $networks=array();
-        $is_in_network=false;
-        $is_dangerous=false;
         foreach($network_machines as $machine ) {
           $machine->getIps();
           $is_in_network=false;
@@ -424,7 +418,7 @@ class NetworkController extends Controller
      *
      * @param Network $network The network entity
      *
-     * @return Form The form
+     * @return FormInterface The form
      */
     private function createDeleteForm(Network $network)
     {

@@ -42,10 +42,8 @@
         </thead>
         <tbody>
         {% for row in pagination %}
-            {% set role = app.user.newRoles.get(0) %}
             {% set network = row[0] %}
             <tr class="row-{{ loop.index }}">
-              {% if (is_granted ('ROLE_ADMIN') or network.site.id == role.site.id) %}
               <td headers="network-color" style="color: {{ '#' ~ network.color }}"><span class="fa fa-sitemap"></span></td>
               <td headers="network-label" class="th-icon">{{ network.label }}</td>
               <td headers="network-address" class="th-icon">{{ network.ip | network(network.cidr) }}</td>
@@ -65,8 +63,6 @@
                       {% endif %}
                   </div>
               </td>
-
-                {% endif %}
             </tr>
         {% endfor %}
         </tbody>

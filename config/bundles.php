@@ -17,4 +17,5 @@ return [
     Knp\Bundle\MenuBundle\KnpMenuBundle::class => ['all' => true],
     Mopa\Bundle\BootstrapBundle\MopaBootstrapBundle::class => ['all' => true],
     AlexandreT\Bundle\CasGuardBundle\CasGuardBundle::class => ['all' => true],
+    Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => true],
 ];

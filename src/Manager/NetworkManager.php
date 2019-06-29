@@ -26,7 +26,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Gedmo\Loggable\Entity\LogEntry;
 use Gedmo\Loggable\Entity\Repository\LogEntryRepository;
-use Knp\Component\Pager\Pagination\PaginationInterface;
 
 /**
  * Network Manager.
@@ -179,9 +178,25 @@ class NetworkManager implements LoggableManagerInterface, PaginatorInterface
 
         $qb->leftJoin(self::ALIAS.'.ips', 'ips')
             ->addSelect('COUNT(ips.id) AS ipsCount')
-            ->leftjoin(self::ALIAS. '.site', 'site1')
+            ->join(self::ALIAS. '.site', 'site1')
             ->addSelect('IDENTITY(network.site) as HIDDEN site')
             ->groupBy(self::ALIAS.'.id');
+
+        return $qb;
+    }
+
+    /**
+     * Return the Query builder needed by the paginator.
+     *
+     * @return QueryBuilder
+     */
+    public function getQueryBuilderByUser(User $user)
+    {
+        $qb = $this->getQueryBuilder();
+
+        $qb->join('site1.roles', 'role')
+            ->andWhere('role.user = :user')
+            ->setParameter(':user', $user);
 
         return $qb;
     }

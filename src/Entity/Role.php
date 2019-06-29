@@ -38,7 +38,6 @@ class Role
      *
      * @ORM\Column(
      *     type="boolean",
-     *     unique=true,
      *     nullable=false,
      *     name="rol_lib",
      *     options={"comment":"lecteur = true, writer = false"}
@@ -69,9 +68,9 @@ class Role
     /**
      * Site authorized.
      *
-     * @var Site
+     * var Site
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Site", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Site", fetch="EAGER", inversedBy="roles")
      * @ORM\JoinColumn(name="sit_id", referencedColumnName="sit_id", nullable=false, onDelete="CASCADE")
      * @ORM\Id
      */
@@ -84,7 +83,7 @@ class Role
      * @var User
      *
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="newRoles")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="newRoles", cascade={"persist"})
      * @ORM\JoinColumn(name="usr_id", referencedColumnName="usr_id", nullable=false, onDelete="CASCADE") User
      */
     private $user;

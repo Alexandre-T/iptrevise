@@ -120,11 +120,17 @@ class Site implements ColorInterface, InformationInterface, LabelInterface
     private $networks;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Role", mappedBy="site", orphanRemoval=true)
+     */
+    private $roles;
+
+    /**
      * Site constructor.
      */
     public function __construct()
     {
         $this->networks = new ArrayCollection();
+        $this->roles = new ArrayCollection();
     }
 
     /**
@@ -211,6 +217,37 @@ class Site implements ColorInterface, InformationInterface, LabelInterface
     public function removeNetwork(Network $network): self
     {
         $this->networks->removeElement($network);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Role[]
+     */
+    public function getRoles(): Collection
+    {
+        return $this->roles;
+    }
+
+    public function addRole(Role $role): self
+    {
+        if (!$this->roles->contains($role)) {
+            $this->roles[] = $role;
+            $role->setSite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRole(Role $role): self
+    {
+        if ($this->roles->contains($role)) {
+            $this->roles->removeElement($role);
+            // set the owning side to null (unless already changed)
+            if ($role->getSite() === $this) {
+                $role->setSite(null);
+            }
+        }
 
         return $this;
     }

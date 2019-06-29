@@ -121,7 +121,7 @@ class UserManager implements LoggableManagerInterface, PaginatorInterface
 
     /**
      * Save new or modified User.
-     *
+     *gr
      * @param User $user
      */
     public function save(User $user)

@@ -17,7 +17,6 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\Site;
@@ -40,22 +39,16 @@ class SiteFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         if (in_array($this->container->get('kernel')->getEnvironment(), ['dev', 'test'])) {
-            //Load dev and test data
-            /** @var User $admin */
-            $admin = $this->getReference('user_admin');
-
-            //Site par defait
+            //Default site
             $site = new Site();
             $site->setLabel('Site1');
             $site->setColor('000000');
-            $site->setCreator($admin);
 
             $this->addReference('site_default', $site);
 
             $site1 = new Site();
             $site1->setLabel('Site rouge');
             $site1->setColor('FF0000');
-            $site1->setCreator($admin);
 
             $this->addReference('site_rouge', $site1);
 
@@ -65,18 +58,5 @@ class SiteFixtures extends Fixture
         }
 
         $manager->flush();
-    }
-
-    /**
-     * This method return an array of fixtures classes
-     * on which the implementing class depends on.
-     *
-     * @return array
-     */
-    public function getDependencies()
-    {
-        return array(
-            UserFixtures::class,
-        );
     }
 }
