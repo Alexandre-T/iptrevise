@@ -116,10 +116,10 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             $roleOrganiserSite2->setUser($userOrganiserSite2);
 
             //Role affectation
-            $roleOrganiserSites = new Role();
-            $roleOrganiserSites->setReadOnly(false);
-            $roleOrganiserSites->setSite($site1);
-            $roleOrganiserSites->setUser($userOrganiser);
+            $roleOrganiserSite3 = new Role();
+            $roleOrganiserSite3->setReadOnly(false);
+            $roleOrganiserSite3->setSite($site1);
+            $roleOrganiserSite3->setUser($userOrganiser);
 
             //Role affectation
             $roleOrganiserSites = new Role();
@@ -136,6 +136,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             //Role saving
             $manager->persist($roleOrganiserSite1);
             $manager->persist($roleOrganiserSite2);
+            $manager->persist($roleOrganiserSite3);
             $manager->persist($roleOrganiserSites);
         }
 
