@@ -464,4 +464,37 @@ class User implements InformationInterface, LabelInterface, UserInterface, Seria
         return $this;
     }
 
+    /**
+     * Can this user edit one network in current site?
+     *
+     * @return bool
+     */
+    public function canEditOneSite()
+    {
+        if ($this->isAdmin()) {
+            return true;
+        }
+
+        foreach ($this->getNewRoles() as $newRole) {
+            if (!$newRole->isReadOnly()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Can this user view one network in current site?
+     *
+     * @return bool
+     */
+    public function canViewOneSite()
+    {
+        if ($this->isAdmin()) {
+            return true;
+        }
+
+        return count($this->getNewRoles());
+    }
 }

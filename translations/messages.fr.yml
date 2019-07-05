@@ -132,6 +132,7 @@ default.machine.action.list.title: 'Retourner à la liste des machines.'
 default.machine.action.show.title: 'Retourner à la fiche complète de cette machine.'
 default.machine.actions: 'Actions'
 default.machine.networks: 'Networks'
+default.machine.services: 'Services'
 default.machine.sites: 'Sites'
 default.machine.create: 'Nouvelle machine'
 default.machine.created %name%: 'La machine « %name% » a été créée avec succès !'
@@ -157,15 +158,15 @@ default.machine.deleted.actions: 'Actions'
 default.machine.deleted.title.back: 'Retouner à la liste des machines supprimées'
 default.machine.deleted.show.title %name%: 'Journal de bord de la machine supprimée « %name% »'
 
-default.machine.missing.ip: 'No Ip Adress Linked'
-default.machine.missing.network: 'No Network Associated'
-default.machine.missing.site: 'No Site Associated'
+default.machine.missing.ip: 'Aucune addresse IP associée'
+default.machine.missing.network: 'Aucun réseau associé'
+default.machine.missing.site: 'Aucun site associé'
 
-default.ip.missing.machine: 'No Machine Linked'
-default.ip.missing.network: 'No Network Associated'
-default.ip.missing.site: 'No SIte Associated'
+default.ip.missing.machine: 'Aucune machine associée'
+default.ip.missing.network: 'Aucun réseau associé'
+default.ip.missing.site: 'Aucun site associé'
 
-default.missing.result: 'No Results'
+default.missing.result: 'Aucun résultat'
 
 default.machines: 'Machines'
 
@@ -288,7 +289,7 @@ form.ip.field.ip: 'Adresse IP'
 form.ip.field.machine: 'Machine'
 form.ip.field.network: 'Réseau'
 form.ip.field.reason: 'Réservée pour'
-form.machine.field.destroyer: 'Supprimée par'
+form.ip.field.destroyer: 'Supprimée par'
 
 form.plage.field.plage: 'Plage'
 form.plage.field.creator: 'Référencée par'
@@ -453,3 +454,6 @@ ROLE_READER: 'Lecteur'
 title.security.login: 'Connexion'
 
 (optional): '(optionnel)'
+default:
+  machine:
+    tags: 'Tags'

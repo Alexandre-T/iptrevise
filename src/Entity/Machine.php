@@ -130,11 +130,12 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      * @ORM\Column(type="text", nullable=true, name="mac_location", options={"comment":"Localisation  de la machine"})
      */
     private $location;
+
     /**
      * Adresses Mac of the Machine.
      *
      * @var string
-     * @Assert\NotBlank()
+     *
      * @ORM\Column(type="text", nullable=true, name="mac_macs", options={"comment":"Adresses mac de la machine"})
      */
     private $macs;
@@ -143,7 +144,7 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      *
      * @var Collection
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\Ip", mappedBy="machine")
+     * @ORM\OneToMany(targetEntity="App\Entity\Ip", mappedBy="machine", fetch="EAGER")
      * @ORM\OrderBy({"ip" = "ASC"})
      */
     private $ips;

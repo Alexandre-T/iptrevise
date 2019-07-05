@@ -22,6 +22,7 @@ use App\Entity\PaginatorInterface;
 use App\Entity\User;
 use App\Entity\Site;
 use App\Repository\SiteRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Gedmo\Loggable\Entity\LogEntry;
@@ -164,5 +165,26 @@ class SiteManager implements LoggableManagerInterface, PaginatorInterface
             ->groupBy(self::ALIAS.'.id');
 
         return $qb;
+    }
+
+    /**
+     * Get Readable sites for user.
+     *
+     * @param User $user
+     *
+     * @return Site[]|Collection
+     */
+    public function getReadable(User $user) {
+        if ($user->isAdmin()) {
+            return $this->getAll();
+        }
+
+        $qb = $this->repository->createQueryBuilder(self::ALIAS);
+
+        return $qb->join('site.roles', 'roles')
+            ->where('roles.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
     }
 }

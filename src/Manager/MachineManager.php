@@ -186,9 +186,22 @@ class MachineManager implements LoggableManagerInterface, PaginatorInterface
 
         $qb->leftJoin(self::ALIAS.'.ips', 'ips')
            ->leftJoin(self::ALIAS.'.tags', 'tags')
+            ->select('machine')
            ->addSelect('COUNT(DISTINCT ips.id) AS ipsCount')
            ->addSelect("string_agg(tags.label, ',') AS tagsConcat")
-           ->groupBy(self::ALIAS.'.id');
+           ->groupBy(self::ALIAS);
+
+        return $qb;
+    }
+
+    public function getQueryBuilderWithSearch(string $search)
+    {
+        $qb = $this->getQueryBuilder();
+        $qb->where(self::ALIAS . '.label like :search')
+            ->orWhere(self::ALIAS . '.description like :search')
+            ->orWhere('machine.location like :search')
+            ->orWhere('machine.macs like :search')
+            ->setParameter('search', $search);
 
         return $qb;
     }

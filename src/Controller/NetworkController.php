@@ -26,7 +26,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -72,7 +71,7 @@ class NetworkController extends Controller
             ['defaultSortFieldName' => 'network.label', 'defaultSortDirection' => 'asc']
         );
 
-        return $this->render('@App/default/network/index.html.twig', [
+        return $this->render('default/network/index.html.twig', [
             'pagination' => $pagination,
         ]);
     }
