@@ -457,3 +457,5 @@ title.security.login: 'Connexion'
 default:
   machine:
     tags: 'Tags'
+  site:
+    not-deletable %name%: 'Le site %name% ne peut pas être supprimé. Il contient des réseaux.'
