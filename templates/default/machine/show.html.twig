@@ -1,6 +1,6 @@
-{% extends '@App/default/base.html.twig' %}
+{% extends 'default/base.html.twig' %}
 
-{% import "@App/macro.html.twig" as app_macro %}
+{% import "macro.html.twig" as app_macro %}
 
 {% set default_entity_show = 'default_machine_show' %}
 
@@ -29,9 +29,8 @@
                     <span class="fa fa-desktop fa-4x"></span>
                 </div>
             </div>
-            {% if is_granted("ROLE_MANAGE_IP") or is_granted("ROLE_MANAGE_MACHINE") %}
             <div class="btn-group-justified">
-                {% if is_granted("ROLE_MANAGE_IP") %}
+                {% if can_edit_one(networks) %}
                 <!-- Single button -->
                 <div class="btn-group">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -41,12 +40,12 @@
                     </button>
                     <ul class="dropdown-menu">
                         {% for network in networks %}
-                            <li><a href="{{ path ('default_machine_new_ip', {'network_id': network.id, 'machine_id': machine.id}) }}">{{ 'default.machine.new-ip.for-network %network%' | trans({'%network%': network.label }) }}</a></li>
+                            {% if can_create_ip(network) %}
+                                <li><a href="{{ path ('default_machine_new_ip', {'network_id': network.id, 'machine_id': machine.id}) }}">{{ 'default.machine.new-ip.for-network %network%' | trans({'%network%': network.label }) }}</a></li>
+                            {% endif %}
                         {% endfor %}
                     </ul>
                 </div>
-                {% endif %}
-                {% if is_granted("ROLE_MANAGE_IP") and is_granted("ROLE_MANAGE_MACHINE") %}
                 <!-- Second button -->
                 <div class="btn-group">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -56,13 +55,14 @@
                     </button>
                     <ul class="dropdown-menu">
                         {% for network in networks %}
+                            {% if can_edit(network) %}
                             <li><a href="{{ path ('default_machine_link', {'network_id': network.id, 'machine_id': machine.id}) }}">{{ 'default.machine.link-ip.for-network %network%' | trans({'%network%': network.label }) }}</a></li>
+                            {% endif %}
                         {% endfor %}
                     </ul>
                 </div>
                 {% endif %}
             </div>
-            {% endif %}
         </div>
         {% if machine.ips.count %}
             <table class="table">
@@ -75,6 +75,10 @@
                     <th id="machine-ip-network-label">
                         <span class="fa fa-sitemap fa-fw"></span>
                         {{ 'form.ip.field.network' | trans }}
+                    </th>
+                    <th id="machine-site">
+                        <span class="fa fa-building fa-fw"></span>
+                        {{ 'form.site.field.label' | trans }}
                     </th>
                     <th id="machine-ip-creator">
                         <span class="fa fa-user fa-fw"></span>
@@ -91,57 +95,58 @@
                 {% for ip in machine.ips %}
                     <tr>
                         <td headers="machine-ip-ip" class="th-icon">
+                            {% if can_view(ip) %}
                             <a href="{{ path('default_ip_show', {'id': ip.id}) }}" title="{{ ip.ip | ip }}">
                                 {{ ip.ip | ip }}
                             </a>
+                            {% else %}
+                                <span class="non-readable">xxx.xxx.xxx.xxx</span>
+                            {% endif %}
                         </td>
                         <td headers="machine-ip-network-label" class="th-icon">
+                            {% if can_view(ip.network) %}
                             <a href="{{ path('default_network_show', {'id': ip.network.id}) }}" title="{{ ip.network.label }}">
                                 {{ ip.network.label }}
                             </a>
+                            {% else %}
+                                <span class="non-readable">&hellip;</span>
+                            {% endif %}
+                        </td>
+                        <td headers="machine-site" class="th-icon">
+                            {% if can_view(ip.network.site) %}
+                                <a href="{{ path('default_site_show',{'id':ip.network.site.id}) }}" title="{{ 'default.site.action.show.title' | trans }}">
+                                    {{ ip.network.site | label }}
+                                </a>
+                            {% else %}
+                                {{ ip.network.site | label }}
+                            {% endif %}
                         </td>
                         <td headers="machine-ip-machine-creator" class="th-icon">
-                            {{ ip.creator | label }}
+                            {% if can_view(ip) %}
+                                {{ ip.creator | label }}
+                            {% else %}
+                                <span class="non-readable">&hellip;</span>
+                            {% endif %}
                         </td>
-                        {% if is_granted("ROLE_MANAGE_IP") or is_granted("ROLE_MANAGE_MACHINE") %}
-                            <td headers="machine-ip-actions">
-                                <div class="btn-group btn-group-sm" role="group" aria-label="{{ 'default.ip.manage %ip%' | trans({'%ip%': ip.ip | ip}) }}">
-                                    {% if is_granted("ROLE_MANAGE_IP") %}
+                        <td headers="machine-ip-actions">
+                            <div class="btn-group btn-group-sm" role="group" aria-label="{{ 'default.ip.manage %ip%' | trans({'%ip%': ip.ip | ip}) }}">
+                                {% if can_edit(ip) %}
                                     <a href="{{ path ('default_ip_edit', {'id': ip.id}) }}" data-toggle="tooltip" title="{{ 'default.ip.action.edit.title' | trans }}" class="btn btn-info">
                                         <span class="fa fa-pencil"></span>
                                         <span class="sr-only">{{ 'default.ip.action.edit' | trans }}</span>
                                     </a>
-                                    {% endif %}
-                                    {% if ip.machine %}
-                                        {% if is_granted("ROLE_MANAGE_IP") and is_granted("ROLE_MANAGE_MACHINE") %}
-                                            <a href="{{ path ('default_machine_unlink', {'id': ip.id}) }}" data-toggle="tooltip" title="{{ 'default.ip.action.dissociate.title' | trans }}" class="btn btn-warning ">
-                                                <span class="fa fa-unlink"></span>
-                                                <span class="sr-only">{{ 'default.ip.action.dissociate' | trans }}</span>
-                                            </a>
-                                        {% endif %}
-                                    {% else %}
-                                        {% if is_granted("ROLE_MANAGE_IP") and is_granted("ROLE_MANAGE_MACHINE") %}
-                                            <button data-toggle="tooltip" title="{{ 'default.ip.action.associate.title' | trans }}" class="btn btn-info">
-                                                <span class="fa fa-link"></span>
-                                                <span class="sr-only">{{ 'default.ip.action.associate' | trans }}</span>
-                                            </button>
-                                        {% endif %}
-                                        {% if is_granted("ROLE_MANAGE_IP") %}
-                                            <button data-toggle="tooltip" title="{{ 'default.ip.action.create.title' | trans }}" class="btn btn-info">
-                                                <span class="fa fa-plus"></span>
-                                                <span class="sr-only">{{ 'default.ip.action.create' | trans }}</span>
-                                            </button>
-                                        {% endif %}
-                                    {% endif %}
-                                    {% if is_granted("ROLE_MANAGE_IP") %}
-                                        <a href="{{ path ('default_machine_delete_ip', {'id': ip.id}) }}" data-toggle="tooltip" title="{{ 'default.ip.action.delete.title' | trans }}" class="btn btn-danger">
-                                            <span class="fa fa-trash-o"></span>
-                                            <span class="sr-only">{{ 'default.ip.action.delete' | trans }}</span>
-                                        </a>
-                                    {% endif %}
-                                </div>
-                            </td>
-                        {% endif %}
+                                    <a href="{{ path ('default_machine_unlink', {'id': ip.id}) }}" data-toggle="tooltip" title="{{ 'default.ip.action.dissociate.title' | trans }}" class="btn btn-warning ">
+                                        <span class="fa fa-unlink"></span>
+                                        <span class="sr-only">{{ 'default.ip.action.dissociate' | trans }}</span>
+                                    </a>
+                                    <a href="{{ path ('default_machine_delete_ip', {'id': ip.id}) }}" data-toggle="tooltip" title="{{ 'default.ip.action.delete.title' | trans }}" class="btn btn-danger">
+                                        <span class="fa fa-trash-o"></span>
+                                        <span class="sr-only">{{ 'default.ip.action.delete' | trans }}</span>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </td>
+
                     </tr>
                 {% endfor %}
                 </tbody>

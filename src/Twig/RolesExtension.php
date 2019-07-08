@@ -100,9 +100,24 @@ class RolesExtension extends Twig_Extension
                 [$this, 'canCreateSite'],
                 []
             ),
+            'can_create_network' => new Twig_SimpleFunction(
+                'can_create_network',
+                [$this, 'canCreateNetwork'],
+                []
+            ),
+            'can_create_ip' => new Twig_SimpleFunction(
+                'can_create_ip',
+                [$this, 'canCreateIp'],
+                []
+            ),
             'can_edit' => new Twig_SimpleFunction(
                 'can_edit',
                 [$this, 'canEdit'],
+                []
+            ),
+            'can_edit_one' => new Twig_SimpleFunction(
+                'can_edit_one',
+                [$this, 'canEditOne'],
                 []
             ),
             'can_view' => new Twig_SimpleFunction(
@@ -153,6 +168,14 @@ class RolesExtension extends Twig_Extension
      * @return bool
      */
     public function canEdit(LabelInterface $object) {
+        if (null == $this->user) {
+            return false;
+        }
+
+        if ($this->user->isAdmin()) {
+            return true;
+        }
+
         if ($object instanceof Site) {
             return $this->canEditSite();
         }
@@ -161,6 +184,33 @@ class RolesExtension extends Twig_Extension
             return $this->canEditNetwork($object);
         }
         
+        if ($object instanceof Ip) {
+            return $this->canEditIp($object);
+        }
+
+        if ($object instanceof Machine) {
+            return $this->canEditMachine();
+        }
+
+        return false;
+    }
+
+    /**
+     * Can user edit at least one object?
+     *
+     * @param LabelInterface[] $collection
+     * @return bool
+     */
+    public function canEditOne(array $collection) {
+        if (null === $this->user) {
+            return false;
+        }
+        foreach ($collection as $object) {
+            if ($this->canEdit($object)) {
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -172,6 +222,14 @@ class RolesExtension extends Twig_Extension
      * @return bool
      */
     public function canView(LabelInterface $object) {
+        if (null == $this->user) {
+            return false;
+        }
+
+        if ($this->user->isAdmin()) {
+            return true;
+        }
+
         if ($object instanceof Site) {
             return $this->canViewSite($object);
         }
@@ -192,16 +250,6 @@ class RolesExtension extends Twig_Extension
     }
 
     /**
-     * Can user edit site.
-     *
-     * @return bool
-     */
-    private function canEditSite()
-    {
-        return $this->user->isAdmin();
-    }
-
-    /**
      * Return Name of extension.
      *
      * @return string
@@ -218,7 +266,51 @@ class RolesExtension extends Twig_Extension
      */
     public function canViewDeletedSite()
     {
+        if (null === $this->user) {
+            return false;
+        }
+
         return $this->user->isAdmin();
+    }
+
+    /**
+     * Can user create a new network?
+     *
+     * @param LabelInterface $object
+     *
+     * @return bool
+     */
+    public function canCreateNetwork(LabelInterface $object)
+    {
+        if (null == $this->user) {
+            return false;
+        }
+
+        if ($this->user->isAdmin()) {
+            return true;
+        }
+
+        $site = $this->getSite($object);
+
+        foreach ($this->user->getNewRoles() as $role) {
+            if ($role->getSite() === $site) {
+                return $role->isWritable();
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Can user create a new IP?
+     *
+     * @param LabelInterface $object
+     *
+     * @return bool
+     */
+    public function canCreateIp(LabelInterface $object)
+    {
+        return $this->canCreateNetwork($object);
     }
 
     /**
@@ -228,6 +320,10 @@ class RolesExtension extends Twig_Extension
      */
     public function canCreateSite()
     {
+        if (null == $this->user) {
+            return false;
+        }
+
         return $this->user->isAdmin();
     }
 
@@ -240,6 +336,10 @@ class RolesExtension extends Twig_Extension
      */
     private function canViewSite(Site $site)
     {
+        if (null === $this->user) {
+            return false;
+        }
+
         foreach ($this->user->getNewRoles() as $role) {
             if ($role->getSite() === $site) {
                 return true;
@@ -247,6 +347,11 @@ class RolesExtension extends Twig_Extension
         }
 
         return false;
+    }
+
+    private function canEditIp(Ip $ip)
+    {
+        return $this->canEditNetwork($ip->getNetwork());
     }
 
     private function canEditNetwork(Network $network)
@@ -262,5 +367,68 @@ class RolesExtension extends Twig_Extension
             }
         }
         return false;
+    }
+
+    /**
+     * Can user edit site.
+     *
+     * @return bool
+     */
+    private function canEditSite()
+    {
+        if (null === $this->user) {
+            return false;
+        }
+
+        return $this->user->isAdmin();
+    }
+
+    /**
+     * A user can edit a machine if it can edit one network.
+     *
+     * @return bool
+     */
+    private function canEditMachine()
+    {
+        if (null === $this->user) {
+            return false;
+        }
+
+        if ($this->user->isAdmin()) {
+            return true;
+        }
+
+        foreach ($this->user->getNewRoles() as $role) {
+            /** @var Role $role */
+            if ($role->isWritable()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * get Site.
+     *
+     * @param LabelInterface $object
+     *
+     * @return Site|null
+     */
+    private function getSite(LabelInterface $object)
+    {
+        if ($object instanceof Site) {
+            return $object;
+        }
+
+        if($object instanceof Network) {
+            return $object->getSite();
+        }
+
+        if ($object instanceof Ip) {
+            return $object->getNetwork()->getSite();
+        }
+
+        return null;
     }
 }
