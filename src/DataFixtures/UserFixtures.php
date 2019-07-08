@@ -57,28 +57,40 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             /** @var Site $site2 */
             $site2 = $this->getReference('site_rouge');
 
-            //Reader
+            //Readers
             $userReader = new User();
-            $userReader->setLabel('Reader');
+            $userReader->setLabel('Reader Sites');
             $userReader->setMail('reader@example.org');
             $userReader->setPlainPassword('reader');
             $userReader->setRoles($roleReader);
 
+            $userReaderSite1 = new User();
+            $userReaderSite1->setLabel('Reader Site1');
+            $userReaderSite1->setMail('reader1@example.org');
+            $userReaderSite1->setPlainPassword('reader');
+            $userReaderSite1->setRoles($roleReader);
+
+            $userReaderSite2 = new User();
+            $userReaderSite2->setLabel('Reader Site2');
+            $userReaderSite2->setMail('reader2@example.org');
+            $userReaderSite2->setPlainPassword('reader');
+            $userReaderSite2->setRoles($roleReader);
+
             //ORGANISERS
             $userOrganiser = new User();
-            $userOrganiser->setLabel('Organiser');
+            $userOrganiser->setLabel('Organiser Sites');
             $userOrganiser->setMail('organiser@example.org');
             $userOrganiser->setPlainPassword('organiser');
             $userOrganiser->setRoles($roleOrganiser);
 
             $userOrganiserSite1 = new User();
-            $userOrganiserSite1->setLabel('Organiser1');
+            $userOrganiserSite1->setLabel('Organiser Site1');
             $userOrganiserSite1->setMail('organiser1@example.org');
             $userOrganiserSite1->setPlainPassword('organiser');
             $userOrganiserSite1->setRoles($roleOrganiser);
 
             $userOrganiserSite2 = new User();
-            $userOrganiserSite2->setLabel('Organiser2');
+            $userOrganiserSite2->setLabel('Organiser Site2');
             $userOrganiserSite2->setMail('organiser2@example.org');
             $userOrganiserSite2->setPlainPassword('organiser');
             $userOrganiserSite2->setRoles($roleOrganiser);
@@ -103,31 +115,18 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             $this->addReference('user_organiser', $userOrganiser);
             $this->addReference('user_admin', $userAdministrator);
 
-            //Role affectation
-            $roleOrganiserSite1 = new Role();
-            $roleOrganiserSite1->setReadOnly(false);
-            $roleOrganiserSite1->setSite($site1);
-            $roleOrganiserSite1->setUser($userOrganiserSite1);
+            //Privilege
+            $roleOrganiserSite1 = $this->createPrivilege($userOrganiserSite1, $site1, false);
+            $roleOrganiserSite2 = $this->createPrivilege($userOrganiserSite2, $site2, false);
+            $roleOrganiserSite3 = $this->createPrivilege($userOrganiser, $site1, false);
+            $roleOrganiserSite4 = $this->createPrivilege($userOrganiser, $site2, false);
 
-            //Role affectation
-            $roleOrganiserSite2 = new Role();
-            $roleOrganiserSite2->setReadOnly(false);
-            $roleOrganiserSite2->setSite($site2);
-            $roleOrganiserSite2->setUser($userOrganiserSite2);
+            $roleReaderSite1 = $this->createPrivilege($userReaderSite1, $site1, true);
+            $roleReaderSite2 = $this->createPrivilege($userReaderSite2, $site2, true);
+            $roleReaderSite3 = $this->createPrivilege($userReader, $site1, true);
+            $roleReaderSite4 = $this->createPrivilege($userReader, $site2, true);
 
-            //Role affectation
-            $roleOrganiserSite3 = new Role();
-            $roleOrganiserSite3->setReadOnly(false);
-            $roleOrganiserSite3->setSite($site1);
-            $roleOrganiserSite3->setUser($userOrganiser);
-
-            //Role affectation
-            $roleOrganiserSites = new Role();
-            $roleOrganiserSites->setReadOnly(false);
-            $roleOrganiserSites->setSite($site2);
-            $roleOrganiserSites->setUser($userOrganiser);
-
-            //Persist dev and test data
+            //Persist dev and test user data
             $manager->persist($userReader);
             $manager->persist($userUser);
             $manager->persist($userOrganiser);
@@ -137,7 +136,11 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             $manager->persist($roleOrganiserSite1);
             $manager->persist($roleOrganiserSite2);
             $manager->persist($roleOrganiserSite3);
-            $manager->persist($roleOrganiserSites);
+            $manager->persist($roleOrganiserSite4);
+            $manager->persist($roleReaderSite1);
+            $manager->persist($roleReaderSite2);
+            $manager->persist($roleReaderSite3);
+            $manager->persist($roleReaderSite4);
         }
 
         $manager->flush();
@@ -154,5 +157,23 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         return array(
             SiteFixtures::class,
         );
+    }
+
+    /**
+     * Create a new Role.
+     * 
+     * @param User $user
+     * @param Site $site
+     * @param bool $readOnly
+     * @return Role
+     */
+    private function createPrivilege(User $user, Site $site, bool $readOnly)
+    {
+        $role = new Role();
+        $role->setReadOnly($readOnly);
+        $role->setSite($site);
+        $role->setUser($user);
+        
+        return $role;
     }
 }
