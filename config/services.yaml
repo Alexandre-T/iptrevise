@@ -104,8 +104,9 @@ services:
         public: false
         tags:
             - { name: twig.extension }
-        calls:
-            - [ setTranslator, ['@translator.default']]
+        arguments:
+            - '@security.token_storage'
+            - '@translator.default'
 
     # Services twig filter
     app.twig.services_extension:

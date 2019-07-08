@@ -1,6 +1,6 @@
-{% extends '@App/default/base.html.twig' %}
+{% extends 'default/base.html.twig' %}
 
-{% import "@App/macro.html.twig" as app_macro %}
+{% import "macro.html.twig" as app_macro %}
 
 {% block title %}{{ 'default.site.list.title'|trans }} · {{ parent() }}{% endblock title %}
 
@@ -30,26 +30,27 @@
         </thead>
         <tbody>
         {% for row in pagination %}
-          {% set role = app.user.newRoles.get(0) %}
             {% set site = row[0] %}
             <tr class="row-{{ loop.index }}">
-              {% if ( is_granted ('ROLE_ADMIN') or site.id == role.site.id) %}
                 <td headers="site-color" style="color: {{ '#' ~ site.color }}"><span class="fa fa-building-o"></span></td>
                 <td headers="site-label" class="th-icon">{{ site.label }}</td>
                 <td headers="site-networks" class="th-icon">{{ row['networksCount'] | localizednumber }}</td>
                 <td headers="site-actions">
                     <div class="btn-group-xs btn-group">
+                        {% if can_view(site) %}
                         <a class="btn btn-default" href="{{ path('default_site_show', { 'id': site.id }) }}">
                             <span class="fa fa-eye"></span>
                             <span class="sr-only">{{ 'default.action.show' | trans }}</span>
                         </a>
+                        {% endif %}
+                        {% if can_edit(site) %}
                             <a class="btn btn-default" href="{{ path('default_site_edit', { 'id': site.id }) }}">
                                 <span class="fa fa-edit"></span>
                                 <span class="sr-only">{{ 'default.action.edit' | trans }}</span>
                             </a>
+                        {% endif %}
                     </div>
                 </td>
-                {% endif %}
             </tr>
         {% endfor %}
         </tbody>
@@ -64,16 +65,20 @@
 
         <div class="text-center">
         <div class="btn-group-vertical">
-            <a class="btn btn-default" href="{{ path('default_site_new') }}" data-toggle="tooltip" data-placement="left"
-               title="{{ 'default.site.create.title' | trans }}">
-                <span class="fa fa-building-o"></span>
-                {{ 'default.site.create' | trans }}
-            </a>
-            <a class="btn btn-default" href="{{ path('default_deleted_site_index') }}" data-toggle="tooltip" data-placement="left"
-               title="{{ 'default.site.deleted.title' | trans }}">
-                <span class="fa fa-building-o"></span>
-                {{ 'default.site.deleted' | trans }}
-            </a>
+            {% if can_create_site() %}
+                <a class="btn btn-default" href="{{ path('default_site_new') }}" data-toggle="tooltip" data-placement="left"
+                   title="{{ 'default.site.create.title' | trans }}">
+                    <span class="fa fa-building-o"></span>
+                    {{ 'default.site.create' | trans }}
+                </a>
+            {% endif %}
+            {% if can_view_deleted_site() %}
+                <a class="btn btn-default" href="{{ path('default_deleted_site_index') }}" data-toggle="tooltip" data-placement="left"
+                   title="{{ 'default.site.deleted.title' | trans }}">
+                    <span class="fa fa-building-o"></span>
+                    {{ 'default.site.deleted' | trans }}
+                </a>
+            {% endif %}
         </div>
         </div>
 {% endblock content_action %}

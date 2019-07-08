@@ -459,3 +459,5 @@ default:
     tags: 'Tags'
   site:
     not-deletable %name%: 'Le site %name% ne peut pas être supprimé. Il contient des réseaux.'
+  network:
+    none: 'Aucun réseau déclaré pour ce site'

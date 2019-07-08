@@ -99,6 +99,16 @@ class Role
     }
 
     /**
+     * Is it a writable Role?
+     *
+     * @return bool
+     */
+    public function isWritable(): bool
+    {
+        return !$this->readOnly;
+    }
+
+    /**
      * Get datetime creation.
      *
      * @return DateTime
