@@ -26,7 +26,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -71,7 +71,7 @@ class SiteController extends Controller
             ['defaultSortFieldName' => 'site.label', 'defaultSortDirection' => 'asc']
         );
 
-        return $this->render('@App/default/site/index.html.twig', [
+        return $this->render('default/site/index.html.twig', [
             'pagination' => $pagination,
         ]);
     }
@@ -106,7 +106,7 @@ class SiteController extends Controller
             return $this->redirectToRoute('default_site_show', array('id' => $site->getId()));
         }
 
-        return $this->render('@App/default/site/new.html.twig', [
+        return $this->render('default/site/new.html.twig', [
             'site' => $site,
             'form' => $form->createView(),
         ]);
@@ -139,7 +139,7 @@ class SiteController extends Controller
             $view['delete_form'] = $this->createDeleteForm($site)->createView();
         }
 
-        return $this->render('@App/default/site/show.html.twig', $view);
+        return $this->render('default/site/show.html.twig', $view);
     }
 
     /**
@@ -181,7 +181,7 @@ class SiteController extends Controller
         $logs = $siteService->retrieveLogs($site);
         $information = InformationFactory::createInformation($site);
 
-        return $this->render('@App/default/site/edit.html.twig', array_merge($view, [
+        return $this->render('default/site/edit.html.twig', array_merge($view, [
             'isDeletable' => $isDeletable,
             'logs' => $logs,
             'information' => $information,
@@ -233,7 +233,7 @@ class SiteController extends Controller
      *
      * @param Site $site The site entity
      *
-     * @return Form The form
+     * @return FormInterface The form
      */
     private function createDeleteForm(Site $site)
     {
