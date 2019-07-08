@@ -16,15 +16,15 @@ cache:
 
 # Base versions to test raw with the Symfony latest version.
 php:
-  - 7.1
-  - 7.2
-  - 7.3
+  - '7.1'
+  - '7.2'
+  - '7.3'
   - nightly
 
 matrix:
   fast_finish: true
   allow_failures:
-    - php: 7.1
+    - php: '7.1'
     - php: nightly
 
 before_install:
@@ -34,7 +34,7 @@ install:
   # Database creation
   - psql -c 'create database symfony;' -U postgres
   # Install application
-  - composer install --verbose
+  - COMPOSER_MEMORY_LIMIT=-1 composer install
   # Database oonfiguration
   - cp .env.travis .env
   # Database migration
