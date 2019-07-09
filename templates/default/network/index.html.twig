@@ -1,6 +1,6 @@
-{% extends '@App/default/base.html.twig' %}
+{% extends 'default/base.html.twig' %}
 
-{% import "@App/macro.html.twig" as app_macro %}
+{% import "macro.html.twig" as app_macro %}
 
 {% block title %}{{ 'default.network.list.title'|trans }} · {{ parent() }}{% endblock title %}
 
@@ -55,7 +55,7 @@
                           <span class="fa fa-eye"></span>
                           <span class="sr-only">{{ 'default.action.show' | trans }}</span>
                       </a>
-                      {% if is_granted('ROLE_MANAGE_NETWORK') %}
+                      {% if can_view(network) %}
                           <a class="btn btn-default" href="{{ path('default_network_edit', { 'id': network.id }) }}">
                               <span class="fa fa-edit"></span>
                               <span class="sr-only">{{ 'default.action.edit' | trans }}</span>
@@ -75,20 +75,22 @@
 {% block content_action %}
     {{ app_macro.panel_admin('sitemap', '', pagination.totalItemCount, 'default.networks') }}
 
-    {% if is_granted('ROLE_MANAGE_NETWORK') %}
-        <div class="text-center">
+    <div class="text-center">
         <div class="btn-group-vertical">
-            <a class="btn btn-default" href="{{ path('default_network_new') }}" data-toggle="tooltip" data-placement="left"
-               title="{{ 'default.network.action.list.title' | trans }}">
-                <span class="fa fa-sitemap"></span>
-                {{ 'default.network.create' | trans }}
-            </a>
-            <a class="btn btn-default" href="{{ path('default_deleted_network_index') }}" data-toggle="tooltip" data-placement="left"
-               title="{{ 'default.network.deleted.title' | trans }}">
-                <span class="fa fa-sitemap"></span>
-                {{ 'default.network.deleted' | trans }}
-            </a>
+            {% if (sites|length) > 1 %}
+                <a class="btn btn-default" href="{{ path('default_network_new') }}" data-toggle="tooltip" data-placement="left"
+                   title="{{ 'default.network.action.list.title' | trans }}">
+                    <span class="fa fa-sitemap"></span>
+                    {{ 'default.network.create' | trans }}
+                </a>
+            {% endif %}
+            {% if is_granted('ROLE_ADMIN') %}
+                <a class="btn btn-default" href="{{ path('default_deleted_network_index') }}" data-toggle="tooltip" data-placement="left"
+                   title="{{ 'default.network.deleted.title' | trans }}">
+                    <span class="fa fa-sitemap"></span>
+                    {{ 'default.network.deleted' | trans }}
+                </a>
+            {% endif %}
         </div>
-        </div>
-    {% endif %}
+    </div>
 {% endblock content_action %}

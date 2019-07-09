@@ -110,6 +110,11 @@ class RolesExtension extends Twig_Extension
                 [$this, 'canCreateIp'],
                 []
             ),
+            'can_create_machine' => new Twig_SimpleFunction(
+                'can_create_machine',
+                [$this, 'canCreateMachine'],
+                []
+            ),
             'can_edit' => new Twig_SimpleFunction(
                 'can_edit',
                 [$this, 'canEdit'],
@@ -325,6 +330,31 @@ class RolesExtension extends Twig_Extension
         }
 
         return $this->user->isAdmin();
+    }
+
+    /**
+     * Can user create a new machine?
+     * It can do it if he is an admin or if he can edit one network
+     *
+     * @return bool
+     */
+    public function canCreateMachine()
+    {
+        if (null == $this->user) {
+            return false;
+        }
+
+        if ($this->user->isAdmin()) {
+            return true;
+        }
+
+        foreach ($this->user->getNewRoles() as $role) {
+            if ($role->isWritable()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

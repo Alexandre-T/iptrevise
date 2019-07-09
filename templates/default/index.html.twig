@@ -1,6 +1,6 @@
-{% extends '@App/base.html.twig' %}
+{% extends 'base.html.twig' %}
 
-{% import "@App/macro.html.twig" as app_macro %}
+{% import "macro.html.twig" as app_macro %}
 
 {% block page_header %}{% endblock %}
 
@@ -50,18 +50,10 @@
 {% block content_sidebar %}
 
 
-    {% if is_granted("ROLE_READ_SITE") %}
+    {% if is_granted("ROLE_USER") %}
         {{ app_macro.panel_admin('building-o', 'default_site_index', nSites, 'default.sites') }}
-    {% endif %}
-    {% if is_granted("ROLE_READ_NETWORK") %}
         {{ app_macro.panel_admin('sitemap', 'default_network_index', nNetworks, 'default.networks') }}
-    {% endif %}
-
-    {% if is_granted("ROLE_READ_MACHINE") %}
         {{ app_macro.panel_admin('desktop', 'default_machine_index', nMachines, 'default.machines') }}
-    {% endif %}
-
-    {% if is_granted("ROLE_READ_IP") %}
         {{ app_macro.panel_admin('indent', '', nIps, 'default.ips') }}
     {% endif %}
 

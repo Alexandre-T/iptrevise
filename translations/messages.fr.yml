@@ -461,3 +461,10 @@ default:
     not-deletable %name%: 'Le site %name% ne peut pas être supprimé. Il contient des réseaux.'
   network:
     none: 'Aucun réseau déclaré pour ce site'
+    create %site%: 'Créer un réseau sur le site « %site% »'
+  plage:
+    manage %plage%: 'Gestion de la plage'
+form:
+  network:
+    field:
+      plages: 'Plages'

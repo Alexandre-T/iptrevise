@@ -21,6 +21,7 @@ use App\Bean\Factory\InformationFactory;
 use App\Form\Type\NetworkType;
 use App\Entity\Network;
 use App\Manager\NetworkManager;
+use App\Manager\SiteManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -53,7 +54,7 @@ class NetworkController extends Controller
      *
      * @Route("/", name="default_network_index")
      * @Method("GET")
-     * @Security("is_granted('ROLE_READ_NETWORK')")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      *
      * @param Request $request
      *
@@ -63,6 +64,7 @@ class NetworkController extends Controller
     {
         //Retrieving all services
         $networkManager = $this->get(NetworkManager::class);
+        $siteManager = $this->get(SiteManager::class);
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $networkManager->getQueryBuilderByUser($this->getUser()), /* queryBuilder NOT result */
@@ -71,8 +73,11 @@ class NetworkController extends Controller
             ['defaultSortFieldName' => 'network.label', 'defaultSortDirection' => 'asc']
         );
 
+        $sites = $siteManager->getEditable($this->getUser());
+
         return $this->render('default/network/index.html.twig', [
             'pagination' => $pagination,
+            'sites' => $sites,
         ]);
     }
 
@@ -104,7 +109,7 @@ class NetworkController extends Controller
             return $this->redirectToRoute('default_network_show', array('id' => $network->getId()));
         }
 
-        return $this->render('@App/default/network/new.html.twig', [
+        return $this->render('default/network/new.html.twig', [
             'network' => $network,
             'form' => $form->createView(),
         ]);
@@ -183,7 +188,7 @@ class NetworkController extends Controller
         $view['m_count']=$m_count;
         $view['n_count']=$n_count;
 
-        return $this->render('@App/default/network/show.html.twig', $view);
+        return $this->render('default/network/show.html.twig', $view);
     }
 
     /**
@@ -366,7 +371,7 @@ class NetworkController extends Controller
         $logs = $networkService->retrieveLogs($network);
         $information = InformationFactory::createInformation($network);
 
-        return $this->render('@App/default/network/edit.html.twig', array_merge($view, [
+        return $this->render('default/network/edit.html.twig', array_merge($view, [
             'isDeletable' => $isDeletable,
             'logs' => $logs,
             'information' => $information,

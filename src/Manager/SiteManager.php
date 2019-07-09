@@ -187,4 +187,26 @@ class SiteManager implements LoggableManagerInterface, PaginatorInterface
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * Get Readable sites for user.
+     *
+     * @param User $user
+     *
+     * @return Site[]|Collection
+     */
+    public function getEditable(User $user) {
+        if ($user->isAdmin()) {
+            return $this->getAll();
+        }
+
+        $qb = $this->repository->createQueryBuilder(self::ALIAS);
+
+        return $qb->join('site.roles', 'roles')
+            ->where('roles.user = :user')
+            ->andWhere('roles.readOnly = false')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
+    }
 }

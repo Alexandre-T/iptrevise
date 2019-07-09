@@ -1,6 +1,6 @@
-{% extends '@App/default/base.html.twig' %}
+{% extends 'default/base.html.twig' %}
 
-{% import "@App/macro.html.twig" as app_macro %}
+{% import "macro.html.twig" as app_macro %}
 
 {% set default_entity_show = 'default_network_show' %}
 
@@ -61,16 +61,14 @@
                     <p>{{ 'default.network.no.space' | trans }}</p>
                 </div>
             {% endif %}
-            {% if (is_granted('ROLE_MANAGE_IP') or is_granted('ROLE_MANAGE_MACHINE')) and network.space %}
+            {% if network.space %}
                 <div class="btn-group btn-group-justified">
-                    {% if is_granted('ROLE_MANAGE_IP') %}
+                    {% if can_edit(network) %}
                         <a class="btn btn-default" href="{{ path('default_network_new_ip', {'id': network.id}) }}"
                            data-toggle="tooltip" title="{{ 'default.network.new-ip.title' | trans }}">
                             <span class="fa fa-fw fa-indent"></span>
                             {{ 'default.network.new-ip.link' | trans }}
                         </a>
-                    {% endif %}
-                    {% if is_granted('ROLE_MANAGE_IP') and is_granted('ROLE_MANAGE_MACHINE') %}
                         <a class="btn btn-default" href="{{ path('default_network_new_ip_machine', {'id': network.id}) }}"
                            data-toggle="tooltip" title="{{ 'default.network.new-ip-machine.title' | trans }}">
                             <span class="fa fa-fw fa-indent"></span>
@@ -78,8 +76,6 @@
                             <span class="fa fa-fw fa-desktop"></span>
                             {{ 'default.network.new-ip-machine.link' | trans }}
                         </a>
-                    {% endif %}
-                    {% if is_granted('ROLE_MANAGE_IP') %}
                         <a class="btn btn-default" href="{{ path('default_network_new_plage', {'id': network.id}) }}"
                            data-toggle="tooltip" title="{{ 'default.network.new-plage.title' | trans }}">
                             <span class="fa fa-fw fa-indent"></span>
@@ -106,7 +102,7 @@
                         <span class="fa fa-tags fa-fw"></span>
                         {{ 'form.machine.field.tags' | trans }}
                     </th>
-                    {% if is_granted('ROLE_MANAGE_IP') or is_granted('ROLE_MANAGE_MACHINE') %}
+                    {% if can_edit(network) %}
                         <th id="network-ip-actions">
                             {{ 'default.network.actions' | trans }}
                         </th>
@@ -138,45 +134,43 @@
                             {% endfor %}
                         {% endif %}
                     </td>
-                    {% if is_granted('ROLE_MANAGE_IP') and is_granted('ROLE_MANAGE_MACHINE') %}
-                        <td headers="network-ip-actions">
-                            <div class="btn-group btn-group-sm" role="group" aria-label="{{ 'default.ip.manage %ip%' | trans({'%ip%': ip.ip | ip}) }}">
-                                {% if is_granted('ROLE_MANAGE_IP') %}
-                                    <a href="{{ path('default_ip_edit', {'id': ip.id}) }}" data-toggle="tooltip" title="{{ 'default.ip.action.edit.title' | trans }}" class="btn btn-info">
-                                        <span class="fa fa-pencil"></span>
-                                        <span class="sr-only">{{ 'default.ip.action.edit' | trans }}</span>
+                    <td headers="network-ip-actions">
+                        <div class="btn-group btn-group-sm" role="group" aria-label="{{ 'default.ip.manage %ip%' | trans({'%ip%': ip.ip | ip}) }}">
+                            {% if can_edit(ip) %}
+                                <a href="{{ path('default_ip_edit', {'id': ip.id}) }}" data-toggle="tooltip" title="{{ 'default.ip.action.edit.title' | trans }}" class="btn btn-info">
+                                    <span class="fa fa-pencil"></span>
+                                    <span class="sr-only">{{ 'default.ip.action.edit' | trans }}</span>
+                                </a>
+                            {% endif %}
+                            {% if ip.machine %}
+                                {% if can_edit(ip) %}
+                                    <a href="{{ path ('default_network_unlink', {'id': ip.id}) }}" data-toggle="tooltip" title="{{ 'default.ip.action.dissociate.title' | trans }}" class="btn btn-warning ">
+                                        <span class="fa fa-unlink"></span>
+                                        <span class="sr-only">{{ 'default.ip.action.dissociate' | trans }}</span>
                                     </a>
                                 {% endif %}
-                                {% if ip.machine %}
-                                    {% if is_granted('ROLE_MANAGE_IP') and is_granted('ROLE_MANAGE_MACHINE') %}
-                                        <a href="{{ path ('default_network_unlink', {'id': ip.id}) }}" data-toggle="tooltip" title="{{ 'default.ip.action.dissociate.title' | trans }}" class="btn btn-warning ">
-                                            <span class="fa fa-unlink"></span>
-                                            <span class="sr-only">{{ 'default.ip.action.dissociate' | trans }}</span>
-                                        </a>
-                                    {% endif %}
-                                {% else %}
-                                    {% if is_granted('ROLE_MANAGE_IP') and is_granted('ROLE_MANAGE_MACHINE') %}
-                                        <a href="{{ path ('default_network_link', {'id':ip.id}) }}" data-toggle="tooltip" title="{{ 'default.ip.action.associate.title' | trans }}" class="btn btn-info">
-                                            <span class="fa fa-link"></span>
-                                            <span class="sr-only">{{ 'default.ip.action.associate' | trans }}</span>
-                                        </a>
-                                    {% endif %}
-                                    {% if is_granted('ROLE_MANAGE_MACHINE') %}
-                                        <a href="{{ path ('default_network_new_machine', {'id':ip.id}) }}" data-toggle="tooltip" title="{{ 'default.ip.action.create.title' | trans }}" class="btn btn-info">
-                                            <span class="fa fa-plus"></span>
-                                            <span class="sr-only">{{ 'default.ip.action.create' | trans }}</span>
-                                        </a>
-                                    {% endif %}
-                                {% endif %}
-                                {% if is_granted('ROLE_MANAGE_IP') %}
-                                    <a href="{{ path ('default_network_delete_ip', {'id':ip.id}) }}" data-toggle="tooltip" title="{{ 'default.ip.action.delete.title' | trans }}" class="btn btn-danger">
-                                        <span class="fa fa-trash-o"></span>
-                                        <span class="sr-only">{{ 'default.ip.action.delete' | trans }}</span>
+                            {% else %}
+                                {% if can_edit(ip) %}
+                                    <a href="{{ path ('default_network_link', {'id':ip.id}) }}" data-toggle="tooltip" title="{{ 'default.ip.action.associate.title' | trans }}" class="btn btn-info">
+                                        <span class="fa fa-link"></span>
+                                        <span class="sr-only">{{ 'default.ip.action.associate' | trans }}</span>
                                     </a>
                                 {% endif %}
-                            </div>
-                        </td>
-                    {% endif %}
+                                {% if can_create_machine() %}
+                                    <a href="{{ path ('default_network_new_machine', {'id':ip.id}) }}" data-toggle="tooltip" title="{{ 'default.ip.action.create.title' | trans }}" class="btn btn-info">
+                                        <span class="fa fa-plus"></span>
+                                        <span class="sr-only">{{ 'default.ip.action.create' | trans }}</span>
+                                    </a>
+                                {% endif %}
+                            {% endif %}
+                            {% if can_edit(ip) %}
+                                <a href="{{ path ('default_network_delete_ip', {'id':ip.id}) }}" data-toggle="tooltip" title="{{ 'default.ip.action.delete.title' | trans }}" class="btn btn-danger">
+                                    <span class="fa fa-trash-o"></span>
+                                    <span class="sr-only">{{ 'default.ip.action.delete' | trans }}</span>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -186,13 +180,13 @@
         <table class="table">
             <thead>
                 <tr>
-                <th id="site-ip-machine-label">
-                    <span class="fa fa-sitemap fa-fw"></span>
-                    {{ 'form.plage.field.label' | trans }}
-                </th>
-                <th id="plage-reason">
-                      {{ 'form.plage.field.reason' | trans }}
-                </th>
+                    <th id="site-ip-machine-label">
+                        <span class="fa fa-sitemap fa-fw"></span>
+                        {{ 'form.network.field.plages' | trans }}
+                    </th>
+                    <th id="plage-reason">
+                          {{ 'form.plage.field.reason' | trans }}
+                    </th>
                     <th id="plage-ip-ipdeb">
                         <span class="fa fa-indent fa-fw"></span>
                         {{ 'form.plage.field.ipdeb' | trans }}
@@ -203,12 +197,11 @@
                         {{ 'form.plage.field.ipfin' | trans }}
                         <span class="fa fa-sort-numeric-asc fa-fw"></span>
                     </th>
-                    {% if is_granted('ROLE_MANAGE_IP') or is_granted('ROLE_MANAGE_MACHINE') %}
+                    {% if can_edit(network) %}
                         <th id="network-ip-actions">
                             {{ 'default.network.actions' | trans }}
                         </th>
                     {% endif %}
-                    <th
                 </tr>
             </thead>
             <tbody>
@@ -222,29 +215,25 @@
                     {%- endif -%}
                 </td>
                 <td headers="network-plage-reason">
-                  <dd>{{plage.reason}}</dd>
+                  {{plage.reason}}
                 </td>
                     <td headers="network-plage-ipdeb">
-                      <dd>{{ plage.start | ip }}</dd>
+                        {{ plage.start | ip }}
                     </td>
                     <td headers="network-plage-ipfin">
-                      <dd>{{ plage.end | ip }}</dd>
+                        {{ plage.end | ip }}
                     </td>
-                    {% if is_granted('ROLE_MANAGE_IP') and is_granted('ROLE_MANAGE_MACHINE') %}
+                    {% if can_edit(network) %}
                         <td headers="network-ip-actions">
                             <div class="btn-group btn-group-sm" role="group" aria-label="{{ 'default.plage.manage %plage%' | trans({'%plage%': plage.label}) }}">
-                                {% if is_granted('ROLE_MANAGE_IP') %}
-                                    <a href="{{ path('default_plage_edit', {'id': plage.id}) }}" data-toggle="tooltip" title="{{ 'default.plage.action.edit.title' | trans }}" class="btn btn-info">
-                                        <span class="fa fa-pencil"></span>
-                                        <span class="sr-only">{{ 'default.ip.action.edit' | trans }}</span>
-                                    </a>
-                                {% endif %}
-                                {% if is_granted('ROLE_MANAGE_IP') %}
-                                    <a href="{{ path ('default_network_delete_plage', {'id':plage.id}) }}" data-toggle="tooltip" title="{{ 'default.plage.action.delete.title' | trans }}" class="btn btn-danger">
-                                        <span class="fa fa-trash-o"></span>
-                                        <span class="sr-only">{{ 'default.plage.action.delete' | trans }}</span>
-                                    </a>
-                                {% endif %}
+                                <a href="{{ path('default_plage_edit', {'id': plage.id}) }}" data-toggle="tooltip" title="{{ 'default.plage.action.edit.title' | trans }}" class="btn btn-info">
+                                    <span class="fa fa-pencil"></span>
+                                    <span class="sr-only">{{ 'default.ip.action.edit' | trans }}</span>
+                                </a>
+                                <a href="{{ path ('default_network_delete_plage', {'id':plage.id}) }}" data-toggle="tooltip" title="{{ 'default.plage.action.delete.title' | trans }}" class="btn btn-danger">
+                                    <span class="fa fa-trash-o"></span>
+                                    <span class="sr-only">{{ 'default.plage.action.delete' | trans }}</span>
+                                </a>
                               </div>
                           </td>
                     {% endif %}

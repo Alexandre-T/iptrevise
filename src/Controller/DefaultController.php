@@ -46,34 +46,28 @@ class DefaultController extends Controller
     {
         $output = [];
 
-        if ($this->isGranted('ROLE_READ_NETWORK')) {
+        if ($this->isGranted('ROLE_USER')) {
             $networkManager = $this->get(NetworkManager::class);
             $nNetworks = $networkManager->count();
             $output['nNetworks'] = $nNetworks;
-        }
 
-        if ($this->isGranted('ROLE_READ_MACHINE')) {
             $machineManager = $this->get(MachineManager::class);
             $nMachines = $machineManager->count();
             $output['nMachines'] = $nMachines;
-        }
 
-        if ($this->isGranted('ROLE_READ_IP')) {
             $ipManager = $this->get(IpManager::class);
             $nIps = $ipManager->count();
             $output['nIps'] = $nIps;
-        }
 
-        if ($this->isGranted('ROLE_READ_SITE')) {
             $siteManager = $this->get(SiteManager::class);
             $nSites = $siteManager->count();
             $output['nSites'] = $nSites;
-        }
-        if ($this->isGranted('ROLE_READ_SERVICE')) {
+
             $serviceManager = $this->get(ServiceManager::class);
             $nServices = $serviceManager->count();
             $output['nServices'] = $nServices;
         }
-        return $this->render('@App/default/index.html.twig', $output);
+
+        return $this->render('default/index.html.twig', $output);
     }
 }
