@@ -470,3 +470,6 @@ form:
   network:
     field:
       plages: 'Plages'
+access-deny:
+  network:
+    create: 'Accès refusé, vous n’êtes pas autorisé à créer de nouveau réseau.'

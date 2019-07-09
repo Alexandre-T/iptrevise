@@ -86,7 +86,6 @@ class NetworkController extends Controller
      *
      * @Route("/new", name="default_network_new")
      * @Method({"GET", "POST"})
-     * @Security("is_granted('ROLE_MANAGE_NETWORK')")
      *
      * @param Request $request
      *
@@ -94,15 +93,20 @@ class NetworkController extends Controller
      */
     public function newAction(Request $request)
     {
+        $trans = $this->get('translator.default');
+        $message = $trans->trans('access-deny.network.create');
+        $this->denyAccessUnlessGranted('create', 'network', $message);
+
         $network = new Network();
-        $form = $this->createForm(NetworkType::class, $network);
+        $siteService = $this->get(SiteManager::class);
+        $options['sites'] = $siteService->getEditable($this->getUser());
+        $form = $this->createForm(NetworkType::class, $network, $options);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $networkService = $this->get(NetworkManager::class);
             $networkService->save($network, $this->getUser());
             //Flash message
             $session = $this->get('session');
-            $trans = $this->get('translator.default');
             $message = $trans->trans('default.network.created %name%', ['%name%' => $network->getLabel()]);
             $session->getFlashBag()->add('success', $message);
 

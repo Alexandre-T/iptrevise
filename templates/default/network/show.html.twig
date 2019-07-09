@@ -299,7 +299,7 @@
                data-placement="left" data-toggle="tooltip" title="{{ 'default.network.action.list.title' | trans }}">
                 <span class="fa fa-sitemap"></span>&nbsp;{{ 'network.actions.back.list' | trans }}
             </a>
-            {% if is_granted('ROLE_MANAGE_NETWORK') %}
+            {% if can_edit(network) %}
                 <a class="btn-mini btn btn-default" href="{{ path('default_network_edit', { 'id': network.id }) }}"
                    data-placement="left" data-toggle="tooltip" title="{{ 'default.network.action.edit.title' | trans }}">
                     <span class="fa fa-pencil"></span>&nbsp;{{ 'administration.actions.edit' | trans }}

@@ -51,6 +51,7 @@ class NetworkType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $current = $options['data'];
+        $sites = $options['sites']??[];
 
         if ($current instanceof Network && count($current->getIps())) {
             $disabled = true;
@@ -85,12 +86,14 @@ class NetworkType extends AbstractType
             ])
             ->add('site', EntityType::class, [
                 'class' => Site::class,
-                'query_builder' => function (SiteRepository $er) {
-                  return $er->createQueryBuilder('u')
-                  /*->orderBy('u.username', 'ASC')*/;
+                'query_builder' => function (SiteRepository $er) use ($sites) {
+                  return $er->createQueryBuilder('s')
+                      ->where('s.id in (:sites)')
+                      ->setParameter('sites', $sites)
+                      ->orderBy('s.label', 'ASC');
                 },
                 'choice_label' => 'label',
-                'help_block' => 'Sélectionnez le site'
+                'help_block' => 'form.network.help.site'
               ])
             ->add('color', ColorType::class, [
                 'label' => 'form.network.field.color',
@@ -100,11 +103,7 @@ class NetworkType extends AbstractType
                 'label' => 'form.network.field.description',
                 'help_block' => 'form.network.help.description',
             ])
-            // ->add('site', SiteType::class, [
-            //     'label' => 'form.network.field.site',
-            //     'help_block' => 'form.network.help.site'
-            // ])
-;
+        ;
     }
 
     /**
@@ -118,6 +117,7 @@ class NetworkType extends AbstractType
             'data_class' => 'App\Entity\Network',
             'render_fieldset' => false,
             'show_legend' => false,
+            'sites' => [],
             'constraints' => [
                 new Callback([
                     'callback' => [$this, 'checkNetwork'],
