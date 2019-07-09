@@ -53,7 +53,7 @@ class SecurityController extends Controller
         // create the form
         $form = $this->createForm(LoginForm::class, ['mail' => $email]);
 
-        return $this->render('@App/security/login.html.twig', array(
+        return $this->render('security/login.html.twig', array(
             'form' => $form->createView(),
             'error' => $error,
         ));

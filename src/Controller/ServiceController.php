@@ -73,7 +73,7 @@ class ServiceController extends Controller
           ['defaultSortFieldName' => 'service.label', 'defaultSortDirection' => 'asc']
       );
 
-        return $this->render('@App/default/service/index.html.twig', [
+        return $this->render('default/service/index.html.twig', [
           'pagination' => $pagination,
       ]);
     }
@@ -105,7 +105,7 @@ class ServiceController extends Controller
             return $this->redirectToRoute('default_service_show', array('id' => $service->getId()));
         }
 
-        return $this->render('@App/default/service/new.html.twig', [
+        return $this->render('default/service/new.html.twig', [
             'service' => $service,
             'form' => $form->createView(),
         ]);
@@ -136,7 +136,7 @@ class ServiceController extends Controller
             $view['delete_form'] = $this->createDeleteForm($service)->createView();
         }
 
-        return $this->render('@App/default/service/show.html.twig', $view);
+        return $this->render('default/service/show.html.twig', $view);
     }
 
     /**
@@ -175,7 +175,7 @@ class ServiceController extends Controller
         $logs = $serviceService->retrieveLogs($service);
         $information = InformationFactory::createInformation($service);
 
-        return $this->render('@App/default/service/edit.html.twig', array_merge($view, [
+        return $this->render('default/service/edit.html.twig', array_merge($view, [
             'isDeletable' => $isDeletable,
             'logs' => $logs,
             'information' => $information,

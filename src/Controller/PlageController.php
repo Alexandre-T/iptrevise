@@ -78,7 +78,7 @@ class PlageController extends Controller
           ['defaultSortFieldName' => 'network.label', 'defaultSortDirection' => 'asc']
       );
 
-      return $this->render('@App/default/plage/index.html.twig', [
+      return $this->render('default/plage/index.html.twig', [
           'pagination' => $pagination,
       ]);
   }
@@ -138,7 +138,7 @@ class PlageController extends Controller
           $session->getFlashBag()->add('warning', $warning);
         }
 
-        return $this->render('@App/default/plage/show.html.twig', array_merge($view, [
+        return $this->render('default/plage/show.html.twig', array_merge($view, [
             'isDeletable' => $isDeletable,
             'logs' => $logs,
             'information' => $information,
@@ -183,7 +183,7 @@ class PlageController extends Controller
         $information = InformationFactory::createInformation($plage);
 
 
-        return $this->render('@App/default/plage/edit.html.twig', array_merge($view, [
+        return $this->render('default/plage/edit.html.twig', array_merge($view, [
             'isDeletable' => $isDeletable,
             'logs' => $logs,
             'information' => $information,
@@ -225,7 +225,7 @@ class PlageController extends Controller
             return $this->redirectToRoute('default_network_show', ['id' => $ip->getId()]);
         }
 
-        return $this->render('@App/default/plage/delete.html.twig', [
+        return $this->render('default/plage/delete.html.twig', [
             'network' => $network,
         ]);
 

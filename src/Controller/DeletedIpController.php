@@ -70,7 +70,7 @@ class DeletedIpController extends Controller
             ['defaultSortFieldName' => 'ext_log_entries.objectId', 'defaultSortDirection' => 'asc']
         );
 
-        return $this->render('@App/default/ip/indexDeleted.html.twig', [
+        return $this->render('default/ip/indexDeleted.html.twig', [
             'pagination' => $pagination,
         ]);
     }
@@ -96,6 +96,6 @@ class DeletedIpController extends Controller
         $view['logs'] = $deletedIpManager->retrieveLogs($log);
         $view['log'] = $log;
 
-        return $this->render('@App/default/ip/showDeleted.html.twig', $view);
+        return $this->render('default/ip/showDeleted.html.twig', $view);
     }
 }

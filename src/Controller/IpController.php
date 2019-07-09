@@ -66,7 +66,7 @@ class IpController extends Controller
         $information = InformationFactory::createInformation($ip);
         $logs = $ipManager->retrieveLogs($ip);
 
-        return $this->render('@App/default/ip/show.html.twig', array_merge($view, [
+        return $this->render('default/ip/show.html.twig', array_merge($view, [
             'isDeletable' => $isDeletable,
             'logs' => $logs,
             'information' => $information,
@@ -110,7 +110,7 @@ class IpController extends Controller
         $logs = $ipService->retrieveLogs($ip);
         $information = InformationFactory::createInformation($ip);
 
-        return $this->render('@App/default/ip/edit.html.twig', array_merge($view, [
+        return $this->render('default/ip/edit.html.twig', array_merge($view, [
             'isDeletable' => $isDeletable,
             'logs' => $logs,
             'information' => $information,
@@ -156,7 +156,7 @@ class IpController extends Controller
         if (null === $machine) {
             return $this->redirectToRoute('default_network_show', ['id' => $network->getId()]);
         } else {
-            return $this->render('@App/default/ip/delete.html.twig', [
+            return $this->render('default/ip/delete.html.twig', [
                 'machine' => $machine,
                 'network' => $network,
             ]);

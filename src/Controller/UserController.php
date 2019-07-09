@@ -71,7 +71,7 @@ class UserController extends Controller
             ['defaultSortFieldName' => 'user.label', 'defaultSortDirection' => 'asc']
         );
 
-        return $this->render('@App/administration/user/index.html.twig', [
+        return $this->render('administration/user/index.html.twig', [
             'pagination' => $pagination,
         ]);
     }
@@ -103,7 +103,7 @@ class UserController extends Controller
             return $this->redirectToRoute('administration_user_show', array('id' => $user->getId()));
         }
 
-        return $this->render('@App/administration/user/new.html.twig', [
+        return $this->render('administration/user/new.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
         ]);
@@ -127,7 +127,7 @@ class UserController extends Controller
         $information = InformationFactory::createInformation($user);
         $logs = $userManager->retrieveLogs($user);
 
-        return $this->render('@App/administration/user/show.html.twig', [
+        return $this->render('administration/user/show.html.twig', [
             'isDeletable' => $userManager->isDeletable($user),
             'logs' => $logs,
             'information' => $information,
@@ -170,7 +170,7 @@ class UserController extends Controller
         $logs = $userService->retrieveLogs($user);
         $information = InformationFactory::createInformation($user);
 
-        return $this->render('@App/administration/user/edit.html.twig', [
+        return $this->render('administration/user/edit.html.twig', [
             'isDeletable' => $userService->isDeletable($user),
             'logs' => $logs,
             'information' => $information,

@@ -86,7 +86,7 @@ class NetworkExtraController extends Controller
             //Redirecting
             return $this->redirectToRoute('default_network_show', ['id' => $ip->getNetwork()->getId()]);
         } else {
-            return $this->render('@App/default/network-extra/delete-ip.html.twig', [
+            return $this->render('default/network-extra/delete-ip.html.twig', [
                 'confirm_form' => $form->createView(),
                 'ip' => $ip,
             ]);
@@ -131,7 +131,7 @@ class NetworkExtraController extends Controller
             //Redirecting
             return $this->redirectToRoute('default_network_show', ['id' => $network->getId()]);
         } else {
-            return $this->render('@App/default/network-extra/delete-plage.html.twig', [
+            return $this->render('default/network-extra/delete-plage.html.twig', [
                 'confirm_form' => $form->createView(),
                 'plage' => $plage,
             ]);
@@ -199,7 +199,7 @@ class NetworkExtraController extends Controller
             }
         }
 
-        return $this->render('@App/default/network-extra/link.html.twig', [
+        return $this->render('default/network-extra/link.html.twig', [
             'link_form' => $form->createView(),
             'machines' => $machines,
             'ip' => $ip,
@@ -258,7 +258,7 @@ class NetworkExtraController extends Controller
             }
         }
 
-        return $this->render('@App/default/network-extra/new-ip.html.twig', [
+        return $this->render('default/network-extra/new-ip.html.twig', [
             'ip' => $ip,
             'network' => $network,
             'form' => $form->createView(),
@@ -350,7 +350,7 @@ class NetworkExtraController extends Controller
         //     }
         // }
 
-        return $this->render('@App/default/network-extra/new-plage.html.twig', [
+        return $this->render('default/network-extra/new-plage.html.twig', [
             'plage' => $plage,
             'network' => $network,
             'form' => $form->createView(),
@@ -393,7 +393,7 @@ class NetworkExtraController extends Controller
             return $this->redirectToRoute('default_ip_show', array('id' => $ip->getId()));
         }
 
-        return $this->render('@App/default/network-extra/new-ip-machine.html.twig', [
+        return $this->render('default/network-extra/new-ip-machine.html.twig', [
             'ip' => $ip,
             'network' => $network,
             'form' => $form->createView(),
@@ -447,7 +447,7 @@ class NetworkExtraController extends Controller
             return $this->redirectToRoute('default_machine_show', array('id' => $machine->getId()));
         }
 
-        return $this->render('@App/default/network-extra/new-machine.html.twig', [
+        return $this->render('default/network-extra/new-machine.html.twig', [
             'ip' => $ip,
             'machine' => $machine,
             'form' => $form->createView(),
@@ -502,7 +502,7 @@ class NetworkExtraController extends Controller
             //Redirecting
             return $this->redirectToRoute('default_network_show', ['id' => $ip->getNetwork()->getId()]);
         } else {
-            return $this->render('@App/default/network-extra/unlink.html.twig', [
+            return $this->render('default/network-extra/unlink.html.twig', [
                 'confirm_form' => $form->createView(),
                 'ip' => $ip,
             ]);

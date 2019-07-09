@@ -70,7 +70,7 @@ class DeletedNetworkController extends Controller
             ['defaultSortFieldName' => 'ext_log_entries.objectId', 'defaultSortDirection' => 'asc']
         );
 
-        return $this->render('@App/default/network/indexDeleted.html.twig', [
+        return $this->render('default/network/indexDeleted.html.twig', [
             'pagination' => $pagination,
         ]);
     }
@@ -96,6 +96,6 @@ class DeletedNetworkController extends Controller
         $view['logs'] = $deletedNetworkManager->retrieveLogs($log);
         $view['log'] = $log;
 
-        return $this->render('@App/default/network/showDeleted.html.twig', $view);
+        return $this->render('default/network/showDeleted.html.twig', $view);
     }
 }

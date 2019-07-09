@@ -72,7 +72,7 @@ class MachineController extends Controller
             ['defaultSortFieldName' => 'machine.label', 'defaultSortDirection' => 'asc']
         );
 
-        return $this->render('@App/default/machine/index.html.twig', [
+        return $this->render('default/machine/index.html.twig', [
             'pagination' => $pagination,
         ]);
     }
@@ -105,7 +105,7 @@ class MachineController extends Controller
             return $this->redirectToRoute('default_machine_show', array('id' => $machine->getId()));
         }
 
-        return $this->render('@App/default/machine/new.html.twig', [
+        return $this->render('default/machine/new.html.twig', [
             'machine' => $machine,
             'form' => $form->createView(),
         ]);
@@ -139,7 +139,7 @@ class MachineController extends Controller
         $logs = $machineManager->retrieveLogs($machine);
         $networks = $networkManager->getAll();
 
-        return $this->render('@App/default/machine/show.html.twig', array_merge($view, [
+        return $this->render('default/machine/show.html.twig', array_merge($view, [
             'logs' => $logs,
             'information' => $information,
             'machine' => $machine,
@@ -185,7 +185,7 @@ class MachineController extends Controller
         $logs = $machineService->retrieveLogs($machine);
         $information = InformationFactory::createInformation($machine);
 
-        return $this->render('@App/default/machine/edit.html.twig', array_merge($view, [
+        return $this->render('default/machine/edit.html.twig', array_merge($view, [
             'isDeletable' => $isDeletable,
             'logs' => $logs,
             'information' => $information,

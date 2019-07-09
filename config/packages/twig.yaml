@@ -9,4 +9,4 @@ twig:
       app_subtitle: 'by Trevise'
       app_owner: 'Cerema Sud Ouest — DTISPV — Trevise'
     form_themes:
-        - '@App/Form/color.html.twig'
+        - 'Form/color.html.twig'

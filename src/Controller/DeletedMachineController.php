@@ -71,7 +71,7 @@ class DeletedMachineController extends Controller
             ['defaultSortFieldName' => 'ext_log_entries.objectId', 'defaultSortDirection' => 'asc']
         );
 
-        return $this->render('@App/default/machine/indexDeleted.html.twig', [
+        return $this->render('default/machine/indexDeleted.html.twig', [
             'pagination' => $pagination,
         ]);
     }
@@ -97,6 +97,6 @@ class DeletedMachineController extends Controller
         $view['logs'] = $deletedMachineManager->retrieveLogs($log);
         $view['log'] = $log;
 
-        return $this->render('@App/default/machine/showDeleted.html.twig', $view);
+        return $this->render('default/machine/showDeleted.html.twig', $view);
     }
 }

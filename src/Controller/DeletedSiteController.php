@@ -71,7 +71,7 @@ class DeletedSiteController extends Controller
             ['defaultSortFieldName' => 'ext_log_entries.objectId', 'defaultSortDirection' => 'asc']
         );
 
-        return $this->render('@App/default/site/indexDeleted.html.twig', [
+        return $this->render('default/site/indexDeleted.html.twig', [
             'pagination' => $pagination,
         ]);
     }
@@ -97,6 +97,6 @@ class DeletedSiteController extends Controller
         $view['logs'] = $deletedSiteManager->retrieveLogs($log);
         $view['log'] = $log;
 
-        return $this->render('@App/default/site/showDeleted.html.twig', $view);
+        return $this->render('default/site/showDeleted.html.twig', $view);
     }
 }

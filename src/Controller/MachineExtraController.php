@@ -80,7 +80,7 @@ class MachineExtraController extends Controller
             //Redirecting
             return $this->redirectToRoute('default_machine_show', ['id' => $ip->getMachine()->getId()]);
         } else {
-            return $this->render('@App/default/machine-extra/delete-ip.html.twig', [
+            return $this->render('default/machine-extra/delete-ip.html.twig', [
                 'confirm_form' => $form->createView(),
                 'ip' => $ip,
             ]);
@@ -137,7 +137,7 @@ class MachineExtraController extends Controller
             }
         }
 
-        return $this->render('@App/default/machine-extra/link.html.twig', [
+        return $this->render('default/machine-extra/link.html.twig', [
             'link_form' => $form->createView(),
             'ips' => $ips,
             'machine' => $machine,
@@ -178,7 +178,7 @@ class MachineExtraController extends Controller
             return $this->redirectToRoute('default_ip_show', array('id' => $ip->getId()));
         }
 
-        return $this->render('@App/default/machine-extra/new-ip.html.twig', [
+        return $this->render('default/machine-extra/new-ip.html.twig', [
             'machine' => $machine,
             'network' => $network,
             'form' => $form->createView(),
@@ -234,7 +234,7 @@ class MachineExtraController extends Controller
             //Redirecting
             return $this->redirectToRoute('default_machine_show', ['id' => $idMachine]);
         } else {
-            return $this->render('@App/default/machine-extra/unlink.html.twig', [
+            return $this->render('default/machine-extra/unlink.html.twig', [
                 'confirm_form' => $form->createView(),
                 'ip' => $ip,
             ]);
