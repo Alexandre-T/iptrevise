@@ -41,6 +41,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @license CeCILL-B V1
  *
  * @Route("network")
+ * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
  */
 class NetworkController extends Controller
 {
@@ -54,7 +55,6 @@ class NetworkController extends Controller
      *
      * @Route("/", name="default_network_index")
      * @Method("GET")
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      *
      * @param Request $request
      *
@@ -183,7 +183,7 @@ class NetworkController extends Controller
         $view['logs'] = $networkManager->retrieveLogs($network);
         $view['network'] = $network;
         $view['isDeletable'] = $this->isGranted('ROLE_MANAGE_NETWORK') && $networkManager->isDeletable($network);
-        ;
+
         if ($view['isDeletable']){
             $view['delete_form'] = $this->createDeleteForm($network)->createView();
         }
@@ -200,7 +200,6 @@ class NetworkController extends Controller
      *
      * @Route("/matrice/{network}", name="default_network_matrice")
      * @Method("GET")
-     * @Security("is_granted('ROLE_READ_NETWORK')")
      *
      * @param Network $network
      *
@@ -209,6 +208,7 @@ class NetworkController extends Controller
 
     public function matriceAction(Network $network)
     {
+        $this->denyAccessUnlessGranted('view', $network);
         // create background image ( default : grey)
         // FIXME change $height and $width according to network cidr?
         $height = 64;
@@ -342,7 +342,6 @@ class NetworkController extends Controller
      *
      * @Route("/{id}/edit", name="default_network_edit")
      * @Method({"GET", "POST"})
-     * @Security("is_granted('ROLE_MANAGE_NETWORK')")
      *
      * @param Request $request The request
      * @param Network $network The network entity
@@ -389,7 +388,6 @@ class NetworkController extends Controller
      *
      * @Route("/{id}", name="default_network_delete")
      * @Method("DELETE")
-     * @Security("is_granted('ROLE_MANAGE_NETWORK')")
      *
      * @param Request $request The request
      * @param Network $network The $network entity
@@ -398,7 +396,7 @@ class NetworkController extends Controller
      */
     public function deleteAction(Request $request, Network $network)
     {
-        $this->denyAccessUnlessGranted('edit', $network);
+        $this->denyAccessUnlessGranted('delete', $network);
         $form = $this->createDeleteForm($network);
         $form->handleRequest($request);
         $session = $this->get('session');
