@@ -462,6 +462,8 @@ default:
   network:
     none: 'Aucun réseau déclaré pour ce site'
     create %site%: 'Créer un réseau sur le site « %site% »'
+    survey: 'Graphe de surveillance'
+    matrice: 'Matrice en cours...'
   plage:
     manage %plage%: 'Gestion de la plage'
 form:

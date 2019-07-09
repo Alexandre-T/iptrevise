@@ -13,7 +13,7 @@
 {% endblock headline %}
 
 {% block content_new_tab %}
-    <li role="presentation"><a href="#graph" aria-controls="messages" role="tab" data-toggle="tab">{{ 'graphe surveillance' }}</a></li>
+    <li role="presentation"><a href="#graph" aria-controls="messages" role="tab" data-toggle="tab">{{ 'default.network.survey' | trans }}</a></li>
 {% endblock content_new_tab %}
 {% block content_settings %}
     <div class="panel panel-primary" id="administration-global-information">
@@ -243,11 +243,7 @@
         </table>
         {% endif %}
         <div class="panel-body">
-            {#<img src="{{ asset('images/noir.png') }}" width="100%"/>#}
-            {#<img src="{{asset('/network/matrice')}}"/>#}
-            {#<img src="/network/matrice"/>#}
-            <img src="{{path('default_network_matrice', {'network': network.id})}}"  alt="Matrice" width="100%" height="100"/>
-            {#<img src="{{render(controller('App\\Controller\\NetworkController::matriceAction',{'network' : network}))}}" />#}
+            <img src="{{path('default_network_matrice', {'network': network.id})}}"  alt="{{ 'default.network.matrice' | trans }}" width="100%" height="100"/>
         </div>
     </div>
 {% endblock content_settings %}
