@@ -45,12 +45,9 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
 
         if (in_array(getenv('APP_ENV'), [ 'dev', 'test' ])) {
             //Load dev and test data
-            // I add one user for each role (to test the security component)
-
-            //Retrieve roles
-            $roleReader = ['ROLE_READER'];
-            $roleOrganiser = ['ROLE_ORGANISER'];
-            $roleUser = ['ROLE_USER'];
+            // I add one user, one admin to test the security component
+            // I add three readers with access to one or two sites
+            // I add three organisers with access to one or two sites
 
             /** @var Site $site1 */
             $site1 = $this->getReference('site_default');
@@ -62,45 +59,38 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             $userReader->setLabel('Reader Sites');
             $userReader->setMail('reader@example.org');
             $userReader->setPlainPassword('reader');
-            $userReader->setRoles($roleReader);
 
             $userReaderSite1 = new User();
             $userReaderSite1->setLabel('Reader Site1');
             $userReaderSite1->setMail('reader1@example.org');
             $userReaderSite1->setPlainPassword('reader');
-            $userReaderSite1->setRoles($roleReader);
 
             $userReaderSite2 = new User();
             $userReaderSite2->setLabel('Reader Site2');
             $userReaderSite2->setMail('reader2@example.org');
             $userReaderSite2->setPlainPassword('reader');
-            $userReaderSite2->setRoles($roleReader);
 
             //ORGANISERS
             $userOrganiser = new User();
             $userOrganiser->setLabel('Organiser Sites');
             $userOrganiser->setMail('organiser@example.org');
             $userOrganiser->setPlainPassword('organiser');
-            $userOrganiser->setRoles($roleOrganiser);
 
             $userOrganiserSite1 = new User();
             $userOrganiserSite1->setLabel('Organiser Site1');
             $userOrganiserSite1->setMail('organiser1@example.org');
             $userOrganiserSite1->setPlainPassword('organiser');
-            $userOrganiserSite1->setRoles($roleOrganiser);
 
             $userOrganiserSite2 = new User();
             $userOrganiserSite2->setLabel('Organiser Site2');
             $userOrganiserSite2->setMail('organiser2@example.org');
             $userOrganiserSite2->setPlainPassword('organiser');
-            $userOrganiserSite2->setRoles($roleOrganiser);
 
             //User
             $userUser = new User();
             $userUser->setLabel('User');
             $userUser->setMail('user@example.org');
             $userUser->setPlainPassword('user');
-            $userUser->setRoles($roleUser);
 
             //Admin
             $userAdministrator = new User();
@@ -109,7 +99,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             $userAdministrator->setPlainPassword('administrator');
             $userAdministrator->setRoles($roleAdmin);
 
-            //These references are perhaps unuseful.
+            //References.
             $this->addReference('user_reader', $userReader);
             $this->addReference('user_user', $userUser);
             $this->addReference('user_organiser', $userOrganiser);

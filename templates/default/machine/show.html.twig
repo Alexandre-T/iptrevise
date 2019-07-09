@@ -164,7 +164,7 @@
                data-toggle="tooltip" title="{{ 'default.machine.action.list.title' | trans }}">
                 <span class="fa fa-desktop"></span>&nbsp;{{ 'default.machine.action.list' | trans }}
             </a>
-            {% if is_granted('ROLE_MANAGE_MACHINE') %}
+            {% if can_edit(machine) %}
                 <a class="btn-mini btn btn-default" href="{{ path('default_machine_edit', { 'id': machine.id }) }}"
                    data-toggle="tooltip" title="{{ 'default.machine.action.edit.title' | trans }}" data-placement="left">
                     <span class="fa fa-pencil"></span>&nbsp;{{ 'administration.actions.edit' | trans }}
