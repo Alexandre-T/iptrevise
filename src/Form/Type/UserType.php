@@ -62,8 +62,6 @@ class UserType extends AbstractType
                 'multiple' => true,
                 'choices' => [
                     'form.user.field.roles.option.admin' => 'ROLE_ADMIN',
-                    'form.user.field.roles.option.reader' => 'ROLE_READER',
-                    'form.user.field.roles.option.ORGANISER' => 'ROLE_ORGANISER',
                     'form.user.field.roles.option.user' => 'ROLE_USER',
                 ],
             ])

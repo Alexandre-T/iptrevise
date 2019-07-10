@@ -351,14 +351,15 @@ class NetworkController extends Controller
     {
         $this->denyAccessUnlessGranted('edit', $network);
         $networkService = $this->get(NetworkManager::class);
+        $siteService = $this->get(SiteManager::class);
         $view = [];
         $isDeletable = $networkService->isDeletable($network);
 
         if ($isDeletable){
             $view['delete_form'] = $this->createDeleteForm($network)->createView();
         }
-
-        $editForm = $this->createForm(NetworkType::class, $network);
+        $options['sites'] = $siteService->getEditable($this->getUser());
+        $editForm = $this->createForm(NetworkType::class, $network, $options);
         $editForm->handleRequest($request);
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $networkService->save($network, $this->getUser());

@@ -89,6 +89,7 @@ class UserController extends Controller
     public function newAction(Request $request)
     {
         $user = new User();
+        $user->setRoles(['ROLE_USER']);
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
