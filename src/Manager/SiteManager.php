@@ -24,6 +24,7 @@ use App\Entity\Site;
 use App\Repository\SiteRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 use Gedmo\Loggable\Entity\LogEntry;
 use Gedmo\Loggable\Entity\Repository\LogEntryRepository;
@@ -72,16 +73,17 @@ class SiteManager implements LoggableManagerInterface, PaginatorInterface
      * Return the number of sites registered in database.
      *
      * @return int
-     *
-     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function count()
     {
-        return $this->repository->createQueryBuilder(self::ALIAS)
-
-            ->select('COUNT(1)')
-            ->getQuery()
-            ->getSingleScalarResult();
+        try {
+            return $this->repository->createQueryBuilder(self::ALIAS)
+                ->select('COUNT(1)')
+                ->getQuery()
+                ->getSingleScalarResult();
+        } catch (NonUniqueResultException $e) {
+            return 0;
+        }
     }
 
     /**

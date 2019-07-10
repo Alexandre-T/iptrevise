@@ -23,6 +23,7 @@ use App\Entity\Machine;
 use App\Entity\User;
 use App\Repository\MachineRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 use Gedmo\Loggable\Entity\LogEntry;
 use Gedmo\Loggable\Entity\Repository\LogEntryRepository;
@@ -74,10 +75,14 @@ class MachineManager implements LoggableManagerInterface, PaginatorInterface
      */
     public function count()
     {
-        return $this->repository->createQueryBuilder(self::ALIAS)
-            ->select('COUNT(1)')
-            ->getQuery()
-            ->getSingleScalarResult();
+        try {
+            return $this->repository->createQueryBuilder(self::ALIAS)
+                ->select('COUNT(1)')
+                ->getQuery()
+                ->getSingleScalarResult();
+        } catch (NonUniqueResultException $e) {
+            return 0;
+        }
     }
 
     /**

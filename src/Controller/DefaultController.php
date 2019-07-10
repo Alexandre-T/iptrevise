@@ -41,8 +41,6 @@ class DefaultController extends Controller
      * @Route("/", name="homepage", methods={"get"})
      *
      * @return Response
-     *
-     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function indexAction()
     {
