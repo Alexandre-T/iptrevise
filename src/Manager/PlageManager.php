@@ -24,8 +24,8 @@ use App\Entity\Ip;
 use App\Entity\Network;
 use App\Entity\User;
 use App\Repository\PlageRepository;
-use Countable;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 use Gedmo\Loggable\Entity\LogEntry;
 use Gedmo\Loggable\Entity\Repository\LogEntryRepository;
@@ -77,10 +77,14 @@ class PlageManager implements LoggableManagerInterface, PaginatorInterface
      */
     public function count()
     {
-        return $this->repository->createQueryBuilder(self::ALIAS)
-            ->select('COUNT(1)')
-            ->getQuery()
-            ->getSingleScalarResult();
+        try {
+            return $this->repository->createQueryBuilder(self::ALIAS)
+                ->select('COUNT(1)')
+                ->getQuery()
+                ->getSingleScalarResult();
+        } catch (NonUniqueResultException $e) {
+            return 0;
+        }
     }
 
     /**
@@ -190,7 +194,7 @@ class PlageManager implements LoggableManagerInterface, PaginatorInterface
     /**
      * Retrieve logs of the axe.
      *
-     * @param Ip $entity
+     * @param Plage $entity
      *
      * @return array
      */
@@ -216,16 +220,5 @@ class PlageManager implements LoggableManagerInterface, PaginatorInterface
         }
         $this->em->persist($plage);
         $this->em->flush();
-    }
-
-    /**
-     * Unlink an IP from its machine.
-     *
-     * @param Ip $ip
-     */
-    public function unlink(Ip $ip)
-    {
-        $ip->setMachine(null);
-        $this->save($ip);
     }
 }

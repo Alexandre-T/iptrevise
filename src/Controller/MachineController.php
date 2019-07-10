@@ -22,12 +22,13 @@ use App\Form\Type\MachineType;
 use App\Entity\Machine;
 use App\Manager\MachineManager;
 use App\Manager\NetworkManager;
+use App\Security\Voter\MachineVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,6 +41,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license CeCILL-B V1
  *
+ * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
  * @Route("machine")
  */
 class MachineController extends Controller
@@ -54,7 +56,6 @@ class MachineController extends Controller
      *
      * @Route("/", name="default_machine_index")
      * @Method("GET")
-     * @Security("is_granted('ROLE_READ_MACHINE')")
      *
      * @param Request $request
      *
@@ -62,6 +63,7 @@ class MachineController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $this->denyAccessUnlessGranted(MachineVoter::LIST, new Machine());
         //Retrieving all services
         $machineManager = $this->get(MachineManager::class);
         $paginator = $this->get('knp_paginator');
@@ -82,7 +84,6 @@ class MachineController extends Controller
      *
      * @Route("/new", name="default_machine_new")
      * @Method({"GET", "POST"})
-     * @Security("is_granted('ROLE_MANAGE_MACHINE')")
      *
      * @param Request $request
      *
@@ -91,6 +92,7 @@ class MachineController extends Controller
     public function newAction(Request $request)
     {
         $machine = new Machine();
+        $this->denyAccessUnlessGranted(MachineVoter::CREATE, $machine);
         $form = $this->createForm(MachineType::class, $machine);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -116,7 +118,6 @@ class MachineController extends Controller
      *
      * @Route("/{id}", name="default_machine_show")
      * @Method("GET")
-     * @Security("is_granted('ROLE_READ_MACHINE')")
      *
      * @param Machine $machine
      *
@@ -152,7 +153,6 @@ class MachineController extends Controller
      *
      * @Route("/{id}/edit", name="default_machine_edit")
      * @Method({"GET", "POST"})
-     * @Security("is_granted('ROLE_MANAGE_MACHINE')")
      *
      * @param Request $request The request
      * @param Machine $machine The machine entity
@@ -199,7 +199,6 @@ class MachineController extends Controller
      *
      * @Route("/{id}", name="default_machine_delete")
      * @Method("DELETE")
-     * @Security("is_granted('ROLE_MANAGE_MACHINE')")
      *
      * @param Request $request The request
      * @param Machine $machine The $machine entity
@@ -236,7 +235,7 @@ class MachineController extends Controller
      *
      * @param Machine $machine The machine entity
      *
-     * @return Form The form
+     * @return FormInterface The form
      */
     private function createDeleteForm(Machine $machine)
     {

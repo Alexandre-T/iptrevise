@@ -21,12 +21,13 @@ use App\Bean\Factory\InformationFactory;
 use App\Entity\Ip;
 use App\Form\Type\IpType;
 use App\Manager\IpManager;
+use App\Security\Voter\IpVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,6 +40,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license CeCILL-B V1
  *
+ * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
  * @Route("ip")
  */
 class IpController extends Controller
@@ -48,7 +50,6 @@ class IpController extends Controller
      *
      * @Route("/{id}", name="default_ip_show")
      * @Method("GET")
-     * @Security("is_granted('ROLE_READ_IP')")
      *
      * @param Ip $ip
      *
@@ -56,6 +57,8 @@ class IpController extends Controller
      */
     public function showAction(Ip $ip)
     {
+        $this->denyAccessUnlessGranted(IpVoter::VIEW, $ip);
+
         /** @var IpManager $ipManager */
         $ipManager = $this->get(IpManager::class);
         $view = [];
@@ -79,7 +82,6 @@ class IpController extends Controller
      *
      * @Route("/{id}/edit", name="default_ip_edit")
      * @Method({"GET", "POST"})
-     * @Security("is_granted('ROLE_MANAGE_IP')")
      *
      * @param Request $request The request
      * @param Ip      $ip      The ip entity
@@ -88,6 +90,7 @@ class IpController extends Controller
      */
     public function editAction(Request $request, Ip $ip)
     {
+        $this->denyAccessUnlessGranted(IpVoter::EDIT, $ip);
         $view = [];
         $ipService = $this->get(IpManager::class);
         $isDeletable = $ipService->isDeletable($ip);
@@ -124,7 +127,6 @@ class IpController extends Controller
      *
      * @Route("/{id}", name="default_ip_delete")
      * @Method("DELETE")
-     * @Security("is_granted('ROLE_MANAGE_IP')")
      *
      * @param Request $request The request
      * @param Ip      $ip      The $ip entity
@@ -133,6 +135,7 @@ class IpController extends Controller
      */
     public function deleteAction(Request $request, Ip $ip)
     {
+        $this->denyAccessUnlessGranted(IpVoter::EDIT, $ip);
         $network = $ip->getNetwork();
         $machine = $ip->getMachine();
 
@@ -168,7 +171,7 @@ class IpController extends Controller
      *
      * @param Ip $ip The ip entity
      *
-     * @return Form The form
+     * @return FormInterface The form
      */
     private function createDeleteForm(Ip $ip)
     {

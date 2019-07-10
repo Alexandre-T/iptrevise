@@ -21,6 +21,7 @@ use App\Bean\Factory\InformationFactory;
 use App\Form\Type\SiteType;
 use App\Entity\Site;
 use App\Manager\SiteManager;
+use App\Security\Voter\SiteVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -39,6 +40,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license CeCILL-B V1
  *
+ * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
  * @Route("site")
  */
 class SiteController extends Controller
@@ -53,7 +55,6 @@ class SiteController extends Controller
      *
      * @Route("/", name="default_site_index")
      * @Method("GET")
-     * @Security("is_granted('ROLE_READ_SITE')")
      *
      * @param Request $request
      *
@@ -81,7 +82,6 @@ class SiteController extends Controller
      *
      * @Route("/new", name="default_site_new")
      * @Method({"GET", "POST"})
-     * @Security("is_granted('ROLE_MANAGE_SITE')")
      *
      * @param Request $request
      *
@@ -90,8 +90,7 @@ class SiteController extends Controller
     public function newAction(Request $request)
     {
         $site = new Site();
-        $siteService = $this->get(SiteManager::class);
-        $sites = $siteService->getAll();
+        $this->denyAccessUnlessGranted(SiteVoter::CREATE, $site);
         $form = $this->createForm(SiteType::class, $site);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -117,7 +116,6 @@ class SiteController extends Controller
      *
      * @Route("/{id}", name="default_site_show")
      * @Method("GET")
-     * @Security("is_granted('ROLE_READ_SITE')")
      *
      * @param Site $site
      *
@@ -147,7 +145,6 @@ class SiteController extends Controller
      *
      * @Route("/{id}/edit", name="default_site_edit")
      * @Method({"GET", "POST"})
-     * @Security("is_granted('ROLE_MANAGE_SITE')")
      *
      * @param Request $request The request
      * @param Site $site The site entity
@@ -195,7 +192,6 @@ class SiteController extends Controller
      *
      * @Route("/{id}", name="default_site_delete")
      * @Method("DELETE")
-     * @Security("is_granted('ROLE_ADMIN')")
      *
      * @param Request $request The request
      * @param Site $site The $site entity
@@ -204,7 +200,7 @@ class SiteController extends Controller
      */
     public function deleteAction(Request $request, Site $site)
     {
-        $this->denyAccessUnlessGranted('edit', $site);
+        $this->denyAccessUnlessGranted(SiteVoter::DELETE, $site);
 
         $form = $this->createDeleteForm($site);
         $form->handleRequest($request);

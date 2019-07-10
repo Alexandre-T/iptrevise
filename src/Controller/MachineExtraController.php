@@ -22,12 +22,14 @@ use App\Entity\Machine;
 use App\Entity\Network;
 use App\Form\Type\IpType;
 use App\Manager\IpManager;
+use App\Security\Voter\IpVoter;
+use App\Security\Voter\NetworkVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,6 +42,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license CeCILL-B V1
  *
+ * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
  * @Route("machine")
  */
 class MachineExtraController extends Controller
@@ -49,7 +52,6 @@ class MachineExtraController extends Controller
      *
      * @Route("/{id}/delete-ip", name="default_machine_delete_ip")
      * @ParamConverter("ip", class="App:Ip")
-     * @Security("is_granted('ROLE_MANAGE_IP')")
      *
      * @param Request $request The request
      * @param Ip      $ip      the ip to delete
@@ -58,6 +60,7 @@ class MachineExtraController extends Controller
      */
     public function deleteIpAction(Request $request, Ip $ip)
     {
+        $this->denyAccessUnlessGranted(IpVoter::DELETE, $ip);
         $trans = $this->get('translator.default');
 
         $form = $this->createDeleteIpForm($ip);
@@ -93,7 +96,6 @@ class MachineExtraController extends Controller
      * @Route("/{machine_id}/link/{network_id}", name="default_machine_link")
      * @ParamConverter("machine", class="App:Machine", options={"id" = "machine_id"})
      * @ParamConverter("network", class="App:Network", options={"id" = "network_id"})
-     * @Security("is_granted('ROLE_MANAGE_IP', 'ROLE_MANAGE_MACHINE')")
      *
      * @param Request $request The request
      * @param Machine $machine The machine entity
@@ -103,6 +105,7 @@ class MachineExtraController extends Controller
      */
     public function linkAction(Request $request, Machine $machine, Network $network)
     {
+        $this->denyAccessUnlessGranted(NetworkVoter::EDIT, $network);
         $trans = $this->get('translator.default');
 
         $ipManager = $this->get(IpManager::class);
@@ -149,7 +152,6 @@ class MachineExtraController extends Controller
      * Reserve a new IP for the current machine.
      *
      * @Route("/{machine_id}/new-ip/{network_id}", name="default_machine_new_ip")
-     * @Security("is_granted('ROLE_MANAGE_IP')")
      * @ParamConverter("network", class="App:Network", options={"id" = "network_id"})
      * @ParamConverter("machine", class="App:Machine", options={"id" = "machine_id"})
      *
@@ -161,6 +163,7 @@ class MachineExtraController extends Controller
      */
     public function newIpAction(Request $request, Network $network, Machine $machine)
     {
+        $this->denyAccessUnlessGranted(IpVoter::CREATE);
         $ip = new Ip();
         $ip->setNetwork($network);
         $ip->setMachine($machine);
@@ -190,7 +193,6 @@ class MachineExtraController extends Controller
      *
      * @Route("/{id}/unlink", name="default_machine_unlink")
      * @ParamConverter("ip", class="App:Ip")
-     * @Security("is_granted('ROLE_MANAGE_IP')")
      *
      * @param Request $request The request
      * @param Ip      $ip      The IP entity
@@ -199,6 +201,7 @@ class MachineExtraController extends Controller
      */
     public function unlinkAction(Request $request, Ip $ip)
     {
+        $this->denyAccessUnlessGranted(IpVoter::EDIT, $ip);
         $trans = $this->get('translator.default');
 
         if (null === $ip->getMachine()) {
@@ -223,7 +226,7 @@ class MachineExtraController extends Controller
             ]);
             $idMachine = $ip->getMachine()->getId();
 
-            //Unlinking
+            //Unlink
             $ipManager = $this->get(IpManager::class);
             $ipManager->unlink($ip);
 
@@ -246,9 +249,9 @@ class MachineExtraController extends Controller
      *
      * @param Ip $ip the Ip entity
      *
-     * @return Form The form
+     * @return FormInterface The form
      */
-    private function createDeleteIpForm(Ip $ip): Form
+    private function createDeleteIpForm(Ip $ip): FormInterface
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('default_machine_delete_ip', array('id' => $ip->getId())))
@@ -268,9 +271,9 @@ class MachineExtraController extends Controller
      * @param Machine $machine the Ip entity
      * @param Network $network the Ip entity
      *
-     * @return Form The form
+     * @return FormInterface The form
      */
-    private function createLinkForm(Machine $machine, Network $network): Form
+    private function createLinkForm(Machine $machine, Network $network): FormInterface
     {
         $form = $this->createFormBuilder()
             ->setAction($this->generateUrl('default_machine_link', [
@@ -289,9 +292,9 @@ class MachineExtraController extends Controller
      *
      * @param Ip $ip the Ip entity
      *
-     * @return Form The form
+     * @return FormInterface The form
      */
-    private function createUnlinkForm(Ip $ip): Form
+    private function createUnlinkForm(Ip $ip): FormInterface
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('default_machine_unlink', array('id' => $ip->getId())))

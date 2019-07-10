@@ -7,7 +7,6 @@ use App\Entity\User;
 use LogicException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Security;
 
 class SiteVoter extends Voter
@@ -65,7 +64,7 @@ class SiteVoter extends Voter
         $user = $token->getUser();
 
         //user is logged in
-        if (!$user instanceof UserInterface) {
+        if (!$user instanceof User) {
             return false;
         }
 
@@ -78,7 +77,7 @@ class SiteVoter extends Voter
             case self::EDIT:
                 return $this->canEdit($site, $user);
             case self::CREATE:
-                return false;
+                return $user->isAdmin();
         }
 
         throw new LogicException('This code should not be reached!');

@@ -36,6 +36,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license CeCILL-B V1
  *
+ * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
  * @Route("search")
  */
 class SearchController extends Controller
@@ -51,7 +52,6 @@ class SearchController extends Controller
      *
      * @Route("/", name="default_search_index")
      * @Method("GET")
-     * @Security("is_granted('ROLE_READ_MACHINE')")
      *
      * @param Request $request
      *

@@ -26,7 +26,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,7 +40,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @license CeCILL-B V1
  *
  * @Route("administration/user")
- * @Security("is_granted('ROLE_MANAGE_USER')")
+ * @Security("is_granted('ROLE_ADMIN')")
  */
 class UserController extends Controller
 {
@@ -93,7 +93,7 @@ class UserController extends Controller
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $userService = $this->get(UserManager::class);
-            $userService->save($user, $this->getUser());
+            $userService->save($user);
             //Flash message
             $session = $this->get('session');
             $trans = $this->get('translator.default');
@@ -154,11 +154,7 @@ class UserController extends Controller
         $editForm = $this->createForm(UserType::class, $user);
         $editForm->handleRequest($request);
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $userService->save($user, $this->getUser());
-            //$user=$editForm->getData();
-            //$em = $this->getDoctrine()->getManager();
-            //$em->persist($user);
-            //$em->flush();
+            $userService->save($user);
             //Flash message
             $session = $this->get('session');
             $trans = $this->get('translator.default');
@@ -219,9 +215,9 @@ class UserController extends Controller
      *
      * @param User $user The user entity
      *
-     * @return Form The form
+     * @return FormInterface The form
      */
-    private function createDeleteForm(User $user)
+    private function createDeleteForm(User $user): FormInterface
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('administration_user_delete', array('id' => $user->getId())))

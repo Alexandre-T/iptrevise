@@ -10,4 +10,5 @@ modules:
         - PhpBrowser:
             url: http://localhost:8000/
             curl:
+              CURLOPT_PROXY: ''
               CURLOPT_TIMEOUT_MS: 50000 # timeout in seconds        - \Helper\Functional

@@ -2,19 +2,20 @@
 
 namespace App\Security\Voter;
 
-use App\Entity\Machine;
+use App\Entity\Plage;
 use App\Entity\User;
 use LogicException as LogicExceptionAlias;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Security;
 
-class MachineVoter extends Voter
+class PlageVoter extends Voter
 {
     const VIEW = 'view';
     const EDIT = 'edit';
     const LIST = 'list';
     const CREATE = 'create';
+    const DELETE = 'delete';
 
     private $security;
 
@@ -26,14 +27,15 @@ class MachineVoter extends Voter
     protected function supports($attribute, $subject)
     {
         // edit or view
-        if (!in_array($attribute, [self::VIEW, self::EDIT, self::LIST, self::CREATE])) {
+        if (!in_array($attribute, [self::VIEW, self::EDIT, self::LIST, self::CREATE, self::DELETE])) {
             return false;
         }
 
         // only vote on Machine objects inside this voter
-        if (!$subject instanceof Machine) {
+        if (!$subject instanceof Plage) {
             return false;
         }
+
         return true;
     }
 
@@ -50,15 +52,14 @@ class MachineVoter extends Voter
             return false;
         }
 
-        $machine = $subject;
-
         switch ($attribute) {
             case self::VIEW:
-                return $this->canView($user);
+                return $this->canView($subject, $user);
+            case self::DELETE:
             case self::EDIT:
-                return $this->canEdit($machine, $user);
+                return $this->canEdit($subject, $user);
             case self::CREATE:
-                return $this->canCreate($user);
+                return $this->canCreate($subject, $user);
             case self::LIST:
                 return $this->canList($user);
         }
@@ -66,34 +67,54 @@ class MachineVoter extends Voter
         throw new LogicExceptionAlias('This code should not be reached!');
     }
 
-    private function canView(User $user)
+    private function canView(Plage $plage, User $user)
     {
-        // if they can edit, they can view
-        return $user->canViewOneSite();
-    }
+        if (null === $user) {
+            return false;
+        }
 
-    private function canEdit(Machine $machine, User $user)
-    {
         if ($user->isAdmin()) {
             return true;
         }
 
-        $ips = $machine->getIps();
+        foreach ($user->getNewRoles() as $role) {
+            if ($role->getSite() === $plage->getNetwork()->getSite()) {
+                return true;
+            }
+        }
 
-        if (0 === count($ips)) {
+        return false;
+    }
+
+    private function canEdit(Plage $plage, User $user)
+    {
+        if (null === $user) {
+            return false;
+        }
+
+        if ($user->isAdmin()) {
             return true;
         }
 
-        return $user->canEditOneSite();
+        foreach ($user->getNewRoles() as $role) {
+            if ($role->isWritable() && $role->getSite() === $plage->getNetwork()->getSite()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function canList(User $user)
     {
-        //We can list machine as soon as we can see at least one site
-        return count($user->getNewRoles()) || $user->isAdmin();
+        if (null === $user) {
+            return false;
+        }
+
+        return $user->isAdmin() || count($user->getNewRoles());
     }
 
-    private function canCreate(User $user)
+    private function canCreate(Plage $plage, User $user)
     {
         if ($user->isAdmin()) {
             return true;
@@ -101,11 +122,11 @@ class MachineVoter extends Voter
 
         //We can list machine as soon as we can edit at least one site
         foreach ($user->getNewRoles() as $role) {
-            if ($role->isWritable()) {
+            if ($role->isWritable() && $role->getSite() === $plage->getNetwork()->getSite()) {
                 return true;
             }
         }
-
+        
         return false;
     }
 }

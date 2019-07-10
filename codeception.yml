@@ -1,14 +1,7 @@
-paths:
-    tests: tests
-    output: tests/_output
-    data: tests/_data
-    support: tests/_support
-    envs: tests/_envs
 actor_suffix: Tester
-extensions:
-    enabled:
-        - Codeception\Extension\RunFailed
 coverage:
+    c3_url: 'http://127.0.0.1:8000'
+    remote: true
     remote_context_options:
         http:
             timeout: 60
@@ -20,6 +13,15 @@ coverage:
         - src/Migrations/*
     low_limit: 40
     high_limit: 80
+paths:
+    tests: tests
+    output: tests/_output
+    data: tests/_data
+    support: tests/_support
+    envs: tests/_envs
+extensions:
+    enabled:
+        - Codeception\Extension\RunFailed
 settings:
     bootstrap: bootstrap.php
     colors: true

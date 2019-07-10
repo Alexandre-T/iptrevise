@@ -7,7 +7,6 @@ use App\Entity\User;
 use LogicException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Security;
 
 class NetworkVoter extends Voter
@@ -55,7 +54,7 @@ class NetworkVoter extends Voter
         $user = $token->getUser();
 
         //user is logged in
-        if (!$user instanceof UserInterface) {
+        if (!$user instanceof User) {
             return false;
         }
 
