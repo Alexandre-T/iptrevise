@@ -41,7 +41,7 @@ class SiteFixtures extends Fixture
         if (in_array($this->container->get('kernel')->getEnvironment(), ['dev', 'test'])) {
             //Default site
             $site = new Site();
-            $site->setLabel('Site1');
+            $site->setLabel('Site noir');
             $site->setColor('000000');
 
             $this->addReference('site_default', $site);
@@ -52,9 +52,19 @@ class SiteFixtures extends Fixture
 
             $this->addReference('site_rouge', $site1);
 
+            //Deleted site
+            $siteDeleted = new Site();
+            $siteDeleted->setLabel('Site banni');
+            $siteDeleted->setColor('050000');
+
             //Persist dev and test data
             $manager->persist($site);
             $manager->persist($site1);
+            $manager->persist($siteDeleted);
+            $manager->flush();
+
+            //We delete banned site
+            $manager->remove($siteDeleted);
         }
 
         $manager->flush();

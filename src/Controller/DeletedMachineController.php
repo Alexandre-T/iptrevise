@@ -17,16 +17,11 @@
 
 namespace App\Controller;
 
-use App\Bean\Factory\InformationFactory;
-use App\Entity\Site;
 use App\Manager\DeletedMachineManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Form;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Gedmo\Loggable\Entity\LogEntry;
@@ -53,7 +48,7 @@ class DeletedMachineController extends Controller
      *
      * @Route("/deleted", name="default_deleted_machine_index")
      * @Method("GET")
-     * @Security("is_granted('ROLE_READ_MACHINE')")
+     * @Security("is_granted('ROLE_ADMIN')")
      *
      * @param Request $request
      *
@@ -81,19 +76,17 @@ class DeletedMachineController extends Controller
      *
      * @Route("/deleted/{id}", name="default_deleted_machine_show")
      * @Method("GET")
-     * @Security("is_granted('ROLE_READ_MACHINE')")
+     * @Security("is_granted('ROLE_ADMIN')")
      *
-     * @param Site $site
-     *
+     * @param LogEntry $log
      * @return Response
      */
     public function showAction(LogEntry $log)
     {
-        /** @var SiteManager $siteManager */
+        /** @var DeletedMachineManager $deletedMachineManager */
         $deletedMachineManager = $this->get(DeletedMachineManager::class);
 
         $view = [];
-        //$view['information'] = InformationFactory::createInformation($site);
         $view['logs'] = $deletedMachineManager->retrieveLogs($log);
         $view['log'] = $log;
 

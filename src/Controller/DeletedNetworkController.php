@@ -17,15 +17,11 @@
 
 namespace App\Controller;
 
-use App\Bean\Factory\InformationFactory;
 use App\Manager\DeletedNetworkManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Form;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Gedmo\Loggable\Entity\LogEntry;
@@ -52,7 +48,7 @@ class DeletedNetworkController extends Controller
      *
      * @Route("/deleted", name="default_deleted_network_index")
      * @Method("GET")
-     * @Security("is_granted('ROLE_READ_NETWORK')")
+     * @Security("is_granted('ROLE_ADMIN')")
      *
      * @param Request $request
      *
@@ -80,15 +76,14 @@ class DeletedNetworkController extends Controller
      *
      * @Route("/deleted/{id}", name="default_deleted_network_show")
      * @Method("GET")
-     * @Security("is_granted('ROLE_READ_NETWORK')")
+     * @Security("is_granted('ROLE_ADMIN')")
      *
-     * @param Site $site
-     *
+     * @param LogEntry $log
      * @return Response
      */
     public function showAction(LogEntry $log)
     {
-        /** @var SiteManager $siteManager */
+        /** @var DeletedNetworkManager $deletedNetworkManager */
         $deletedNetworkManager = $this->get(DeletedNetworkManager::class);
 
         $view = [];

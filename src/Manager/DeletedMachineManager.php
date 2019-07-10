@@ -19,8 +19,6 @@ namespace App\Manager;
 
 use App\Bean\Factory\LogFactory;
 use App\Entity\PaginatorInterface;
-use App\Entity\User;
-use App\Entity\Machine;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
@@ -52,7 +50,7 @@ class DeletedMachineManager implements LoggableManagerInterface, PaginatorInterf
     /**
      * Repository.
      *
-     * @var LogRepository
+     * @var LogEntryRepository
      */
     private $repository;
 
@@ -68,9 +66,9 @@ class DeletedMachineManager implements LoggableManagerInterface, PaginatorInterf
     }
 
     /**
-     * Return all sites.
+     * Return all log entries.
      *
-     * @return Machine[]|null Array of sites or null
+     * @return LogEntry[]|null Array of log entries or null
      */
     public function getAll()
     {
@@ -85,10 +83,14 @@ class DeletedMachineManager implements LoggableManagerInterface, PaginatorInterf
          return $q->getResult();
     }
 
+    /**
+     * @param LogEntry $log
+     * @return Query
+     */
     public function getOtherLogEntriesQuery($log)
     {
 
-      $qb = $this->em->createQuery('SELECT log FROM Gedmo\Loggable\Entity\LogEntry log WHERE log.objectId = ?1 AND log.objectClass = \'App\Entity\Machine\' ORDER BY log.version')
+      $qb = $this->em->createQuery('SELECT log FROM Gedmo\Loggable\Entity\LogEntry log WHERE log.objectId = ?1 AND log.objectClass = \'App\Entity\Machine\' ORDER BY log.version DESC')
       ->setParameter(1, $log->getObjectId());
 
       return $qb;
@@ -98,15 +100,13 @@ class DeletedMachineManager implements LoggableManagerInterface, PaginatorInterf
     /**
      * Retrieve logs of the axe.
      *
-     * @param Site $entity
+     * @param LogEntry $logEntry
      *
      * @return array
      */
-    public function retrieveLogs($entity): array
+    public function retrieveLogs($logEntry): array
     {
-        /** @var LogEntryRepository $logRepository */
-        //$logRepository = $this->em->getRepository(LogEntry::class); // we use default log entry class
-        $logs = $this->getOtherLogEntries($entity);
+        $logs = $this->getOtherLogEntries($logEntry);
 
         return LogFactory::createMachineLogs($logs);
     }
@@ -118,14 +118,11 @@ class DeletedMachineManager implements LoggableManagerInterface, PaginatorInterf
      */
     public function getQueryBuilder()
     {
-      //$qb = $this->em->createQuery('SELECT log.objectId FROM Gedmo\Loggable\Entity\LogEntry log WHERE log.action = \'remove\'');
-
         $qb = $this->repository->createQueryBuilder(self::ALIAS);
 
         $qb->where(self::ALIAS.'.objectClass = \'App\Entity\Machine\'')
             ->andWhere(self::ALIAS.'.action = \'create\'')
             ->andWhere(self::ALIAS.'.objectId IN (SELECT log.objectId FROM Gedmo\Loggable\Entity\LogEntry log WHERE log.action = \'remove\' AND log.objectClass = \'App\Entity\Machine\')');
-            //->setParameter('query', $qb);
 
         return $qb;
     }

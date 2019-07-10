@@ -17,15 +17,11 @@
 
 namespace App\Controller;
 
-use App\Bean\Factory\InformationFactory;
 use App\Manager\DeletedIpManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Form;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Gedmo\Loggable\Entity\LogEntry;
@@ -52,7 +48,7 @@ class DeletedIpController extends Controller
      *
      * @Route("/deleted", name="default_deleted_ip_index")
      * @Method("GET")
-     * @Security("is_granted('ROLE_READ_IP')")
+     * @Security("is_granted('ROLE_ADMIN')")
      *
      * @param Request $request
      *
@@ -80,19 +76,18 @@ class DeletedIpController extends Controller
      *
      * @Route("/deleted/{id}", name="default_deleted_ip_show")
      * @Method("GET")
-     * @Security("is_granted('ROLE_READ_IP')")
+     * @Security("is_granted('ROLE_ADMIN')")
      *
-     * @param Site $site
+     * @param LogEntry $log
      *
      * @return Response
      */
     public function showAction(LogEntry $log)
     {
-        /** @var SiteManager $siteManager */
+        /** @var DeletedIpManager $deletedIpManager */
         $deletedIpManager = $this->get(DeletedIpManager::class);
 
         $view = [];
-        //$view['information'] = InformationFactory::createInformation($site);
         $view['logs'] = $deletedIpManager->retrieveLogs($log);
         $view['log'] = $log;
 

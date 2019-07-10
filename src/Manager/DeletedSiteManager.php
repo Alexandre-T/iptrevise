@@ -19,8 +19,6 @@ namespace App\Manager;
 
 use App\Bean\Factory\LogFactory;
 use App\Entity\PaginatorInterface;
-use App\Entity\User;
-use App\Entity\Site;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
@@ -52,7 +50,7 @@ class DeletedSiteManager implements LoggableManagerInterface, PaginatorInterface
     /**
      * Repository.
      *
-     * @var LogRepository
+     * @var LogEntryRepository
      */
     private $repository;
 
@@ -68,9 +66,9 @@ class DeletedSiteManager implements LoggableManagerInterface, PaginatorInterface
     }
 
     /**
-     * Return all sites.
+     * Return all log entries.
      *
-     * @return Site[]|null Array of sites or null
+     * @return LogEntry[]|null Array of log entries or null
      */
     public function getAll()
     {
@@ -85,10 +83,15 @@ class DeletedSiteManager implements LoggableManagerInterface, PaginatorInterface
          return $q->getResult();
     }
 
+    /**
+     * @param LogEntry $log
+     *
+     * @return Query
+     */
     public function getOtherLogEntriesQuery($log)
     {
 
-      $qb = $this->em->createQuery('SELECT log FROM Gedmo\Loggable\Entity\LogEntry log WHERE log.objectId = ?1 AND log.objectClass = \'App\Entity\Site\' ORDER BY log.version')
+      $qb = $this->em->createQuery('SELECT log FROM Gedmo\Loggable\Entity\LogEntry log WHERE log.objectId = ?1 AND log.objectClass = \'App\Entity\Site\' ORDER BY log.version DESC')
       ->setParameter(1, $log->getObjectId());
 
       return $qb;
@@ -98,15 +101,13 @@ class DeletedSiteManager implements LoggableManagerInterface, PaginatorInterface
     /**
      * Retrieve logs of the axe.
      *
-     * @param Site $entity
+     * @param LogEntry $log
      *
      * @return array
      */
-    public function retrieveLogs($entity): array
+    public function retrieveLogs($log): array
     {
-        /** @var LogEntryRepository $logRepository */
-        //$logRepository = $this->em->getRepository(LogEntry::class); // we use default log entry class
-        $logs = $this->getOtherLogEntries($entity);
+        $logs = $this->getOtherLogEntries($log);
 
         return LogFactory::createSiteLogs($logs);
     }
