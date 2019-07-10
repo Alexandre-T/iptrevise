@@ -66,24 +66,22 @@
                 <tbody>
                     {% for plage in plage.network.plages %}
                     <tr>
-                    <td headers="network-plage-label">
-                        {%- if plage -%}
-                            <a href="{{ path('default_plage_show', {'id': plage.id}) }}" title="{{ plage.label }}">{{ plage.label }}</a>
-                        {%- else -%}
-                            <em>{{ 'default.machine.none' | trans }}</em>
-                        {%- endif -%}
-                    </td>
-                    <td headers="network-plage-reason">
-                      <dd>{{plage.reason}}</dd>
-                    </td>
+                        <td headers="network-plage-label">
+                            {%- if plage -%}
+                                <a href="{{ path('default_plage_show', {'id': plage.id}) }}" title="{{ plage.label }}">{{ plage.label }}</a>
+                            {%- else -%}
+                                <em>{{ 'default.machine.none' | trans }}</em>
+                            {%- endif -%}
+                        </td>
+                        <td headers="network-plage-reason">
+                            {{plage.reason}}
+                        </td>
                         <td headers="network-plage-ipdeb">
-                          <dd>{{ plage.start | ip }}</dd>
+                          {{ plage.start | ip }}
                         </td>
                         <td headers="network-plage-ipfin">
-                          <dd>{{ plage.end | ip }}</dd>
+                            {{ plage.end | ip }}
                         </td>
-
-
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -97,7 +95,7 @@
 {% endblock content_settings %}
 
 {% block content_action %}
-    {% if is_granted('ROLE_MANAGE_IP') %}
+    {% if can_edit(plage) %}
         <h3>{{ 'administration.actions' | trans }}</h3>
 
         <div class="text-center" id="default-actions">

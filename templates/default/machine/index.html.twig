@@ -49,7 +49,7 @@
                             <span class="fa fa-eye"></span>
                             <span class="sr-only">{{ 'default.action.show' | trans }}</span>
                         </a>
-                        {% if is_granted("ROLE_MANAGE_MACHINE") %}
+                        {% if can_edit(machine) %}
                         <a class="btn btn-default" href="{{ path('default_machine_edit', { 'id': machine.id }) }}">
                             <span class="fa fa-edit"></span>
                             <span class="sr-only">{{ 'default.action.edit' | trans }}</span>
@@ -74,19 +74,23 @@
 
 {% block content_action %}
     {{ app_macro.panel_admin('desktop', '', pagination.totalItemCount, 'default.machines') }}
-    {% if is_granted("ROLE_MANAGE_MACHINE") %}
+    {% if can_create_machine() or can_view_deleted() %}
         <div class="text-center">
         <div class="btn-group-vertical">
-            <a class="btn btn-default" href="{{ path('default_machine_new') }}" data-toggle="tooltip" data-placement="left"
-               title="{{ 'default.machine.action.create.title' | trans }}">
-                <span class="fa fa-desktop"></span>
-                {{ 'default.machine.create' | trans }}
-            </a>
-            <a class="btn btn-default" href="{{ path('default_deleted_machine_index') }}" data-toggle="tooltip" data-placement="left"
-               title="{{ 'default.machine.deleted.title' | trans }}">
-                <span class="fa fa-desktop"></span>
-                {{ 'default.machine.deleted' | trans }}
-            </a>
+            {% if can_create_machine() %}
+                <a class="btn btn-default" href="{{ path('default_machine_new') }}" data-toggle="tooltip" data-placement="left"
+                   title="{{ 'default.machine.action.create.title' | trans }}">
+                    <span class="fa fa-desktop"></span>
+                    {{ 'default.machine.create' | trans }}
+                </a>
+            {% endif %}
+            {% if can_view_deleted() %}
+                <a class="btn btn-default" href="{{ path('default_deleted_machine_index') }}" data-toggle="tooltip" data-placement="left"
+                   title="{{ 'default.machine.deleted.title' | trans }}">
+                    <span class="fa fa-desktop"></span>
+                    {{ 'default.machine.deleted' | trans }}
+                </a>
+            {% endif %}
         </div>
         </div>
     {% endif %}

@@ -124,7 +124,6 @@ class NetworkController extends Controller
      *
      * @Route("/{id}", name="default_network_show")
      * @Method("GET")
-     * @Security("is_granted('ROLE_READ_NETWORK')")
      *
      * @param Network $network
      *

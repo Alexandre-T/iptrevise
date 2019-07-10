@@ -84,11 +84,9 @@
                         <span class="fa fa-user fa-fw"></span>
                         {{ 'form.ip.field.creator' | trans }}
                     </th>
-                    {% if is_granted("ROLE_MANAGE_IP") or is_granted("ROLE_MANAGE_MACHINE") %}
-                        <th id="machine-ip-actions">
-                            {{ 'default.network.actions' | trans }}
-                        </th>
-                    {% endif %}
+                    <th id="machine-ip-actions">
+                        {{ 'default.network.actions' | trans }}
+                    </th>
                 </tr>
                 </thead>
                 <tbody>

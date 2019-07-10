@@ -21,6 +21,7 @@ use App\Entity\Ip;
 use App\Entity\LabelInterface;
 use App\Entity\Machine;
 use App\Entity\Network;
+use App\Entity\Plage;
 use App\Entity\Role;
 use App\Entity\Site;
 use App\Entity\User;
@@ -130,9 +131,9 @@ class RolesExtension extends Twig_Extension
                 [$this, 'canView'],
                 []
             ),
-            'can_view_deleted_site' => new Twig_SimpleFunction(
-                'can_view_deleted_site',
-                [$this, 'canViewDeletedSite'],
+            'can_view_deleted' => new Twig_SimpleFunction(
+                'can_view_deleted',
+                [$this, 'canViewDeleted'],
                 []
             ),
         );
@@ -191,6 +192,10 @@ class RolesExtension extends Twig_Extension
         
         if ($object instanceof Ip) {
             return $this->canEditIp($object);
+        }
+
+        if ($object instanceof Plage) {
+            return $this->canEditPlage($object);
         }
 
         if ($object instanceof Machine) {
@@ -265,11 +270,11 @@ class RolesExtension extends Twig_Extension
     }
 
     /**
-     * Can user view deleted site?
+     * Can user view deleted entity?
      *
      * @return bool
      */
-    public function canViewDeletedSite()
+    public function canViewDeleted()
     {
         if (null === $this->user) {
             return false;
@@ -382,6 +387,11 @@ class RolesExtension extends Twig_Extension
     private function canEditIp(Ip $ip)
     {
         return $this->canEditNetwork($ip->getNetwork());
+    }
+
+    private function canEditPlage(Plage $plage)
+    {
+        return $this->canEditNetwork($plage->getNetwork());
     }
 
     private function canEditNetwork(Network $network)

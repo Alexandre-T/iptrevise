@@ -96,7 +96,7 @@
                data-placement="left" data-toggle="tooltip" title="{{ 'default.site.action.list.title' | trans }}">
                 <span class="fa fa-building-o"></span>&nbsp;{{ 'site.actions.back.list' | trans }}
             </a>
-            {% if is_granted('ROLE_MANAGE_SITE') %}
+            {% if can_edit(site) %}
                 <a class="btn-mini btn btn-default" href="{{ path('default_site_edit', { 'id': site.id }) }}"
                    data-placement="left" data-toggle="tooltip" title="{{ 'default.site.action.edit.title' | trans }}">
                     <span class="fa fa-pencil"></span>&nbsp;{{ 'administration.actions.edit' | trans }}
