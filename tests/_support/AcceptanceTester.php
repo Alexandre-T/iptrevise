@@ -1,5 +1,4 @@
 <?php
-namespace App\Tests;
 
 use _generated\AcceptanceTesterActions;
 use Codeception\Actor;

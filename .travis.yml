@@ -53,6 +53,8 @@ script:
   - php bin/codecept run unit
   # Functional test
   - php bin/codecept run functional
+  # Acceptance test
+  - php bin/codecept run acceptance
 
 # After a build, sends a notification to this e-mail with the build results.
 notifications:
