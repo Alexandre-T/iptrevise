@@ -130,7 +130,7 @@ class ServiceController extends Controller
         $view['information'] = InformationFactory::createInformation($service);
         $view['logs'] = $serviceManager->retrieveLogs($service);
         $view['service'] = $service;
-        $view['isDeletable'] = $this->isGranted('ROLE_MANAGE_SERVICE') && $serviceManager->isDeletable($service);
+        $view['isDeletable'] = $this->isGranted('ROLE_ADMIN') && $serviceManager->isDeletable($service);
 
         if ($view['isDeletable']) {
             $view['delete_form'] = $this->createDeleteForm($service)->createView();

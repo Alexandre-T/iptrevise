@@ -55,7 +55,7 @@
                           <span class="fa fa-eye"></span>
                           <span class="sr-only">{{ 'default.action.show' | trans }}</span>
                       </a>
-                      {% if can_view(network) %}
+                      {% if can_edit(network) %}
                           <a class="btn btn-default" href="{{ path('default_network_edit', { 'id': network.id }) }}">
                               <span class="fa fa-edit"></span>
                               <span class="sr-only">{{ 'default.action.edit' | trans }}</span>

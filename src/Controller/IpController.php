@@ -62,7 +62,7 @@ class IpController extends Controller
         /** @var IpManager $ipManager */
         $ipManager = $this->get(IpManager::class);
         $view = [];
-        $isDeletable = $this->isGranted('ROLE_MANAGE_IP') && $ipManager->isDeletable($ip);
+        $isDeletable = $ipManager->isDeletable($ip);
         if ($isDeletable){
             $view['delete_form'] = $this->createDeleteForm($ip)->createView();
         }

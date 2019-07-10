@@ -181,7 +181,7 @@ class NetworkController extends Controller
         $view['information'] = InformationFactory::createInformation($network);
         $view['logs'] = $networkManager->retrieveLogs($network);
         $view['network'] = $network;
-        $view['isDeletable'] = $this->isGranted('ROLE_MANAGE_NETWORK') && $networkManager->isDeletable($network);
+        $view['isDeletable'] = $networkManager->isDeletable($network);
 
         if ($view['isDeletable']){
             $view['delete_form'] = $this->createDeleteForm($network)->createView();

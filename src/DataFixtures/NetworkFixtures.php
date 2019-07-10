@@ -63,11 +63,17 @@ class NetworkFixtures extends Fixture
                     $network[$index]->setSite($site1);
                 }
 
+                if ($index == 32) {
+                    $network[32]->setLabel('Réseau banni');
+                }
+
+
                 $this->addReference("network_$index", $network[$index]);
                 $manager->persist($network[$index]);
             }
+            $manager->flush();
+            $manager->remove($network[32]);
         }
-
         $manager->flush();
     }
 

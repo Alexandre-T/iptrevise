@@ -75,7 +75,7 @@ class SecurityCest
         $I->dontSeeLink('Supprimer');
         $I->dontSeeLink('Supprimer cette adresse IP');
 
-        $I->click('192.168.10.29');
+        $I->click('192.168.1.1');
         $I->dontSeeLink(' Éditer');
         $I->dontSeeLink(' Supprimer');
 
@@ -174,12 +174,23 @@ class SecurityCest
         $I->seeLink('Dissocier');
         $I->seeLink(' Éditer');
         $I->seeLink('Modifier');
-        $I->seeLink('Supprimer');
         $I->seeLink('Supprimer cette adresse IP');
+        $I->dontSee('Vous êtes sur le point de supprimer');
+        $I->click('Supprimer cette adresse IP');
+        $I->seeResponseCodeIsSuccessful();
+        $ipId = $I->grabFromCurrentUrl('~(\d+)~');
+        $I->seeCurrentUrlEquals("/machine/$ipId/delete-ip");
+        $I->click('Oui, supprimez cette adresse IP', '#form_confirm');
+        $I->seeResponseCodeIsSuccessful();
+        $I->dontSeeLink('Dissocier');
+        $I->seeLink(' Éditer');
+        $I->dontSeeLink('Modifier');
+        $I->seeLink('Supprimer');
 
         $I->amOnPage('/network');
         $I->seeLink('Nouveau réseau');
-        $I->seeLink('Éditer');
+        $I->dontSeeLink('Supprimer cette adresse IP');
+        $I->see('Vous êtes sur le point de supprimer');
 
         $I->click('Consulter','tr.row-3');
         $id = $I->grabFromCurrentUrl('~(\d+)~');

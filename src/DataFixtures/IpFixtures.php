@@ -67,6 +67,8 @@ class IpFixtures extends Fixture
                 $this->addReference("ip_$index", $ip[$index]);
                 $manager->persist($ip[$index]);
             }
+            $manager->flush();
+            $manager->remove($ip[45]);
         }
 
         $manager->flush();

@@ -129,10 +129,9 @@ class MachineController extends Controller
         $this->denyAccessUnlessGranted('view', $machine);
         $machineManager = $this->get(MachineManager::class);
         $networkManager = $this->get(NetworkManager::class);
-        $view['isDeletable'] = false;
+        $view['isDeletable'] = $machineManager->isDeletable($machine);
 
-        if ($this->isGranted('ROLE_MANAGE_MACHINE') && $machineManager->isDeletable($machine)){
-            $view['isDeletable'] = true;
+        if ($view['isDeletable']){
             $view['delete_form'] = $this->createDeleteForm($machine)->createView();
         }
 

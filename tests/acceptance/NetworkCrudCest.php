@@ -142,11 +142,12 @@ class NetworkCrudCest
         $I->fillField('Couleur', '#00F000');
         $I->fillField('app_network[description]', 'Description de codeception2');
         $I->fillField('Adresse réseau', '194.195.0.0');
+        $I->selectOption('Site', 'Site rouge');
         $I->fillField('Masque réseau (CIDR)', '18');
 
         $I->click('Éditer');
 
-        $I->seeCurrentUrlEquals("/network/$id");
+        $I->seeCurrentUrlEquals("/network/$id/edit");
         $I->see('Le réseau « ARéseau Codeception » a été modifié avec succès', '.alert-success');
 
         $I->see('Journal de bord');

@@ -62,9 +62,27 @@ class DeletedCest
         $I->click('Sites supprimés');
         $I->seeResponseCodeIsSuccessful();
         $I->see('Site banni');
-
-        $I->click('Consulter','a.btn.btn-default span.sr-only');
+        $I->click('Consulter');
         $I->seeResponseCodeIsSuccessful();
+
+        $I->click('Machines supprimées');
+        $I->seeResponseCodeIsSuccessful();
+        $I->see('Machine bannie');
+        $I->click('Consulter');
+        $I->seeResponseCodeIsSuccessful();
+
+        $I->click('Réseaux supprimés');
+        $I->seeResponseCodeIsSuccessful();
+        $I->see('Réseau banni');
+        $I->click('Consulter');
+        $I->seeResponseCodeIsSuccessful();
+
+        $I->click('IP supprimées');
+        $I->seeResponseCodeIsSuccessful();
+        $I->see('192.168.15.45');
+        $I->click('Consulter');
+        $I->seeResponseCodeIsSuccessful();
+
     }
     /**
      * Test to connect as Organiser.

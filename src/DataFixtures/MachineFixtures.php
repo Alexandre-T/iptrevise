@@ -49,7 +49,7 @@ class MachineFixtures extends Fixture
             /** @var Service $dnsService */
             $dnsService = $this->getReference('service_dns');
 
-            for ($index = 0; $index <= 90; ++$index) {
+            for ($index = 0; $index <= 91; ++$index) {
                 $machine[$index] = (new Machine())
                     ->setLabel("Machine $index")
                     ->setDescription("Description $index")
@@ -62,11 +62,16 @@ class MachineFixtures extends Fixture
                         ->setCreator($administrator);
                 }
 
+                if ($index == 91) {
+                    $machine[91]->setLabel('Machine bannie');
+                }
+
                 $this->addReference("machine_$index", $machine[$index]);
                 $manager->persist($machine[$index]);
             }
+            $manager->flush();
+            $manager->remove($machine[91]);
         }
-
         $manager->flush();
     }
 
