@@ -46,6 +46,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @author  Alexandre Tranchant <alexandre.tranchant@gmail.com>
  * @license CeCILL-B V1
  *
+ * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
  * @Route("network")
  */
 class NetworkExtraController extends Controller
@@ -55,7 +56,6 @@ class NetworkExtraController extends Controller
      *
      * @Route("/{id}/delete-ip", name="default_network_delete_ip")
      * @ParamConverter("ip", class="App:Ip")
-     * @Security("is_granted('ROLE_MANAGE_IP')")
      *
      * @param Request $request The request
      * @param Ip      $ip      the ip to delete
@@ -64,6 +64,8 @@ class NetworkExtraController extends Controller
      */
     public function deleteIpAction(Request $request, Ip $ip)
     {
+        //@TODO add a message
+        $this->denyAccessUnlessGranted('delete', $ip);
         $trans = $this->get('translator.default');
 
         $form = $this->createDeleteIpForm($ip);
@@ -98,7 +100,6 @@ class NetworkExtraController extends Controller
      *
      * @Route("/{id}/delete-plage", name="default_network_delete_plage")
      * @ParamConverter("plage", class="App:Plage")
-     * @Security("is_granted('ROLE_MANAGE_IP')")
      *
      * @param Request $request The request
      * @param Plage      $plage      the plage to delete
@@ -108,6 +109,8 @@ class NetworkExtraController extends Controller
     public function deletePlageAction(Request $request,Plage $plage)
     {
         $network = $plage->getNetwork();
+        //@TODO add a message
+        $this->denyAccessUnlessGranted('edit', $network);
 
         $trans = $this->get('translator.default');
 
@@ -143,7 +146,6 @@ class NetworkExtraController extends Controller
      *
      * @Route("/{id}/link", name="default_network_link")
      * @ParamConverter("ip", class="App:Ip")
-     * @Security("is_granted('ROLE_MANAGE_IP')")
      *
      * @param Request $request The request
      * @param Ip      $ip      The IP entity
@@ -153,6 +155,8 @@ class NetworkExtraController extends Controller
     public function linkAction(Request $request, Ip $ip)
     {
         $trans = $this->get('translator.default');
+        //@TODO add a message
+        $this->denyAccessUnlessGranted('edit', $ip);
 
         if (null !== $ip->getMachine()) {
             //Flash Message
@@ -210,7 +214,6 @@ class NetworkExtraController extends Controller
      * Reserve a new IP for the current network.
      *
      * @Route("/{id}/new-ip", name="default_network_new_ip")
-     * @Security("is_granted('ROLE_MANAGE_IP')")
      *
      * @param Request $request
      * @param Network $network
@@ -222,6 +225,8 @@ class NetworkExtraController extends Controller
         //Ip initialization
         $ip = new Ip();
         $ip->setNetwork($network);
+        //@TODO add a message
+        $this->denyAccessUnlessGranted('edit', $network);
 
         //Form initialization
         $form = $this->createForm(IpType::class, $ip);
@@ -269,7 +274,6 @@ class NetworkExtraController extends Controller
      * Reserve a new plage for the current network.
      *
      * @Route("/{id}/new-plage", name="default_network_new_plage")
-     * @Security("is_granted('ROLE_MANAGE_IP')")
      *
      * @param Request $request
      * @param Network $network
@@ -278,6 +282,8 @@ class NetworkExtraController extends Controller
      */
     public function newPlageAction(Request $request, Network $network)
     {
+        //@TODO add a message
+        $this->denyAccessUnlessGranted('edit', $network);
         //Ip initialization
         // $ip = new Ip();
         // $ip->setNetwork($network);
@@ -330,26 +336,6 @@ class NetworkExtraController extends Controller
             return $this->redirectToRoute('default_plage_show', array('id' => $plage->getId()));
         }
 
-        // The form was not submitted, the IP was not calculated
-        // We purpose the first non-reserved IP in the Network
-        // if (null === $plage->getStart()) {
-        //     $ipManager = $this->get(PlageManager::class);
-        //     $firstIp = $ipManager->getFirstNonReferencedIp($network);
-        //     if (null === $firstIp) {
-        //         //Flash message
-        //         $session = $this->get('session');
-        //         $trans = $this->get('translator.default');
-        //         $message = $trans->trans('default.network.no.space');
-        //         $session->getFlashBag()->add('error', $message);
-        //
-        //         return $this->redirectToRoute('default_network_show', array('id' => $network->getId()));
-        //     } else {
-        //         $plage->setStart($firstIp);
-        //         // We must set it.
-        //         $form->setData($plage);
-        //     }
-        // }
-
         return $this->render('default/network-extra/new-plage.html.twig', [
             'plage' => $plage,
             'network' => $network,
@@ -361,7 +347,6 @@ class NetworkExtraController extends Controller
      * Reserve a new IP associated to a new machine for the current network.
      *
      * @Route("/{id}/new-ip-machine", name="default_network_new_ip_machine")
-     * @Security("is_granted('ROLE_MANAGE_IP','ROLE_MANAGE_MACHINE')")
      *
      * @param Request $request
      * @param Network $network
@@ -370,6 +355,9 @@ class NetworkExtraController extends Controller
      */
     public function newIpMachineAction(Request $request, Network $network)
     {
+        //@TODO add a message
+        $this->denyAccessUnlessGranted('edit', $network);
+
         $ip = new Ip();
         $machine = new Machine();
         $ip->setMachine($machine);
@@ -405,7 +393,6 @@ class NetworkExtraController extends Controller
      *
      * @Route("/{id}/new-machine", name="default_network_new_machine")
      * @ParamConverter("ip", class="App:Ip")
-     * @Security("is_granted('ROLE_MANAGE_IP')")
      *
      * @param Request $request The request
      * @param Ip      $ip      The IP entity
@@ -414,6 +401,8 @@ class NetworkExtraController extends Controller
      */
     public function newMachineAction(Request $request, Ip $ip)
     {
+        //@TODO add a message
+        $this->denyAccessUnlessGranted('edit', $ip);
         $trans = $this->get('translator.default');
 
         if (null !== $ip->getMachine()) {
@@ -459,7 +448,6 @@ class NetworkExtraController extends Controller
      *
      * @Route("/{id}/unlink", name="default_network_unlink")
      * @ParamConverter("ip", class="App:Ip")
-     * @Security("is_granted('ROLE_MANAGE_IP')")
      *
      * @param Request $request The request
      * @param Ip      $ip      The IP entity
@@ -469,6 +457,8 @@ class NetworkExtraController extends Controller
     public function unlinkAction(Request $request, Ip $ip)
     {
         $trans = $this->get('translator.default');
+        //@TODO add a message
+        $this->denyAccessUnlessGranted('edit', $ip);
 
         if (null === $ip->getMachine()) {
             //Flash Message

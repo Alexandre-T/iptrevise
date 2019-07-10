@@ -466,6 +466,11 @@ default:
     matrice: 'Matrice en cours...'
   plage:
     manage %plage%: 'Gestion de la plage'
+  ip-machine:
+    created %name% %ip%: 'La machine %name% a été créée avec l’IP %ip%'
+  ip:
+    link:
+      error %ip%: 'Cette adresse IP est déjà rattachée à une machine.'
 form:
   network:
     field:
