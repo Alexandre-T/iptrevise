@@ -27,7 +27,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 class MenuBuilder
 {
     /**
-     * Facotry Interface.
+     * Factory Interface.
      *
      * @var FactoryInterface
      */
@@ -92,7 +92,7 @@ class MenuBuilder
             'icon' => 'fw fa-home',
         ]);
 
-        if ($this->authorization->isGranted('ROLE_READER')) {
+        if ($this->user instanceof User && ($this->user->isAdmin() or count($this->user->getNewRoles()))) {
             $dropdownSettings = $menu->addChild('menu.main.listings', [
                 'icon' => 'fas fa-list',
                 'pull-right' => true,
@@ -100,22 +100,23 @@ class MenuBuilder
                 'caret' => true,
             ]);
 
+            $dropdownSettings->addChild('menu.main.machines', [
+                'icon' => 'fw fa-desktop',
+                'route' => 'default_machine_index',
+            ]);
             $dropdownSettings->addChild('menu.main.networks', [
                 'icon' => 'fw fa-sitemap',
                 'route' => 'default_network_index',
             ]);
 
-            $dropdownSettings->addChild('menu.main.machines', [
-                'icon' => 'fw fa-desktop',
-                'route' => 'default_machine_index',
-            ]);
-            if ( in_array('ROLE_ADMIN' ,$this->user->getRoles()) )
+            if ( $this->authorization->isGranted('IS_AUTHENTICATED_FULLY') )
             {
               $dropdownSettings->addChild('menu.main.services', [
                 'icon' => 'fw fa-stack-overflow',
                 'route' => 'default_service_index',
               ]);
             }
+
             $dropdownSettings->addChild('menu.main.site', [
                 'icon' => 'fw fa-building-o',
                 'route' => 'default_site_index',
@@ -193,42 +194,31 @@ class MenuBuilder
                 'caret' => true,
             ]);
 
-            $isFully = $this->authorization->isGranted('IS_AUTHENTICATED_FULLY');
-            $isRemembered = $this->authorization->isGranted('IS_AUTHENTICATED_REMEMBERED');
-
-            if ($isFully && $isRemembered) {
-                $dropdownAdmin->addChild('menu.admin.users', [
-                    'icon' => 'fw fa-group',
-                    'route' => 'administration_user_index',
-                ]);
-                $dropdownAdmin->addChild('divider_1', ['divider' => true])
-                    ->setExtra('translation_domain', false);
-                $dropdownAdmin->addChild('default.entity.deleted', [
-                    'dropdown-header' => true,
-                ]);
-                $dropdownAdmin->addChild('default.site.deleted', [
-                        'icon' => 'fw fa-building-o',
-                        'route' => 'default_deleted_site_index',
-                ]);
-                $dropdownAdmin->addChild('default.network.deleted', [
-                        'icon' => 'fw fa-sitemap',
-                        'route' => 'default_deleted_network_index',
-                ]);
-                $dropdownAdmin->addChild('default.machine.deleted', [
-                        'icon' => 'fw fa-desktop',
-                        'route' => 'default_deleted_machine_index',
-                ]);
-                $dropdownAdmin->addChild('default.ip.deleted', [
-                        'icon' => 'fw fa-indent',
-                        'route' => 'default_deleted_ip_index',
-                ]);
-
-            } else {
-                $dropdownAdmin->addChild('menu.admin.confirm', [
-                    'icon' => 'fw fa-check',
-                    'route' => 'home',
-                ]);
-            }
+            $dropdownAdmin->addChild('menu.admin.users', [
+                'icon' => 'fw fa-group',
+                'route' => 'administration_user_index',
+            ]);
+            $dropdownAdmin->addChild('divider_1', ['divider' => true])
+                ->setExtra('translation_domain', false);
+            $dropdownAdmin->addChild('default.entity.deleted', [
+                'dropdown-header' => true,
+            ]);
+            $dropdownAdmin->addChild('default.site.deleted', [
+                    'icon' => 'fw fa-building-o',
+                    'route' => 'default_deleted_site_index',
+            ]);
+            $dropdownAdmin->addChild('default.network.deleted', [
+                    'icon' => 'fw fa-sitemap',
+                    'route' => 'default_deleted_network_index',
+            ]);
+            $dropdownAdmin->addChild('default.machine.deleted', [
+                    'icon' => 'fw fa-desktop',
+                    'route' => 'default_deleted_machine_index',
+            ]);
+            $dropdownAdmin->addChild('default.ip.deleted', [
+                    'icon' => 'fw fa-indent',
+                    'route' => 'default_deleted_ip_index',
+            ]);
 
             // ... add more children
         }

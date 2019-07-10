@@ -44,7 +44,7 @@ class NetworkCrudCest
         $I->wantToTest('Menu is well displayed');
         $I->see('Accueil');
         $I->dontSee('Accueil', '.active');
-        $I->see('Déconnexion', '.navbar');
+        $I->see('Déconnexion', 'li.last');
         $I->see('Réseaux', '.active');
 
         $I->wantToTest('the network management page');

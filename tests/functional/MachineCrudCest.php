@@ -43,7 +43,7 @@ class MachineCrudCest
         $I->wantToTest('Menu is well displayed');
         $I->see('Accueil');
         $I->dontSee('Accueil', '.active');
-        $I->see('Déconnexion', '.navbar');
+        $I->see('Déconnexion', 'li.last');
         $I->see('Machines', '.active');
 
         $I->wantToTest('the machine management page');
