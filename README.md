@@ -36,9 +36,25 @@ Load database model:
 php bin/console doctrine:migrations:migrate
 ```
 
-Load database data:
+**For development use only:**
+
+Load sample database data:
 ```
 php bin/console doctrine:fixtures:load --env=dev --fixtures=src/DataFixtures
+```
+
+**For production use:**
+Load production database data:
+```
+php bin/console doctrine:fixtures:load --env=prod --fixtures=src/DataFixtures
+```
+Add the first admin user:
+```
+php bin/console app:user --admin userLabel user-email@example.org userPassword
+```
+You can have more explanations about this command with:
+```
+php bin/console app:user --help
 ```
 
 Launch application (run can be replaced by start on linux):

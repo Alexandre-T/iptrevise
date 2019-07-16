@@ -38,13 +38,14 @@ class SiteFixtures extends Fixture
      */
     public function load(ObjectManager $manager)
     {
+
         if (in_array($this->container->get('kernel')->getEnvironment(), ['dev', 'test'])) {
             //Default site
             $site = new Site();
             $site->setLabel('Site noir');
             $site->setColor('000000');
 
-            $this->addReference('site_default', $site);
+            $this->addReference('site_noir', $site);
 
             $site1 = new Site();
             $site1->setLabel('Site rouge');
@@ -65,6 +66,14 @@ class SiteFixtures extends Fixture
 
             //We delete banned site
             $manager->remove($siteDeleted);
+        } else {
+            $site = new Site();
+            $site->setLabel('Site principal');
+            $site->setColor('000088');
+
+            $this->addReference('site_default', $site);
+            $manager->persist($site);
+
         }
 
         $manager->flush();

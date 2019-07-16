@@ -45,7 +45,7 @@ class NetworkFixtures extends Fixture
             /** @var User $organiser */
             $organiser = $this->getReference('user_organiser');
             /** @var Site $site */
-            $site = $this->getReference('site_default');
+            $site = $this->getReference('site_noir');
             /** @var Site $site1 */
             $site1 = $this->getReference('site_rouge');
 

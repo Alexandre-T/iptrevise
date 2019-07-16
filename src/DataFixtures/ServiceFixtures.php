@@ -39,31 +39,33 @@ class ServiceFixtures extends Fixture
      */
     public function load(ObjectManager $manager)
     {
-        /** @var User $administrator */
-        $administrator = $this->getReference('user_admin');
-        $services = [
-            'DNS',
-            'Firewall',
-            'NTP',
-        ];
-
         if (in_array($this->container->get('kernel')->getEnvironment(), ['dev', 'test'])) {
-            //Load dev and test data
-            $services[] = 'Service 0';
+            /** @var User $administrator */
+            $administrator = $this->getReference('user_admin');
+            $services = [
+                'DNS',
+                'Firewall',
+                'NTP',
+            ];
+
+            if (in_array($this->container->get('kernel')->getEnvironment(), ['dev', 'test'])) {
+                //Load dev and test data
+                $services[] = 'Service 0';
+            }
+
+            foreach ($services as $label) {
+                $service = new Service();
+                $service->setLabel($label);
+                $service->setCreator($administrator);
+
+                $this->addReference('service_' . strtolower($label), $service);
+
+                //Persist dev and test data
+                $manager->persist($service);
+            }
+
+            $manager->flush();
         }
-
-        foreach ($services as $label) {
-            $service = new Service();
-            $service->setLabel($label);
-            $service->setCreator($administrator);
-
-            $this->addReference('service_'.strtolower($label), $service);
-
-            //Persist dev and test data
-            $manager->persist($service);
-        }
-
-        $manager->flush();
     }
 
     /**

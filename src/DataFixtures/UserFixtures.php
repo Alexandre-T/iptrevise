@@ -43,14 +43,14 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     {
         $roleAdmin = ['ROLE_ADMIN'];
 
-        if (in_array(getenv('APP_ENV'), [ 'dev', 'test' ])) {
+        if (in_array($this->container->get('kernel')->getEnvironment(), ['dev', 'test'])) {
             //Load dev and test data
             // I add one user, one admin to test the security component
             // I add three readers with access to one or two sites
             // I add three organisers with access to one or two sites
 
             /** @var Site $site1 */
-            $site1 = $this->getReference('site_default');
+            $site1 = $this->getReference('site_noir');
             /** @var Site $site2 */
             $site2 = $this->getReference('site_rouge');
 

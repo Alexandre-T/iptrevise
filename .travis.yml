@@ -55,6 +55,8 @@ script:
   - php bin/codecept run functional
   # Acceptance test
   - php bin/codecept run acceptance
+  # Test the new command
+  - php bin/console app:user --admin userLabel user-email@example.org userPassword
 
 # After a build, sends a notification to this e-mail with the build results.
 notifications:
