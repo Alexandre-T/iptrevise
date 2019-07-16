@@ -82,6 +82,7 @@ class UserCrudCest
 
         $I->fillField('Adresse mail', 'valable@example.org');
         $I->fillField('Identifiant', 'Reader');
+        $I->checkOption('Utilisateur Cerbère');
         $I->click('Créer');
         $I->canSeeCurrentUrlEquals('/administration/user/new');
         $I->see('Cet identifiant est déjà utilisé.', '.help-block');

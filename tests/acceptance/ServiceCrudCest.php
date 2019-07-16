@@ -88,7 +88,7 @@ class ServiceCrudCest
         $I->see('Journal de bord');
         $I->see('1', 'td[headers="logs-version"].row1');
         $I->see('Création', 'td[headers="logs-action"].row1');
-        $I->see('organiser@example.org', 'td[headers="logs-user"].row1');
+        $I->see('administrator@example.org', 'td[headers="logs-user"].row1');
         $I->see('Service Codecept', 'td[headers="logs-value"].row1');
 
         $I->see('Information');

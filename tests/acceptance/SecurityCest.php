@@ -185,7 +185,7 @@ class SecurityCest
         $I->dontSeeLink('Dissocier');
         $I->seeLink(' Éditer');
         $I->dontSeeLink('Modifier');
-        $I->seeLink('Supprimer');
+        $I->dontSeeLink('Supprimer cette adresse IP');
 
         $I->amOnPage('/network');
         $I->seeLink('Nouveau réseau');
