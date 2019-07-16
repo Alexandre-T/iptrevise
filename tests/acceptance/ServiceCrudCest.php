@@ -36,7 +36,7 @@ class ServiceCrudCest
         $I->amOnPage('/service');
         $I->seeCurrentUrlEquals('/login');
 
-        $I->wantTo('be connected as an organiser');
+        $I->wantTo('be connected as an administrator');
         $I->connect('administrator@example.org', 'administrator');
         $I->seeCurrentUrlEquals('/service');
 
@@ -118,7 +118,7 @@ class ServiceCrudCest
         $I->see('Journal de bord');
         $I->see('2', 'td[headers="logs-version"].row2');
         $I->see('Modification', 'td[headers="logs-action"].row2');
-        $I->see('organiser@example.org', 'td[headers="logs-user"].row2');
+        $I->see('administrator@example.org', 'td[headers="logs-user"].row2');
         $I->dontSee('Service Codecept', 'td[headers="logs-value"].row2');
 
         $I->wantTo('Delete my service');

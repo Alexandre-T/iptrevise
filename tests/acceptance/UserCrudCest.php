@@ -34,13 +34,13 @@ class UserCrudCest
     {
         $I->wantToTest('I cannot access user managment without login');
         $I->amOnPage('/administration/user');
-        $I->canSeeCurrentUrlEquals('/login');
+        $I->seeCurrentUrlEquals('/login');
 
         $I->wantTo('be connected as an admin');
         $I->fillField('Adresse email', 'administrator@example.org');
         $I->fillField('Mot de passe', 'administrator');
         $I->click(' Se connecter');
-        $I->canSeeCurrentUrlEquals('/administration/user');
+        $I->seeCurrentUrlEquals('/administration/user');
 
         $I->wantToTest('Menu is well displayed');
         $I->see('Accueil');
@@ -57,11 +57,11 @@ class UserCrudCest
 
         $I->wantTo('See the new user form');
         $I->click('Nouvel utilisateur');
-        $I->canSeeCurrentUrlEquals('/administration/user/new');
+        $I->seeCurrentUrlEquals('/administration/user/new');
         $I->wantToTest('The required field');
         $I->uncheckOption('Utilisateur Cerbère');
         $I->click('Créer');
-        $I->canSeeCurrentUrlEquals('/administration/user/new');
+        $I->seeCurrentUrlEquals('/administration/user/new');
 
         //@TODO Je dois le voir deux fois !
         $I->see('Cette valeur ne doit pas être vide.', '.help-block');
@@ -70,31 +70,33 @@ class UserCrudCest
         $I->wantToTest('The email address');
         $I->fillField('Adresse mail', 'foo is not valid email');
         $I->click('Créer');
-        $I->canSeeCurrentUrlEquals('/administration/user/new');
+        $I->seeCurrentUrlEquals('/administration/user/new');
         $I->see('Cette valeur n\'est pas une adresse email valide.', '.help-block');
 
         $I->wantToTest('that I cannot create Doublon');
         $I->fillField('Adresse mail', 'reader@example.org');
         $I->fillField('Identifiant', 'valable');
         $I->click('Créer');
-        $I->canSeeCurrentUrlEquals('/administration/user/new');
+        $I->seeCurrentUrlEquals('/administration/user/new');
         $I->see('Cette adresse mail est déjà utilisée.', '.help-block');
 
         $I->fillField('Adresse mail', 'valable@example.org');
-        $I->fillField('Identifiant', 'Reader');
+        $I->fillField('Identifiant', 'Reader Sites');
         $I->checkOption('Utilisateur Cerbère');
         $I->click('Créer');
-        $I->canSeeCurrentUrlEquals('/administration/user/new');
+        $I->seeCurrentUrlEquals('/administration/user/new');
         $I->see('Cet identifiant est déjà utilisé.', '.help-block');
 
         $I->wantToTest('The length of each field');
         $tooLong = str_repeat('a', 255);
         $I->fillField('Adresse mail', $tooLong.'@toto.fr');
+        $I->checkOption('Utilisateur Cerbère');
         $I->click('Créer');
-        $I->canSeeCurrentUrlEquals('/administration/user/new');
+        $I->seeCurrentUrlEquals('/administration/user/new');
         $I->see('Cette chaîne est trop longue. Elle doit avoir au maximum 255 caractères.', '.help-block');
         $I->fillField('Adresse mail', 'codeception@test.org');
         $I->fillField('Identifiant', str_repeat('a', 37));
+        $I->checkOption('Utilisateur Cerbère');
         $I->click('Créer');
         $I->see('Cette chaîne est trop longue. Elle doit avoir au maximum 32 caractères.', '.help-block');
 
@@ -105,7 +107,7 @@ class UserCrudCest
         $I->click('Créer');
 
         $id = $I->grabFromCurrentUrl('~(\d+)~');
-        $I->canSeeCurrentUrlEquals("/administration/user/$id");
+        $I->seeCurrentUrlEquals("/administration/user/$id");
 
         $I->wantToTest('the show Use Case');
         $I->see('L’utilisateur Codeception a été créé avec succès !', '.alert-success');
@@ -129,22 +131,20 @@ class UserCrudCest
 
         $I->wantTo('Return to the list of users and see my creation');
         $I->click(' Liste des utilisateurs');
-        $I->canSeeCurrentUrlEquals('/administration/user');
+        $I->seeCurrentUrlEquals('/administration/user');
         $I->see("codeception@test.org", 'td[headers="user-mail"]');
         $I->see("Codeception", 'td[headers="user-username"]');
 
         $I->wantTo('Edit my creation');
         //TODO Ajouter les tests sur les rôles.
         $I->amOnPage("/administration/user/$id/edit");
-        $I->canSeeCurrentUrlEquals("/administration/user/$id/edit");
+        $I->seeCurrentUrlEquals("/administration/user/$id/edit");
 
         $I->wantTo('Test that the form is well initialized');
-        $I->canSeeInField('Identifiant', 'Codeception');
-        $I->canSeeInField('Adresse mail', 'codeception@test.org');
-        $I->canSeeCheckboxIsChecked('Utilisateur Cerbère');
-        $I->cantSeeCheckboxIsChecked('Administrateur');
-        $I->cantSeeCheckboxIsChecked('Lecteur');
-        $I->cantSeeCheckboxIsChecked('Organisateur');
+        $I->seeInField('Identifiant', 'Codeception');
+        $I->seeInField('Adresse mail', 'codeception@test.org');
+        $I->seeCheckboxIsChecked('Utilisateur Cerbère');
+        $I->dontSeeCheckboxIsChecked('Administrateur');
 
         $I->checkOption('Administrateur');
         $I->uncheckOption('Utilisateur Cerbère');

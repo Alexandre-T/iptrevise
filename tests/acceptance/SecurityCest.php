@@ -189,9 +189,6 @@ class SecurityCest
 
         $I->amOnPage('/network');
         $I->seeLink('Nouveau réseau');
-        $I->dontSeeLink('Supprimer cette adresse IP');
-        $I->see('Vous êtes sur le point de supprimer');
-
         $I->click('Consulter','tr.row-3');
         $id = $I->grabFromCurrentUrl('~(\d+)~');
         $I->seeCurrentUrlEquals("/network/$id");
