@@ -2,3 +2,4 @@ actor: UnitTester
 modules:
     enabled:
         - \Helper\Unit
+error_level: "E_ALL & ~E_STRICT & ~E_DEPRECATED & ~E_USER_DEPRECATED"

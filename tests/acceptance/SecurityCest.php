@@ -75,7 +75,7 @@ class SecurityCest
         $I->dontSeeLink('Supprimer');
         $I->dontSeeLink('Supprimer cette adresse IP');
 
-        $I->click('192.168.1.1');
+        $I->click('192.168.10.28');
         $I->dontSeeLink(' Éditer');
         $I->dontSeeLink(' Supprimer');
 

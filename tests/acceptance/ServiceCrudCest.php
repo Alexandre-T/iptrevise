@@ -37,7 +37,7 @@ class ServiceCrudCest
         $I->seeCurrentUrlEquals('/login');
 
         $I->wantTo('be connected as an organiser');
-        $I->connect('organiser@example.org', 'organiser');
+        $I->connect('administrator@example.org', 'administrator');
         $I->seeCurrentUrlEquals('/service');
 
         $I->wantToTest('Menu is well displayed');
