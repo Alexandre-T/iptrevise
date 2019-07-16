@@ -47,7 +47,7 @@
     },
     "require-dev": {
         "codeception/c3": "^2.0",
-        "codeception/codeception": "^2.3",
+        "codeception/codeception": "^3",
         "phpunit/php-code-coverage": "^4.0",
         "stecman/symfony-console-completion": "^0.8.0",
         "symfony/browser-kit": "^3.3",
@@ -77,7 +77,6 @@
     "scripts": {
         "auto-scripts": {
             "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
-            "security:check --end-point=https://security.symfony.com/check_lock": "symfony-cmd",
             "cache:clear --no-warmup": "symfony-cmd",
             "cache:warmup": "symfony-cmd",
             "cache:clear": "symfony-cmd",
