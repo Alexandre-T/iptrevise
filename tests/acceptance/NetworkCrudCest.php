@@ -145,9 +145,9 @@ class NetworkCrudCest
         $I->selectOption('Site', 'Site rouge');
         $I->fillField('Masque réseau (CIDR)', '18');
 
-        $I->click(' Éditer');
+        $I->click('form button[type=submit]');//Éditer does not work
 
-        $I->seeCurrentUrlEquals("/network/$id/edit");
+        $I->seeCurrentUrlEquals("/network/$id");
         $I->see('Le réseau « ARéseau Codeception » a été modifié avec succès', '.alert-success');
 
         $I->see('Journal de bord');
