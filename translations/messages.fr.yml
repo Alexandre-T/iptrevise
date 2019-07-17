@@ -478,3 +478,7 @@ form:
 access-deny:
   network:
     create: 'Accès refusé, vous n’êtes pas autorisé à créer de nouveau réseau.'
+command:
+  error:
+    site:
+      not-exists %label%,: 'Le site « %label% » n’existe pas'
