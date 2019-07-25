@@ -28,6 +28,8 @@ use App\Entity\Network;
 use App\Manager\IpManager;
 use App\Manager\MachineManager;
 use App\Manager\PlageManager;
+use App\Security\Voter\IpVoter;
+use App\Security\Voter\NetworkVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -65,7 +67,7 @@ class NetworkExtraController extends Controller
     public function deleteIpAction(Request $request, Ip $ip)
     {
         //@TODO add a message
-        $this->denyAccessUnlessGranted('delete', $ip);
+        $this->denyAccessUnlessGranted(IpVoter::DELETE, $ip);
         $trans = $this->get('translator.default');
 
         $form = $this->createDeleteIpForm($ip);
@@ -110,7 +112,7 @@ class NetworkExtraController extends Controller
     {
         $network = $plage->getNetwork();
         //@TODO add a message
-        $this->denyAccessUnlessGranted('edit', $network);
+        $this->denyAccessUnlessGranted(NetworkVoter::EDIT, $network);
 
         $trans = $this->get('translator.default');
 
@@ -118,7 +120,7 @@ class NetworkExtraController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //Prepare the message before deleteing.
+            //Prepare the message before deleting.
             $message = $trans->trans('default.plage.deleted %name%', [
               '%name%' => $plage->getLabel()
             ]);
@@ -156,7 +158,7 @@ class NetworkExtraController extends Controller
     {
         $trans = $this->get('translator.default');
         //@TODO add a message
-        $this->denyAccessUnlessGranted('edit', $ip);
+        $this->denyAccessUnlessGranted(IpVoter::EDIT, $ip);
 
         if (null !== $ip->getMachine()) {
             //Flash Message
@@ -226,7 +228,7 @@ class NetworkExtraController extends Controller
         $ip = new Ip();
         $ip->setNetwork($network);
         //@TODO add a message
-        $this->denyAccessUnlessGranted('edit', $network);
+        $this->denyAccessUnlessGranted(NetworkVoter::EDIT, $network);
 
         //Form initialization
         $form = $this->createForm(IpType::class, $ip);
@@ -283,7 +285,7 @@ class NetworkExtraController extends Controller
     public function newPlageAction(Request $request, Network $network)
     {
         //@TODO add a message
-        $this->denyAccessUnlessGranted('edit', $network);
+        $this->denyAccessUnlessGranted(NetworkVoter::EDIT, $network);
         //Ip initialization
         // $ip = new Ip();
         // $ip->setNetwork($network);
@@ -356,7 +358,7 @@ class NetworkExtraController extends Controller
     public function newIpMachineAction(Request $request, Network $network)
     {
         //@TODO add a message
-        $this->denyAccessUnlessGranted('edit', $network);
+        $this->denyAccessUnlessGranted(NetworkVoter::EDIT, $network);
 
         $ip = new Ip();
         $machine = new Machine();
@@ -402,7 +404,7 @@ class NetworkExtraController extends Controller
     public function newMachineAction(Request $request, Ip $ip)
     {
         //@TODO add a message
-        $this->denyAccessUnlessGranted('edit', $ip);
+        $this->denyAccessUnlessGranted(IpVoter::EDIT, $ip);
         $trans = $this->get('translator.default');
 
         if (null !== $ip->getMachine()) {
@@ -458,7 +460,7 @@ class NetworkExtraController extends Controller
     {
         $trans = $this->get('translator.default');
         //@TODO add a message
-        $this->denyAccessUnlessGranted('edit', $ip);
+        $this->denyAccessUnlessGranted(IpVoter::EDIT, $ip);
 
         if (null === $ip->getMachine()) {
             //Flash Message

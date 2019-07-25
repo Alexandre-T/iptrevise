@@ -126,7 +126,7 @@ class MachineController extends Controller
     public function showAction(Machine $machine)
     {
         /** @var MachineManager $machineManager */
-        $this->denyAccessUnlessGranted('view', $machine);
+        $this->denyAccessUnlessGranted(MachineVoter::VIEW, $machine);
         $machineManager = $this->get(MachineManager::class);
         $networkManager = $this->get(NetworkManager::class);
         $view['isDeletable'] = $machineManager->isDeletable($machine);
@@ -160,7 +160,7 @@ class MachineController extends Controller
      */
     public function editAction(Request $request, Machine $machine)
     {
-        $this->denyAccessUnlessGranted('edit', $machine);
+        $this->denyAccessUnlessGranted(MachineVoter::EDIT, $machine);
         $view = [];
         $machineService = $this->get(MachineManager::class);
         $isDeletable = $machineService->isDeletable($machine);
@@ -206,7 +206,7 @@ class MachineController extends Controller
      */
     public function deleteAction(Request $request, Machine $machine)
     {
-        $this->denyAccessUnlessGranted('edit', $machine);
+        $this->denyAccessUnlessGranted(MachineVoter::EDIT, $machine);
         $form = $this->createDeleteForm($machine);
         $form->handleRequest($request);
         $session = $this->get('session');

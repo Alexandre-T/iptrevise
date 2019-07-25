@@ -22,6 +22,7 @@ use App\Form\Type\NetworkType;
 use App\Entity\Network;
 use App\Manager\NetworkManager;
 use App\Manager\SiteManager;
+use App\Security\Voter\NetworkVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -95,9 +96,9 @@ class NetworkController extends Controller
     {
         $trans = $this->get('translator.default');
         $message = $trans->trans('access-deny.network.create');
-        $this->denyAccessUnlessGranted('create', 'network', $message);
-
         $network = new Network();
+        $this->denyAccessUnlessGranted(NetworkVoter::CREATE, $network, $message);
+
         $siteService = $this->get(SiteManager::class);
         $options['sites'] = $siteService->getEditable($this->getUser());
         $form = $this->createForm(NetworkType::class, $network, $options);
@@ -131,7 +132,7 @@ class NetworkController extends Controller
      */
     public function showAction(Network $network)
     {
-        $this->denyAccessUnlessGranted('view', $network);
+        $this->denyAccessUnlessGranted(NetworkVoter::VIEW, $network);
         /** @var NetworkManager $networkManager */
         $networkManager = $this->get(NetworkManager::class);
         $network_machines = array();
@@ -207,7 +208,7 @@ class NetworkController extends Controller
 
     public function matriceAction(Network $network)
     {
-        $this->denyAccessUnlessGranted('view', $network);
+        $this->denyAccessUnlessGranted(NetworkVoter::VIEW, $network);
         // create background image ( default : grey)
         // FIXME change $height and $width according to network cidr?
         $height = 64;
@@ -349,7 +350,7 @@ class NetworkController extends Controller
      */
     public function editAction(Request $request, Network $network)
     {
-        $this->denyAccessUnlessGranted('edit', $network);
+        $this->denyAccessUnlessGranted(NetworkVoter::EDIT, $network);
         $networkService = $this->get(NetworkManager::class);
         $siteService = $this->get(SiteManager::class);
         $view = [];
@@ -396,7 +397,7 @@ class NetworkController extends Controller
      */
     public function deleteAction(Request $request, Network $network)
     {
-        $this->denyAccessUnlessGranted('delete', $network);
+        $this->denyAccessUnlessGranted(NetworkVoter::DELETE, $network);
         $form = $this->createDeleteForm($network);
         $form->handleRequest($request);
         $session = $this->get('session');

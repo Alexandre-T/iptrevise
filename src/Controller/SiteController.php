@@ -123,7 +123,7 @@ class SiteController extends Controller
      */
     public function showAction(Site $site)
     {
-      $this->denyAccessUnlessGranted('view', $site);
+      $this->denyAccessUnlessGranted(SiteVoter::VIEW, $site);
         /** @var SiteManager $siteManager */
         $siteManager = $this->get(SiteManager::class);
 
@@ -153,7 +153,7 @@ class SiteController extends Controller
      */
     public function editAction(Request $request, Site $site)
     {
-        $this->denyAccessUnlessGranted('edit', $site);
+        $this->denyAccessUnlessGranted(SiteVoter::EDIT, $site);
 
         $siteService = $this->get(SiteManager::class);
         $view = [];

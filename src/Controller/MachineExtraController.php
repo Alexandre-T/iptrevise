@@ -163,8 +163,8 @@ class MachineExtraController extends Controller
      */
     public function newIpAction(Request $request, Network $network, Machine $machine)
     {
-        $this->denyAccessUnlessGranted(IpVoter::CREATE);
         $ip = new Ip();
+        $this->denyAccessUnlessGranted(IpVoter::CREATE, $ip);
         $ip->setNetwork($network);
         $ip->setMachine($machine);
         $form = $this->createForm(IpType::class, $ip);
