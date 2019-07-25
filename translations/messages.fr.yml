@@ -147,6 +147,7 @@ default.machine.link-ip.for-network %network%: '… dans le réseau « %network
 default.machine.managment: 'Gestion des machines (serveurs, postes bureautiques)'
 default.machine.new-ip: 'Créer une IP pour cette machine…'
 default.machine.new-ip.for-network %network%: '… dans le réseau « %network% »'
+default.machine.no-free-ip: 'Aucune adresse IP n’est libre dans ce réseau'
 default.machine.none: 'Aucune'
 default.machine.not-deletable %name%: 'La machine « %name% » est encore rattachée à des adresses IPs, elle ne peut pas être effacée.'
 default.machine.updated %name%: 'La machine « %name% » a été modifiée avec succès !'
