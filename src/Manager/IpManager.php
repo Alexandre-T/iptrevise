@@ -253,14 +253,23 @@ class IpManager implements LoggableManagerInterface, PaginatorInterface
      */
     public function getQueryBuilderWithSearch(string $search, array $sites)
     {
+        $searchText = trim($search);
+        $searchIps = [];
+        foreach (explode(' ', $searchText) as $searchIp) {
+            $ip = ip2long(str_replace('%','', $searchIp));
+            if (false !== $ip) {
+                $searchIps[] = $ip;
+            }
+        }
 
         $qb = $this->getQueryBuilder();
         $qb->join('ip.machine', 'machine')
             ->join('ip.network', 'network')
             ->where('network.site in (:sites)')
-            ->andWhere('ip.reason like :search or machine.label like :search or network.label like :search')
+            ->andWhere('ip.reason like :search or machine.label like :search or network.label like :search or ip.ip in (:searchIp)')
             ->setParameter('sites', $sites)
-            ->setParameter('search', $search);
+            ->setParameter('search', $search)
+            ->setParameter('searchIp', $searchIps);
 
         return $qb;
     }
