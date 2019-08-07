@@ -227,6 +227,7 @@ class NetworkExtraController extends Controller
         //Ip initialization
         $ip = new Ip();
         $ip->setNetwork($network);
+        $firstIp = null;
         //@TODO add a message
         $this->denyAccessUnlessGranted(NetworkVoter::EDIT, $network);
 
@@ -269,6 +270,7 @@ class NetworkExtraController extends Controller
             'ip' => $ip,
             'network' => $network,
             'form' => $form->createView(),
+            'next_ip' => $firstIp,
         ]);
     }
 
@@ -360,6 +362,7 @@ class NetworkExtraController extends Controller
         //@TODO add a message
         $this->denyAccessUnlessGranted(NetworkVoter::EDIT, $network);
 
+        $firstIp = null;
         $ip = new Ip();
         $machine = new Machine();
         $ip->setMachine($machine);
@@ -375,7 +378,7 @@ class NetworkExtraController extends Controller
             $session = $this->get('session');
             $trans = $this->get('translator.default');
             $message = $trans->trans('default.ip-machine.created %name% %ip%', [
-                '%name%' => long2ip($ip->getIp()),
+                '%name%' => $machine->getLabel(),
                 '%ip%' => long2ip($ip->getIp()),
             ]);
             $session->getFlashBag()->add('success', $message);
@@ -383,10 +386,31 @@ class NetworkExtraController extends Controller
             return $this->redirectToRoute('default_ip_show', array('id' => $ip->getId()));
         }
 
+        // The form was not submitted, the IP was not calculated
+        // We purpose the first non-reserved IP in the Network
+        if (null === $ip->getIp()) {
+            $ipManager = $this->get(IpManager::class);
+            $firstIp = $ipManager->getFirstNonReferencedIp($network);
+            if (null === $firstIp) {
+                //Flash message
+                $session = $this->get('session');
+                $trans = $this->get('translator.default');
+                $message = $trans->trans('default.network.no.space');
+                $session->getFlashBag()->add('error', $message);
+
+                return $this->redirectToRoute('default_network_show', array('id' => $network->getId()));
+            } else {
+                $ip->setIp($firstIp);
+                // We must set it.
+                $form->setData($ip);
+            }
+        }
+
         return $this->render('default/network-extra/new-ip-machine.html.twig', [
             'ip' => $ip,
             'network' => $network,
             'form' => $form->createView(),
+            'next_ip' => $firstIp,
         ]);
     }
 

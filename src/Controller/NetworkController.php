@@ -20,6 +20,7 @@ namespace App\Controller;
 use App\Bean\Factory\InformationFactory;
 use App\Form\Type\NetworkType;
 use App\Entity\Network;
+use App\Manager\IpManager;
 use App\Manager\NetworkManager;
 use App\Manager\SiteManager;
 use App\Security\Voter\NetworkVoter;
@@ -135,6 +136,8 @@ class NetworkController extends Controller
         $this->denyAccessUnlessGranted(NetworkVoter::VIEW, $network);
         /** @var NetworkManager $networkManager */
         $networkManager = $this->get(NetworkManager::class);
+        $ipManager = $this->get(IpManager::class);
+        $nextIp = $ipManager->getFirstNonReferencedIp($network);
         $network_machines = array();
 
         foreach($network->getIps() as $ip){
@@ -182,6 +185,7 @@ class NetworkController extends Controller
         $view['information'] = InformationFactory::createInformation($network);
         $view['logs'] = $networkManager->retrieveLogs($network);
         $view['network'] = $network;
+        $view['next_ip'] = $nextIp;
         $view['isDeletable'] = $networkManager->isDeletable($network);
 
         if ($view['isDeletable']){

@@ -64,7 +64,7 @@
     </dl>
 {% endmacro %}
 
-{% macro dl_network(network, link = true) %}
+{% macro dl_network(network, link = true, nextIp = null) %}
     <dl class="dl-horizontal">
         <dt class="lead">{{ 'form.network.field.network'| trans }}</dt>
         {% if link %}
@@ -89,6 +89,10 @@
                 <dd>{{ network.maxIp | ip }}</dd>
                 <dt>{{ 'form.network.field.capacity'| trans }}</dt>
                 <dd>{{ network.capacity | localizednumber }}</dd>
+                {% if nextIp is not null %}
+                    <dt>{{ 'form.network.field.next-ip'| trans }}</dt>
+                    <dd>{{ nextIp | ip }}</dd>
+                {% endif %}
             </dl>
         </div>
         <div class="col-sm-6">

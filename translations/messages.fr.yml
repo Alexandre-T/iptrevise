@@ -476,6 +476,7 @@ form:
   network:
     field:
       plages: 'Plages'
+      next-ip: 'Prochaine IP libre'
   ip:
     field:
       reserved-by-deleted-user: 'Adresse IP réservée par un utilisateur supprimé de la base de données.'
