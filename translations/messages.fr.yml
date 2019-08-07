@@ -459,6 +459,7 @@ default:
   machine:
     tags: 'Tags'
     nb-ip: 'Nombre d’IPs associées'
+    new-ip %site%: 'Créer une IP (%site%)'
   site:
     not-deletable %name%: 'Le site %name% ne peut pas être supprimé. Il contient des réseaux.'
   network:

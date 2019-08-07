@@ -120,6 +120,31 @@ class NetworkManager implements LoggableManagerInterface, PaginatorInterface
     }
 
     /**
+     * Return all networks.
+     *
+     * @param User $user
+     * @return Network[]|null Array of network or null
+     */
+    public function getEditableBySite(User $user)
+    {
+
+        $qb = $this->repository->createQueryBuilder(self::ALIAS)
+            ->join('network.site', 'sorted')
+            ->orderBy('sorted.label', 'asc')
+            ->orderBy('sorted.id', 'asc')
+            ->addOrderBy('network.label', 'asc');
+
+        if(!$user->isAdmin()) {
+            $qb->join('sorted.roles', 'role')
+                ->andWhere('role.user = :user')
+                ->andWhere('role.readOnly = false')
+                ->setParameter(':user', $user);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
      * Return all networks which have a reserved free IP.
      *
      * @return Network[]|null Array of network or null

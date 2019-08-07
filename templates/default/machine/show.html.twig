@@ -29,39 +29,68 @@
                     <span class="fa fa-desktop fa-4x"></span>
                 </div>
             </div>
-            <div class="btn-group-justified">
-                {% if can_edit_one(networks) %}
+            <div class="">
                 <!-- Single button -->
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="fa fa-fw fa-plus"></span>
-                        {{ 'default.machine.new-ip' | trans }}
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        {% for network in networks %}
-                            {% if can_create_ip(network) %}
+                {% set tampon = 0 %}
+                {% for network in networks %}
+                    {% if loop.first %}
+                        <div class="btn-group" style="margin-top:2px">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="fa fa-fw fa-plus"></span>
+                            {{ 'default.machine.new-ip %site%' | trans({'%site%': network.site.label}) }}
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                    {% endif %}
+                    {% if not loop.first and network.site.id != tampon %}
+                            </ul>
+                        </div>
+                        <div class="btn-group" style="margin-top:2px">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="fa fa-fw fa-plus"></span>
+                                {{ 'default.machine.new-ip %site%' | trans({'%site%': network.site.label}) }}
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                    {% endif %}
                                 <li><a href="{{ path ('default_machine_new_ip', {'network_id': network.id, 'machine_id': machine.id}) }}">{{ 'default.machine.new-ip.for-network %network%' | trans({'%network%': network.label }) }}</a></li>
-                            {% endif %}
-                        {% endfor %}
-                    </ul>
-                </div>
+                    {% if loop.last %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                    {% set tampon = network.site.id %}
+                {% endfor %}
                 <!-- Second button -->
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="fa fa-fw fa-link"></span>
-                        {{ 'default.machine.link-ip' | trans }}
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        {% for network in networks %}
-                            {% if can_edit(network) %}
-                            <li><a href="{{ path ('default_machine_link', {'network_id': network.id, 'machine_id': machine.id}) }}">{{ 'default.machine.link-ip.for-network %network%' | trans({'%network%': network.label }) }}</a></li>
-                            {% endif %}
-                        {% endfor %}
-                    </ul>
-                </div>
-                {% endif %}
+                {% set tampon = 0 %}
+                {% for network in networks %}
+                    {% if loop.first %}
+                        <div class="btn-group" style="margin-top:2px">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="fa fa-fw fa-link"></span>
+                                {{ 'default.machine.link-ip' | trans }}
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                    {% endif %}
+                    {% if not loop.first and network.site.id != tampon %}
+                        </ul>
+                        </div>
+                        <div class="btn-group" style="margin-top:2px">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="fa fa-fw fa-link"></span>
+                            {{ 'default.machine.link-ip' | trans }}
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                    {% endif %}
+                    <li><a href="{{ path ('default_machine_link', {'network_id': network.id, 'machine_id': machine.id}) }}">{{ 'default.machine.link-ip.for-network %network%' | trans({'%network%': network.label }) }}</a></li>
+                    {% if loop.last %}
+                        </ul>
+                        </div>
+                    {% endif %}
+                    {% set tampon = network.site.id %}
+                {% endfor %}
+
             </div>
         </div>
         {% if machine.ips.count %}

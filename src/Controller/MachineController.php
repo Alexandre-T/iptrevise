@@ -137,7 +137,7 @@ class MachineController extends Controller
 
         $information = InformationFactory::createInformation($machine);
         $logs = $machineManager->retrieveLogs($machine);
-        $networks = $networkManager->getAll();
+        $networks = $networkManager->getEditableBySite($this->getUser());
 
         return $this->render('default/machine/show.html.twig', array_merge($view, [
             'logs' => $logs,
