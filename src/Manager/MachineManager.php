@@ -207,6 +207,7 @@ class MachineManager implements LoggableManagerInterface, PaginatorInterface
             ->orWhere('lower(machine.description) like :search')
             ->orWhere('lower(machine.location) like :search')
             ->orWhere('lower(machine.macs) like :search')
+            ->orWhere('lower(tags.label) like :search')
             ->setParameter('search', $search);
 
         return $qb;
