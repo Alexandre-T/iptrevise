@@ -147,7 +147,7 @@
                         {% endif %}
                         {% if ip.machine %}
                             <td headers="machine-ip-network-label" class="th-icon">
-                                <a href="{{ path('default_network_show', {'id': ip.machine.id}) }}"
+                                <a href="{{ path('default_machine_show', {'id': ip.machine.id}) }}"
                                    title="{{ ip.machine.label }}">
                                     {{ ip.machine.label }}
                                 </a>
