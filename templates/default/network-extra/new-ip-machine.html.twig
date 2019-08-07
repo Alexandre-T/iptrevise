@@ -1,5 +1,7 @@
 {% extends 'default/base.html.twig' %}
 
+{% import "macro.html.twig" as app_macro %}
+
 {% block title %}{{ 'default.ip.create.title'|trans }} · {{ parent() }}{% endblock title %}
 
 {% block page_header %}{% endblock %}
@@ -25,6 +27,17 @@
                 </div>
             </div>
             {{ form_end(form) }}
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h1 class="panel-title">{{ 'default.network.show.title %name%'|trans({'%name%': network.label })}}</h1>
+        </div>
+        <div class="panel-body">
+            <dl class="">
+                {{ app_macro.dl_network(network) }}
+            </dl>
         </div>
     </div>
 

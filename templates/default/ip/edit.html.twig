@@ -1,5 +1,7 @@
 {% extends 'default/base.html.twig' %}
 
+{% import "macro.html.twig" as app_macro %}
+
 {% set administration_entity_show = 'default_ip_show' %}
 
 {% block title %}{{ 'default.ip.edit.title %name%'|trans({'%name%': ip.ip | ip })}} · {{ parent() }}{% endblock title %}
@@ -32,6 +34,18 @@
             {% endif %}
         </div>
     </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h1 class="panel-title">{{ 'default.network.show.title %name%'|trans({'%name%': ip.network.label })}}</h1>
+        </div>
+        <div class="panel-body">
+            <dl class="">
+                {{ app_macro.dl_network(ip.network) }}
+            </dl>
+        </div>
+    </div>
+
 {% endblock content_settings%}
 
 {% block content_action %}
