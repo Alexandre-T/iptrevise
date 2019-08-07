@@ -71,6 +71,9 @@ class SearchController extends Controller
         //retrieving readable site
         $sites = $siteManager->getReadable($this->getUser());
 
+        //
+        $hasIp = $this->hasIp($search);
+
         $pageMachine = $request->query->getInt('pageMachine', 1); /*page number*/
         //Retrieving all services
         $paginator = $this->get('knp_paginator');
@@ -95,9 +98,29 @@ class SearchController extends Controller
         return $this->render('default/search/index.html.twig', [
             'pagination' => $pagination,
             'pagination2' => $pagination2,
-            'result' => $search
+            'result' => $search,
+            'has_ip' => $hasIp,
         ]);
 
+    }
+
+    /**
+     * Return true if search contains at least one ip adress.
+     *
+     * @param string $search
+     *
+     * @return bool
+     */
+    private function hasIp(string $search): bool
+    {
+        //split on space
+        foreach (explode(' ', $search) as $searchIp) {
+            if (false !== ip2long(str_replace('%','', $searchIp))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
 

@@ -17,15 +17,15 @@
 
 {% block content_content %}
     <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#machines" aria-controls="home" role="tab"
+        <li role="presentation" class="{{ has_ip?'':'active' }}"><a href="#machines" aria-controls="home" role="tab"
                                                   data-toggle="tab">{{ 'default.tab.machines' | trans }}</a></li>
         {% block content_tabs_header %}{% endblock content_tabs_header %}
-        <li role="presentation"><a href="#ips" aria-controls="profile" role="tab"
+        <li role="presentation" class="{{ has_ip?'active':'' }}"><a href="#ips" aria-controls="profile" role="tab"
                                    data-toggle="tab">{{ 'default.tab.ips' | trans }}</a></li>
     </ul>
     {% set searchRes = result %}
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="machines">
+        <div role="tabpanel" class="tab-pane {{ has_ip?'':'active' }}" id="machines">
             <table class="table">
                 <thead>
                 <tr>
@@ -90,7 +90,7 @@
         {# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ DEUXIEME PAGE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #}
 
 
-        <div role="tabpanel" class="tab-pane" id="ips">
+        <div role="tabpanel" class="tab-pane {{ has_ip?'active':'' }}" id="ips">
             {% block content_ips %}
                 <table class="table">
                     <thead>
