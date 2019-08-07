@@ -67,7 +67,7 @@
                         <div class="btn-group" style="margin-top:2px">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="fa fa-fw fa-link"></span>
-                                {{ 'default.machine.link-ip' | trans }}
+                                {{ 'default.machine.link-ip %site%' | trans({'%site%': network.site.label}) }}
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
@@ -78,7 +78,7 @@
                         <div class="btn-group" style="margin-top:2px">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="fa fa-fw fa-link"></span>
-                            {{ 'default.machine.link-ip' | trans }}
+                            {{ 'default.machine.link-ip %site%' | trans({'%site%': network.site.label}) }}
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu">
