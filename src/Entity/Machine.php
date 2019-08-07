@@ -294,7 +294,7 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      *
      * @return Machine
      */
-    public function setLabel(string $label): self
+    public function setLabel(?string $label): self
     {
         $this->label = $label;
 
@@ -308,7 +308,7 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      *
      * @return Machine
      */
-    public function setDescription(string $description): self
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
@@ -322,7 +322,7 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      *
      * @return Machine
      */
-    public function setInterface(int $interface): self
+    public function setInterface(?int $interface): self
     {
         $this->interface = $interface;
 
@@ -336,7 +336,7 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      *
      * @return Machine
      */
-    public function setLocation(string $location): self
+    public function setLocation(?string $location): self
     {
         $this->location = $location;
 
@@ -350,7 +350,7 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      *
      * @return Machine
      */
-    public function setMacs(string $macs): self
+    public function setMacs(?string $macs): self
     {
         $this->macs = $macs;
 

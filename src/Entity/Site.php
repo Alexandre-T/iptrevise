@@ -186,7 +186,7 @@ class Site implements ColorInterface, InformationInterface, LabelInterface
      *
      * @return Site
      */
-    public function setLabel(string $label): self
+    public function setLabel(?string $label): self
     {
         $this->label = $label;
 

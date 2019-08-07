@@ -136,7 +136,7 @@ class Tag implements InformationInterface, LabelInterface
      *
      * @return Tag
      */
-    public function setLabel($label): Tag
+    public function setLabel(?string $label): Tag
     {
         $this->label = $label;
 

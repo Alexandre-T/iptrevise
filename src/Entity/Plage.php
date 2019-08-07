@@ -253,7 +253,7 @@ class Plage implements ColorInterface, InformationInterface, LabelInterface, Ref
      *
      * @return Plage
      */
-    public function setLabel(string $label): self
+    public function setLabel(?string $label): self
     {
         $this->label = $label;
 
@@ -267,7 +267,7 @@ class Plage implements ColorInterface, InformationInterface, LabelInterface, Ref
      *
      * @return Plage
      */
-    public function setStart(int $start): self
+    public function setStart(?int $start): self
     {
         $this->start = $start;
 
@@ -281,7 +281,7 @@ class Plage implements ColorInterface, InformationInterface, LabelInterface, Ref
      *
      * @return Plage
      */
-    public function setEnd(int $end): self
+    public function setEnd(?int $end): self
     {
         $this->end = $end;
 
@@ -295,7 +295,7 @@ class Plage implements ColorInterface, InformationInterface, LabelInterface, Ref
      *
      * @return Plage
      */
-    public function setReason(string $reason): self
+    public function setReason(?string $reason): self
     {
         $this->reason = $reason;
 

@@ -333,7 +333,7 @@ class Network implements ColorInterface, InformationInterface, LabelInterface
      *
      * @return Network
      */
-    public function setLabel(string $label): self
+    public function setLabel(?string $label): self
     {
         $this->label = $label;
 
@@ -347,7 +347,7 @@ class Network implements ColorInterface, InformationInterface, LabelInterface
      *
      * @return Network
      */
-    public function setDescription(string $description): self
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
@@ -375,7 +375,7 @@ class Network implements ColorInterface, InformationInterface, LabelInterface
      *
      * @return Network
      */
-    public function setCidr(int $cidr): self
+    public function setCidr(?int $cidr): self
     {
         $this->cidr = $cidr;
 

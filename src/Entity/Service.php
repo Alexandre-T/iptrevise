@@ -162,7 +162,7 @@ class Service implements InformationInterface, LabelInterface
      *
      * @return Service
      */
-    public function setLabel(string $label): self
+    public function setLabel(?string $label): self
     {
         $this->label = $label;
 
