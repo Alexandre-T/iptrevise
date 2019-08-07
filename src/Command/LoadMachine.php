@@ -50,7 +50,7 @@ class LoadMachine extends AbstractLoader
 
         $violations->addAll($validator->validate($ligne[0], [
             new Length([
-                'max' => 32,
+                'max' => 64,
                 'maxMessage' => $this->translator->trans('form.machine.error.label.max-length',[],'validators')
             ]),
             new NotBlank()

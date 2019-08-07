@@ -67,13 +67,13 @@ class MachineCrudCest
         $I->see('Cet intitulé de machine est déjà utilisé.', '.help-block');
 
         $I->wantToTest('The length of each field');
-        $I->fillField('Machine', str_repeat('a', 33));
+        $I->fillField('Machine', str_repeat('a', 65));
         $I->fillField('Interface', -2);
         $I->checkOption('Firewall');
         $I->fillField('app_machine[tags]', 'toto,titi,12345678901234567');
         $I->click('Créer');
         $I->seeCurrentUrlEquals('/machine/new');
-        $I->see('Cette chaîne est trop longue. Elle doit avoir au maximum 32 caractères.', '.help-block');
+        $I->see('Cette chaîne est trop longue. Elle doit avoir au maximum 64 caractères.', '.help-block');
         $I->see('Le nombre d’interface réseau doit être supérieur ou égal à "0".', '.help-block');
         $I->see('Le tag « 12345678901234567 » doit contenir moins de 16 caractères.', '.help-block');
 

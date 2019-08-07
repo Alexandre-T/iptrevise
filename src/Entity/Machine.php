@@ -62,12 +62,12 @@ class Machine implements InformationInterface, LabelInterface, TaggableInterface
      * @var string
      *
      * @Assert\NotBlank()
-     * @Assert\Length(max="32")
+     * @Assert\Length(max="64")
      *
      * @ORM\Column(
      *     type="string",
      *     unique=true,
-     *     length=32,
+     *     length=64,
      *     nullable=false,
      *     name="mac_lib",
      *     options={"comment":"Libellé de la machine"}
