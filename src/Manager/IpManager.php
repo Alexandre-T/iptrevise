@@ -199,7 +199,7 @@ class IpManager implements LoggableManagerInterface, PaginatorInterface
     public function isDeletable(Ip $ip = null): bool
     {
         //An IP is always deletable.
-        return true;
+        return $ip instanceof Ip;
     }
 
     /**
@@ -266,7 +266,7 @@ class IpManager implements LoggableManagerInterface, PaginatorInterface
         $qb->join('ip.machine', 'machine')
             ->join('ip.network', 'network')
             ->where('network.site in (:sites)')
-            ->andWhere('ip.reason like :search or machine.label like :search or network.label like :search or ip.ip in (:searchIp)')
+            ->andWhere('lower(ip.reason) like :search or lower(machine.label) like :search or lower(network.label) like :search or ip.ip in (:searchIp)')
             ->setParameter('sites', $sites)
             ->setParameter('search', $search)
             ->setParameter('searchIp', $searchIps);

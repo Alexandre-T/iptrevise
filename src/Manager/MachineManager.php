@@ -201,11 +201,12 @@ class MachineManager implements LoggableManagerInterface, PaginatorInterface
 
     public function getQueryBuilderWithSearch(string $search)
     {
+        $search = strtolower($search);
         $qb = $this->getQueryBuilder();
-        $qb->where(self::ALIAS . '.label like :search')
-            ->orWhere(self::ALIAS . '.description like :search')
-            ->orWhere('machine.location like :search')
-            ->orWhere('machine.macs like :search')
+        $qb->where('lower(machine.label) like :search')
+            ->orWhere('lower(machine.description) like :search')
+            ->orWhere('lower(machine.location) like :search')
+            ->orWhere('lower(machine.macs) like :search')
             ->setParameter('search', $search);
 
         return $qb;
