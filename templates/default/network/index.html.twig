@@ -35,7 +35,7 @@
               {% if pagination.isSorted('network.site.label') %}
                 <span class="fa fa-sort-alpha-{{ direction }}"></span>
               {% endif %}
-              {{ knp_pagination_sortable(pagination, 'default.network.site' | trans, 'network.site')}}
+              {{ knp_pagination_sortable(pagination, 'default.network.site' | trans, 'site')}}
             </th>
             <th id="network-actions">{{ 'default.network.actions' | trans }}</th>
         </tr>
